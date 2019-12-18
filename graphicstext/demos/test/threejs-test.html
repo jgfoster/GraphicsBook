@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Three.js Demo</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../script/three.min.js"></script>
+<script src="../script/threejs/TrackballControls.js"></script>
+<script>
+
+var canvas, scene, renderer, camera;
+
+var controls;
+
+function render() {  
+    renderer.render(scene,camera);
+}
+
+/*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
+ *  the view.  TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ */
+function installTrackballControls() {
+    controls = new THREE.TrackballControls(camera,canvas);
+    controls.noPan = true;
+    controls.noZoom = true;
+    controls.staticMoving = true;
+    function move() {
+        controls.update();
+		render();
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+function createWorld() {  // parametric surface
+    scene = new THREE.Scene();
+    renderer.setClearColor("black");
+    camera = new THREE.PerspectiveCamera(60,canvas.width/canvas.height,0.1,100);
+	camera.position.set(0,0,50);
+	var light = new THREE.DirectionalLight(0xffffff, 0.7);
+	light.position.set(0,0,1);
+	camera.add(light);
+	scene.add(camera);
+	
+	light = new THREE.PointLight(0xffffff, 0.5);
+	light.position.set(0,20,0);
+	scene.add(light);
+	//
+	//light = new THREE.PointLight(0xffffff, 0.3);
+	//light.position.set(0,-20,0);
+	//scene.add(light);
+	
+	scene.add(new THREE.AmbientLight(0x333333));
+	
+	installTrackballControls();
+	
+	var material = new THREE.MeshPhongMaterial({
+	    color: "white",
+		specular: 0x080808,
+		side: THREE.DoubleSide
+	});
+	
+	var path = new THREE.Shape();
+	path.moveTo(0,10);
+	path.bezierCurveTo( 0,5, 20,-10, 0,-10 );
+	path.bezierCurveTo( -20,-10, 0,5, 0,10 );
+	
+	//var curveGeom = new THREE.Geometry();
+	//var pt = path.getPoints(128);
+	//for (var i = 0; i < 128; i++) {
+	//    curveGeom.vertices.push( new THREE.Vector3(pt[i].x, pt[i].y, 0) );
+	//	console.log(curveGeom.vertices[i]);
+	//}
+	//
+	//var curve = new THREE.Line(curveGeom, new THREE.LineBasicMaterial({ color:0xffffff, linewidth:2 }));
+	//scene.add(curve);
+	//curve.position.x = 7;
+	
+	//var shapeGeom = path.extrude({
+	//   curveSegments: 32,
+	//   amount: 5,
+	//   bevelSize: 2,
+	//   bevelThickness: 2,
+	//   bevelSegments: 1
+	//});
+	var shapeGeom = path.makeGeometry({
+	   curveSegments: 32
+	});
+	var shape = new THREE.Mesh(shapeGeom, material);
+	scene.add(shape);
+}
+
+
+function createWorld6() {  // parametric surface
+    scene = new THREE.Scene();
+    renderer.setClearColor("black");
+    camera = new THREE.PerspectiveCamera(30,canvas.width/canvas.height,0.1,100);
+	camera.position.set(0,0,50);
+	var light = new THREE.DirectionalLight(0xffffff, 0.7);
+	light.position.set(0,0,1);
+	camera.add(light);
+	scene.add(camera);
+	
+	light = new THREE.PointLight(0xffffff, 0.5);
+	light.position.set(0,20,0);
+	scene.add(light);
+	//
+	//light = new THREE.PointLight(0xffffff, 0.3);
+	//light.position.set(0,-20,0);
+	//scene.add(light);
+	
+	scene.add(new THREE.AmbientLight(0x333333));
+	
+	installTrackballControls();
+	
+	var material = new THREE.MeshPhongMaterial({
+	    color: "white",
+		specular: 0x080808,
+		side: THREE.DoubleSide
+	});
+	
+	var sine = new THREE.Curve();
+	sine.getPoint = function(t) {
+	   t = (t - 0.5) * 7*Math.PI;
+	   return new THREE.Vector3(
+	       3 + 2*Math.cos(t),
+		   0,
+		   t
+	   );
+	}
+	
+	var obj = new THREE.Object3D();
+	
+	var latheGeometry = new THREE.LatheGeometry(sine.getPoints(128), 32);
+	var lathe = new THREE.Mesh(latheGeometry, material);
+	lathe.rotation.x = -Math.PI/2;
+	obj.add(lathe);
+	
+	var curveGeom = new THREE.Geometry();
+	curveGeom.vertices = sine.getPoints(128);
+	var curve = new THREE.Line(curveGeom, new THREE.LineBasicMaterial({ color:0xffffff, linewidth:2 }));
+	curve.position.x = 5;
+	curve.rotation.x = -Math.PI/2;
+	obj.add(curve);
+	
+	obj.rotation.z = Math.PI/2;
+	scene.add(obj);
+}
+
+
+
+function createWorld5() {  // parametric surface
+    scene = new THREE.Scene();
+    renderer.setClearColor("black");
+    camera = new THREE.PerspectiveCamera(50,canvas.width/canvas.height,0.1,100);
+	camera.position.set(0,0,60);
+	var light = new THREE.DirectionalLight(0xffffff, 0.7);
+	light.position.set(0,0,1);
+	camera.add(light);
+	scene.add(camera);
+	
+	//light = new THREE.PointLight(0xffffff, 0.3);
+	//light.position.set(0,20,0);
+	//scene.add(light);
+	//
+	//light = new THREE.PointLight(0xffffff, 0.3);
+	//light.position.set(0,-20,0);
+	//scene.add(light);
+	
+	scene.add(new THREE.AmbientLight(0x333333));
+	
+	installTrackballControls();
+	
+	var material = new THREE.MeshPhongMaterial({
+	    color: "white",
+		specular: 0x080808,
+		side: THREE.DoubleSide
+	});
+	
+	var helix = new THREE.Curve();
+	helix.getPoint = function(t) {
+	   t = (t - 0.5) * 12*Math.PI;
+	   return new THREE.Vector3(
+	        5*Math.cos(t),
+			t,
+			5*Math.sin(t)
+	   );
+	}
+	
+	var tubeGeometry1 = new THREE.TubeGeometry(helix,128,2.5,32);
+	var tube1 = new THREE.Mesh( tubeGeometry1, material );
+	tube1.position.x = 10;
+	scene.add(tube1);
+	
+	var tubeGeometry2 = new THREE.TubeGeometry(helix,128,1,32);
+	var tube2 = new THREE.Mesh( tubeGeometry2, material );
+	tube2.position.x = -10;
+	scene.add(tube2);
+	
+}
+
+
+
+function surfaceFunction( u, v ) {
+	var x,y,z;  // A point on the surface, calculated from u,v.
+	            // u  and v range from 0 to 1.
+	
+	x = 20 * (u - 0.5);  // x and z range from -10 to 10
+	z = 20 * (v - 0.5);
+	
+	y = 2*(Math.sin(x/2) * Math.cos(z));
+	return new THREE.Vector3( x, y, z );
+}
+
+
+function createWorld4() {  // parametric surface
+    scene = new THREE.Scene();
+    renderer.setClearColor("black");
+    camera = new THREE.PerspectiveCamera(35,canvas.width/canvas.height,0.1,100);
+	camera.position.set(0,0,40);
+	var light = new THREE.DirectionalLight(0xffffff, 0.5);
+	light.position.set(0,0,1);
+	camera.add(light);
+	scene.add(camera);
+	
+	light = new THREE.PointLight(0xffffff, 0.5);
+	light.position.set(0,20,0);
+	scene.add(light);
+	
+	installTrackballControls();
+	
+	var surfaceGeometry = new THREE.ParametricGeometry(surfaceFunction, 64,64);
+	var material = new THREE.MeshPhongMaterial({
+	    color: "white",
+		specular: 0x080808,
+		side: THREE.DoubleSide
+	});
+	
+	var surface = new THREE.Mesh( surfaceGeometry, material );
+	scene.add(surface);
+	
+}
+
+function createWorl2() {
+    scene = new THREE.Scene();
+    renderer.setClearColor("white");
+    camera = new THREE.OrthographicCamera(-3,3,3,-3,-1,1);
+	scene.add(new THREE.Mesh(
+		new THREE.PlaneGeometry(5,5,1,1),
+		new THREE.MeshPhongMaterial({color:"white"})
+	));
+	var light = new THREE.SpotLight();
+	light.position.set(0,0,4);
+	//light.target.position.set(2,2,0);
+	//scene.add(light.target);
+	console.log(light.target + " " + light.target.position.x);
+	scene.add( light );
+}
+
+function createWorld3() {
+    scene = new THREE.Scene();
+    renderer.setClearColor("white");
+    camera = new THREE.OrthographicCamera(-3,3,3,-3,-10,10);
+	var plane = new THREE.Mesh(
+		new THREE.PlaneGeometry(5,5,1,1),
+		new THREE.MeshPhongMaterial({color:"white"})
+	);
+	plane.position.z = -4;
+	scene.add(plane);
+	var light = new THREE.SpotLight();
+	light.target.position.set(0,0,-4);
+	//light.position.set(0,0,4);
+	light.target = plane;
+	console.log(light.target + " " + light.target.position.x);
+	scene.add( light );
+}
+
+
+function createWorld1() {
+    scene = new THREE.Scene();
+    renderer.setClearColor("black");
+    camera = new THREE.OrthographicCamera(-3,3,3,-3,-1,1);
+	
+	var curve = new THREE.Curve();
+	curve.getPoint = function(a) {
+	   t = a*2*Math.PI;
+	   var x = Math.cos(t) * (1 + 0.2*Math.sin(17*t));
+	   var y = Math.sin(t) * (1 + 0.2*Math.sin(17*t));
+	   return new THREE.Vector3(x,y,0);
+	}
+	var geom = new THREE.Geometry();
+	geom.vertices = curve.getPoints(500);
+	scene.add( new THREE.Line(geom, new THREE.LineBasicMaterial({color:0xffffff,linewidth:2})));
+}
+
+
+function init() {
+    try {
+        canvas = document.getElementById("maincanvas");
+	renderer = new THREE.WebGLRenderer({
+	     canvas: canvas,
+	     antialias: true
+	});
+    }
+    catch (e) {
+        document.getElementById("canvas-holder").innerHTML="<p><b>Sorry, an error occurred:<br>" +
+                e + "</b></p>";
+	return;
+    }
+    createWorld();
+    render();
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<div id="content">
+
+
+<div id="canvas-holder">
+<canvas id="maincanvas" width="500" height="400"></canvas>
+</div>
+
+</div>
+
+</body>
+</html>

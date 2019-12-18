@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Three.js Demo</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../script/demo-core.js"></script>
+<script src="../script/three.min.js"></script>
+<script src="../script/threejs/TrackballControls.js"></script>
+<script>
+
+/*  This program shows an "icosphere" made by subdividing the faces
+ *  of an icosahedron once.  Colors can be assigned either to faces
+ *  or to vertices.  There are two kinds of animation, which can be 
+ *  turned on and off separately:  In the first kind, each color shifts
+ *  continually through the range of possible hues.  In the second,
+ *  individual vertices move away from the center of and back.  At any
+ *  given time, up to 12 vertices are moving.
+ *
+ *  There are four options for the colors, controlled by a pop-up menu:
+ *  "All white" (no color animation), "One color per face" where each face
+ *  has a single solid color, "Three colors per face," where each vertex
+ *  of each face has its own color, and "One color per vertex" where
+ *  each vertex is assigned a color and that color is used as a vertex
+ *  color on each face that touches the vertex.  The one-color-per-vertex
+ *  scheme is not supported directly by THREE.js; it is implemented by
+ *  using three colors per face, but making sure that all the faces that
+ *  share a vertex use the same color for that vertex.
+ */
+ 
+"use strict";
+ 
+var canvas, scene, renderer, camera;  // Three.js basic objects.
+
+var geometry;  // The icosphere geometry, which contains both the
+               //  vertices and the face colors that are animated.
+
+var material;  // The icosphere material.
+                
+var colorType = 1; // The type of colors used on the sphere, controlled by a popup menu:
+                   //    0 = No colors: color of every face is white (Three.NoColors)
+                   //    1 = One color per face:  A single color per face, stored in geometry  (Three.FaceColors)
+                   //    2 = Three colors per face:  Three colors per face, stored in geometry (Three.VertexColors)
+                   //    3 = One color per vertex:  Three colors per face, but color copied from vertexColor array
+
+var faceColors;   // An array of one color for each face, used for "One color per face".
+var faceColorVelocities;   // Array of speeds, one for each face, at which the face
+                           // the face colors change.  Used for "One color per face".
+
+var faceVertexColors;  // A 2D array.  Each element is an array of three colors, one array for each face, 
+                       // for "Three colors per face."
+var faceVertexColorVelocities;  // A 2D array.  Each element is an array of three speeds,
+                                // used for "Three colors per face".
+var vertexColors;  // An array of one color for each vertex, for use for "One color per vertex"
+var vertexColorVelocities; // Array of speeds at which hues of vetex colors changed,
+                           // used for "One color per vertex".
+
+var vertexAnimData = [];  // Array of objects, one for each vertex that
+                           // is currently being animated.  Items are added
+                           // to this array in function updateForFrame()
+                        
+var wireSphere;  // The wireframe sphere, which can be turned on and off.  It uses the same
+                 // geometry as the shaded icosphere.
+
+var colorAnimation = true;  // For saving state of colorAnimationCheckbox when it is disabled
+
+
+function render() {
+    renderer.render(scene,camera);
+}
+
+
+/*  Create a scene showing the icosphere.  A second sphere with the same
+ *  geometry but with a wireframe material is also shown; this effectively
+ *  draws black lines between the colored faces of the icosphere.  A camera
+ *  and light are also set up.
+ */
+function createWorld() {
+    var i;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, canvas.width/canvas.height, 0.1, 100);
+
+    /* Add the camera and a light to the scene, linked into one object. */
+    var light = new THREE.DirectionalLight();
+    light.position.set(0,0,1);
+    camera.position.set(0,0,40);
+    camera.add(light);  // Add light to the camera, so it will move with the camera.
+                        // (Trackball rotation is implemented by rotating the camera object.)
+    scene.add(camera);
+    scene.add(new THREE.AmbientLight(0x222222));
+        
+    /* Create the icosphere geomtry */
+    geometry = new THREE.IcosahedronGeometry(10,2);
+    
+    /* Create an array of one color per vertex, with color velocities,
+       to be used for "One color per vertex" color mode */
+    vertexColors = [];
+    vertexColorVelocities = [];
+    for (i = 0; i < geometry.vertices.length; i++) {
+        var c = new THREE.Color();
+        c.setHSL( Math.random(), 0.7, 0.4 );
+        vertexColors.push(c);
+        vertexColorVelocities.push(0.001 + 0.002*Math.random());
+    }
+
+    /* Create the random colors and color velocities for "One color per face" */    
+    faceColors = [];
+    faceColorVelocities = [];
+    for (i = 0; i < geometry.faces.length; i++) {
+        var c = new THREE.Color();
+        c.setHSL( Math.random(), 0.7, 0.4);
+        faceColors.push(c);
+        faceColorVelocities.push(0.001 + 0.002*Math.random()); 
+    }
+    
+    /* Create individual colors and velocities for each vertex of each face, for "Three colors per face" */
+    faceVertexColors = [];
+    faceVertexColorVelocities = [];
+    for (i = 0; i < geometry.faces.length; i++) {
+        var colors = [];  // colors for vertices of face number i
+        var v = [];  // color velocities for vertices of face nmber i
+        for (var j = 0; j < 3; j++) {
+            var c = new THREE.Color();
+            c.setHSL( Math.random(), 0.7, 0.5 );
+            colors.push(c);
+            v.push(0.001 + 0.002*Math.random());
+        }
+        faceVertexColors.push(colors);
+        faceVertexColorVelocities.push(v);
+    }
+        
+    /* The material for the colored icosphere needs to use polygonOffset
+      to move the faces back a bit so that they don't have exactly the
+      same depth as the wireframe sphere. */
+    material = new THREE.MeshLambertMaterial({
+        polygonOffset: true,  
+        polygonOffsetUnits: 1,
+        polygonOffsetFactor: 1,
+        color: "white", // will only be used when vertexColors is set to THREE.NoColors, for "No Colors" option.
+        vertexColors: THREE.FaceColors  // initially, face colors come from geometry, one color per face
+    });
+    
+    /* Install face colors into geometry */
+    for (i = 0; i < geometry.faces.length; i++) {
+        geometry.faces[i].color = faceColors[i];
+    }
+    
+    /* The colored sphere. */
+    var sphere = new THREE.Mesh( geometry, material );
+
+    /* The wireframe sphere, which will be added as a subobject of the
+       colored sphere so that they can be treated as one object (not 
+       essential for this program since the sphere is not transformed). */
+    wireSphere = new THREE.Mesh(
+         geometry,
+         new THREE.MeshBasicMaterial({ color: 0, wireframe: true })
+    );
+
+    scene.add(sphere);
+    sphere.add(wireSphere);
+}
+
+
+/*  When an animation is in progress, this function is called just before rendering each
+ *  frame of the animation.  In this case, colors and vertices of the icosphere are
+ *  modified, if the corresponding animation type is turned on.
+ */
+function updateForFrame() {
+    var i,j,c;
+    if (document.getElementById("colorAnimationCheckbox").checked) { 
+        switch (colorType) {
+        case 1:  // Update face colors by adding color velocities to their hues.
+            for (i = 0; i < faceColorVelocities.length; i++) {
+                c = geometry.faces[i].color.getHSL();
+                c.h += faceColorVelocities[i];
+                if (c.h > 1) {  // hue has gotton bigger than 1; subtract 1 to move it back into range
+                   c.h -= 1;
+                }
+                geometry.faces[i].color.setHSL(c.h,c.s,c.l);
+            }
+            break;
+        case 2:   // Update 3 vertex colors for each face
+            for (i = 0; i < geometry.faces.length; i++) {
+                var f = geometry.faces[i];
+                for (j = 0; j < 3; j++) {
+                    c = f.vertexColors[j].getHSL();
+                    c.h += faceVertexColorVelocities[i][j];
+                    if (c.h > 1) {  // hue has gotton bigger than 1; subtract 1 to move it back into range
+                        c.h -= 1;
+                    }
+                    f.vertexColors[j].setHSL(c.h,c.s,c.l);
+                }
+            }
+            break;
+        case 3:  // Update vertex colors; note that faces contain pointers to these color objects!
+             for (i = 0; i < vertexColors.length; i++) {
+                 c = vertexColors[i].getHSL();
+                 c.h += vertexColorVelocities[i];
+                 if (c.h > 1) {  // hue has gotton bigger than 1; subtract 1 to move it back into range
+                     c.h -= 1;
+                 }
+                 vertexColors[i].setHSL(c.h,c.s,c.l);
+             }  
+        }
+        geometry.colorsNeedUpdate = true;  // Needed to tell the renderer to use the new colors!!
+    }
+    if (document.getElementById("vertexAnimationCheckbox").checked) {
+             // Update animating vertices by changing their lengths.
+        if (vertexAnimData.length == 0 || vertexAnimData.length < 12 && Math.random() < 0.1) {
+               // Fewer than 12 vertices are being animated.  Add data for aother new one.
+            var ad = {}; // The data for an animating vertex.
+            while (true) {
+                   // Select ad.vertexNum to be an index of a vertex that is not already animating.
+                ad.vertexNum = Math.floor(geometry.vertices.length*Math.random());
+                var used = false;
+                for (i = 0; i < vertexAnimData.length; i++) {
+                    if (ad.vertexNum == vertexAnimData.vertexNum) {
+                        used = true;
+                        break;
+                    }
+                }
+                if (!used)
+                    break;
+            }
+            ad.length = 10;   // This is the initial length of the vector of vertex coords.
+            ad.direction = 0;  // 0 says vertex is moving away from the center; 1 says it's moving back.
+            ad.maxLength = 12 + 8*Math.random();  // The length at which it will start moving back.
+            ad.velocity = 0.03 + 0.1*Math.random();  // Amount added to length in each frame.
+            vertexAnimData.push(ad);  // Add item to the array of vertex animation data.
+        }
+        for (i = vertexAnimData.length-1; i >= 0; i--) {
+                // Update the i-th animating vertex.
+            var ad = vertexAnimData[i];  // Animation data for this vertex.
+            var vertex = geometry.vertices[ ad.vertexNum ];
+            if (ad.direction == 0) { // increase length; reverse direction if maxLength is reached
+                ad.length += ad.velocity;
+                if (ad.length > ad.maxLength)
+                   ad.direction = 1;
+            }
+            else {  // decrease length; if length is less than 10, stop animating this vertex
+                ad.length -= ad.velocity;
+                if (ad.length < 10) {
+                    ad.length = 10;
+                    vertexAnimData.splice(i,1); // removes item i from the array
+                }
+            }
+            vertex.setLength( ad.length );
+        }
+        geometry.verticesNeedUpdate = true;  // Needed to tell the renderer to use the new vertex coordinates!! 
+    }
+}
+
+
+/*  This is called when the user clicks "Reset Vertices".  It resets the length of all vertices
+ *  are being animated to 10 and removes all vertices from the list of animating vertices.
+ *  (If a vertex animation is in progress, new vertices will quickly be added to the array.)
+ */
+function resetVertices() {
+    for (var i = 0; i < vertexAnimData.length; i++) {
+        geometry.vertices[ vertexAnimData[i].vertexNum ].setLength(10);
+        geometry.verticesNeedUpdate = true;
+    }
+    vertexAnimData = [];
+    if (!animating) {
+       render();
+    }
+}
+
+
+/*  This is called when the "Show Wireframe" checkbox is clicked.  It makes the
+ *  wireframe sphere -- the black boundaries between faces -- visible or invisible.
+ */
+function doShowWireframeCheckbox() {
+    wireSphere.material.visible = document.getElementById("showWireframeCheckbox").checked;
+    if (!animating) {
+        render();
+    }
+}
+
+
+/*  Called when the user changes the color type.
+ */
+function doColorTypeSelect() {
+    var i;
+    var animCheck = document.getElementById("colorAnimationCheckbox");
+    if (colorType == 0) {
+        animCheck.checked = colorAnimation;  // restore animationCheckbox state
+        animCheck.disabled = false;
+    }
+    /* First, remove any current colors from the geometry.  */
+    if (colorType == 1 ) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].color = new THREE.Color(0xffffff);
+        }
+    }
+    else if (colorType == 2 || colorType == 3) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].vertexColors = [];
+        }
+    }
+    /* Get new color mode and any necessary color objects */
+    colorType = Number( document.getElementById("colorTypeSelect").value );  
+    if (colorType == 0) {
+        colorAnimation = animCheck.checked;  // save current animationCheckbox state
+        animCheck.disabled = true;
+        animCheck.checked = false;
+    }
+    else if (colorType == 1) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].color = faceColors[i];
+        }
+    }
+    else if (colorType == 2) {
+        for (i = 0; i < geometry.faces.length; i++) {
+            geometry.faces[i].vertexColors = faceVertexColors[i];
+        }
+    }
+    if (colorType == 3) {  
+        for (i = 0; i < geometry.faces.length; i++) {
+            var f = geometry.faces[i];
+            f.vertexColors = [
+                vertexColors[ f.a ],  // color for first vertex (f.a) of this face 
+                vertexColors[ f.b ],  // color for second vertex (f.b) of this face 
+                vertexColors[ f.c ]  // color for third vertex (f.c) of this face
+            ];
+        }
+    }
+    /* Set materal.vertexColors according to color mode */
+    if (colorType == 0)
+        material.vertexColors = THREE.NoColors;
+    else if (colorType == 1)
+        material.vertexColors = THREE.FaceColors;
+    else
+        material.vertexColors = THREE.VertexColors; 
+    material.needsUpdate = true;
+    geometry.colorsNeedUpdate = true;
+    geometry.elementsNeedUpdate = true;
+    doAnimationCheckbox();  // In case setting of colorAnimationCheckbox has changed
+    if (!animating) {
+        render();
+    }
+    document.getElementById("resetVertices").focus();  // so key presses stop going to the select element!
+}
+
+
+//--------------------------- animation support -----------------------------------
+
+var clock;  // Keeps track of elapsed time of animation.
+
+var animating = false;
+
+function doFrame() {  
+    if (animating) {
+        clock.frameNumber++;
+	    updateForFrame();
+	    render();
+	    requestAnimationFrame(doFrame); 
+	}
+}
+
+function startAnimation() {
+    if (!animating) {
+	   if (!clock) {
+		  clock = new THREE.Clock(false);
+		  clock.frameNumber = 0;
+		  clock.getFrameNumber = function() { return this.frameNumber }
+	   }
+	   clock.start();
+	   animating = true;
+	   requestAnimationFrame(doFrame);
+	}
+}
+
+function pauseAnimation() {
+    if (animating) {
+	    clock.stop();
+	    animating = false;
+	}
+}
+
+function doAnimationCheckbox() { 
+    if ( document.getElementById("colorAnimationCheckbox").checked ||
+                document.getElementById("vertexAnimationCheckbox").checked )
+        startAnimation();
+    else
+        pauseAnimation();
+}
+
+//----------------------------------------------------------------------------------
+
+/*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
+ *  the view.  TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ */
+function installTrackballControls() {
+    var controls = new THREE.TrackballControls(camera,canvas);
+    controls.noPan = true;
+    controls.noZoom = true;
+    controls.staticMoving = true;
+    function move() {
+        controls.update();
+	    if (!animating) {
+		    render();
+		}
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+function init() {
+    try {
+        canvas = document.getElementById("maincanvas");
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true
+        });
+    }
+    catch (e) {
+        document.getElementById("canvas-holder").innerHTML="<p><b>Sorry, an error occurred:<br>" +
+                e + "</b></p>";
+        return;
+    }
+    createWorld();
+    installTrackballControls();
+    document.getElementById("colorAnimationCheckbox").checked = false; 
+    document.getElementById("colorAnimationCheckbox").disabled = false; 
+    document.getElementById("vertexAnimationCheckbox").checked = false;
+    document.getElementById("showWireframeCheckbox").checked = true;
+    document.getElementById("colorTypeSelect").value = 1;
+    render();
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<div id="content">
+
+<h3 id="headline">Animating Mesh Vertices and Colors</h3>
+
+<div id="canvas-holder">
+<canvas id="maincanvas" width="300" height="300"></canvas>
+</div>
+
+<div id="tools">
+<p>Colors:<br>
+           <select id="colorTypeSelect" onchange="doColorTypeSelect()">
+             <option value="0">No colors</option>
+             <option value="1">One color per face</option>
+             <option value="2">Three colors per face</option>
+             <option value="3">One color per vertex</option>
+           </select></p>
+
+<p style="margin-top:0px"><input type="checkbox" id="colorAnimationCheckbox" onchange="doAnimationCheckbox()"> 
+    <label for="colorAnimationCheckbox">Animate Colors</label></p>
+    
+<p style="margin-top:20px"><input type="checkbox" id="vertexAnimationCheckbox" onchange="doAnimationCheckbox()"> 
+    <label for="vertexAnimationCheckbox">Animate Vertices</label></p>
+    
+<p><button onclick="resetVertices()" id="resetVertices">Reset Vertices</button></p>
+
+<p style="margin-top: 20px"><input type="checkbox" id="showWireframeCheckbox" onchange="doShowWireframeCheckbox()">
+    <label for="showWireframeCheckbox">Show Wireframe</label>
+
+<p style="margin-top: 20px"><b>Use mouse to Rotate.</b></p>
+</div>
+
+</div>
+
+
+
+<div id="help-content" style="display:none">
+<h3>About this demo...</h3>
+<p>The demo shows a sphere that can be colored in four different ways.  The sphere is
+an "icosphere" that is created by subdividing the faces of an icosahedron.
+In this model of a sphere, all of the faces are triangles of the same size and shape.</p>
+<p>The sphere can be entirely white ("No Color").  It can use a different color for
+each face ("One Color Per Face"); in this mode, the color of each face is stored in
+the geometry, in the property <i>face.color</i>.  It can use a different color for
+each vertex of each face ("Three Colors Per Face"); in this mode, the colors are
+stored in the property <i>face.vertexColors</i>, which is an array of three colors.
+Or it can use a color for each vertex ("One Color Per Vertex"); this also uses
+<i>face.vertexColors</i>, but the color of a given vertex is the same for each face
+in which it occurs.</p>
+<p>The demo has two somewhat silly animations, which can run at the same time.
+First, "Animate Colors" causes each color on the sphere to change over time.  This option is
+disabled for the "No Colors" mode.  Second, "Animate Vertices" changes the shape of the
+object by moving some vertices.  A vertex is chosen at random and is moved away from
+the surface of the sphere and then back; when it gets back to its starting point,
+the animation of that vertex stops, and another vertiex can be animated.
+This is done for up to 12 different vertices simultaneously.  You should try
+different combinations of animation, color choice, and wireframe visibility!</p>
+<p>If you look at the source code for the demo, you will notice that any time
+the colors are changed, both <i>geometry.colorsNeedUpdate</i> is set to true.
+When the position of any vertex is changed, <i>geometry.verticesNeedUpdate</i>
+is set to true.  Furthermore, when the color mode is change,
+<i>geometry.elementsNeedUpdate</i> is also set to true.
+And when the material is modified, <i>material.needsUpdate</i> is
+set to true.  These settings are necessary to force the renderer to recompute some
+data that it has cached.  Without them, the changes would not have any effect
+on the appearance of the sphere.</p>
+</div>
+
+
+
+<!-- support for help text -- do not change. -->
+<div id="help-icon">
+<img src="../image/question32.png" onclick="showDemoHelp()"
+    title="Click here for information about this demo." width="32" height="32">
+</div>
+<div id="hide-help-icon">
+<img src="../image/close32.png" onclick="showDemoHelp()"
+    title="Click here to return to the demo." width="65" height="32">
+</div>
+<div id="helpBG" style="display:none"></div>
+</body>
+</html>

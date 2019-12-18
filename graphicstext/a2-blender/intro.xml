@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<intro>
+
+<p1>Blender is a free and open-source graphics program with a large
+community of users.  It can be used to create and animate 3D 
+scenes interactively.  It is a complex and sophisticated program,
+with advanced modeling and rendering tools, that can be used to
+produce professional graphics and animation.</p1>
+
+<p>Blender can be downloaded from <a href="http://www.blender.org">blender.org</a>.
+The site includes a great deal of information about what it can do
+(<a href="http://www.blender.org/features">blender.org/features</a>)
+and how to use it (<a href="http://www.blender.org/support">blender.org/support</a>).</p>
+
+<p>I have included some work with Blender as part of my computer graphics courses since 2001,
+as a supplement to the graphics programming that is the main topic of the course.
+While we use only a very small part of Blender's capabilities, I believe that it is useful
+for students to have some experience with interactive 3D modeling.  It helps them develop their
+ability to visualize in three dimensions, and it lets them see
+the role that fundamental concepts such as transformations, lighting and material,
+and textures play in real applications.
+Most people are intimidated, at first, by Blender's complex interface, but it's
+actually not difficult to learn how to use it for basic tasks.  Many of my students
+have enjoyed using it and have learned enough about it to use it in a final project.</p>
+
+<p>The material in this appendix was adapted from handouts about Blender that I have
+written in the past for my computer graphics courses.  It should be valid for
+Blender version numbers of the form 2.6x and 2.7x, although there might be some
+small differences in the user interface.  Screenshots of the Blender window are
+from version 2.75.</p>
+
+</intro>

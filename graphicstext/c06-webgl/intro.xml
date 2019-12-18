@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<intro>
+
+<p1>In this chapter, we turn to <newword>WebGL</newword>, the version of <word>OpenGL</word>
+for the Web.  <i>Three.js</i>, which was covered in the <localref href="threejs">previous chapter</localref>,
+uses WebGL for 3D graphics.  Of course, it is more difficult to use WebGL directly, but doing
+so gives you full control over the graphics hardware.  And learning it will be a good introduction
+to modern graphics programming.</p1>
+
+<p>There have been many versions of OpenGL.  WebGL 1.0 is based on OpenGL ES 2.0, a version
+designed for use on embedded systems such as smart phones and tablets.  OpenGL ES 1.0
+was very similar to OpenGL 1.1, which we studied in <localref href="gl1geom"/>
+and <localref href="gl1light"/>.  However, the 2.0 version of OpenGL&nbsp;ES introduced
+major changes.  It is actually a smaller, simpler <word>API</word> that puts more responsibility
+on the programmer.  For example, functions for working with transformations, such
+as <i>glRotatef</i> and <i>glPushMatrix</i>, were eliminated from the API, making the
+programmer responsible for keeping track of transformations.  WebGL does not
+use <i>glBegin/glEnd</i> to generate geometry, and it doesn't use function such
+as <i>glColor*</i> or <i>glNormal*</i> to specify attributes of vertices.  Nevertheless,
+it will turn out that much of what you learned in previous chapters will carry over to
+WebGL.</p>
+
+<p>There are two sides to any WebGL program.  Part of the program is written in
+<word>JavaScript</word>, the programming language for the web. The second part is
+written in <word>GLSL</word>, a language for writing "shader" programs that run on the
+<word>GPU</word>. I will try to always be clear about which language I am
+talking about.</p>
+
+<p>For this introductory chapter about WebGL, we will stick to basic 
+2D graphics.  You will learn about the structure of WebGL programs.  You will learn
+most of the JavaScript side of the API, and you learn how to write and use simple
+shaders.  In the <localref href="webgl3d">next chapter</localref>, we will move
+on to 3D graphics, and you will learn a great deal more about GLSL.</p>
+
+</intro>

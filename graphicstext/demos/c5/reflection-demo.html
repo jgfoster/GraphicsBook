@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Three.js Reflection Demo</title>
+<link rel="stylesheet" href="../demo.css">
+<style>
+    input {
+        margin-left: 15px;
+    }
+</style>
+<script src="../script/demo-core.js"></script>
+<script src="../script/three.min.js"></script>
+<script src="../script/threejs/OrbitControls.js"></script>
+<script>
+
+var canvas, scene, renderer, camera;
+
+function render() {  
+    renderer.render(scene,camera);
+}
+
+function createWorld() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 3;
+    scene.add(camera);  // add the camera+light to the scene
+    createSkybox(0);
+    installJSONModel(0);
+}
+
+var skybox;  // The cube with cubemap texture that is used as a skybox
+var skyboxTexture;  // The cubemap texture
+
+var model;  // The reflecting object, inside the box.
+
+var currentlyShowing = 'both'; // What is currently showing, 'skybox' or 'object' or 'both'
+
+var controls;  // an OrbitControls object for rotating the view.
+
+var skyboxTextureFolder = [  // folders containing available cubemap textures.
+    "cubemap-textures/NissiBeach-Cyprus",     //    Note that files are aleays named posx.jpg, negx.jpg, etc.
+    "cubemap-textures/LancellottiChapel-Rome"
+];
+
+var jsonModelURL = [  // available JSON model files
+    "models-json/arrowhead.js",
+    "models-json/horse.js"
+]
+
+var baseColor = [  // available colors for the base material color
+    0xFFFFFF,
+    0xAAAAFF,
+    0xFFBBBB,
+    0xAAFFAA
+];
+var currentColor = 0xFFFFFF;  // currently selected 
+
+
+/**
+ *  Called when the clicks one of the radio buttons for selecting the skybox texture.
+ *  Creates the texture and the skybox cube and adds the cube to the scene.
+ */
+function createSkybox(textureNumber) {
+    if (skybox && (currentlyShowing == 'both' || currentlyShowing == 'skybox')) {
+       scene.remove(skybox);
+       skybox = null;
+    }
+    var textureURLs = [];
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posx.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negx.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posy.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negy.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posz.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negz.jpg" );
+    var loader = new THREE.CubeTextureLoader();
+    skyboxTexture = loader.load( textureURLs, render );
+    var shader = THREE.ShaderLib[ "cube" ]; // contains the required shaders
+        shader.uniforms[ "tCube" ].value = skyboxTexture; // data for the shaders
+        var material = new THREE.ShaderMaterial( {
+                    // A ShaderMaterial uses custom vertex and fragment shaders.
+                fragmentShader: shader.fragmentShader,
+                vertexShader: shader.vertexShader,
+                uniforms: shader.uniforms,  // the texture is part of this object
+                depthWrite: false,
+                side: THREE.BackSide
+        } );
+    skybox = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
+    if (currentlyShowing == 'both' || currentlyShowing == 'skybox') {
+        scene.add(skybox);
+    }
+    if (model) {
+        if (model.material) { // it's a basic geometry model
+            model.material = makeReflectionMaterial();
+            model.material.needsUpdate = true;
+        }
+        else { // it's a JSON model and the actual model object is model.children[0]
+            model.children[0].material = makeReflectionMaterial();
+            model.children[0].needsUpdate = true;
+        }
+    }
+    render();
+}
+
+/**
+ *  Creates the material to use on the models.  This is a MeshBasicMaterial with
+ *  the skybox as an environment map.  The base color, which is blended with the
+ *  environment map, is taken from the current color selection.
+ */
+function makeReflectionMaterial() {
+    return new THREE.MeshBasicMaterial( { color: currentColor, envMap: skyboxTexture } );
+}
+
+/**
+ *  Called when the user clicks one of the model choice radio buttons, for the four
+ *  buttons that correspond to basic geometries.
+ */
+function installModel(modelNum) {
+    if (model  && (currentlyShowing == 'both' || currentlyShowing == 'object'))
+        scene.remove(model);
+    var geometry;
+    switch (modelNum) {
+        case 0: geometry = new THREE.BoxGeometry(1,1,1); break;
+        case 1: geometry = new THREE.CylinderGeometry(0.6,0.6,1,32,1); break;
+        case 2: geometry = new THREE.TorusGeometry(0.5,0.3,64,32); break;
+        case 3: geometry = new THREE.SphereGeometry(0.7,32,16); break;
+    }
+    var material = makeReflectionMaterial();
+    model = new THREE.Mesh(geometry, material);
+    if (currentlyShowing == 'both' || currentlyShowing == 'object') {
+        scene.add(model);
+    }
+    render();
+}
+
+
+/**
+ *  Called when the user clicks one of the model choice radio buttons, for the
+ *  three radio buttons that corresponding to JSON models.
+ */
+function installJSONModel(modelNum) {
+    /*
+     * The callback function that is called by the JSONLoader when it
+     * has finished loading the object.  This function creates a three.js
+     * function to hold the object.  It translates the object so that
+     * its center is in the origin.  It wraps the object in another object
+     * that is used to scale and rotate the object.  The scale is set
+     * so that the maximum coordinate in its vertices, in absolute
+     * value, is scaled to 1.  The rotation is controlled by the arrow
+     * keys.  (The material from the JSON loader file is ignored.)
+     */ 
+    function modelLoadedCallback(geometry) {
+    
+        /* create the object from the geometry and materials that were loaded.  There
+           can be multiple materials, which can be applied to the object using MeshFaceMaterials.
+           Note tha the material can include references to texture images might finish
+           loading later. */
+    
+        var material = makeReflectionMaterial();
+        var object = new THREE.Mesh(geometry, material);
+    
+        /* Determine the ranges of x, y, and z in the vertices of the geometry. */
+    
+        var xmin = Infinity;
+        var xmax = -Infinity;
+        var ymin = Infinity;
+        var ymax = -Infinity;
+        var zmin = Infinity;
+        var zmax = -Infinity;
+        for (var i = 0; i < geometry.vertices.length; i++) {
+            var v = geometry.vertices[i];
+            if (v.x < xmin)
+                xmin = v.x;
+            else if (v.x > xmax)
+                xmax = v.x;
+            if (v.y < ymin)
+                ymin = v.y;
+            else if (v.y > ymax)
+                ymax = v.y;
+            if (v.z < zmin)
+                zmin = v.z;
+            else if (v.z > zmax)
+                zmax = v.z;
+        }
+        
+        /* translate the center of the object to the origin */
+        var centerX = (xmin+xmax)/2;
+        var centerY = (ymin+ymax)/2; 
+        var centerZ = (zmin+zmax)/2;
+        var max = Math.max(centerX - xmin, xmax - centerX);
+        max = Math.max(max, Math.max(centerY - ymin, ymax - centerY) );
+        max = Math.max(max, Math.max(centerZ - zmin, zmax - centerZ) );
+        var scale = 1/max;
+        object.position.set( -centerX, -centerY, -centerZ );
+        console.log("Loading finished, scaling object by " + scale);
+        console.log("Center at ( " + centerX + ", " + centerY + ", " + centerZ + " )");
+        
+        /* Create the wrapper, model, to scale and rotate the object. */
+        
+        model = new THREE.Object3D();
+        model.add(object);
+        model.scale.set(scale,scale,scale);
+        if (currentlyShowing == 'both' || currentlyShowing == 'object') {
+             scene.add(model);
+        }
+        render();
+    
+    }
+    
+    if (model  && (currentlyShowing == 'both' || currentlyShowing == 'object')) {
+        scene.remove(model);
+        model = null;
+    }
+    var loader = new THREE.JSONLoader();
+    try {
+        loader.load(jsonModelURL[modelNum], modelLoadedCallback);
+    }
+    catch (e) {
+        // Chrome, at least, get's a security error here if running from the local file system.
+        document.getElementById("headline").innerHTML =
+            "Can't access model.  Note that some browsers<br>can't use models from a local disk.";
+    }
+    render();
+}
+
+/**
+ *  Called when the user clicks one of the color choice radio buttons to change
+ *  the color setting.
+ */
+function setObjectColor(colorNum) {
+    currentColor = baseColor[colorNum];
+    if (model) {
+        if (model.material) { // it's a basic geometry model
+            model.material = makeReflectionMaterial();
+            model.material.needsUpdate = true;
+        }
+        else { // it's a JSON model and the actual model object is model.children[0]
+            model.children[0].material = makeReflectionMaterial();
+            model.children[0].needsUpdate = true;
+        }
+    }
+    render();
+}
+
+
+/**
+ *  Called when the user clicks one of the "show" choices.  Determines whether
+ *  the skybox and object are shown.  Possibilites are 'skybox', 'object' or 'both'.
+ */
+function show(what) {  console.log("show " + what + " currently " + currentlyShowing);
+    if (what == currentlyShowing) {
+        return;
+    }
+    if (what == 'skybox') { // currentlyShowing is 'object' or 'both'
+        scene.remove(model);
+        if (currentlyShowing == 'object') {
+            scene.add(skybox);
+        }
+    }
+    else if (what == 'object') { // currentlyShowing is 'skybox' or 'both'
+        scene.remove(skybox);
+        if (currentlyShowing == 'skybox') {
+            scene.add(model);
+        }
+    }
+    else {  // what is 'both'; currentlyShowing is 'skybox' or 'object'
+        if (currentlyShowing == 'skybox') {
+            scene.add(model);
+        }
+        else {
+            scene.add(skybox);
+        }
+    }
+    currentlyShowing = what;
+    render();
+}
+
+
+/*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
+ *  the view.  OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ *     The first parameter is the camera that will be rotated by the controls.
+ *  The second is the canvas where the scene is rendered.  The second
+ *  is the callback function that should be called when the controls change; it
+ *  should be the function that renders the scene.
+ */
+function installOrbitControls(camera, canvas, callback) {
+    controls = new THREE.OrbitControls(camera,canvas);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    function move() {
+        controls.update();
+		callback();
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+
+function init() {
+    try {
+        canvas = document.getElementById("maincanvas");
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true
+        });
+    }
+    catch (e) {
+        document.getElementById("canvas-holder").innerHTML="<p><b>Sorry, an error occurred:<br>" +
+                e + "</b></p>";
+        return;
+    }
+    document.getElementById("s1").checked = true;
+    document.getElementById("m1").checked = true;
+    document.getElementById("c1").checked = true;
+    document.getElementById("show1").checked = true;
+    createWorld();
+    installOrbitControls(camera, canvas, render);
+    render();
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<div id="content">
+
+<h3 id="headline">Skybox and Reflection Mapping</h3>
+
+<p><b>Show:</b>
+   <label><input type="radio" name="show" onchange="show('skybox')">Skybox</label>
+   <label><input type="radio" name="show" onchange="show('object')">Object</label>
+   <label><input type="radio" name="show" id="show1" onchange="show('both')">Both</label>
+</p>
+
+<div id="canvas-holder">
+<canvas id="maincanvas" width="400" height="400"></canvas>
+</div>
+
+<div id="tools">
+<p style="margin-top:0"><b>Skybox:</b><br>
+    <label><input type=radio name="pickskybox" id=s1 onchange="createSkybox(0)">Beach</label><br>
+    <label><input type=radio name="pickskybox" onchange="createSkybox(1)">Chapel</label>
+</p>
+<p style="margin-top:20px"><b>Object:</b><br>
+    <label><input type=radio name="pickmodel" id=m1 onchange="installJSONModel(0)">Arrowhead</label><br>
+    <label><input type=radio name="pickmodel" onchange="installJSONModel(1)">Horse</label><br>
+    <label><input type=radio name="pickmodel" onchange="installModel(0)">Cube</label><br>
+    <label><input type=radio name="pickmodel" onchange="installModel(1)">Cylinder</label><br>
+    <label><input type=radio name="pickmodel" onchange="installModel(2)">Torus</label><br>
+    <label><input type=radio name="pickmodel" onchange="installModel(3)">Sphere</label>
+</p>
+<p style="margin-top:20px; margin-bottom:0"><b>Base Color:</b><br>
+    <label><input type=radio name="pickcolor" id=c1 onchange="setObjectColor(0)">White</label><br>
+    <label><input type=radio name="pickcolor" onchange="setObjectColor(1)">Blue</label><br>
+    <label><input type=radio name="pickcolor" onchange="setObjectColor(2)">Pink</label><br>
+    <label><input type=radio name="pickcolor" onchange="setObjectColor(3)">Green</label>
+</p>
+</div>
+
+</div>
+
+
+
+<div id="help-content" style="display:none">
+<h3>About this demo...</h3>
+<p>The demo shows a cubemap texture used on a skybox and as a reflection map on an object.
+You have a choice of two textures and six objects.  The "Base Color" radio buttons change the
+color of the object.  The color is multiplied by the reflection map, which adds a tint to the
+reflection.  The colors that are used on the object are only a little different from white.</p>
+<p>Note that the object does not really reflect its environment in the scene.  It only looks
+like it does because the same texture is used on the skybox and for reflection map on the
+object.  The radio buttons above the scene let you choose to see just the skybox, just the object,
+or both.  Note that the object shows the same reflection whether the skybox is there or not.
+</p>
+<p>Drag your mouse on the canvas to rotate the scene.</p>
+<p>Cubemap textures are by Emil Persson, downloaded from
+http://www.humus.name, and distributed under a creative
+commons license.</p>
+</div>
+
+
+
+<!-- support for help text -- do not change. -->
+<div id="help-icon">
+<img src="../image/question32.png" onclick="showDemoHelp()"
+    title="Click here for information about this demo." width="32" height="32">
+</div>
+<div id="hide-help-icon">
+<img src="../image/close32.png" onclick="showDemoHelp()"
+    title="Click here to return to the demo." width="65" height="32">
+</div>
+<div id="helpBG" style="display:none"></div>
+</body>
+</html>

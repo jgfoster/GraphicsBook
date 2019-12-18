@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    input {
+        margin-left: 20px;
+    }
+</style>
+<title>Three.js Refraction Demo</title>
+<script src="three.min.js"></script>
+<script src="OrbitControls.js"></script>
+<script>
+
+/*  This page shows a refracting object inside a skybox. An environment
+ *  map is used on the object and theskybox.  The texture mapping for the cubemap
+ *  texture is set to THREE.CubeRefractionMapping.  The refractionRatio
+ *  property of the object material is set to 0.6.  An option for "cloudy"
+ *  glass is added, which is implemented by setting the reflectivity property
+ *  of the object material to 0.7.  Other than that, this example is a
+ *  copy of reflection-demo.html.
+ */
+
+"use strict";
+
+var canvas, renderer, scene, camera
+
+var skybox;  // The cube with cubemap texture that is used as a skybox
+var skyboxTexture;  // The cubemap texture
+
+var model;  // The reflecting object, inside the box.
+
+var rotateX = 0;   // rotation of object about its x-axis
+var rotateY = 0;   // rotation of object about its y-axis
+
+var controls;  // an OrbitControls object for rotating the view.
+
+var cloudy = false;
+
+var skyboxTextureFolder = [  // folders containing available cubemap textures.
+    "cubemap-textures/park",     //    Note that files are aleays named posx.jpg, negx.jpg, etc.
+    "cubemap-textures/pond",
+    "cubemap-textures/Yokohama-at-night",
+    "cubemap-textures/Colosseum"
+];
+
+var jsonModelURL = [  // available JSON model files
+    "models-json/arrowhead.js",
+    "models-json/horse.js",
+    "models-json/Suzanne.js"
+]
+
+var baseColor = [  // available colors for the base material color
+    0xFFFFFF,
+    0xAAAAFF,
+    0xFFAAAA,
+    0xAAFFAA
+];
+var currentColor = 0xFFFFFF;  // currently selected 
+
+
+function render() {
+    renderer.render(scene, camera);
+}
+
+/**
+ *  Called when the clicks one of the radio buttons for selecting the skybox texture.
+ *  Creates the texture and the skybox cube and adds the cube to the scene.
+ */
+function createSkybox(textureNumber) {
+    document.getElementById("bttn").focus();  // to prevent key presses from going to the radio buttons
+    if (skybox)
+       scene.remove(skybox);
+    var textureURLs = [];
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posx.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negx.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posy.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negy.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/posz.jpg" );
+    textureURLs.push( skyboxTextureFolder[textureNumber] + "/negz.jpg" );
+    skyboxTexture = new THREE.CubeTextureLoader().load( textureURLs, render );
+    skyboxTexture.mapping = THREE.CubeRefractionMapping;
+    var shader = THREE.ShaderLib[ "cube" ]; // contains the required shaders
+        shader.uniforms[ "tCube" ].value = skyboxTexture; // data for the shaders
+        var material = new THREE.ShaderMaterial( {
+                    // A ShaderMaterial uses custom vertex and fragment shaders.
+                fragmentShader: shader.fragmentShader,
+                vertexShader: shader.vertexShader,
+                uniforms: shader.uniforms,  // the texture is part of this object
+                depthWrite: false,
+                side: THREE.BackSide
+        } );
+    skybox = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
+    scene.add(skybox);
+    if (model) {
+        if (model.material) { // it's a basic geometry model
+            model.material = makeRefractionMaterial();
+            model.material.needsUpdate = true;
+        }
+        else { // it's a JSON model and the actual model object is model.children[0]
+            model.children[0].material = makeRefractionMaterial();
+            model.children[0].needsUpdate = true;
+        }
+    }
+    render();
+}
+
+/**
+ *  Creates the material to use on the models.  This is a MeshBasicMaterial with
+ *  the skybox as an environment map.  The base color, which is blended with the
+ *  environment map, is taken from the current color selection.
+ */
+function makeRefractionMaterial() {
+    var mat = new THREE.MeshBasicMaterial( { 
+            color: currentColor,
+            envMap: skyboxTexture,
+            refractionRatio: .6
+               // The refractionRatio must have value in the range 0 to 1.
+               // The default value, very close to 1, give almost invisible glass.
+      } );
+    if (cloudy)
+       mat.reflectivity = 0.7; // determines the fraction of light that is transmitted
+    return mat;
+}
+
+/**
+ *  Called when the user clicks one of the model choice radio buttons, for the four
+ *  buttons that correspond to basic geometries.
+ */
+function installModel(modelNum) {
+    document.getElementById("bttn").focus();  // to prevent key presses from going to the radio buttons
+    if (model)
+        scene.remove(model);
+    var geometry;
+    switch (modelNum) {
+        case 0: geometry = new THREE.BoxGeometry(1,1,1); break;
+        case 1: geometry = new THREE.CylinderGeometry(0.5,0.5,1,32,1); break;
+        case 2: geometry = new THREE.TorusGeometry(0.4,0.25,64,32); break;
+        case 3: geometry = new THREE.SphereGeometry(0.6,32,16); break;
+    }
+    var material = makeRefractionMaterial();
+    model = new THREE.Mesh(geometry, material);
+    rotateX = rotateY = 0;
+    scene.add(model);
+    render();
+}
+
+
+/**
+ *  Called when the user clicks one of the mode choice radio buttons, for the
+ *  three radio buttons that corresponding to JSON models.
+ */
+function installJSONModel(modelNum) {
+    /*
+     * The callback function that is called by the JSONLoader when it
+     * has finished loading the object.  This function creates a three.js
+     * function to hold the object.  It translates the object so that
+     * its center is in the origin.  It wraps the object in another object
+     * that is used to scale and rotate the object.  The scale is set
+     * so that the maximum coordinate in its vertices, in absolute
+     * value, is scaled to 1.  The rotation is controlled by the arrow
+     * keys.  (The material from the JSON loader file is ignored.)
+     */ 
+    function modelLoadedCallback(geometry) {
+    
+        /* create the object from the geometry and materials that were loaded.  There
+           can be multiple materials, which can be applied to the object using MeshFaceMaterials.
+           Note tha the material can include references to texture images might finish
+           loading later. */
+    
+        var material = makeRefractionMaterial();
+        var object = new THREE.Mesh(geometry, material);
+    
+        /* Determine the ranges of x, y, and z in the vertices of the geometry. */
+    
+        var xmin = Infinity;
+        var xmax = -Infinity;
+        var ymin = Infinity;
+        var ymax = -Infinity;
+        var zmin = Infinity;
+        var zmax = -Infinity;
+        for (var i = 0; i < geometry.vertices.length; i++) {
+            var v = geometry.vertices[i];
+            if (v.x < xmin)
+                xmin = v.x;
+            else if (v.x > xmax)
+                xmax = v.x;
+            if (v.y < ymin)
+                ymin = v.y;
+            else if (v.y > ymax)
+                ymax = v.y;
+            if (v.z < zmin)
+                zmin = v.z;
+            else if (v.z > zmax)
+                zmax = v.z;
+        }
+        
+        /* translate the center of the object to the origin */
+        var centerX = (xmin+xmax)/2;
+        var centerY = (ymin+ymax)/2; 
+        var centerZ = (zmin+zmax)/2;
+        var max = Math.max(centerX - xmin, xmax - centerX);
+        max = Math.max(max, Math.max(centerY - ymin, ymax - centerY) );
+        max = Math.max(max, Math.max(centerZ - zmin, zmax - centerZ) );
+        var scale = 1/max;
+        object.position.set( -centerX, -centerY, -centerZ );
+        console.log("Loading finished, scaling object by " + scale);
+        console.log("Center at ( " + centerX + ", " + centerY + ", " + centerZ + " )");
+        
+        /* Create the wrapper, model, to scale and rotate the object. */
+        
+        model = new THREE.Object3D();
+        model.add(object);
+        model.scale.set(scale,scale,scale);
+        if (modelNum == 2) {  // Suzanne
+            geometry.computeVertexNormals();
+            object.rotation.x = Math.PI/2
+        }
+        rotateX = rotateY = 0;
+        scene.add(model);
+        render();
+    
+    }
+    
+    document.getElementById("bttn").focus();  // to prevent key presses from going to the radio buttons
+    if (model)
+        scene.remove(model);
+    var loader = new THREE.JSONLoader();
+    loader.load(jsonModelURL[modelNum], modelLoadedCallback);
+    render();
+}
+
+/**
+ *  Called when the user clicks one of the color choice radio buttons to change
+ *  the color setting.
+ */
+function setObjectColor(colorNum) {
+    currentColor = baseColor[colorNum];
+    if (model) {
+        if (model.material) { // it's a basic geometry model
+            model.material = makeRefractionMaterial();
+            model.material.needsUpdate = true;
+        }
+        else { // it's a JSON model and the actual model object is model.children[0]
+            model.children[0].material = makeRefractionMaterial();
+            model.children[0].needsUpdate = true;
+        }
+    }
+    render();
+}
+
+/**
+ * Called when the user changes the setting of the "Cloudy Glass" checkbox.  Changes
+ * the material to match.  Cloudy glass only partially transmits light.  Non-cloudy
+ * glass transmits 100%.
+ */
+function doCloudyCheckbox() {
+    cloudy = document.getElementById("cloudyCheck").checked;
+    if (model) {
+        if (model.material) { // it's a basic geometry model
+            model.material = makeRefractionMaterial();
+            model.material.needsUpdate = true;
+        }
+        else { // it's a JSON model and the actual model object is model.children[0]
+            model.children[0].material = makeRefractionMaterial();
+            model.children[0].needsUpdate = true;
+        }
+    }
+    render();
+}
+
+/**
+ *  Called when user clicks the button.  Resets model rotation to zero and controls to default view.
+ */
+function resetRotation() {
+    rotateX = rotateY = 0;
+    model.rotation.set(0,0,0);
+    controls.reset();
+    render();
+}
+
+/**
+ *  An event listener for the keydown event.  It is installed by the init() function.
+ *  The arrow keys are used to rotate the model about its own axis.
+ */
+function doKey(evt) {
+    var rotationChanged = true;
+	switch (evt.keyCode) {
+	    case 37: rotateY -= 0.05; break;        // left arrow
+	    case 39: rotateY +=  0.05; break;       // right arrow
+	    case 38: rotateX -= 0.05; break;        // up arrow
+	    case 40: rotateX += 0.05; break;        // down arrow
+	    case 13: rotateX = rotateY = 0; break;  // return
+	    case 36: rotateX = rotateY = 0; break;  // home
+	    default: rotationChanged = false;
+	}
+	if (rotationChanged) {
+       model.rotation.set(rotateX,rotateY,0);	
+       render();
+	   evt.preventDefault();
+	}
+}
+
+/*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
+ *  the view.  OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ *     The first parameter is the camera that will be rotated by the controls.
+ *  The second is the canvas where the scene is rendered.  The second
+ *  is the callback function that should be called when the controls change; it
+ *  should be the function that renders the scene.
+ */
+function installOrbitControls(camera, canvas, callback) {
+    controls = new THREE.OrbitControls(camera,canvas);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    function move() {
+        controls.update();
+		callback();
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+
+/**
+ *  This function is called by the body onload event.
+ */
+function init() {
+	try {
+	    canvas = document.getElementById("glcanvas");
+		renderer = new THREE.WebGLRenderer( {
+		    canvas: canvas,
+		    antialias: true
+		} );
+	}
+	catch (e) {
+        document.getElementById("message").innerHTML =  "WebGL is requrid but is not available.";
+		return;
+	}
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 3;
+    scene.add(camera); 
+    createSkybox(0);
+    installJSONModel(0);
+    installOrbitControls(camera, canvas, render);
+    render();
+    document.addEventListener("keydown", doKey, false);
+    document.getElementById("s1").checked = true;
+    document.getElementById("m1").checked = true;
+    document.getElementById("c1").checked = true;
+    document.getElementById("cloudyCheck").checked = false;
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<h2>Three.js Refraction Demo</h2>
+
+<noscript>
+<p style="color: #A00; font-weight: bold">Sorry, but this page requires JavaScript!</p>
+</noscript>
+
+<p>Cube maps used on this page are by <a href="http://www.humus.name/index.php?page=Textures">Emil Persson</a>,
+but with resolution reduced to 512-by-512.</p>
+
+<p style="color:#AA0000; font-weight: bold" id="message">Drag on the scene to rotate the view.</p>
+
+<p style="color:#AA0000; font-weight: bold" >Arrow keys rotate the object about its x- and y-axes.<br>
+Return key or HOME key sets both rotations to zero.</p>
+
+<div style="float:left">
+   <canvas width=600 height=600 id="glcanvas"></canvas>    
+</div>
+
+<div style="float:left; margin-left:30px">
+<p><b>Skybox Texuremap:</b><br>
+    <input type=radio name="pickskybox" id=s1 onchange="createSkybox(0)"> <label for="s1">Park</label><br>
+    <input type=radio name="pickskybox" id=s2 onchange="createSkybox(1)"> <label for="s2">Pond</label><br>
+    <input type=radio name="pickskybox" id=s3 onchange="createSkybox(2)"> <label for="s3">Yokahama At Night</label><br>
+    <input type=radio name="pickskybox" id=s4 onchange="createSkybox(3)"> <label for="s4">The Colosseum</label>
+</p>
+<p style="margin-top:30px"><b>Object:</b><br>
+    <input type=radio name="pickmodel" id=m1 onchange="installJSONModel(0)"> <label for="m1">Arrowhead</label><br>
+    <input type=radio name="pickmodel" id=m2 onchange="installJSONModel(1)"> <label for="m2">Horse</label><br>
+    <input type=radio name="pickmodel" id=m3 onchange="installJSONModel(2)"> <label for="m3">Blender Monkey</label><br>
+    <input type=radio name="pickmodel" id=m4 onchange="installModel(0)"> <label for="m4">Cube</label><br>
+    <input type=radio name="pickmodel" id=m5 onchange="installModel(1)"> <label for="m5">Cylinder</label><br>
+    <input type=radio name="pickmodel" id=m6 onchange="installModel(2)"> <label for="m6">Torus</label><br>
+    <input type=radio name="pickmodel" id=m7 onchange="installModel(3)"> <label for="m7">Sphere</label>
+</p>
+<p style="margin-top:30px"><b>Object Base Color:</b><br>
+    <input type=radio name="pickcolor" id=c1 onchange="setObjectColor(0)"> <label for="c1">White</label><br>
+    <input type=radio name="pickcolor" id=c2 onchange="setObjectColor(1)"> <label for="c2">Blue</label><br>
+    <input type=radio name="pickcolor" id=c3 onchange="setObjectColor(2)"> <label for="c3">Pink</label><br>
+    <input type=radio name="pickcolor" id=c4 onchange="setObjectColor(3)"> <label for="c4">Green</label>
+</p>
+<p margin-top:130px"><input type=checkbox id=cloudyCheck onchange="doCloudyCheckbox()">
+           <label for="cloudyCheck">Glass is cloudy</label.</p>
+<p style="margin-top:30px"><button id=bttn onclick="resetRotation()">Reset Rotateion</button>
+</p>
+</div>
+
+</body>
+</html>

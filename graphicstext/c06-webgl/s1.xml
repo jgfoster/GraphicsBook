@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<section title="The Programmable Pipeline" id="webgl.1">
+
+<p1>OpenGL 1.1 used a <newword>fixed-function pipeline</newword> for graphics processing.
+Data is provided by a program and passes through a series of processing stages that ultimately
+produce the pixel colors seen in the final image.  The program can enable and disable
+some of the steps in the process, such as the <word>depth test</word> and <word>lighting</word>
+calculations.  But there is no way for it to change what happens at each stage.  The functionality
+is fixed.</p1>
+
+<p>OpenGL 2.0 introduced a <newword>programmable pipeline</newword>.  It became possible
+for the programmer to replace certain stages in the pipeline with their own programs.
+This gives the programmer complete control over what happens at that stage.  In OpenGL 2.0,
+the programmability was optional; the complete fixed-function pipeline was still available
+for programs that didn't need the flexibility of programmability.  WebGL uses a programmable
+pipeline, and it is <b>mandatory</b>.  There is no way to use WebGL without writing
+programs to implement part of the graphics processing pipeline.</p>
+
+<p>The programs that are written as part of the pipeline are called <newword term="shader">shaders</newword>.
+For WebGL, you need to write a <newword>vertex shader</newword>, which is called once for
+each vertex in a <word term="geometric primitive">primitive</word>, and a 
+<newword>fragment shader</newword>, which is called once for each
+pixel in the primitive.  Aside from these two programmable stages,
+the WebGL pipeline also contains several stages from the original fixed-function pipeline.
+For example, the depth test is still part of the fixed functionality, and it can be enabled or
+disabled in WebGL in the same way as in OpenGL&nbsp;1.1.</p>
+
+<p>In this section, we will cover the basic structure of a WebGL program and how data
+flows from the JavaScript side of the program into the graphics pipeline and through
+the vertex and fragment shaders.</p>
+
+<p>This book covers WebGL 1.0.  Version 2.0 was released in January 2017.
+and it is compatible with version&nbsp;1.0.  At the end of 2017, WebGL 2.0 is available
+in some browsers, including Chrome and Firefox, but its new features are things that
+I would not cover in this book in any case.
+Also, I note that later versions of OpenGL have introduced
+additional programmable stages into the pipeline, in addition to the vertex and fragment shaders,
+but they are not part of WebGL and are not covered in this book.</p>
+
+<subsection title="The WebGL Graphics Context" id="webgl.1.1">
+
+<p>To use WebGL, you need a WebGL graphics context.  The graphics context is a JavaScript object
+whose methods implement the JavaScript side of the WebGL API.
+WebGL draws its images in an <word>HTML canvas</word>, the same kind of <tag>canvas</tag> element
+that is used for the 2D API that was covered in <localref href="graphics2d.6"/>. A graphics
+context is associated with a particular canvas and can be obtained by calling the function
+<i>canvas.getContext</i>("webgl"), where <i>canvas</i> is a <word>DOM</word> object
+representing the canvas.  A few browsers (notably Internet Explorer and Edge) require "experimental-webgl" as
+the parameter to <i>getContext</i>, so my code for creating a WebGL context often looks
+something like this:</p>
+
+<pre>canvas = document.getElementById("webglcanvas");
+gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");</pre>
+
+<np>Here, <i>gl</i> is the WebGL graphics context.
+This code might require some unpacking.  This is JavaScript code that would occur as part of
+a script in the source code for a web page.  The first line assumes that the HTML source
+for the web page includes a canvas element with id="webglcanvas", such as</np>
+
+<pre>&lt;canvas width="800" height="600" id="webglcanvas"&gt;&lt;/canvas&gt;</pre>
+
+<np>In the second line, <i>canvas.getContext</i>("webgl") will return <i>null</i>
+if the web browser does not support "webgl" as a parameter to <i>getContext</i>;
+in that case, the second operand of the <code>||</code> operator will be evaluated.
+This use of <code>||</code> is a JavaScript idiom, which uses the fact that
+<i>null</i> is considered to be <i>false</i> when used in a boolean context.
+So, the second line, where the WebGL context is created, is equivalent to:
+</np>
+
+<pre>gl = canvas.getContext("webgl");
+if ( ! gl ) {
+    gl = canvas.getContext("experimental-webgl");
+}</pre>
+
+<np>It is possible that <i>canvas.getContext</i>("experimental-webgl") is also <i>null</i>,
+if the browser supports the 2D canvas API but does not support WebGL.  Furthermore, if
+the browser has no support at all for <tag>canvas</tag>, the code will throw an exception.
+So, I use a function similar to the following for initialization of my WebGL programs:
+</np>
+
+<pre>function init() {
+    try {
+        canvas = document.getElementById("webglcanvas");
+        gl = canvas.getContext("webgl") || 
+                         canvas.getContext("experimental-webgl");
+        if ( ! gl ) {
+            throw "Browser does not support WebGL";
+        }
+    }
+    catch (e) {
+          .
+          .  // report the error
+          .
+        return;
+    }
+      .
+      .  // other JavaScript initialization
+      .
+    initGL();  // a function that initializes the WebGL graphics context
+}</pre>
+
+<np>In this function, <i>canvas</i> and <i>gl</i> are global variables. And 
+<i>initGL</i>() is a function defined elsewhere in the script 
+that initializes the graphics context, including
+creating and installing the shader programs.  The <i>init</i>() function could
+be called, for example, by the <i>onload</i> event handler for the <tag>body</tag>
+element of the web page:</np>
+
+<pre>&lt;body onload="init()"&gt;</pre>
+
+<p>Once the graphics context, <i>gl</i>, has been created, it can be used to call
+functions in the WebGL API.  For example, the command for enabling the depth
+test, which was written as <i>glEnable</i>(<i>GL_DEPTH_TEST</i>) in OpenGL,
+becomes</p>
+
+<pre>gl.enable( gl.DEPTH_TEST );</pre>
+
+<np>Note that both functions and constants in the API are referenced through the
+graphics context.  The name "gl" for the graphics context is conventional, but remember that
+it is just an ordinary JavaScript variable whose name is up to the programmer.</np>
+
+<p>Although I use <i>canvas.getContext</i>("experimental-webgl") in my sample programs,
+I will generally not include it in code examples in the text.</p>
+
+</subsection>
+
+
+<subsection title="The Shader Program" id="webgl.1.2">
+
+<p>Drawing with WebGL requires a shader program, which consists of a vertex shader and
+a fragment shader.  Shaders are written in the language <word>GLSL</word>&nbsp;ES&nbsp;1.0 (the
+OpenGL Shader Language for Embedded Systems, version 1.0).  GLSL is based on the C programming
+language.  The vertex shader and fragment shader are separate programs, each with its own
+<i>main</i>() function.  The two shaders are compiled separately and then "linked" to produce
+a complete shader program.  The JavaScript API for WebGL includes functions for compiling
+the shaders and then linking them.  To use the functions, the source code for the shaders
+must be JavaScript strings.  Let's see how it works.  It takes three steps to create the
+vertex shader.</p>
+
+<pre>var vertexShader = gl.createShader( gl.VERTEX_SHADER );
+gl.shaderSource( vertexShader, vertexShaderSource );
+gl.compileShader( vertexShader );</pre>
+
+<p>The functions that are used here are part of the WebGL graphics context, <i>gl</i>,
+and <i>vertexShaderSource</i> is the string that contains the source code for the
+shader.  Errors in the source code will cause the compilation to fail silently.
+You need to check for compilation errors by calling the function
+</p>
+
+<pre>gl.getShaderParameter( vertexShader, gl.COMPILE_STATUS )</pre>
+
+<np>which returns a boolean value to indicate whether the compilation succeeded. In
+the event that an error occurred, you can retrieve an error message with</np>
+
+<pre>gl.getShaderInfoLog(vsh)</pre>
+
+<np>which returns a string containing the result of the compilation.  (The exact format
+of the string is not specified by the WebGL standard.  The string is meant to be
+human-readable.)</np>
+
+<p>The fragment shader can be created in the same way.  With both shaders in hand,
+you can create and link the program.  The shaders need to be "attached" to the
+program object before linking.  The code takes the form:</p>
+
+<pre>var prog = gl.createProgram();
+gl.attachShader( prog, vertexShader );
+gl.attachShader( prog, fragmentShader );
+gl.linkProgram( prog );</pre>
+
+<p>Even if the shaders have been successfully compiled, errors can occur when they
+are linked into a complete program.  For example, the vertex and fragment shader
+can share certain kinds of variable.  If the two programs declare such variables with the same name but
+with different types, an error will occur at link time.   Checking for link errors
+is similar to checking for compilation errors in the shaders.</p>
+
+<p>The code for creating a shader program is always pretty much the same, so it is
+convenient to pack it into a reusable function.  Here is the function that I use for
+the examples in this chapter:</p>
+
+<pre>/**
+ * Creates a program for use in the WebGL context gl, and returns the
+ * identifier for that program.  If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown.  The error
+ * string contains the compilation or linking error. 
+ */
+function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
+   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   gl.shaderSource( vsh, vertexShaderSource );
+   gl.compileShader( vsh );
+   if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
+      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+   }
+   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   gl.shaderSource( fsh, fragmentShaderSource );
+   gl.compileShader( fsh );
+   if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
+      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+   }
+   var prog = gl.createProgram();
+   gl.attachShader( prog, vsh );
+   gl.attachShader( prog, fsh );
+   gl.linkProgram( prog );
+   if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
+      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+   }
+   return prog;
+}</pre>
+
+<p>There is one more step:  You have to tell the WebGL context to use the program.
+If <i>prog</i> is a program identifier returned by the above function, this is done
+by calling</p>
+
+<pre>gl.useProgram( prog );</pre>
+
+<np>It is possible to create several shader programs.  You can then switch from one
+program to another at any time by calling <i>gl.useProgram</i>, even in the middle of
+rendering an image.  (<i>Three.js</i>, for example, uses a different program for each
+type of <classname>Material</classname>.)</np>
+
+<p>It is advisable to create any shader programs that you need as part of initialization.
+Although <i>gl.useProgram</i> is a fast operation, compiling and linking are rather slow,
+so it's better to avoid creating new programs while in the process of drawing an image.</p>
+
+<p>Shaders and programs that are no longer needed can be deleted to free up the resources
+they consume. Use the functions <i>gl.deleteShader</i>(<i>shader</i>) and
+<i>gl.deleteProgram</i>(<i>program</i>).</p>
+
+</subsection>
+
+<subsection title="Data Flow in the Pipeline" id="webgl.1.3">
+
+<p>The WebGL graphics pipeline renders an image.  The data that defines the image
+comes from JavaScript.  As it passes through the pipeline, it is processed by 
+the current vertex shader and fragment shader as well as by the fixed-function
+stages of the pipeline.  You need to understand how data is placed by JavaScript
+into the pipeline and how the data is processed as it passes through the pipeline.</p>
+
+<p>The basic operation in WebGL is to draw a <word>geometric primitive</word>.
+WebGL uses just seven of the OpenGL primitives that were introduced in
+<localref href="gl1geom.1.1"/>.  The primitives for drawing <word term="quad">quads</word>
+and <word term="polygon">polygons</word> have been removed.  The remaining primitives draw
+points, line segments, and triangles.  In WegGL, the seven types of primitive are identified by
+the constants <i>gl.POINTS</i>, <i>gl.LINES</i>, <i>gl.LINE_STRIP</i>, <i>gl.LINE_LOOP</i>,
+<i>gl.TRIANGLES</i>, <i>gl.TRIANGLE_STRIP</i>, and <i>gl.TRIANGLE_FAN</i>, where 
+<i>gl</i> is a WebGL graphics context.</p>
+
+<p>When WebGL is used to draw a primitive, there are two general categories of data
+that can be provided for the primitive.  The two kinds of data are referred to
+as <newword term="attribute variable">attribute variables</newword> 
+(or just "attributes") and <newword term="uniform variable">uniform variables</newword>
+(or just "uniforms").  A primitive is defined by its type and by a list of <word term="vertex">vertices</word>.
+The difference between attributes and uniforms is that a uniform variable has a single value
+that is the same for the entire primitive, while the value of an attribute variable can
+be different for different vertices.</p>
+
+<p>One attribute that is always specified is the coordinates of the vertex.  
+The vertex coordinates must be an attribute since each vertex
+in a primitive will have its own set of coordinates.  Another possible attribute is color.
+We have seen that OpenGL allows you to specify a different color for each vertex of
+a primitive.  You can do the same thing in WebGL, and in that case the color will be an
+attribute.  On the other hand, maybe you want the entire primitive to have the same,
+"uniform" color; in that case, color can be a uniform variable.  Other quantities
+that could be either attributes or uniforms, depending on your needs, include
+<word term="normal vector">normal vectors</word> and <word term="material">material properties</word>.
+<word term="texture coordinates">Texture coordinates</word>, if they are used,
+are almost certain to be an attribute, since it doesn't really make sense for
+all the vertices in a primitive to have the same texture coordinates.  If a 
+<word>geometric transform</word> is to be applied to the primitive, it would naturally
+be represented as a uniform variable.</p>
+
+<p>It is important to understand, however, that WebGL does not come with <b>any</b>
+predefined attributes, not even one for vertex coordinates.  In the programmable pipeline, the attributes and uniforms
+that are used are entirely up to the programmer.  As far as WebGL is concerned,
+attributes are just values that are passed into the vertex shader.  Uniforms
+can be passed into the vertex shader, the fragment shader, or both.  WebGL does not
+assign a meaning to the values.  The meaning is entirely determined by what the shaders
+do with the values.  The set of attributes and uniforms that are used in drawing a
+primitive is determined by the source code of the shaders that are in use
+when the primitive is drawn.</p>
+
+<p>To understand this, we need to look at what happens in the pipeline in a little more detail.
+When drawing a primitive, the JavaScript program will specify values for any attributes
+and uniforms in the shader program.  For each attribute, it will specify an array of values,
+one for each vertex.  For each uniform, it will specify a single value.  The values will
+all be sent to the <word>GPU</word> before the primitive is drawn.  When drawing the primitive,
+the GPU calls the vertex shader once for each vertex.  The attribute values for the vertex
+that is to be processed
+are passed as input into the vertex shader.  Values of uniform variables are also passed 
+to the vertex shader.  Both attributes and uniforms are represented as
+global variables in the shader, whose values are set before the shader is called.</p>
+
+<p>As one of its outputs, the vertex shader must specify the coordinates of the vertex in 
+the <word term="clip coordinates">clip coordinate system</word> (see <localref href="gl1geom.3.1"/>).
+It does that by assigning a value to a special variable named <i>gl_Position</i>.
+The position is often computed by applying a transformation to the
+attribute that represents the coordinates in the <word term="object coordinates">object coordinate system</word>,
+but exactly how the position is computed is up to the programmer.</p>
+
+<p>After the positions of all the vertices in the primitive have been computed,
+a fixed-function stage in the pipeline clips away the parts of the primitive whose coordinates
+are outside the range of valid clip coordinates (&minus;1 to 1 along each coordinate axis).
+The primitive is then <word term="rasterization">rasterized</word>; that is, it is
+determined which pixels lie inside the primitive.  The fragment shader is then called once for
+each pixel that lies in the primitive.  The fragment shader has access to uniform variables
+(but not attributes).  It can also use a special variable named <i>gl_FragCoord</i>
+that contains the clip coordinates of the pixel.  Pixel coordinates are computed
+by <word term="interpolation">interpolating</word> the values of <i>gl_Position</i>
+that were specified by the vertex shader.  The interpolation is done by another fixed-function 
+stage that comes between the vertex shader and the fragment shader.
+</p>
+
+<p>Other quantities besides coordinates can work in much that same way.  That is, the vertex shader
+computes a value for the quantity at each vertex of a primitive.  An interpolator takes the values
+at the vertices and computes a value for each pixel in the primitive.  The value for a given
+pixel is then input into the fragment shader when the shader is called to process that pixel.
+For example, color in OpenGL follows this pattern: The color of an interior pixel of a primitive
+is computed by interpolating the color at the vertices.  In GLSL, this
+pattern is implemented using <newword term="varying variable">varying variables</newword>.</p>
+
+<p>A varying variable is declared both in the vertex shader and in the fragment shader.
+The vertex shader is responsible for assigning a value to the varying variable.
+The interpolator takes the values from the vertex shader and computes a value for each
+pixel.  When the fragment shader is executed for a pixel, the value of the varying variable
+is the interpolated value for that pixel.  The fragment shader can use the value in its
+own computations. (In newer versions of GLSL, the term "varying variable" has been
+replaced by "out variable" in the vertex shader and "in variable" in the fragment
+shader.)</p>
+
+<p>Varying variables exist to communicate data from the vertex shader to the fragment shader.
+They are defined in the shader source code.  They are not used or referred to in the
+JavaScript side of the API.  Note that it is entirely up to the programmer to decide 
+what varying variables to define and what to do with them.</p>
+
+<p>We have almost gotten to the end of the pipeline.  After all that, the job of the
+fragment shader is simply to specify a color for the pixel.  It does that by assigning
+a value to a special variable named <i>gl_FragColor</i>.  That value will then
+be used in the remaining fixed-function stages of the pipeline.</p>
+
+<p>To summarize:  The JavaScript side of the program sends values for attributes and
+uniform variables to the GPU and then issues a command to draw a primitive.  The GPU
+executes the vertex shader once for each vertex.  The vertex shader can use the values
+of attributes and uniforms. It assigns values to <i>gl_Position</i> and to any
+varying variables that exist in the shader.  After clipping, rasterization, and interpolation, the
+GPU executes the fragment shader once for each pixel in the primitive.  The fragment
+shader can use the values of varying variables, uniform variables, and <i>gl_FragCoord</i>.
+It computes a value for <i>gl_FragColor</i>.  This diagram summarizes the flow
+of data:</p>
+
+<img src="webgl-dataflow.png" width="281" height="476" tex="webgl-dataflow.eps" texscale="0.75"/>
+
+<np>The diagram is not complete.  There are a few more special variables that I haven't mentioned.  
+And there is the
+important question of how <word term="texture">textures</word> are used.  
+But if you understand the diagram, you have a good
+start on understanding WebGL.</np>
+
+</subsection>
+
+
+<subsection title="Values for Uniform Variables" id="webgl.1.4">
+
+<p>It's time to start looking at some actual WebGL code. We will concentrate on the
+JavaScript side first, but you need to know a little about GLSL.  GLSL has some
+familiar basic data types: <ptype>float</ptype>, <ptype>int</ptype>, and
+<ptype>bool</ptype>.  But it also has some new predefined data types to represent
+<word term="vector">vectors</word> and <word term="matrix">matrices</word>.
+For example, the data type <i>vec3</i> represents a vector in 3D.  The value of
+a <i>vec3</i> variable is a list of three floating-point numbers.  Similarly,
+there are data types <i>vec2</i> and <i>vec4</i> to represent 2D and 4D vectors.</p>
+
+<p>Global variable declarations in a vertex shader can be marked as <i>attribute</i>,
+<i>uniform</i>, or <i>varying</i>.  A variable declaration with none of these modifiers
+defines a variable that is local to the vertex shader.  Global variables in a
+fragment can optionally be modified with <i>uniform</i> or <i>varying</i>, or they
+can be declared without a modifier.  A varying variable should
+be declared in both shaders, with the same name and type.  This allows the GLSL
+compiler to determine what attribute, uniform, and varying variables are used in 
+a shader program.</p>
+
+<p>The JavaScript side of the program needs a way to refer to particular attributes
+and uniform variables.  The function <i>gl.getUniformLocation</i>
+can be used to get a reference to a uniform variable in a shader program, where <i>gl</i>
+refers to the WebGL graphics context.  It takes
+as parameters the identifier for the compiled program, which was returned by <i>gl.createProgram</i>,
+and the name of the uniform variable in the shader source code.  For example,
+if <i>prog</i> identifies a shader program that has a uniform variable named <i>color</i>, then
+the location of the <i>color</i> variable can be obtained with the JavaScript statement
+</p>
+
+<pre>colorUniformLoc = gl.getUniformLocation( prog, "color" );</pre>
+
+<np>The location <i>colorUniformLoc</i> can then be used to set the value of the
+uniform variable:</np>
+
+<pre>gl.uniform3f( colorUniformLoc, 1, 0, 0 );</pre>
+
+<np>The function <i>gl.uniform3f</i> is one of a family of functions that can be
+referred to as a group as <i>gl.uniform*</i>.  This is similar to the family <i>glVertex*</i> in
+OpenGL&nbsp;1.1.  The <i>*</i> represents a suffix that tells the number and type of
+values that are provided for the variable.  In this case, <i>gl.uniform3f</i> takes
+three floating point values, and it is appropriate for setting the value of a
+uniform variable of type <i>vec3</i>.  The number of values can be 1, 2, 3, or 4.
+The type can be "f" for floating point or "i" for integer.  (For a boolean uniform,
+you should use <i>gl.uniform1i</i> and pass 0 to represent <i>false</i> or 
+1 to represent <i>true</i>.)  If a "v" is added to the suffix, then the values
+are passed in an array.  For example,</np>
+
+<pre>gl.uniform3fv( colorUniformLoc, [ 1, 0, 0 ] );</pre>
+
+<np>There is another family of functions for setting the value of uniform matrix
+variables.  We will get to that later.</np>
+
+<p>The value of a uniform variable can be set any time after the shader
+program has been compiled, and the value remains in effect until it is changed
+by another call to <i>gl.uniform*</i>.</p>
+
+</subsection>
+
+
+
+<subsection title="Values for Attributes" id="webgl.1.5">
+
+<p>Turning now to attributes, the situation is more complicated, because an attribute can take a
+different value for each vertex in a primitive.  The basic idea is that the complete set of data 
+for the attribute is copied in a single operation from a JavaScript array into memory that is 
+accessible to the GPU.  Unfortunately, setting things up to make that operation possible is non-trivial.</p>
+
+<p>First of all, a regular JavaScript array is not suitable for this purpose.  For efficiency, we need
+the data to be in a block of memory holding numerical values in successive memory locations, and
+regular JavaScript arrays don't have that form.  To fix this problem, a new kind of array,
+called <word term="typed array">typed arrays</word>, was introduced into JavaScript.  We encountered
+typed arrays briefly in <localref href="graphics2d.6.6"/>.
+A typed array can only hold numbers of a specified type.  There are different kinds of typed array for different
+kinds of numerical data.  For now we will use  <classname>Float32Array</classname>,
+which holds 32-bit floating point numbers.</p>
+
+<p>A typed array has a fixed length, which is assigned when it is created by a constructor.  The constructor
+takes two forms:  One form takes an integer parameter giving the number of elements in the array; the
+other takes a regular JavaScript array of numbers as parameter and initializes the typed array to
+have the same length and elements as the array parameter.  For example:</p>
+
+<pre>var color = new Float32Array( 12 );  // space for 12 floats
+var coords = new Float32Array( [ 0,0.7, -0.7,-0.5, 0.7,-0.5 ] );</pre>
+
+<np>Once you have a typed array, you can use it much like a regular array.  The length
+of the typed array <i>color</i> is <i>color.length</i>, and its elements are referred to as
+<i>color</i><code>[0]</code>, <i>color</i><code>[1]</code>, <i>color</i><code>[2]</code>, and so on.  
+When you assign a value to an element of a <classname>Float32Array</classname>, the value is
+converted into a 32-bit floating point number.  If the value cannot be interpreted as a number,
+it will be converted to <i>NaN</i>, the "not-a-number" value.</np>
+
+<p>Before data can be transferred from JavaScript into an attribute variable, it must be placed
+into a typed array.  When possible, you should work with typed arrays directly, rather than working
+with regular JavaScript arrays and then copying the data into typed arrays.</p>
+
+<break/>
+
+<p>For use in WebGL, the attribute data must be transferred into a <word>VBO</word> (vertex buffer 
+object).  VBOs were introduced in OpenGL&nbsp;1.5 and were discussed briefly in <localref href="gl1geom.4.4"/>.
+A&nbsp;VBO is a block of memory that is accessible to the GPU.  To use a VBO, you must first call
+the function <i>gl.createBuffer</i>() to create it.  For example,</p>
+
+<pre>colorBuffer = gl.createBuffer();</pre>
+
+<np>Before transferring data into the VBO, you must "bind" the VBO:</np>
+
+<pre>gl.bindBuffer( gl.ARRAY_BUFFER, colorBuffer );</pre>
+
+<np>The first parameter to <i>gl.bindBuffer</i> is called the "target."  It specifies how the VBO will
+be used. The target <i>gl.ARRAY_BUFFER</i> is used when the buffer is being used to store values
+for an attribute.   Only one VBO at a time can be bound to a given target.</np>
+
+<p>The function that transfers data into
+a VBO doesn't mention the VBO&mdash;instead, it uses the VBO that is currently bound.
+To copy data into that buffer, use <i>gl.bufferData</i>(). For example:</p>
+
+<pre>gl.bufferData(gl.ARRAY_BUFFER, colorArray, gl.STATIC_DRAW);</pre>
+
+<np>The first parameter is, again, the target.  The data is transferred into the VBO that
+is bound to that target.  The second parameter is the typed array that holds the data on the JavaScript side.
+All the elements of the array are copied into the buffer, and the size of the array determines
+the size of the buffer.  Note that this is a straightforward transfer of raw data bytes; WebGL
+does not remember whether the data represents floats or ints or some other kind of data.</np>
+
+<p>The third parameter to <i>gl.bufferData</i> is one of the constants
+<i>gl.STATIC_DRAW</i>, <i>gl.STREAM_DRAW</i>, or <i>gl.DYNAMIC_DRAW</i>.  It is
+a hint to WebGL about how the data will be used, and it helps WebGL to manage the
+data in the most efficient way.  The value <i>gl.STATIC_DRAW</i> means that you intend to
+use the data many times without changing it.  For example, if you will use the same
+data throughout the program, you can load it into a buffer once, during initialization,
+using <i>gl.STATIC_DRAW</i>.  WebGL will probably store the data on the graphics card
+itself where it can be accessed most quickly by the graphics hardware.  The second value,
+<i>gl.STEAM_DRAW</i>, is for data that will be used only once, then discarded.  (It can be
+"streamed" to the card when it is needed.)  The value <i>gl.DYNAMIC_DRAW</i> is somewhere
+between the other two values; it might be used for data that will be used a couple of times
+and then discarded.</p>
+
+<break/>
+
+<p>Getting attribute data into VBOs is only part of the story.  You also have to tell WebGL to
+use the VBO as the source of values for the attribute.  To do so, first of all, you need
+to know the location of the attribute in the shader program.  You can determine that
+using <i>gl.getAttribLocation</i>.  For example,</p>
+
+<pre>colorAttribLoc = gl.getAttribLocation(prog, "a_color");</pre>
+
+<np>This assumes that <i>prog</i> is the shader program and "a_color" is the name of the
+attribute variable in the vertex shader.  This is entirely analogous to <i>gl.getUniormLocation</i>.</np>
+
+<p>Although an attribute usually takes different values at different vertices, it is possible to
+use the same value at every vertex.  In fact, that is the default behavior.  The single attribute value
+for all vertices can be
+set using the family of functions <i>gl.vertexAttrib*</i>, which work similarly to
+<i>gl.uniform*</i>.  In the more usual case, where you want to take the values of an attribute from a VBO,
+you must enable the use of a VBO for that attribute.  This is done by calling</p>
+
+<pre>gl.enableVertexAttribArray( colorAttribLoc );</pre>
+
+<np>where the parameter is the location of the attribute in the shader program, as returned
+by a call to <i>gl.getAttribLocation</i>().   This command has nothing
+to do with any particular VBO.  It just turns on the use of buffers for the specified attribute.
+Generally, it is reasonable to call this method just once, during initialization.</np>
+
+<p>Finally, before you draw a primitive that uses the attribute data, you have to tell WebGL which buffer 
+contains the data and how the bits in that buffer are to be interpreted.  This is done with 
+<i>gl.vertexAttribPointer</i>().  A VBO must be bound to the <i>ARRAY_BUFFER</i> target when
+this function is called.  For example,</p>
+
+<pre>gl.bindBuffer( gl.ARRAY_BUFFER, colorBuffer );
+gl.vertexAttribPointer( colorAttribLoc, 3, gl.FLOAT, false, 0, 0 );</pre>
+
+<np>Assuming that <i>colorBuffer</i> refers to the VBO and <i>colorAttribLoc</i> is
+the location of the attribute, this tells WebGL to take values for
+the attribute from that buffer.  Often, you will call <i>gl.bindBuffer</i>() just before calling
+<i>gl.vertexAttribPointer</i>(), but that is not necessary if the desired buffer is already bound. </np>
+
+<p>The first parameter to <i>gl.vertexAttribPointer</i> is the attribute location.  
+The second is the number of values per vertex.  For example, if you are providing values 
+for a <i>vec2</i>, the second parameter will be 2 and
+you will provide two numbers per vertex; for a <i>vec3</i>, the second parameter would be 3;
+for a <i>float</i>, it would be&nbsp;1.  The third parameter specifies the type of each value.
+Here, <i>gl.FLOAT</i> indicates that each value is a 32-bit floating point number.  Other values
+include <i>gl.BYTE</i>, <i>gl.UNSIGNED_BYTE</i>, <i>gl.UNSIGNED_SHORT</i>,
+and <i>gl.SHORT</i> for integer values.  Note
+that the type of data does not have to match the type of the attribute variable;
+in fact, attribute variables are always floating point.  However, the parameter value does
+have to match the data type in the buffer.  If the data came from a <classname>Float32Array</classname>,
+then the parameter must be <i>gl.FLOAT</i>.
+I will always use <i>false</i>, 0, and 0 for the remaining three
+parameters.  They add flexibility that I won't need; you can look them up in the documentation
+if you are interested.</p>
+
+<p>There is a lot to take in here.  Using a VBO to provide values for an attribute requires
+six separate commands, and that is in addition to generating the data and placing it in
+a typed array.  Here is the full set of commands:</p>
+
+<pre>colorAttribLoc = gl.getAttribLocation( prog, "a_color" );
+colorBuffer = gl.createBuffer();
+gl.enableVertexAttribArray( colorAttribLoc );
+
+gl.bindBuffer( gl.ARRAY_BUFFER, colorBuffer );
+gl.vertexAttribPointer( colorAttribLoc, 3, gl.FLOAT, false, 0, 0 );
+gl.bufferData( gl.ARRAY_BUFFER, colorArray, gl.STATIC_DRAW );</pre>
+
+<np>However, the six commands will not usually occur at the same point in the JavaScript
+code.  the first three commands are often done as part of initialization.  
+<i>gl.bufferData</i> would be called whenever the data for the attribute needs to be changed.
+<i>gl.bindBuffer</i> must be called before <i>gl.vertexAttribPointer</i>
+or <i>gl.bufferData</i>, since it establishes the VBO that is used by those
+two commands.  Remember that all of this must be done for every attribute that is
+used in the shader program.</np>
+
+
+</subsection>
+
+
+<subsection title="Drawing a Primitive" id="webgl.1.6">
+
+<p>After the shader program has been created and values have been set up for the uniform
+variables and attributes, it takes just one more command to draw a primitive:</p>
+
+<pre>gl.drawArrays( primitiveType, startVertex, vertexCount );</pre>
+
+<np>The first parameter is one of the seven constants that identify WebGL primitive types,
+such as <i>gl.TRIANGLES</i>, <i>gl.LINE_LOOP</i>, and <i>gl_POINTS</i>.  The second
+and third parameters are integers that determine which subset of available vertices is used for the primitive.
+Before calling <i>gl.drawArrays</i>, you will have placed attribute values for some number of vertices
+into one or more VBOs.  When the primitive is rendered, the attribute values are pulled from the
+VBOs.  The <i>startVetex</i> is the starting vertex number of the data within the VBOs,
+and <i>vertexCount</i> is the number of vertices in the primitive.  Often, <i>startVertex</i>
+is zero, and <i>vertexCount</i> is the total number of vertices for which data is available.
+For example, the command for drawing a single triangle might be</np>
+
+<pre>gl.drawArrays( gl.TRIANGLES, 0, 3 );</pre>
+
+<p>The use of the word "array" in <i>gl.drawArrays</i> and <i>gl.ARRAY_BUFFER</i> might be a little
+confusing, since the data is stored in vertex buffer objects rather than in JavaScript arrays.
+When <i>glDrawArrays</i> was first introduced in OpenGL&nbsp;1.1, it used ordinary arrays rather
+than VBOs.  Starting with OpenGL 1.5, <i>glDrawArrays</i> could be used either with ordinary arrays
+or VBOs.  In WebGL, support for ordinary arrays was dropped, and <i>gl.drawArrays</i> can only
+work with VBOs, even though the name still refers to arrays.</p>
+
+<p>We encountered the original version of <i>glDrawArrays</i> in <localref href="gl1geom.4.2"/>.
+That section also introduced an alternative function for drawing primitives, <i>glDrawElements</i>,
+which can be used for drawing indexed face sets.  A <i>gl.drawElements</i> function is also available
+in WebGL.  With <i>gl.drawElements</i>, attribute data is not used in the order in which it occurs in 
+the VBOs.  Instead, there is a separate list of indices that determines the order in which
+the data is accessed.</p>
+
+<p>To use <i>gl.drawElements</i>, an extra VBO is required to hold the list of indices.
+When used for this purpose, the VBO must be bound to the target <i>gl.ELEMENT_ARRAY_BUFFER</i>
+rather than <i>gl.ARRAY_BUFFER</i>.   The VBO will hold integer values, which can be of type 
+<i>gl.UNSIGNED_BYTE</i> or <i>gl.UNSIGNED_SHORT</i>.  The values can be loaded from
+a JavaScript typed array of type <classname>Uint8Array</classname> or <classname>Uint16Array</classname>.
+Creating the VBO and filling it with data is again a multi-step process.  For example,
+</p>
+
+<pre>elementBuffer = gl.createBuffer();
+gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, elementBuffer );
+var data = new Uint8Array( [ 2,0,3, 2,1,3, 1,4,3 ] );
+gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, data, gl.STREAM_DRAW );</pre>
+
+<np>Assuming that the attribute data has also been loaded into VBOs, <i>gl.drawElements</i> can then be used
+to draw the primitive.  A call to <i>gl.drawElements</i> takes the form</np>
+
+<pre>gl.drawElements( primitiveType, count, dataType, startByte );</pre>
+
+<np>The VBO that contains the vertex indices must be bound to the <i>ELEMENT_ARRAY_BUFFER</i> target
+when this function is called.
+The first parameter to <i>gl.drawElements</i>
+is a primitive type such as <i>gl.TRIANGLE_FAN</i>.  The <i>count</i>
+is the number of vertices in the primitive.  The <i>dataType</i> specifies the type
+of data that was loaded into the VBO; it will be either <i>gl.UNSIGNED_SHORT</i>
+or <i>gl.UNSIGNED_BYTE</i>.  The <i>startByte</i> is the starting point in the VBO of
+the data for the primitive; it is usually zero.  (Note that the starting point is given
+in terms of bytes, not vertex numbers.) A typical example would be</np>
+
+<pre>gl.drawElements( gl.TRIANGLES, 9, gl.UNSIGNED_BYTE, 0 );</pre>
+
+<p>We will have occasion to use this function later.  If you find it confusing, you should
+review <localref href="gl1geom.4.2"/>.  The situation is much the same in WebGL as it was
+in OpenGL&nbsp;1.1.</p>
+
+</subsection>
+
+
+
+
+
+
+
+</section>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Three.js JSON Loader Demo</title>
+<script src="three.min.js"></script>
+<script src="TrackballControls.js"></script>
+<script>
+
+/* Uses JSONLoader to load objects that have been saved
+ * in three.js's json format.  Requires the folder models-json
+ * that contains the seven sample models.  (Most of the models
+ * have a "faceted" appearance.  There is a button to modify their
+ * normal vectors to give them a more smooth appearance.)
+ */
+
+var canvas, renderer, scene, camera; // Standard three.js requirements.
+
+var controls;  // A TrackballControls object that is used to implement
+               // rotation of the scene using the mouse.  (It actually rotates
+               // the camera around the scene.)
+
+var model = null; // The three.js object that represents the current model.
+
+var modelDirectory = "models-json/"; // Folder containing model files, relative to this HTML file.
+
+var modelFileNames = [  // names of the model files
+    "arrowhead.js",
+    "horse.js",
+    "stork.js",
+    "tree.js",
+    "terrain.js",
+    "Suzanne.js",
+    "WaltHeadLo.js"
+];
+
+var modelRotations = [ // rotations to be applied to models.
+    [0,0,0],
+    [Math.PI/12,-Math.PI/4,0],
+    [Math.PI/8,Math.PI/2,0],
+    [0,0,0],
+    [Math.PI/6,Math.PI/3,0],
+    [Math.PI/2,0,0],
+    [0,0,0]
+];
+
+
+/**
+ *  The render function draws the scene.
+ */
+function render() {
+    renderer.render(scene, camera);
+}
+
+
+/*  This function is called by the init() method to create the world.  In this program,
+ *  it just creates a light and a camera.  The model will be added in modelLoaded,
+ *  after the model has been loaded.
+ */
+function createWorld() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 30;
+    var light;  // A light shining from the direction of the camera; moves with the camera.
+    light = new THREE.DirectionalLight();
+    light.position.set(0,0,1);
+    camera.add(light);
+    scene.add(camera);
+}
+
+
+/**
+ * This function will be called when the JSONLoader has
+ * finished loading a model.  This function creates a three.js
+ * Mesh object to hold the model.  It translates the object so that
+ * its center is at the origin.  It wraps the object in another object
+ * that is used to scale and rotate the object.  The scale is set
+ * so that the maximum coordinate in its vertices, in absolute
+ * value, is scaled to 10.  The rotation is set to the second parameter,
+ * which is used to set up an appropriate orientation for viewing
+ * the model.  A plain white Lambert material is used for the model;
+ * the material from the model file is ignored.
+ */ 
+function modelLoaded(geometry, rotation, useMorphColors) {
+
+    /* create the object from the geometry was loaded, with a white material. */
+    
+    var material;
+    if (useMorphColors) {
+            material = material = new THREE.MeshLambertMaterial( {
+            vertexColors: THREE.FaceColors,  // use colors from the geometry
+            morphTargets: true
+        } );
+    } else {
+        material = new THREE.MeshLambertMaterial( { color: "white" } );
+    }
+    var object = new THREE.Mesh(geometry,material);
+
+    /* Determine the ranges of x, y, and z in the vertices of the geometry. */
+
+    var xmin = Infinity;
+    var xmax = -Infinity;
+    var ymin = Infinity;
+    var ymax = -Infinity;
+    var zmin = Infinity;
+    var zmax = -Infinity;
+    for (var i = 0; i < geometry.vertices.length; i++) {
+        var v = geometry.vertices[i];
+        if (v.x < xmin)
+            xmin = v.x;
+        else if (v.x > xmax)
+            xmax = v.x;
+        if (v.y < ymin)
+            ymin = v.y;
+        else if (v.y > ymax)
+            ymax = v.y;
+        if (v.z < zmin)
+            zmin = v.z;
+        else if (v.z > zmax)
+            zmax = v.z;
+    }
+    
+    /* translate the center of the object to the origin */
+    var centerX = (xmin+xmax)/2;
+    var centerY = (ymin+ymax)/2; 
+    var centerZ = (zmin+zmax)/2;
+    var max = Math.max(centerX - xmin, xmax - centerX);
+    max = Math.max(max, Math.max(centerY - ymin, ymax - centerY) );
+    max = Math.max(max, Math.max(centerZ - zmin, zmax - centerZ) );
+    var scale = 10/max;
+    object.position.set( -centerX, -centerY, -centerZ );
+    if (window.console) {
+       console.log("Loading finished, scaling object by " + scale);
+       console.log("Center at ( " + centerX + ", " + centerY + ", " + centerZ + " )");
+    }
+    
+    /* Create the wrapper, model, to scale and rotate the object. */
+    
+    model = new THREE.Object3D();
+    model.add(object);
+    model.scale.set(scale,scale,scale);
+    model.rotation.set(rotation[0],rotation[1],rotation[2]);
+    scene.add(model);
+    render();
+}
+
+
+/**
+ * Called when the setting of the model-selection radio buttons is changed.
+ * starts loading the model from the specified file.  When the model has
+ * has been loaded, the function modelLoaded() will be called.
+ */
+function installModel(modelNumber) {
+    function callback(geometry,material) {  // callback function to be executed when loading finishes.
+        modelLoaded(geometry, modelRotations[modelNumber], modelNumber == 1 || modelNumber == 2);
+        document.getElementById("status").innerHTML = "";
+        if (modelNumber != 0 && modelNumber != 4) {
+              // (models 0 and 4 are already smooth)
+            document.getElementById("button").style.display = "block";
+        }
+    }
+    if (model) {
+        scene.remove(model);
+    }
+    controls.reset();  // return camera to original position.
+    render();  // draw without model while loading
+    document.getElementById("status").innerHTML = "Loading<br>" + modelFileNames[modelNumber];
+    document.getElementById("button").style.display = "none";
+    var loader = new THREE.JSONLoader();
+    try {
+        loader.load(modelDirectory + modelFileNames[modelNumber], callback);
+    }
+    catch (e) {
+        // Note: Will give an error if loading from the local file system
+        // on some browsers (Chrome, at least). 
+        document.getElementById("status").innerHTML =
+            "Could not<br>load model!<br><br>Note that<br>some browsers<br>cannot load<br>models from<br>a local disk.";
+    }
+}
+
+
+/* To be called when the user clicks the "make smooth" button, which is only
+ * available for the four models that have a faceted appearance.  This function
+ * replaces the current vertex normals with ones that are appropriate for
+ * a smooth appeance.
+ */
+function makeSmooth() {
+    if (model) {
+        model.children[0].geometry.computeVertexNormals();
+       // model.children[0].geometry.normalsNeedUpdate = true;  // don't know why this doesn't work but the next line does
+        model.children[0].geometry.elementsNeedUpdate = true;
+        render();
+    }
+    document.getElementById("button").style.display = "none";
+}
+
+
+/*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
+ *  the view.  TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ */
+function installTrackballControls() {
+    controls = new THREE.TrackballControls(camera,canvas);
+    controls.noPan = true;
+    controls.noZoom = true;
+    controls.staticMoving = true;
+    function move() {
+        controls.update();
+		render();
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+
+/**
+ *  This function is called by the onload event so it will run after the
+ *  page has loaded.  It creates the renderer, canvas, and scene objects,
+ *  calls createWorld() to add objects to the scene, and renders the
+ *  initial view of the scene.  If an error occurs, it is reported.
+ */
+function init() {
+    try {
+        canvas = document.getElementById("glcanvas");
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true
+        });
+    }
+    catch (e) {
+        document.getElementById("canvas-holder").innerHTML="<p><b>Sorry, an error occurred:<br>" +
+                e + "</b></p>";
+        return;
+    }
+    renderer.setClearColor(0x555555);
+    document.getElementById("r0").checked = true;
+    document.getElementById("r0").onchange = function() { installModel(0); };
+    document.getElementById("r1").onchange = function() { installModel(1); };
+    document.getElementById("r2").onchange = function() { installModel(2); };
+    document.getElementById("r3").onchange = function() { installModel(3); };
+    document.getElementById("r4").onchange = function() { installModel(4); };
+    document.getElementById("r5").onchange = function() { installModel(5); };
+    document.getElementById("r6").onchange = function() { installModel(6); };
+    document.getElementById("vertexNormalsBtn").onclick = makeSmooth;
+    createWorld();
+    installTrackballControls();
+    render();  // Just gives a black backtground
+    installModel(0);
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<h2>Three.js JSON Loader Demo</h2>
+
+<noscript>
+<p style="color: #A00; font-weight: bold">Sorry, but this page requires JavaScript!</p>
+</noscript>
+
+<p style="color:#A00; font-weight: bold" id="message"></p>
+
+<p><b>Use the mouse to rotate the model.</b></p>
+
+<div id="canvas-holder" style="float:left">
+   <canvas width=500 height=500 id="glcanvas" style="background-color:black"></canvas>
+</div>
+
+<div style="float:left; margin-left:2cm">
+
+<p style="text-indent: -40px"><b>JSON models:</b><br>
+    <label><input type="radio" name="model" id="r0">arrowhead.js</label><br>
+    <label><input type="radio" name="model" id="r1">horse.js</label><br>
+    <label><input type="radio" name="model" id="r2">stork.js</label><br>
+    <label><input type="radio" name="model" id="r3">tree.js</label><br>
+    <label><input type="radio" name="model" id="r4">terraine.js</label><br>
+    <label><input type="radio" name="model" id="r5">Suzanne.js</label><br>
+    <label><input type="radio" name="model" id="r6">WaltHeadLo.js</label>
+</p>
+
+<p id="button" style="display:none; margin-top:30px"><button id="vertexNormalsBtn">Make Smooth</button></p>
+
+<p id="status" style="margin-top:30px; font-weight: bold"></p>
+</div>
+
+<p style="font-size:smaller; clear: both">
+Except for arrowhead.js, the models are from the <a href="http://threejs.org">three.js</a> download;<br>
+arrowhead.js was modeled in <a href="http://blender.org">Blender</a>.  Horse and stork colors<br>
+come with the models.
+</p> 
+
+
+</body>
+</html>

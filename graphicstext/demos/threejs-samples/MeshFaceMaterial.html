@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>Three.js Using different materials on different faces</title>
+<style>
+</style>
+<script src="three.min.js"></script>
+<script>
+
+/* Shows a pyramid and a cube.  The pyramid is constructed
+ * as an indexed face set.  Both objects can be displayed with
+ * all faces colored white or multicolored, with a different
+ * material for each face.  Display of edges can be turned
+ * on and off.  The objects can be rotated using the arrow,
+ * Home, PageUp, and PageDown keys.
+ */
+
+"use strict";
+
+var scene, camera, renderer;  // Three.js rendering basics.
+
+var canvas;  // The canvas on which the image is rendered.
+
+
+var model;   // Contains the visible objects in the scene, but
+             // not the lights or camera.  The model can be
+             // rotated using the keyboard. 
+
+var cube, pyramid;  // The two visible objects.
+
+var cubeWireframe, pyramidWireframe;  // Wireframe versions of the objects,
+                                      // which are only visible when
+                                      // "Show Edges" checkbox is checked.
+
+var whiteMaterial;       // A MeshLambertMaterial with color = "white".
+var cubeMaterialArray;   // An array of Materials for use on the cube.
+var pyramidMaterialArray;// An array of Materials for use on the pyramid.
+
+
+
+/*  Create the scene graph.  This function is called once, as soon as the page loads.
+ *  The renderer has already been created before this function is called.
+ */
+function createWorld() {
+    renderer.setClearColor( 0 );  // Set background color (0, or 0x000000, is black).
+    scene = new THREE.Scene();
+    
+    // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
+    camera.position.z = 10;
+    
+    // create some lights and add them to the scene.
+    scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
+    var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
+    viewpointLight.position.set(0,0,1);  // shines down the z-axis
+    scene.add(viewpointLight);
+    
+    var cubeGeom = new THREE.BoxGeometry(2,2,2);
+    
+    var pyramidGeom = new THREE.Geometry();
+    
+    pyramidGeom.vertices = [  // array of Vector3 giving vertex coordinates
+            new THREE.Vector3( 1, 0, 1 ),    // vertex number 0
+            new THREE.Vector3( 1, 0, -1 ),   // vertex number 1
+            new THREE.Vector3( -1, 0, -1 ),  // vertex number 2
+            new THREE.Vector3( -1, 0, 1 ),   // vertex number 3
+            new THREE.Vector3( 0, 1, 0 )     // vertex number 4
+        ];
+        
+    pyramidGeom.faces = [  // array of Face3 giving the triangular faces
+            new THREE.Face3( 3, 2, 1),  // one half of the bottom face
+            new THREE.Face3( 3, 1, 0),  // second half of the bottom face
+            new THREE.Face3( 3, 0, 4),  // remaining faces are the four sides
+            new THREE.Face3( 0, 1, 4),
+            new THREE.Face3( 1, 2, 4),
+            new THREE.Face3( 2, 3, 4)
+        ];
+    
+    pyramidGeom.computeFaceNormals();
+    
+    /* For the pyramid, the two triangles on the bottom both have materialIndex 0,
+     * so that they will have the same color.  The material indices for the other
+     * four sides are all different.  The materialIndex is an index into the
+     * array of materials (when the object's material property is an array).
+     * Note that the cube already comes with appropriate material indices.
+     */
+    pyramidGeom.faces[0].materialIndex = 0;
+    for (var i = 1; i <= 5; i++) {
+        pyramidGeom.faces[i].materialIndex = i-1;
+    }
+
+    whiteMaterial = new THREE.MeshLambertMaterial( { color: "white" });
+     
+    cubeMaterialArray =  [  // An array of materials, which will be used as the material property for the cube.
+        new THREE.MeshLambertMaterial( { color: "red" } ),     // +x face
+        new THREE.MeshLambertMaterial( { color: "cyan" } ),    // -x face
+        new THREE.MeshLambertMaterial( { color: "green" } ),   // +y face
+        new THREE.MeshLambertMaterial( { color: "magenta" } ), // -y face
+        new THREE.MeshLambertMaterial( { color: "yellow" } ),    // +z face
+        new THREE.MeshLambertMaterial( { color: "blue" } )   // -z face
+    ];
+    
+    pyramidMaterialArray = [ // An array of materials, which will be used as the material property for the pyramid.
+        new THREE.MeshLambertMaterial( { color: 0xffffff, flatShading: true } ),
+        new THREE.MeshLambertMaterial( { color: 0x99ffff, flatShading: true } ),
+        new THREE.MeshLambertMaterial( { color: 0xff99ff, flatShading: true } ),
+        new THREE.MeshLambertMaterial( { color: 0xffff99, flatShading: true } ),
+        new THREE.MeshLambertMaterial( { color: 0xff9999, flatShading: true } )
+    ];
+    
+    var wireMaterial = new THREE.MeshBasicMaterial( { // wireframe material for showing black edges on objects
+        color: "black",
+        wireframe: true,
+        wireframeLinewidth: 2
+    } );
+    cubeWireframe = new THREE.Mesh(cubeGeom, wireMaterial);
+    cubeWireframe.visible = false;  // initially, wireframes are not visible
+    pyramidWireframe = new THREE.Mesh(pyramidGeom, wireMaterial );
+    pyramidWireframe.visible = false;
+    
+    cube = new THREE.Mesh( cubeGeom, cubeMaterialArray );
+    cube.add(cubeWireframe);  // Make the wirefraem a child of cube, so it will be transformed along with cube.
+    cube.position.x = -1.5;
+    cube.rotation.set(0.2,-0.4,0);
+    
+    pyramid = new THREE.Mesh( pyramidGeom, pyramidMaterialArray );
+    pyramid.add(pyramidWireframe);
+    pyramid.position.x = 1.5;
+    pyramid.rotation.set(0.2,-0.4,0);    
+    
+    scene.add(cube);
+    scene.add(pyramid);
+    
+}
+
+
+/*  Render the scene.  This is called for each frame of the animation.
+ */
+function render() {
+    renderer.render(scene, camera);
+}
+
+
+/* Called when the "Show Edges" checkbox is checked or unchecked.
+ * Changes the visiblity of the wireframe objects to match the setting.\
+ */
+function doWireframeCheckbox() {
+    var show = document.getElementById("wireframe").checked;
+    cubeWireframe.visible = show;
+    pyramidWireframe.visible = show;
+    render();
+}
+
+/* Called when the setting of the material radio buttons is changed.
+ * Changes the material on the cube and pyramid to match the setting.
+ */
+function doChangeMaterial() {
+    if (document.getElementById("white").checked) {
+        pyramid.material = whiteMaterial;
+        cube.material = whiteMaterial;
+    }
+    else {
+        pyramid.material = pyramidMaterialArray;
+        cube.material = cubeMaterialArray;
+    }
+    render();   
+}
+
+
+//----------------------------- keyboard support ----------------------------------
+
+/*  Responds to user's key press.  Here, it is used to rotate the models.
+ */
+function doKey(event) {
+    var code = event.keyCode;
+    var rotated = true;
+    switch( code ) {
+        case 37: cube.rotation.y -= 0.03;    pyramid.rotation.y -= 0.03;    break;    // left arrow
+        case 39: cube.rotation.y += 0.03;    pyramid.rotation.y += 0.03;    break;    // right arrow
+        case 38: cube.rotation.x -= 0.03;    pyramid.rotation.x -= 0.03;    break;    // up arrow
+        case 40: cube.rotation.x += 0.03;    pyramid.rotation.x += 0.03;    break;    // down arrow
+        case 33: cube.rotation.z -= 0.03;    pyramid.rotation.z -= 0.03;    break;    // page up
+        case 34: cube.rotation.z += 0.03;    pyramid.rotation.z += 0.03;    break;    // page down
+        case 36: cube.rotation.set(0.2,-0.4,0); pyramid.rotation.set(0.2,-0.4,0); break;    // home
+        default: rotated = false;
+    }
+    if (rotated) {
+        event.preventDefault();  // Prevent keys from scrolling the page.
+        render();
+    }
+}
+
+
+
+//----------------------------------------------------------------------------------
+
+/**
+ *  This init() function is called when by the onload event when the document has loaded.
+ */
+function init() {
+    try {
+        canvas = document.getElementById("glcanvas");
+        renderer = new THREE.WebGLRenderer( {
+            canvas: canvas,
+            antialias: true
+        } );
+    }
+    catch (e) {
+        document.getElementById("canvas-holder").innerHTML =
+                 "<h3><b>Sorry, WebGL is required but is not available.</b><h3>";
+        return;
+    }
+    document.addEventListener("keydown", doKey, false);
+    document.getElementById("wireframe").checked = false;
+    document.getElementById("wireframe").onchange = doWireframeCheckbox;
+    document.getElementById("multi").checked = true;
+    document.getElementById("white").onchange = doChangeMaterial;
+    document.getElementById("multi").onchange = doChangeMaterial;
+    createWorld();
+    render();
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<h2>Three.js:  Using An Array of Materials</h2>
+
+<p><b>Use Arrow, PageUp, PageDown, and Home keys to rotate the models.</b></p>
+
+<p>
+   <label><input type="radio" name="material" id="white">White Material</label>
+   <label style ="margin-left:25px"><input type="radio" name="material" id="multi">Array of Colored Materials</label>
+   <label style ="margin-left:60px"><input type="checkbox" id="wireframe">Show Edges</label>
+</p>
+
+<div id="canvas-holder">
+<canvas id="glcanvas" width="600" height="300"></canvas>
+</div>
+
+</body>
+</html>
