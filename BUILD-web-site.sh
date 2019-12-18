@@ -103,7 +103,7 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
 
    echo
    echo "BUILD-web-site.sh completed."
-   echo "Created Javanotes web site in $BUILD_OUTPUT_DIR/web-site."
+   echo "Created Graphics Book web site in $BUILD_OUTPUT_DIR/web-site."
    echo
    exit 0
    
