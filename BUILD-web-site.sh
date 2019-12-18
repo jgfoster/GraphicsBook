@@ -82,7 +82,8 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
    
    echo
    echo Fixing html DOCTYPES...
-   sed -i -e '1 s/<html>/<!DOCTYPE html>\n<html>/' `find . -name "*.html"`
+   sed -i -e '1 s/<html>/<!DOCTYPE html>\
+<html>/' `find . -name "*.html"`
    
    if ! mv web $BUILD_OUTPUT_DIR/web-site ; then
       echo
