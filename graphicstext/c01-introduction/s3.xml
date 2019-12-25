@@ -45,9 +45,9 @@ most graphics cards, and it has often introduced new features earlier than OpenG
 
 <break/>
 
-<p>I have said that OpenGL is an API, but in fact it is a series of APIs that have
+<p>We have said that OpenGL is an API, but in fact it is a series of APIs that have
 been subject to repeated extension and revision.  The current version, in early
-2018, is 4.6, and it is very different from the 1.0 version from 1992.  Furthermore,
+2020, is 4.6, and it is very different from the 1.0 version from 1992.  Furthermore,
 there is a specialized version called OpengGL&nbsp;ES for "embedded systems" such
 as mobile phones and tablets.  And there is also WebGL, for use in Web browsers,
 which is basically a port of OpenGL ES&nbsp;2.0.  Furthermore, a new API named
@@ -155,7 +155,7 @@ OpenGL&nbsp;ES&nbsp;2.0.  GLSL uses a syntax similar to the C programming langua
 
 <break/>
 
-<p>As a final remark on GPU hardware, I should note that the computations that are done for
+<p>As a final remark on GPU hardware, we should note that the computations that are done for
 different vertices are pretty much independent, and so can potentially be done in parallel.
 The same is true of the computations for different fragments.  In fact, GPUs can
 have hundreds or thousands of processors that can operate in parallel.  Admittedly, the

@@ -175,6 +175,7 @@ sampler variable
 sampling
 scalar product
 scaling
+scene
 scene description language
 scene graph
 shader
@@ -233,5 +234,6 @@ WebGL
 WebGL extension
 winding number
 wireframe
+world
 world coordinates
 XML

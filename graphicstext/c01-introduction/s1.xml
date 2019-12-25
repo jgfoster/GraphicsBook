@@ -12,7 +12,7 @@ topic in its own right.  Furthermore, a lot of ideas carry over
 from two dimensions to three.  So, it makes sense to start
 with graphics in 2D.</p1>
 
-<p>An image that is presented on the computer screen is made up of <newword term="pixel">pixels</newword>.  The screen
+<p>An image that is presented on a computer screen is made up of <newword term="pixel">pixels</newword>.  The screen
 consists of a rectangular grid of pixels, arranged in rows and columns.  The pixels are small enough that
 they are not easy to see individually.  In fact, for many very high-resolution displays, they become
 essentially invisible.  At a given time, each pixel can

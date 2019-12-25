@@ -3,6 +3,11 @@
 
 <glossary>
 
+<gitem term="world">An imaginary three-dimensional (3D) space (with coordinates) into which a 
+collection of simple geometric shapes can be placed.</gitem>
+<gitem term="scene">A static collection of simple, textured, geometric shapes 
+placed in specific locations in a world, iluminated with lighting, that is rendered as a view from a 
+particular perspective. Multiple scenes with minor changes can be sequenced quickly to make an animation.</gitem>
 <gitem term="pixel">A digital image is made up of rows and columns of small rectangles called pixels.
 To specify a digital image, a color is assigned to each pixel in the image.</gitem>
 <gitem term="grayscale">Refers to a color scheme or image in which each color is a shade of gray (where the

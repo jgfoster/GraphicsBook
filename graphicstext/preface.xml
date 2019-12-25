@@ -2,6 +2,23 @@
 
 
 <preface>
+
+<p1>I discovered Professor Eck's book when looking for material for a undergraduate
+course on computer graphics.</p1>
+<p>I've made some modifications.</p>
+<break/> 
+
+<np>Professor James Foster<br/>
+Department of Computer Science<br/>
+Walla Walla University<br/>
+204 S. College Avenue<br/>
+College Place, WA, USA<br/>
+Email: <a href="mailto:james.foster@wallawalla.edu">James.Foster@WallaWalla.edu</a><br/>
+<i>January, 2020</i>
+</np>
+
+<break/>
+
 <p1>This textbook represents my attempt to develop a modern, one-semester first course in
 computer graphics, which would typically be taken by a computer science student
 in the third or fourth year of college.  (Whether it will continue to be appropriate 

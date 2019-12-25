@@ -15,25 +15,21 @@
         <div class="content">
         <hr/>
         <h2 class="chapter_title">Introduction to Computer Graphics</h2>
-        <h3 class="chapter_title">Version 1.2, January 2018</h3>
-        <h4 align="center">Author:&#160; <a href="http://math.hws.edu/eck/">David J. Eck</a>&#160;
+        <h3 class="chapter_title">jgfoster/2020</h3>
+        <h4 align="center">Primary Author:&#160; <a href="http://math.hws.edu/eck/">David J. Eck</a>&#160;
                  (<a href="mailto:eck@hws.edu">eck@hws.edu</a>)</h4>        
+        <h4 align="center">Revised by:&#160; <a href="mailto:james.foster@wallawalla.edu">james.foster@wallawalla.edu</a></h4>        
         <hr/>
         <table border="0">
         <tr valign="top"><td><p style="margin-right:20pt"><img height="235" width="180" src="resource/graphicstext-cover-180x235.png"/></p></td>
         <td style="margin-left:1cm">
         <p><big>W</big>ELCOME TO <i>Introduction to Computer Graphics</i>,
          a free, on-line textbook covering the fundamentals of computer graphics and
-         computer graphics programming.  This book is meant for use as a textbook in
-         a one-semester course that would typically be taken by undergraduate computer science majors
-         in their third or fourth year of college.  Version 1.2 contains minor corrections and updates
-         from Version 1.1 of January 2016, including an update of the three.js material to release number
-         89. See the <a href="preface.html">preface</a> for more information.
+         computer graphics programming.  This book is designed for use as a textbook in
+         a one-term, upper-division, undergraduate computer science course.  
         </p>
         <p>The web pages for this book include live, interactive demos that require a modern
-        web browser such as recent versions of Chrome, Firefox, Safari, Internet Explorer, or Edge.
-        (For Internet Explorer, you need Version 11 or later for most of the demos.)  You might
-        have to experiment to find a browser in which the demos will work well.  While the
+        web browser. While the
         book is mainly designed for reading on a desktop computer, most of the demos should also work
         on recent mobile devices, using a touchscreen instead of a mouse.</p>
         <p>Words in the book that are shown in <span class="newword" style="cursor:inherit">this&#160;style</span> or underlined
@@ -67,7 +63,9 @@
         </td></tr></table>
         <hr/>
         <div style="margin-left: 40px; margin-right:40px">
-         <i>&#169;2015&#8211;2018, David J. Eck.<br/>
+         <i>
+            Revisions &#169;2020, James Foster.<br/>
+            Original text &#169;2015&#8211;2018, David J. Eck.<br/>
             <small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-Noncommercial-ShareAlike 4.0 License</a>.
             (This license allows you to redistribute this book in unmodified form for non-commercial purposes.  It allows you
             to make and distribute modified versions for non-commercial purposes, as long as you include an attribution to the
@@ -76,51 +74,21 @@
             author for other uses.  See the
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">license</a> for full
             details.)<br/><br/>
-            The home site for this book is:
-            <a href="http://math.hws.edu/graphicsbook/">http://math.hws.edu/graphicsbook/</a></small></i>
+            The home site for the original book is:
+            <a href="http://math.hws.edu/graphicsbook/">http://math.hws.edu/graphicsbook/</a>. <br />
+            The home site for the revised book is:
+            <a href="https://github.com/jgfoster/GraphicsBook">https://github.com/jgfoster/GraphicsBook</a>.
+            </small>
+            </i>
           </div>
         <hr/>
-        <h3>Downloading Links</h3>
-        <ul>
-        <li>
-          <b>Full Web Site Download:</b>
-          <ul>
-          <li><b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip">http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip</a></b> &#8212;
-          This "zip" archive contains a complete copy of the web site.  It should be usable on almost
-          any computer. 
-          Size:&#160;17&#160;Megabytes.
-          </li>
-          </ul>
-        </li>
-         <li>
-          <b>PDF Downloads:</b>
-          <ul>
-          <li>
-          <b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook-linked.pdf">http://math.hws.edu/eck/cs424/downloads/graphicsbook-linked.pdf</a></b> &#8212;
-          a PDF version with internal links for navigation and external links to source code
-          files and other resources that are not included in the PDF.
-          Recommended for on-screen reading.
-          Size:&#160;5.1&#160;Megabytes.
-          </li>
-          <li>
-          <b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook.pdf">http://math.hws.edu/eck/cs424/downloads/graphicsbook.pdf</a></b> &#8212;
-          a PDF version without links, more suitable for printing.
-          Size:&#160;4.8&#160;Megabytes.
-          </li>
-          </ul>
-        </li>
-        </ul>
-        <h3>Printed Version</h3>
-        <ul>
-        <li>The web site and linked PDF are the preferred versions for reading this book, but for the convenience of readers who would
-        like a bound copy, I have made a printed version available at the publish-on-demand site <i>lulu.com</i>.  (Note that the printed
-        version is sold at lulu.com's cost, and that I don't make any profit from it.)  You can purchase the printed version through
-        this link: <a href="http://www.lulu.com/content/paperback-book/introduction-to-computer-graphics/17032760">http://www.lulu.com/content/paperback-book/introduction-to-computer-graphics/17032760</a></li>
-        </ul>
         <hr/>
-        <div align="right"><small><i>1 August 2015, Version 1.0 released<br/>
-        28 January 2016, Version 1.1 released<br/>
-        6 January 2018, Version 1.2 released</i></small></div>
+        <div align="right"><small><i>
+        1 August 2015, Version 1.0<br/>
+        28 January 2016, Version 1.1<br/>
+        6 January 2018, Version 1.2<br/>
+        6 January 2020, jgfoster/2020
+        </i></small></div>
         </div>
         </div></body>
         </html>
@@ -150,7 +118,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
         <h2 align="center">Table of Contents</h2>
         <hr/>
         <p align="center" class="firstpar">This is the Table of Contents for the free on-line
@@ -229,7 +197,7 @@
         <p><b>Appendix E: </b> <a href="glossary.html">Glossary</a></p>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
      </div>
      </div></body>
      </html>
@@ -353,13 +321,13 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2<br/></h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020<br/></h3>
         <h2 align="center">Preface</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a></small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a></small></div>
      </div></body>
      </html>
    </redirect:write>
@@ -374,13 +342,13 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
         <h2 align="center">Source Code and Demos</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
      </div></body>
      <script src="../resource/glossary.js"></script>
      </html>
@@ -398,7 +366,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
         <h2 align="center">Glossary</h2>
         <hr class="break"/>
         <xsl:for-each select="//gitem">
@@ -408,7 +376,7 @@
         </xsl:for-each>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
      </div></body>
      </html>
     </redirect:write>
