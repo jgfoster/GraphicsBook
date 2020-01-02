@@ -5,11 +5,11 @@ This repository contains the files used to create David Eck's [*Introduction to 
 ## Online Versions
 
 * Foster, 2020
-  * [Web](https://jgfoster.github.io/GraphicsBook/2020/web/index.html)
+  * [Web](https://jgfoster.github.io/GraphicsBook/2020/web-site/index.html)
   * [PDF to Print](https://jgfoster.github.io/GraphicsBook/2020/graphicsbook.pdf)
   * [PDF with Links](https://jgfoster.github.io/GraphicsBook/2020/graphicsbook-linked.pdf)
 * Eck, 2018
-  * [Web](https://jgfoster.github.io/GraphicsBook/1.2/web/index.html)
+  * [Web](https://jgfoster.github.io/GraphicsBook/1.2/web-site/index.html)
   * [PDF to Print](https://jgfoster.github.io/GraphicsBook/1.2/graphicsbook.pdf)
   * [PDF with Links](https://jgfoster.github.io/GraphicsBook/1.2/graphicsbook-linked.pdf)
 
