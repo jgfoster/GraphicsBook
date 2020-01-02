@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pixel Exercise</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/ch2-pixels.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+  </head>
+  <body onload="onload()">
+    <h1>Pixel Exercise</h1>
+    <p>
+      The smallest visible area for computer graphics is a <i>pixel</i> 
+      and it can have only one color. Depending on the display device, 
+      a pixel may be limited to black/white, shades of gray, or a range
+      of colors.
+      In terms of coordinates, a pixel can be identified by 
+      a pair of integers giving the column number and the row number
+      as (X, Y).
+      Conventionally, columns are numbered from left to right,
+      starting with zero. Some graphics systems number rows from 
+      top to bottom and some number from bottom to top.
+      We will show examples of each.
+    </p>
+    <p id="paragraph"></p>
+    <table>
+      <tr>
+        <td></td>
+        <td><canvas id="topEdge" width="510" height="15" /></td>
+      </tr>
+      <tr>
+        <td><canvas id="leftEdge" width="20" height="520" /></td>
+        <td><canvas id="canvas" width="501" height="501" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Progress:</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><canvas id="progress" width="500" height="20" /></td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Point Exercise</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/ch2-points.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
+  </head>
+  <body onload="onload()">
+    <h1>Point Exercise</h1>
+    <p>In mathematics, a <i>point</i> (in a two-dimensional space) 
+      is an infinitely small location identified by (X, Y) coordinates.
+      Because a pixel has some size, it contains an infinite number of
+      points. By convention, integer coordinates refer to the 
+      (infinitely narrow) lines between pixels. Non-integer coordinates
+      can be used to identify points between the lines. We can also use
+      negative numbers to identify points less than zero.
+    </p>
+    <p id="paragraph"></p>
+    <table>
+      <tr>
+        <td></td>
+        <td><canvas id="topEdge" width="510" height="15" /></td>
+      </tr>
+      <tr>
+        <td><canvas id="leftEdge" width="30" height="520" /></td>
+        <td><canvas id="canvas" width="501" height="501" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Progress:</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><canvas id="progress" width="500" height="20" /></td>
+      </tr>
+    </table>
+  </body>
+</html>

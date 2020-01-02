@@ -112,6 +112,51 @@ named <i>demos</i>.</tex>
 the question mark icon in the upper left for more information about how to use it.)</p>
 </demo>
 
+<demo height="900" width="570" src="c2/pixels.html">
+<p><web>The following interactive exercise lets you experiment with
+pixels.</web>
+<tex>The interactive exercise <i>c2/pixels.html</i> lets you experiment with
+pixels. Interactive demos can be found on the web pages 
+in the on-line version of this
+book.  If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+<demo height="860" width="570" src="c2/points.html">
+<p><web>The following interactive exercise lets you experiment with
+points.</web>
+<tex>The interactive exercise <i>c2/points.html</i> lets you experiment with
+points. Interactive demos can be found on the web pages 
+in the on-line version of this
+book.  If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+<demo height="865" width="570" src="c2/lines.html">
+<p><web>The following interactive exercise lets you experiment with
+lines.</web>
+<tex>The interactive exercise <i>c2/lines.html</i> lets you experiment with
+lines. Interactive demos can be found on the web pages 
+in the on-line version of this
+book.  If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+<demo height="1045" width="570" src="c2/antialiasing.html">
+<p><web>The following interactive exercise lets you experiment with
+antialiasing.</web>
+<tex>The interactive exercise <i>c2/antialiasing.html</i> lets you experiment with
+antialiasing. Interactive demos can be found on the web pages 
+in the on-line version of this
+book.  If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+
 <break/>
 
 <p>All this is complicated further by the fact that pixels aren't what they used to

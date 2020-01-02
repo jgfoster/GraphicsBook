@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Antialiasing Exercise</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/wuLine.js"></script>
+    <script src="../script/ch2-antialiasing.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+  </head>
+  <body onload="onload()">
+    <h1>Antialiasing Exercise</h1>
+    <p>Because a mathematical line has no width, it is impossible to see.
+      In computer graphics we need to give lines a width in order to see
+      them. The minimum width is a pixel, so if a line goes at right 
+      angles from edge to edge and through the center of a pixel, then the 
+      pixel is completely filled.  But if a line is between two pixels, 
+      then, in theory, it should cover only half of the neighboring pixels. 
+      Since an entire pixel can only be one color, the convention is 
+      to use shading to approximate the coverage. So, a pixel covered by 
+      50% of a line is shaded at 50% and a pixel covered by 25% of a line
+      is shared at 25%. Note that while a line has width, it does not 
+      (by default) extend beyond the endpoint.
+    </p>
+    <p>
+      In this exercise, draw the line (as in a previous exercise). Then add shading 
+      to the pixels around the line by shift-clicking on the pixels. Repeated 
+      clicks will cycle through the shading options (25%, 50%, 75%, and 
+      100%). The cell will show one to four dots to identify the shading.
+    </p>
+    <p id="paragraph"></p>
+    <form id="form">
+      <input id="submit" type="submit" value="Submit" />
+      <input id="next" type="reset" value="Next" />
+    </form>
+    <table>
+      <tr>
+        <td></td>
+        <td><canvas id="topEdge" width="510" height="15" /></td>
+      </tr>
+      <tr>
+        <td><canvas id="leftEdge" width="30" height="520" /></td>
+        <td><canvas id="canvas" width="501" height="501" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Progress:</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><canvas id="progress" width="500" height="20" /></td>
+      </tr>
+    </table>
+  </body>
+</html>

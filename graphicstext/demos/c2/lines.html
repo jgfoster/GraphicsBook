@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Line Exercise</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/ch2-lines.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+  </head>
+  <body onload="onload()">
+    <h1>Line Exercise</h1>
+    <p>In mathematics, a <i>line</i> between two points has length
+      (if the endpoints are not identical) but no width. In this exercise
+      you should mouse-down click on the first point, drag to the 
+      second point, and mouse-up. Then click the "Submit" buttom
+      to check your answer.
+    </p>
+    <p id="paragraph"></p>
+    <form id="form">
+      <input id="submit" type="submit" value="Submit" />
+      <input id="next" type="reset" value="Next" />
+    </form>
+    <table>
+      <tr>
+        <td></td>
+        <td><canvas id="topEdge" width="510" height="15" /></td>
+      </tr>
+      <tr>
+        <td><canvas id="leftEdge" width="30" height="520" /></td>
+        <td><canvas id="canvas" width="501" height="501" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Progress:</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><canvas id="progress" width="500" height="20" /></td>
+      </tr>
+    </table>
+  </body>
+</html>
