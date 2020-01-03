@@ -25,8 +25,8 @@
         <td style="margin-left:1cm">
         <p><big>W</big>ELCOME TO <i>Introduction to Computer Graphics</i>,
          a free, on-line textbook covering the fundamentals of computer graphics and
-         computer graphics programming.  This book is designed for use as a textbook in
-         a one-term, upper-division, undergraduate computer science course.  
+         computer graphics programming. This book is designed for use as a textbook in
+         a one-term, upper-division, undergraduate computer science course. 
         </p>
         <p>The web pages for this book include live, interactive demos that require a modern
         web browser. While the
@@ -67,11 +67,11 @@
             Revisions &#169;2020, James Foster.<br/>
             Original text &#169;2015&#8211;2018, David J. Eck.<br/>
             <small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-Noncommercial-ShareAlike 4.0 License</a>.
-            (This license allows you to redistribute this book in unmodified form for non-commercial purposes.  It allows you
+            (This license allows you to redistribute this book in unmodified form for non-commercial purposes. It allows you
             to make and distribute modified versions for non-commercial purposes, as long as you include an attribution to the
             original author, clearly describe the modifications that you have made, and distribute
-            the modified work under the same license as the original.  Permission might be given by the
-            author for other uses.  See the
+            the modified work under the same license as the original. Permission might be given by the
+            author for other uses. See the
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">license</a> for full
             details.)<br/><br/>
             The home site for the original book is:
@@ -479,8 +479,8 @@
         <h2>Programming Exercises for Chapter <xsl:value-of select="$chapternum"/></h2>
         <hr class="break"/>
         <p class="firstpar">This page contains several exercises for Chapter <xsl:value-of select="$chapternum"/>
-        in <a href="../index.html">Introduction to Computer Graphics</a>.  For each exercise, a link to
-        a possible solution is provided.   Each solution includes a discussion of how a programmer might approach the
+        in <a href="../index.html">Introduction to Computer Graphics</a>. For each exercise, a link to
+        a possible solution is provided.  Each solution includes a discussion of how a programmer might approach the
         problem and interesting points raised by the problem or its solution, as well as complete source
         code of the solution.</p>
         <xsl:for-each select="exercises/exercise">

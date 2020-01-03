@@ -3,16 +3,16 @@
 
 <!--
    A framework for writing simple 3D applications with glsim, with
-   support for animation and for mouse and keyboard events.  Note
+   support for animation and for mouse and keyboard events. Note
    that you have to uncomment some lines in init() and initGL() to
-   enable support for various features.  Look for lines labeled "TODO".
+   enable support for various features. Look for lines labeled "TODO".
    
    To implement OpenGL 1.1 functions, this page uses glsim.js, which
    simulates a subset of the OpenGL 1.1 API in JavaScript by translating
-   the OpenGL functions into WebGL.  In particular WebGL support is
-   requried.  The purpose of glsim.js is to make it possible to try
-   out some basic OpenGL 1.1 commands.  It does not attempt to be efficient,
-   and it covers only a limited subset of OpenGL 1.1.  The subset is
+   the OpenGL functions into WebGL. In particular WebGL support is
+   requried. The purpose of glsim.js is to make it possible to try
+   out some basic OpenGL 1.1 commands. It does not attempt to be efficient,
+   and it covers only a limited subset of OpenGL 1.1. The subset is
    approximately the one covered in Chapters 2 and 3 of the on-line
    computer graphics textbook at http://math.hws.edu/graphicsbook
 -->
@@ -31,8 +31,8 @@
     var frameNumber = 0;     // For use only in an animation.
 
     /**
-     *  Called when the display needs be redrawn.  Usually, it will completely
-     *  redraw the image.  Note that the projection could be set up in initGL()
+     *  Called when the display needs be redrawn. Usually, it will completely
+     *  redraw the image. Note that the projection could be set up in initGL()
      *  if it is not going to change.
      */
     function display() {
@@ -55,7 +55,7 @@
      * Set up in init() to be called when the user presses a key on the keyboard.
      * The value of keyCode will be a number that identifies the key that was pressed.
      * Notable values include 38, 39, 40, and 41 for the left, up, right, and down
-     * arrow keys.  Keys that represent a character such as 'a' or space generally have
+     * arrow keys. Keys that represent a character such as 'a' or space generally have
      * the ASCII code of the character as their keyCode (32 for space, 13 for enter/return,
      * 96 for 'a', 97 for 'b', and so on).
      */
@@ -75,9 +75,9 @@
     
     /**
      * This function is called in init() to set up mouse event handling
-     * on the canvas.  You can modify the nested functions doMouseDown,
+     * on the canvas. You can modify the nested functions doMouseDown,
      * doMouseDrag, and possibly doMouseUp to change the reponse to
-     * mouse events.  See the lines labeled "TODO".
+     * mouse events. See the lines labeled "TODO".
      */
     function installMouseHandler(canvasID) {
     
@@ -143,9 +143,9 @@
     
     // --------------- support for animation ------------------------------------------
 
-    /* You can call startAnimation() to run an animation.  A frame will be drawn every
-     * 30 milliseconds (can be changed in the call to glutTimerFunc.  The global frameNumber
-     * variable will be incremented for each frame.  Call pauseAnimation() to stop animating.
+    /* You can call startAnimation() to run an animation. A frame will be drawn every
+     * 30 milliseconds (can be changed in the call to glutTimerFunc. The global frameNumber
+     * variable will be incremented for each frame. Call pauseAnimation() to stop animating.
      */
     
     var animating = false;      // indicates whether an animation is in progress;
@@ -193,7 +193,7 @@
         // lighting and materials.
     
         //glEnable(GL_LIGHTING);        // Enable lighting.
-        //glEnable(GL_LIGHT0);          // Turn on a light.  By default, shines from direction of viewer.
+        //glEnable(GL_LIGHT0);          // Turn on a light. By default, shines from direction of viewer.
         //glEnable(GL_NORMALIZE);       // OpenGL will make all normal vectors into unit normals
         //glEnable(GL_COLOR_MATERIAL);  // Material ambient and diffuse colors can be set by glColor*
     }

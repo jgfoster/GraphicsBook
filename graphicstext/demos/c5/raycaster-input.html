@@ -22,7 +22,7 @@ var cylinder;  // A cylinder that will be cloned to make the visible cylinders.
 
 var world;  // An Object3D that contains all the mesh objects in the scene.
             // Rotation of the scene is done by rotating the world about its
-            // y-axis.  (I couldn't rotate the camera about the scene since
+            // y-axis. (I couldn't rotate the camera about the scene since
             // the Raycaster wouldn't work with a camera that was a child
             // of a rotated object.)
 
@@ -31,8 +31,8 @@ var mouseAction;  // currently selected mouse action
 var dragItem;  // the cylinder that is being dragged, during a drag operation
 
 var targetForDragging;  // An invisible object that is used as the target for raycasting while
-                        // dragging a cylinder.  I use it to find the new location of the
-                        // cylinder.  I tried using the ground for this purpose, but to get
+                        // dragging a cylinder. I use it to find the new location of the
+                        // cylinder. I tried using the ground for this purpose, but to get
                         // the motion right, I needed a target that is at the same height
                         // above the ground as the point where the user clicked the cylinder.
 
@@ -230,28 +230,28 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This demo uses an object of type <i>THREE.Raycaster</i> to get input
-from the user.  A Raycaster can find intersections of a ray with objects in
-the scene.  By using the camera and mouse to specify the ray, a
-Raycaster can tell you which object the user clicks.  It also gives
+from the user. A Raycaster can find intersections of a ray with objects in
+the scene. By using the camera and mouse to specify the ray, a
+Raycaster can tell you which object the user clicks. It also gives
 the coordinates of the point at which the ray intersects the clicked
 object.</p>
 <p>The scene shows a sqaure, green base, and some tapered, yellow
-cylinders standing on the base.  Cylinders can intersect; no attempt
-is made to treat them like real solid objects.  The user can interact with the scene
-using the mouse.  Four radio buttons let the user select
+cylinders standing on the base. Cylinders can intersect; no attempt
+is made to treat them like real solid objects. The user can interact with the scene
+using the mouse. Four radio buttons let the user select
 the action that they want to perform with the mouse.</p>
 <p>When "Rotate" is selected, dragging the
-mouse will rotate the world about the <i>y</i>-axis.  Only the
+mouse will rotate the world about the <i>y</i>-axis. Only the
 horizontal motion of the mouse is taken into account.</p>
 <p>When "Drag" is selects, the mouse can be used to drag
-the yellow cylinders.  The cylinder is constrained to stay on the base.
+the yellow cylinders. The cylinder is constrained to stay on the base.
 An interesting point is that as the cylinder is dragged, its new position
 is determined using the Raycaster.</p>
 <p>When "Add" is selected, a mouse click at a point on the green base
-will add a new cylinder at that point.  Clicking a cylinder will have
+will add a new cylinder at that point. Clicking a cylinder will have
 no effect.</p>
 <p>When "Delete" is selected, clicking on one of the yellow cylinders
-will remove it from the scene.  Clicking the ground will have no effect.</p>
+will remove it from the scene. Clicking the ground will have no effect.</p>
 
 
 </div>

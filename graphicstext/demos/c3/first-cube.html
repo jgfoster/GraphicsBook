@@ -96,7 +96,7 @@ function init() {
         glsimUse("maincanvas", { alpha:false, preserveDrawingBuffer: true });
            // Note that the second parameter is used here to turn on the preserveDrawingBuffer
            // option, which is necessary in this example to retain the depth buffer between
-           // renderings.  The option in glsim is that all buffers are cleared after
+           // renderings. The option in glsim is that all buffers are cleared after
            // rendering, which differs from OpenGL, but is the default in WebGL.
     }
     catch (e) {
@@ -157,26 +157,26 @@ the cube to rotate it!</p>
 <h3>About this demo...</h3>
 <p>This demo draws a cube in OpenGL's default coordinate system, where the
 visible x, y, and z coordinates are limited to the range minus one to one.
-When the demo loads, you can only see one face of the cube.  You can rotate
+When the demo loads, you can only see one face of the cube. You can rotate
 the cube by dragging with the mouse to see it from other directions.
 </p>
 
-<p>Try turning off the depth test, and rotate the cube.  You won't get a physically
-correct image.  The sides are actaully drawn in the order red, cyan, green,
+<p>Try turning off the depth test, and rotate the cube. You won't get a physically
+correct image. The sides are actaully drawn in the order red, cyan, green,
 magenta, blue, yellow -- does that help you understand what you see?</p>
 
 <p>Clearing the depth buffer has no effect if the depth test is not enabled.
 Try turing off "Clear Depth Buffer", but leave "Depth Test Enabled" turned on.
-Rotate the cube for a while.  What happens?  What happens if you switch to a bigger
+Rotate the cube for a while. What happens?  What happens if you switch to a bigger
 cube after a while?  Think about what's left in the depth buffer when it is not
 cleared, and about how it is used the next time something is drawn.</p>
 
 <p>If you turn on the "Use Bigger Cube" option, and if you rotate the cube, then
 it's possible for part of the cube to be cut off because it is outside the visible
-range of z-values.  See how it looks!  The effect is called "clipping."</p>
+range of z-values. See how it looks!  The effect is called "clipping."</p>
 
 <p>One point of this demo is that you will probably encounter similar problems with your
-own programs.  It's a good idea to see what can go wrong and what the restuls
+own programs. It's a good idea to see what can go wrong and what the restuls
 can look like.</p>
 </div>
 

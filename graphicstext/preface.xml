@@ -4,8 +4,10 @@
 <preface>
 
 <p1>I discovered Professor Eck's book when looking for material for a undergraduate
-course on computer graphics.</p1>
-<p>I've made some modifications.</p>
+course on computer graphics. I've made some modifications that are tracked at 
+<a href="https://github.com/jgfoster/GraphicsBook">https://github.com/jgfoster/GraphicsBook</a>.
+As I get further, I'll cycle back and update this Preface.
+</p1>
 <break/> 
 
 <np>Professor James Foster<br/>
@@ -21,17 +23,17 @@ Email: <a href="mailto:james.foster@wallawalla.edu">James.Foster@WallaWalla.edu<
 
 <p1>This textbook represents my attempt to develop a modern, one-semester first course in
 computer graphics, which would typically be taken by a computer science student
-in the third or fourth year of college.  (Whether it will continue to be appropriate 
+in the third or fourth year of college. (Whether it will continue to be appropriate 
 is an open question, given the always-rapid changes in the field of computer graphics.)</p1>
 
 <p>A reader of this book should have substantial experience
 with at least one programming language, including some knowledge of object-oriented
-programming and data structures.  Everyone taking my own computer graphics course has
+programming and data structures. Everyone taking my own computer graphics course has
 had at least two semesters of programming, and most will have additional experience
-beyond that.  My students have studied the Java programming language, but
+beyond that. My students have studied the Java programming language, but
 the book should also be accessible to people with background in other languages.
-Examples in the book use Java, C, and JavaScript.  The essential features of
-those languages are covered in an appendix.  (If you need to learn programming
+Examples in the book use Java, C, and JavaScript. The essential features of
+those languages are covered in an appendix. (If you need to learn programming
 from the beginning, try my free introductory Java textbook, which is available at
 <a href="http://math.hws.edu/javanotes">http://math.hws.edu/javanotes</a>.)</p>
 
@@ -47,72 +49,72 @@ has been updated to use Release 89 of <i>three.js</i>.</p>
 The page at that address contains links for downloading a copy of
 the web site and for downloading PDF versions.</p>
 
-<p>This is a <i>free</i> textbook.  You are welcome to redistribute it, as long as you
-do not charge for it.  You can make and distribute modified versions (including translations),
+<p>This is a <i>free</i> textbook. You are welcome to redistribute it, as long as you
+do not charge for it. You can make and distribute modified versions (including translations),
 as long as your version makes the original source clear and is distributed free of charge.
 (Officially, the book is licensed under a "Creative Commons Non-Commercial Attribution Share-Alike License.")</p>
 
 <break/>
 
 <p>Many of the sample programs for this book are actually Web pages meant to be viewed
-in a Web browser.  The Web version of this book includes interactive demo programs that are integrated
+in a Web browser. The Web version of this book includes interactive demo programs that are integrated
 into the Web pages that make up the book.</p>
 
 <p>The sample programs and demos use HTML canvas graphics (in Chapter 2) or WebGL
-(in later chapters).  Canvas graphics should work well in almost any modern browser.
-WebGL is a newer technology and is more problematic.  It is implemented in all modern desktop
-browsers.  It also runs in many browsers on newer mobile devices.  However,
+(in later chapters). Canvas graphics should work well in almost any modern browser.
+WebGL is a newer technology and is more problematic. It is implemented in all modern desktop
+browsers. It also runs in many browsers on newer mobile devices. However,
 each of those browsers have had some problems with some of my programs on some
-machines.  Firefox and Chrome seem to work most consistently.  I wish I could
+machines. Firefox and Chrome seem to work most consistently. I wish I could
 be more definite than that, but the reality of WebGL at this point is that you might have
 to look for a combination of computer and browser that will work for you.</p>
 
 <p>The sample programs and demos can all be found in the download of the web site
 version of this book, which is available from its <web><a href="index.html">main page</a></web>
-<tex>main page at http://math.hws.edu/graphicsbook</tex>.  Look for them in the
-folders named <i>source</i> and <i>demo</i>.  Note that some Web browsers won't use
-images from the local file system in canvas and WebGL graphics.  Those browsers will have
+<tex>main page at http://math.hws.edu/graphicsbook</tex>. Look for them in the
+folders named <i>source</i> and <i>demo</i>. Note that some Web browsers won't use
+images from the local file system in canvas and WebGL graphics. Those browsers will have
 errors when they try to run some of the samples locally instead of over the Web.
-For me, Firefox can run such examples.  This issue affects only some of the examples.</p>
+For me, Firefox can run such examples. This issue affects only some of the examples.</p>
 
 <break/>
 
-<p>I have taught computer graphics every couple of years or so for almost 30 years.  As the field
+<p>I have taught computer graphics every couple of years or so for almost 30 years. As the field
 developed, I had to make major changes almost every time I taught the course, but for
 much of that time, I was able to structure the course primarily around OpenGL&nbsp;1.1,
-a graphics API that was in common use for an extended period.  OpenGL&nbsp;1.1 supported
-fundamental graphics concepts in a way that was fairly easy to use.  OpenGL is still
+a graphics API that was in common use for an extended period. OpenGL&nbsp;1.1 supported
+fundamental graphics concepts in a way that was fairly easy to use. OpenGL is still
 widely supported, but, for various reasons, the parts of it that were easy to use have been 
 officially dropped from the latest versions (although they are in practice supported 
-on most desktop computers).  The result is a much more powerful API
-but one that is much harder to learn.  In particular, modern OpenGL in its pure form
+on most desktop computers). The result is a much more powerful API
+but one that is much harder to learn. In particular, modern OpenGL in its pure form
 does not make for a good introduction to graphics programming.</p>
 
 <p>My approach in this book is to use a subset of OpenGL 1.1 to introduce the fundamental
-concepts of three-dimensional graphics.  I then go on to cover WebGL&mdash;a version of OpenGL
+concepts of three-dimensional graphics. I then go on to cover WebGL&mdash;a version of OpenGL
 that runs in a web browser&mdash;as an example of the more modern approach to computer graphics.
 While OpenGL makes up the major foundation for the course, the real emphasis is on fundamental
 concepts such as geometric modeling and transformations; hierarchical modeling and scene graphs;
 color, lighting, and textures; and animation.</p>
 
-<p><i>Chapter&nbsp;1</i> is a short overview of computer graphics.  It introduces many concepts
+<p><i>Chapter&nbsp;1</i> is a short overview of computer graphics. It introduces many concepts
 that will be covered in much more detail in the rest of the book.</p>
 
 <p><i>Chapter&nbsp;2</i> covers two-dimensional graphics in Java, JavaScript, and SVG, with an 
 emphasis on ideas such as transformations and scene graphs that carry over to
 three dimensions.</p>
 
-<p><i>Chapter&nbsp;3</i> and <i>Chapter&nbsp;4</i> cover OpengGL 1.1.  While OpenGL 1.1 is fairly
+<p><i>Chapter&nbsp;3</i> and <i>Chapter&nbsp;4</i> cover OpengGL 1.1. While OpenGL 1.1 is fairly
 primitive by today's standard, it includes many basic features that are still fundamental to
 three-dimensional computer graphics, in a form that is an easier starting point for people
-new to 3D graphics.  Only part of the API is covered.</p>
+new to 3D graphics. Only part of the API is covered.</p>
 
 <p><i>Chapter&nbsp;5</i> covers <i>three.js</i>, a higher-level 3D graphics API for Web graphics
-using JavaScript.  This chapter shows how fundamental concepts can be used in a higher-level
+using JavaScript. This chapter shows how fundamental concepts can be used in a higher-level
 interface.</p>
 
 <p><i>Chapter&nbsp;6</i> and <i>Chapter&nbsp;7</i> cover WebGL, a modern version of OpenGL for
-graphics on the Web.  WebGL is very low-level, and it requires the programmer to write
+graphics on the Web. WebGL is very low-level, and it requires the programmer to write
 "shader programs" to implement many features that are built into OpenGL&nbsp;1.1. Looking
 at the implementation is an opportunity to understand more deeply how computers actually
 make 3D images.</p>
@@ -121,10 +123,10 @@ make 3D images.</p>
 OpenGL.</p>
 
 <p><i>Appendix A</i> contains brief introductions to three programming languages that are
-used in the book: Java, C, and JavaScript.  <i>Appendix&nbsp;B</i> is meant to get readers started
-with the most basic uses of Blender, a sophisticated 3D modeling program.  I have found that
+used in the book: Java, C, and JavaScript. <i>Appendix&nbsp;B</i> is meant to get readers started
+with the most basic uses of Blender, a sophisticated 3D modeling program. I have found that
 introducing students to Blender is a good way to help them develop their three-dimensional
-intuition.  <i>Appendix&nbsp;C</i> contains even briefer introductions to two 2D graphics
+intuition. <i>Appendix&nbsp;C</i> contains even briefer introductions to two 2D graphics
 programs, Gimp and Inkscape.</p>
 
 <break/> 

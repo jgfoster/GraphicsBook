@@ -344,10 +344,10 @@ function evolve() {
 
 
 /**
- *  Loads a texture image asynchronously.  The first paramter is the url
- *  from which the image is to be loaded.  The second parameter is the
- *  texture object into which the image is to be loaded.  When the image
- *  has finished loading, the callback function will be called.  (Also,
+ *  Loads a texture image asynchronously. The first paramter is the url
+ *  from which the image is to be loaded. The second parameter is the
+ *  texture object into which the image is to be loaded. When the image
+ *  has finished loading, the callback function will be called. (Also,
  *  if an error occurs during loading, an error message is displayed on
  *  the page, and the callback function is not called.)
  */
@@ -372,7 +372,7 @@ function loadTexture( url ) {
         gl.texImage2D(gl.TEXTURE_2D,0,gl.LUMINANCE,gl.LUMINANCE,gl.UNSIGNED_BYTE,img);
         gl.generateMipmap(gl.TEXTURE_2D);
         findAvgColorOfOriginal();
-        document.getElementById("message").innerHTML = "Image Loaded.  Ready to start.";
+        document.getElementById("message").innerHTML = "Image Loaded. Ready to start.";
         doFitness();
         setTimeout(evolve, 100);
     }
@@ -527,7 +527,7 @@ function initGL() {
 }
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

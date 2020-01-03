@@ -9,11 +9,11 @@
 
 /* This page shows two scenes that use a cubemap texture.
  * The first shows a skybox viewed from outside the skybox
- * cube.  (This scene doesn't really use a cubemap texture;
+ * cube. (This scene doesn't really use a cubemap texture;
  * instead, the six skybox images are mapped to the faces
  * of the cube using an array of materials.)  The second scene
  * shows what the skybox looks like form the inside of
- * the cube.  A cubemap texture is used for the second scene.
+ * the cube. A cubemap texture is used for the second scene.
  */
 
 "use strict";
@@ -28,9 +28,9 @@ var textureURLs = [  // URLs of the six faces of the cube map
    ];
 
 /**
- *  Loads a list of textures.  If a callback function is provided, it is
- *  called once after all textures are loaded.  This is used to load a
- *  set of six textures to use on the six faces of the cube.  Used for
+ *  Loads a list of textures. If a callback function is provided, it is
+ *  called once after all textures are loaded. This is used to load a
+ *  set of six textures to use on the six faces of the cube. Used for
  *  the first scene.
  */
 function loadTextures(textureURLs, callback) {
@@ -56,7 +56,7 @@ function loadTextures(textureURLs, callback) {
 }
 
 /**
- *  Loads a set of six textures as a single cubemap texture.  Used for the second scene
+ *  Loads a set of six textures as a single cubemap texture. Used for the second scene
  */
 function loadCubemapTexture(textureURLs, callback) {
     /* A funtion that will be called if the attempt to load the texture fails. */
@@ -69,15 +69,15 @@ function loadCubemapTexture(textureURLs, callback) {
 
 
 /*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
- *  the view.  OrbitControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
  *  event with one touch.
  *     The first parameter is the camera that will be rotated by the controls.
- *  The second is the canvas where the scene is rendered.  The second
+ *  The second is the canvas where the scene is rendered. The second
  *  is the callback function that should be called when the controls change; it
  *  should be the function that renders the scene.
  */
@@ -107,13 +107,13 @@ function installOrbitControls(camera, canvas, callback) {
 
 
 /**
- *  Sets up the first scene.  This function is also used as a scope
+ *  Sets up the first scene. This function is also used as a scope
  *  to keep the scene, camera, etc for this scene separate from
  *  from those for the other scene.
  *      World1 shows a cube with a cube map texture viewed from the
- *  outside of the cube.  The textures are loaded as six separate
+ *  outside of the cube. The textures are loaded as six separate
  *  THREE.Texture objects, and an array of materials is used to apply
- *  the textures to the six faces of the cube.  Each face uses a
+ *  the textures to the six faces of the cube. Each face uses a
  *  MeshPhongMaterial, and the scene has a light to illuminate the
  *  cube.
  *      Note that this function returns true or false to indicate
@@ -141,7 +141,7 @@ function world1() {
         return false;
     }
     
-    /* Set up the scene with a camera and light.  The light is attached to the camera
+    /* Set up the scene with a camera and light. The light is attached to the camera
        so that it always shines in the direction the camera is facing. */
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 100);
@@ -178,12 +178,12 @@ function world1() {
 
 
 /**
- *  Sets up the second scene.  The cube map is loaded as a single texture that
- *  is applied to the cube as a whole.  This requires that the texture be used
+ *  Sets up the second scene. The cube map is loaded as a single texture that
+ *  is applied to the cube as a whole. This requires that the texture be used
  *  as an OpenGL cubemap texture, and for that a new kind of material is used.
- *  The camera is inside the cube, so that the cube acts as a "skybox".  Usually,
+ *  The camera is inside the cube, so that the cube acts as a "skybox". Usually,
  *  there would be other geometry inside the box, with the box acting as the
- *  environment.  Note that no lighting is used in this scene.
+ *  environment. Note that no lighting is used in this scene.
  */
 function world2() {
 
@@ -213,9 +213,9 @@ function world2() {
     camera.position.z = 3;  // camera must be moved away from the origin so that it can be rotated.
     var texture = loadCubemapTexture(textureURLs, render);
     
-    /* Set up a material that uses a cubemap texture.  This material uses
+    /* Set up a material that uses a cubemap texture. This material uses
        custom vertex and fragment shaders that are defined in three.js as
-       part of its shader library.  This code is copied from examples in
+       part of its shader library. This code is copied from examples in
        the three.js download. */
     var shader = THREE.ShaderLib[ "cube" ];
 	shader.uniforms[ "tCube" ].value = texture;
@@ -280,7 +280,7 @@ but with resolution reduced to 512-by-512.</p>
 <td>
     <h3>2. Skybox with Cubemap Texture</h3>
     <p style="max-width: 420px">Similar to the second example, but it textures the skybox with a single
-    cubemap texture instead of with six separate single-face textures.  This uses a
+    cubemap texture instead of with six separate single-face textures. This uses a
     ShaderMaterial to implement the cubemap texture.</p>
 </td>
 </tr>

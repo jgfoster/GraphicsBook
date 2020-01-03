@@ -17,10 +17,10 @@
 
 <!--
     Uses a framebuffer object to render directly to a texture.
-    The drawing in the texture is 2D.  The texture is then used
-    on an object.  The scene in the texture shows a number of
-    randomly colored and positioned disk.  If the animation is
-    running, the disks move.  The 2D image is applied as a
+    The drawing in the texture is 2D. The texture is then used
+    on an object. The scene in the texture shows a number of
+    randomly colored and positioned disk. If the animation is
+    running, the disks move. The 2D image is applied as a
     texture to an object selected by the user.
 -->
 
@@ -124,7 +124,7 @@ var buffer_texture;        // A buffer to hold the coordinates for a_coords_loc_
 var u_color_texture;       // Location of the color uniform in prog_texture.
 var u_translation_texture; // Location of the translation uniform in proh_texture
 
-var DISK_COUNT = 30;  // The scene in the texture shows moving disks.  This is the number of disks.
+var DISK_COUNT = 30;  // The scene in the texture shows moving disks. This is the number of disks.
 var DISK_DIAMETER = 0.6;  // This is the size of the disks.
 var diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
 var diskColors;  // An array giving the colors of the disks.
@@ -160,13 +160,13 @@ function draw() {
     gl.vertexAttribPointer(a_coords_loc_texture, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(a_coords_loc_texture);
         // Note that we use enableVertexArray/disableVertexArray to make sure correct attributes are enable
-        // for each drawing.  An attribute ID is just an integer, and we don't know what they are, so
+        // for each drawing. An attribute ID is just an integer, and we don't know what they are, so
         // I enable the ones I need while drawing, then disable them when done drawing.
     drawDisks();
     gl.disableVertexAttribArray(a_coords_loc_texture);
     gl.disable(gl.BLEND);
 
-    /*  Now draw an object, using the texture that we just drew.  (texture object was created and bound in initGL())
+    /*  Now draw an object, using the texture that we just drew. (texture object was created and bound in initGL())
      */
     
     gl.bindFramebuffer(gl.FRAMEBUFFER,null); // The null means to use the default framebuffer (which draws onscreen)
@@ -227,14 +227,14 @@ function drawDisks() {
 }
 
 /**
- *  Create an object representing an IFS model.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create an object representing an IFS model. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
- *  from the IFS, and it loads the data into those buffers.  The function
+ *  from the IFS, and it loads the data into those buffers. The function
  *  creates a new object whose properties are the identifiers of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. 
  */
 function createModel(modelData) {
     var model = {};
@@ -255,7 +255,7 @@ function createModel(modelData) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer); 
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -274,9 +274,9 @@ function createModel(modelData) {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -285,7 +285,7 @@ function createModel(modelData) {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -328,7 +328,7 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     
     // initialize data for the 2D image that is drawn to the texture
@@ -416,7 +416,7 @@ function createDiskData() {
 }
 
 /* Advance disk positions by disk velocities, wrapping around when disks move
- * outside the coordinate range from 0 to 1.  Change to a new random velocity occasionally
+ * outside the coordinate range from 0 to 1. Change to a new random velocity occasionally
  */
 function updateDiskPositions() {
     for (var i = 0; i < DISK_COUNT; i++) {

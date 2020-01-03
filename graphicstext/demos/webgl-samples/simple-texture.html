@@ -2,7 +2,7 @@
 
 <!--
    This page is a minimal example of using a texture image
-   in WebGL.  It loads a single texture image and applies
+   in WebGL. It loads a single texture image and applies
    it to a triangle.
 -->
 
@@ -45,8 +45,8 @@ var u_texture_location;     // the location of the "u_texture" uniform variable
 var textureObject;          // A texture object to hold the texture image.
 
 /**
- *  Draws the content of the canvas.  This will only be called after the
- *  texture has finished loading.  In this function, draw() is only called once.
+ *  Draws the content of the canvas. This will only be called after the
+ *  texture has finished loading. In this function, draw() is only called once.
  */
 function draw() {
 
@@ -71,11 +71,11 @@ function draw() {
     gl.vertexAttribPointer(a_texCoords_location, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(a_texCoords_location);
     
-    /* set up the value for the uniform sampler variable.  The value is
+    /* set up the value for the uniform sampler variable. The value is
        zero since the texture object that we want to use is bound to
-       texture unit number zero.  In this program, the next two lines
+       texture unit number zero. In this program, the next two lines
        are not needed, since TEXTURE0 is the default active texture unit,
-       and that never changes.  And the textureObject was bound to
+       and that never changes. And the textureObject was bound to
        texture unit 0 when the texture was loaded. */
     
     gl.activeTexture(gl.TEXTURE0);
@@ -90,9 +90,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -119,11 +119,11 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 
 /**
- *  Loads a texture image asynchronously.  The first paramter is the url
- *  from which the image is to be loaded.  The second parameter is the
- *  texture object into which the image is to be loaded.  When the image
+ *  Loads a texture image asynchronously. The first paramter is the url
+ *  from which the image is to be loaded. The second parameter is the
+ *  texture object into which the image is to be loaded. When the image
  *  has finished loading, the draw() function will be called to draw the
- *  triangle with the texture.  (Also, if an error occurs during loading,
+ *  triangle with the texture. (Also, if an error occurs during loading,
  *  an error message is displayed on the page, and draw() is called to
  *  draw the triangle without the texture.)
  */
@@ -137,7 +137,7 @@ function loadTexture( url, textureObject ) {
         gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
         gl.generateMipmap(gl.TEXTURE_2D);  // Create mipmaps; you must either
                               // do this or change the minification filter.
-        draw();  // Draw the canvas, with the texture.  
+        draw();  // Draw the canvas, with the texture. 
     }
     img.onerror = function(e,f) { 
         // This function will be called if an error occurs while loading.
@@ -175,7 +175,7 @@ function initGL() {
 }
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

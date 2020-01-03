@@ -7,15 +7,15 @@
 #include "stdio.h"
 
 // This program can display any of 8 objects, textured using any of
-// 6 texture images.  The texture images MUST be availalbe in a directory
-// named "textures" in the same directory as the executable.  (Or, you can
+// 6 texture images. The texture images MUST be availalbe in a directory
+// named "textures" in the same directory as the executable. (Or, you can
 // edit the names in the textureFileNames array.)
 //   The user can change the object by pressing the left and right arrow
-// keys and can change the texture with the up and down arrow keys.  The
-// view can be rotated by dragging the mouse on the window.  The default
+// keys and can change the texture with the up and down arrow keys. The
+// view can be rotated by dragging the mouse on the window. The default
 // view can be restored using the HOME key.
 //    This program depends on camera.c and textured-shapes.c, as well as
-// the GL, GLU, GLUT, math, and FreeImage libraries.  Example of compiling
+// the GL, GLU, GLUT, math, and FreeImage libraries. Example of compiling
 // it:
 //      gcc texture-demo.c camera.c textured-shapes.c -lGL -lglut -lfreeimage -lm -lGLU
 

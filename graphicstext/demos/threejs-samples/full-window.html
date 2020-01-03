@@ -16,10 +16,10 @@
 <script>
 
 /* This program shows an animation of a number of small, randomly
- * colored balls bouncing around inside a cube.  The cube is shown
+ * colored balls bouncing around inside a cube. The cube is shown
  * as a transparent box. The user can rotate the view of the scene 
- * the mouse.  The canvas in which the scene is drawn occupies the
- * entire browser window, and the animation runs continuously.  This
+ * the mouse. The canvas in which the scene is drawn occupies the
+ * entire browser window, and the animation runs continuously. This
  * is how three.js is typically used, although it is not how I use
  * it in other examples that I have written.
  * 
@@ -37,7 +37,7 @@ var canvas;  // The canvas on which the renderer will draw.
              
 var controls;  // an object of type TrackballControls, the handles roatation using the mouse.
 
-var cameraAndLight;  // Object holding both camera and light.  The
+var cameraAndLight;  // Object holding both camera and light. The
                      // light shines from the direction of the camera.
 
 var balls = [];   // An array of objects, each object has data for one bouncing ball.
@@ -46,7 +46,7 @@ var BALL_COUNT = 50;  // Number of balls to be created.
 
 /**
  *  Creates the bouncing balls and the translucent cube in which the balls bounce,
- *  and adds them to the scene.  A light that shines from the direction of the
+ *  and adds them to the scene. A light that shines from the direction of the
  *  camera's view is also bundled with the camera and added to the scene.
  */
 function createWorld() {
@@ -117,7 +117,7 @@ function createWorld() {
 
 
 /**
- *  Render the scene.  This is called for each frame of the animation, after updating
+ *  Render the scene. This is called for each frame of the animation, after updating
  *  the position and velocity data of the balls.
  */
 function render() {
@@ -127,7 +127,7 @@ function render() {
 
 /**
  *  When an animation is in progress, this function is called just before rendering each
- *  frame of the animation.  In this case, the bouncing balls are moved by an amount
+ *  frame of the animation. In this case, the bouncing balls are moved by an amount
  *  
  */
 function updateForFrame() { 

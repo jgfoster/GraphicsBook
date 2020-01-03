@@ -2,16 +2,16 @@
 <meta charset="UTF-8">
 <html>
 <!--
-   A demo of lighting and hierarchical modeling using WebGL.  The basic
+   A demo of lighting and hierarchical modeling using WebGL. The basic
    example has been adapted many times, starting from a Java original,
    and has a few odd features beacause of that (like use  of the
    currentColor global variable).
    
    There is a sun, with a directional light from the direction of the
-   sun that rotates around the diskworld.  It is turned off at "night"
+   sun that rotates around the diskworld. It is turned off at "night"
    when the sun is below the horizon.
    
-   There is a lamp at the center that comes on at night.  There is
+   There is a lamp at the center that comes on at night. There is
    a point light at the location of the light that used attenuation.
    
    The car has two headlights, with spotlights that come on at light.
@@ -284,7 +284,7 @@ function lights() {
 
 /**
  * Draws a "world" consisting of a disk holding some trees and a road, and a car that
- * drives along the road.  A tree in the middle grows from frame 0 to frame 1000.
+ * drives along the road. A tree in the middle grows from frame 0 to frame 1000.
  */
 function world() {
 	pushMatrix();
@@ -498,19 +498,19 @@ function popMatrix() {
 }
 
 /**
- *  Create one of the basic objects.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create one of the basic objects. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
- *  from the IFS, and it loads the data into those buffers.  The function
+ *  from the IFS, and it loads the data into those buffers. The function
  *  creates a new object whose properties are the identifies of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  (The second parameter,
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. (The second parameter,
  *  xtraTranslate, is there because this program was ported from a Java
  *  version where cylinders were created in a different position, with
  *  the base on the xy-plane instead of with their center at the origin.
  *  The xtraTranslate parameter is a 3-vector that is applied as a
- *  translation to the rendered object.  It is used to move the cylinders
+ *  translation to the rendered object. It is used to move the cylinders
  *  into the position expected by the code that was ported from Java.)
  */
 function createModel(modelData, xtraTranslate) {
@@ -533,7 +533,7 @@ function createModel(modelData, xtraTranslate) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer);
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -558,9 +558,9 @@ function createModel(modelData, xtraTranslate) {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -569,7 +569,7 @@ function createModel(modelData, xtraTranslate) {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -612,7 +612,7 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);

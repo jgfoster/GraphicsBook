@@ -23,14 +23,14 @@ var texture = null;  // The THREE.Texture object representing the texture image.
                      // This will be set in the applyTexture() function.
 
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  */
 function createWorld() {
     renderer.setClearColor( 0 );  // Set background color (0, or 0x000000, is black).
     scene = new THREE.Scene();
     
-    // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+    // create a camera, sitting on the positive z-axis. The camera is not part of the scene.
     camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 1, 10);
     camera.position.z = 6;
     
@@ -61,7 +61,7 @@ function createWorld() {
     
     pyramidGeometry.computeFaceNormals();
 	
-    /* Add the UV Texture Coordinates for each face.  They must be stored in pyramidGeom.faceVertexUvs[0].*/
+    /* Add the UV Texture Coordinates for each face. They must be stored in pyramidGeom.faceVertexUvs[0].*/
 
 	pyramidGeometry.faceVertexUvs = [[
 	    [ new THREE.Vector2(0,0), new THREE.Vector2(0,1), new THREE.Vector2(1,1) ],
@@ -85,7 +85,7 @@ function createWorld() {
 }
 
 
-/*  Render the scene.  This is called for each frame of the animation.
+/*  Render the scene. This is called for each frame of the animation.
  */
 function render() {
     renderer.render(scene, camera);
@@ -125,7 +125,7 @@ function doChangeScale() {
 
 /**
  *  Apply the texture from a given URL to a given material, and calls render()
- *  once the texture image has loaded, to show the image.  The image is loaded
+ *  once the texture image has loaded, to show the image. The image is loaded
  *  asynchronously, and the texture will not be visible on the object until
  *  after the load has finished.
  */
@@ -154,7 +154,7 @@ function applyTexture(textureURL, material) {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the pyramid.
+/*  Responds to user's key press. Here, it is used to rotate the pyramid.
  */
 function doKey(event) {
     var code = event.keyCode;

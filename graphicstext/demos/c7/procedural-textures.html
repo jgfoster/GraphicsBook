@@ -344,9 +344,9 @@ function draw() {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -355,7 +355,7 @@ function draw() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -398,14 +398,14 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 
 
 /**
- *  Create an object representing an IFS model.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create an object representing an IFS model. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
- *  from the IFS, and it loads the data into those buffers.  The function
+ *  from the IFS, and it loads the data into those buffers. The function
  *  creates a new object whose properties are the identifiers of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. 
  */
 function createModel(modelData) {
     var model = {};
@@ -426,7 +426,7 @@ function createModel(modelData) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer); 
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -576,47 +576,47 @@ function init() {
 <p>In a color texture, the color is a function of the texture coordinates.
 For an image texture, the coordinates are used to pick out a point in an image.
 For a procedural texture, the color function is computed as a mathematical function
-of the coordinates.  A 2D procedural texture, like an image texture, computes
-color as a function of two variables.  For a 3D texture, the color is a function
-of three variables.  This demo lets you texture various objects with a variety
-of procedural textures.  Two of the textures are 2D textures; these use ordinary
+of the coordinates. A 2D procedural texture, like an image texture, computes
+color as a function of two variables. For a 3D texture, the color is a function
+of three variables. This demo lets you texture various objects with a variety
+of procedural textures. Two of the textures are 2D textures; these use ordinary
 2D texture coordinates that are provided as the value of a vertex attribute.
-The other seven textures are 3D.  The 3D textures use object coordinates as
-the texture coordinates.  A scaling texture transformation is applied to the
-texture coordinates to modify the size of the texture on the surface.  (In all cases,
+The other seven textures are 3D. The 3D textures use object coordinates as
+the texture coordinates. A scaling texture transformation is applied to the
+texture coordinates to modify the size of the texture on the surface. (In all cases,
 for a scaling factor of 1.0, the visual features in the texture have about the
 same size as the objects that are being textures, so some scaling is necessary
 to get a good view of the texture.)</p>
-<p>The first two textures are two-color checkerboard patterns.  For the 2D versions,
+<p>The first two textures are two-color checkerboard patterns. For the 2D versions,
 a planar checkerboard pattern is stretched over the surface using 2D texture coordinates,
 and the effect is the same as an image texture using an image of a checkerboard.
 For the 3D texture, the effect is the same as carving the object out of a solid
-block that is colored with a checkerboard pattern.  The difference is not apparent
+block that is colored with a checkerboard pattern. The difference is not apparent
 for the cube, but it is clear for the sphere and other curved surfaces.</p>
 <p>The next two textures use Perlin noise (named after Ken Perlin, who invented it
-in 1983).  A Perlin noise function produces values in the range 0 to 1 that have
-fluctuations at a variety of frequencies.  For the Perlin textures, the color of
-a pixel is based on a Perlin noise function.  For a mottled blue/white texture, for
+in 1983). A Perlin noise function produces values in the range 0 to 1 that have
+fluctuations at a variety of frequencies. For the Perlin textures, the color of
+a pixel is based on a Perlin noise function. For a mottled blue/white texture, for
 example, the color components could be (n,n,1), where n is the value of the noise
-function.  (In fact, the Perlin textures in the demo use 0.75+0.25*n instead of
+function. (In fact, the Perlin textures in the demo use 0.75+0.25*n instead of
 n, to reduce the contrast.)  Perlin noise functions of two and three variables were copied from
 <a href="https://github.com/ashima/webgl-noise" target="_NEW">https://github.com/ashima/webgl-noise</a>;
-they are distributed under the "MIT" open-source license.  The are used in the fragment shader.</p>
+they are distributed under the "MIT" open-source license. The are used in the fragment shader.</p>
 <p>The last five textures are 3D, although similar 2D textures would be possible.</p>
 <p>The next two textures ("Sine Function" and "Marble (Soft)") are identical except that
-noise is added in the second.  The idea is to start with a periodic function that has
-values between 0 and 1.  (The actual function used here is (1.0+sin(t))/2.0 where
+noise is added in the second. The idea is to start with a periodic function that has
+values between 0 and 1. (The actual function used here is (1.0+sin(t))/2.0 where
 t is (v.x+2.0*v.y+v.z)*2.0) and v is a vec3 containing the scaled 3D texture coordinates.
 The coefficients of v.x, v.y, and v.z in the formula for t determine the size and orientation
 of the bands of color in the texture.)  For the "Marble" texture, some noise is added by
-adding a noise function to t before feeding it into the sin function.  The noise
+adding a noise function to t before feeding it into the sin function. The noise
 takes the form a*noise(b*v), where noise() is a Perlin noise function and a and b
-are constants.  The values of a and b determine the size and intensity of the perturbations
-that are introduced into the color bands.  For the soft marble texture, both a and b are&nbsp;1.</p>
+are constants. The values of a and b determine the size and intensity of the perturbations
+that are introduced into the color bands. For the soft marble texture, both a and b are&nbsp;1.</p>
 <p>The "Marble (sharp)" texture uses the same basic technique as the soft marble, but
-with a = 1.5.  Furthermore, to sharpen the contrast, the basic periodic function is
+with a = 1.5. Furthermore, to sharpen the contrast, the basic periodic function is
 abs(sin(t)) instead of (1.0+sin(t))/2.0</p>
-<p>The final pair of textures use another periodic function: the "triangular wave function" t&minus;floor(t).  The two textures
+<p>The final pair of textures use another periodic function: the "triangular wave function" t&minus;floor(t). The two textures
 use this function without noise in the first and with noise added in the second.
 With less noise, the triangluar function can be used as a basis for textures that simulate wood.</p>
 <p>Many variations are possible!  You might want to try experimenting with the source code

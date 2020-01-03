@@ -10,7 +10,7 @@ import java.nio.IntBuffer;
 
 /**
  * Use OpenGL to draw two cubes, one using glDrawArrays,
- * and one using glDrawElements.  The arrow keys can be
+ * and one using glDrawElements. The arrow keys can be
  * used to rotate both cubes.
  *
  * Note that this program does not use lighting.
@@ -19,7 +19,7 @@ public class CubesWithVertexArrays extends GLJPanel implements GLEventListener, 
 
     /**
      * A main routine to create and show a window that contains a
-     * panel of type CubesWithVertexArrays.  The program ends when the
+     * panel of type CubesWithVertexArrays. The program ends when the
      * user closes the window.
      */
     public static void main(String[] args) {
@@ -49,8 +49,8 @@ public class CubesWithVertexArrays extends GLJPanel implements GLEventListener, 
 
     //---------------------- data for glDrawArrays and glDrawElements  ----------------
 
-    /* Arrays for use with glDrawElements.  This is the data for a cube with 6 different
-     * colors at the six vertices.  (Looks kind of strange without lighting.)
+    /* Arrays for use with glDrawElements. This is the data for a cube with 6 different
+     * colors at the six vertices. (Looks kind of strange without lighting.)
      */
 
     private float[] vertexCoords = {  // Coordinates for the vertices of a cube.
@@ -75,8 +75,8 @@ public class CubesWithVertexArrays extends GLJPanel implements GLEventListener, 
             7,3,  3,2,  2,6,  6,7,    // edges of the bottom face
             1,2,  0,3,  4,7,  5,6  }; // edges connecting top face to bottom face
 
-    /* Arrays for use with glDrawArrays.  The coordinate array contains four sets of vertex
-     * coordinates for each face.  The color array must have a color for each vertex.  Since
+    /* Arrays for use with glDrawArrays. The coordinate array contains four sets of vertex
+     * coordinates for each face. The color array must have a color for each vertex. Since
      * the color of each face is solid, there is a lot of redundancy in the color array.
      * There is also redundancy in the coordinate array, compared to using glDrawElements.
      * But note that it is impossible to use a single call to glDrawElements to draw a cube 
@@ -149,7 +149,7 @@ public class CubesWithVertexArrays extends GLJPanel implements GLEventListener, 
         gl2.glDrawArrays( GL2.GL_QUADS, 0, 24 ); // Draw the first cube!
         
 
-        // Second cube, using glDrawElements.  Also draw the cube edges, and enable polygon offset
+        // Second cube, using glDrawElements. Also draw the cube edges, and enable polygon offset
         // while the faces of the cube are being drawn.
         
         gl2.glLoadIdentity();             // Set up modelview transform, first cube.

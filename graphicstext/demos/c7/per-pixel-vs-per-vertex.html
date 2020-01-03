@@ -172,7 +172,7 @@ function drawBoth() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -371,16 +371,16 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>This demo lets you compare OpenGL&nbsp;1.1-style lighting to Phong shading.  In
+<p>This demo lets you compare OpenGL&nbsp;1.1-style lighting to Phong shading. In
 OpenGL 1.1, lighting calculuations are done at the vertices, and the result is
-interpolated to interior pixels.  In Phong shading, lighting calculations are
-done at each pixel, using interpolated normal vectors.  The demo shows two
+interpolated to interior pixels. In Phong shading, lighting calculations are
+done at each pixel, using interpolated normal vectors. The demo shows two
 identical objects with identical lighting, one doing lighting calculations at
-the vertices and one doing them at each pixel.  </p>
+the vertices and one doing them at each pixel. </p>
 <p>The initial view is chosen to be one where the difference is clear: a cylinder
-illuminated by a light that is close to the cylinder.  All of the vertices of the
+illuminated by a light that is close to the cylinder. All of the vertices of the
 cylinder are located along the top and bottom edges, so per-vertex calcluations
-do not give good results.  Try rotating the cylinders around the x-axis and
+do not give good results. Try rotating the cylinders around the x-axis and
 observer how the specular highlights change.</p>
 <p>You can try other lights and other objects. The cube and the "rough sphere" are
 other cases where the per-vertex approximation gives especially bad results.

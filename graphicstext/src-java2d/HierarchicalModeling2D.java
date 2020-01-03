@@ -6,8 +6,8 @@ import java.awt.geom.*;
 
 /**
  * A panel that displays a two-dimensional animation that is constructed
- * using hierarchical modeling.  A cart rolls down a road while a sun
- * shines and three windmills turn in the background.  This class also
+ * using hierarchical modeling. A cart rolls down a road while a sun
+ * shines and three windmills turn in the background. This class also
  * contains a main() routine that simply opens a window that displays
  * the animation.
  */
@@ -77,7 +77,7 @@ public class HierarchicalModeling2D extends JPanel {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       
       /* Apply coordinates with x ranging from 0 on the left to 7 on the right
-       * and y ranging from -1 at the bottom to 4 at the top.  Note that the
+       * and y ranging from -1 at the bottom to 4 at the top. Note that the
        * aspect ration is NOT preserved, so the aspect ratio of the panel should
        * closely match the aspect ratio of the coordinate rectangle. */
 
@@ -96,22 +96,22 @@ public class HierarchicalModeling2D extends JPanel {
       g2.setStroke( new BasicStroke(pixelSize) );
       
       /* Keep a copy of the current transform, so that it can be restored after drawing
-       * each object.  Note that transforms will be applied to the objects and that the
+       * each object. Note that transforms will be applied to the objects and that the
        * methods that draw the objects can make further changes to the transforms. */
       
       AffineTransform saveTr = g2.getTransform();
       
-      /* Draw the sun.  The drawSun method draws the sun centered at (0,0).  A translation
+      /* Draw the sun. The drawSun method draws the sun centered at (0,0). A translation
        * is applied to move the center of the sun to (5,3.3). */
 
       g2.translate(5.5,3.3);
       drawSun(g2);
       g2.setTransform(saveTr);
       
-      /* Draw three windmills.  The drawWindmill method draws the windmill with its base 
-       * at (0,0), and the top of the pole at (0,3).  Each windmill is first scaled to change
-       * its size and then translated to move its base to a different paint.  In the animation,
-       * the vanes of the windmill rotate.  That rotation is done with a transform inside the
+      /* Draw three windmills. The drawWindmill method draws the windmill with its base 
+       * at (0,0), and the top of the pole at (0,3). Each windmill is first scaled to change
+       * its size and then translated to move its base to a different paint. In the animation,
+       * the vanes of the windmill rotate. That rotation is done with a transform inside the
        * drawWindmill method. */
       
       g2.translate(0.75,1);
@@ -129,13 +129,13 @@ public class HierarchicalModeling2D extends JPanel {
       drawWindmill(g2);
       g2.setTransform(saveTr);
       
-      /* Draw the cart.  The drawCart method draws the cart with the center of its base at
-       * (0,0).  The body of the cart is 5 units long and 2 units high.  A scale is first
-       * applied to the cart to make its size more reasonable for the picture.  Then a
-       * translation is applied to move the cart horizontally.  The amount of the translation
+      /* Draw the cart. The drawCart method draws the cart with the center of its base at
+       * (0,0). The body of the cart is 5 units long and 2 units high. A scale is first
+       * applied to the cart to make its size more reasonable for the picture. Then a
+       * translation is applied to move the cart horizontally. The amount of the translation
        * depends on the frame number, which makes the cart move from left to right across
-       * the screen as the animation progresses.  The cart animation repeats every 300 
-       * frames.  At the beginning of the animation, the cart is off the left edge of the
+       * the screen as the animation progresses. The cart animation repeats every 300 
+       * frames. At the beginning of the animation, the cart is off the left edge of the
        * screen. */
       
       g2.translate(-3 + 13*(frameNumber % 300) / 300.0, 0);
@@ -144,10 +144,10 @@ public class HierarchicalModeling2D extends JPanel {
    }
    
    /**
-    * Applies a coordinate transform to a Graphics2D graphics context.  The upper left corner of 
-    * the viewport where the graphics context draws is assumed to be (0,0).  The coordinate
-    * transform will make a requested rectangle visible in the drawing area.  The requested
-    * limits might be adjusted to preserve the aspect ratio.  (This method sets the global variable 
+    * Applies a coordinate transform to a Graphics2D graphics context. The upper left corner of 
+    * the viewport where the graphics context draws is assumed to be (0,0). The coordinate
+    * transform will make a requested rectangle visible in the drawing area. The requested
+    * limits might be adjusted to preserve the aspect ratio. (This method sets the global variable 
     * pixelSize to be equal to the size of one pixel in the transformed coordinate system.)
     * @param g2 The drawing context whose transform will be set.
     * @param xleft requested x-value at left of drawing area.
@@ -158,7 +158,7 @@ public class HierarchicalModeling2D extends JPanel {
     * @param preserveAspect if preserveAspect is false, then the requested rectangle will exactly fill
     * the viewport; if it is true, then the limits will be expanded in one direction, horizontally or
     * vertically, to make the aspect ratio of the displayed rectangle match the aspect ratio of the
-    * viewport.  Note that when preserveAspect is false, the units of measure in the horizontal and
+    * viewport. Note that when preserveAspect is false, the units of measure in the horizontal and
     * vertical directions will be different.
     */
    private void applyLimits(Graphics2D g2, double xleft, double xright, double ytop, double ybottom, boolean preserveAspect) {
@@ -187,7 +187,7 @@ public class HierarchicalModeling2D extends JPanel {
    }
 
    /**
-    * Draw a sun with radius 0.5 centered at (0,0).  There are also 13 rays which
+    * Draw a sun with radius 0.5 centered at (0,0). There are also 13 rays which
     * extend outside from the sun for another 0.25 units.
     */
    private void drawSun(Graphics2D g2) {
@@ -204,8 +204,8 @@ public class HierarchicalModeling2D extends JPanel {
    }
    
    /**
-    * Draw a windmill, consisting of a pole and three vanes.  The pole extends from the
-    * point (0,0) to (0,3).  The vanes radiate out from (0,3).  A rotation that depends
+    * Draw a windmill, consisting of a pole and three vanes. The pole extends from the
+    * point (0,0) to (0,3). The vanes radiate out from (0,3). A rotation that depends
     * on the frame number is applied to the whole set of vanes, which causes the windmill
     * to rotate as the animation proceeds.
     */
@@ -222,11 +222,11 @@ public class HierarchicalModeling2D extends JPanel {
    }
    
    /**
-    * Draw a cart consisting of a rectangular body and two wheels.  The wheels
+    * Draw a cart consisting of a rectangular body and two wheels. The wheels
     * are drawn by the drawWheel() method; a different translation is applied to each
-    * wheel to move them into position under the body.  The body of the cart
-    * is a red rectangle with corner at (0,-3), width 6, and height 2.  The
-    * center of the bottom of the rectangle is at (0,0).  The top of the car is
+    * wheel to move them into position under the body. The body of the cart
+    * is a red rectangle with corner at (0,-3), width 6, and height 2. The
+    * center of the bottom of the rectangle is at (0,0). The top of the car is
     * a smaller red rectangle on top of that one.
     */
    private void drawCart(Graphics2D g2) {

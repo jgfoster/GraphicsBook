@@ -1,12 +1,12 @@
 /**
  *  A viewer for the polyhedral models defined in Polyhedron.java.
  *  The user can select the model and can control some aspects of the
- *  display.  If a model does not already have colors for its faces,
- *  then random colors are assigned.  The user can drag the polyhedron
+ *  display. If a model does not already have colors for its faces,
+ *  then random colors are assigned. The user can drag the polyhedron
  *  to rotate the view.
  *
  *  This program must be linked to polyhedron.c and camera.c in addtion
- *  to the OpenGL libraries GL, GLU, and glut and the math librarym.  
+ *  to the OpenGL libraries GL, GLU, and glut and the math librarym. 
  *  For example, on Linux with the gcc compiler:
  *
  *      gcc -o polyview ifs-polyhedron-viewer.c polyhedron.c camera.c -lGL -lglut -lGLU -lm

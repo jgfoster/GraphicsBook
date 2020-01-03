@@ -7,9 +7,9 @@
 <script src="three.min.js"></script>
 <script>
 
-/* This program uses basic hierarchical modeling in three.js.  It shows
- * a car with rotating wheels driving aroud a circular track.  There are
- * also some trees, including one that increases in size.  The user can
+/* This program uses basic hierarchical modeling in three.js. It shows
+ * a car with rotating wheels driving aroud a circular track. There are
+ * also some trees, including one that increases in size. The user can
  * rotate the model using the keyboard, and the user can choose whether
  * to see the entire model, just (a copy of) the car, or just (a copy of
  * one axle of the car with attached wheels.
@@ -21,14 +21,14 @@ var scene, camera, renderer;  // Three.js rendering basics.
 
 var canvas;  // The canvas on which the image is rendered.
 
-// The three objects that can be viewed.  Each is a scene graph containing only visible objects.
+// The three objects that can be viewed. Each is a scene graph containing only visible objects.
 var axleModel;       // A model containing only an axle (thin cylinder with wheel on each end).
 var carModel;        // A model containing only a car.
 var diskworldModel;  // A model containing the diskworld.
 
 var currentModel;   // Contains the visible objects in the scene, but
-                    // not the lights or camera.  The model can be
-			        // rotated using the keyboard.  It is one of the
+                    // not the lights or camera. The model can be
+			        // rotated using the keyboard. It is one of the
 					// three above models.
 
 // Nodes in the scene graphs that are modified as part of the animation:
@@ -41,14 +41,14 @@ var carRotator;  // An object at the origin that has the diskworld car as its ch
 var animating = false;  // This is set to true when an animation is running.
 
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  */
 function createWorld() {
     renderer.setClearColor( 0x444444 );  // Set background color (0x444444 is dark gray).
 	scene = new THREE.Scene();
 	
-	// create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+	// create a camera, sitting on the positive z-axis. The camera is not part of the scene.
 	camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 30);
 	camera.position.z = 15;
 	
@@ -198,7 +198,7 @@ function createWorld() {
 }
 
 
-/*  Render the scene.  This is called for each frame of the animation.
+/*  Render the scene. This is called for each frame of the animation.
  */
 function render() {
     renderer.render(scene, camera);
@@ -233,7 +233,7 @@ function updateForFrame() {
 //--------------------------- animation support -----------------------------------
 
 /* This function runs the animation by calling updateForFrame() then calling render().
- * Finally, it arranges for itself to be called again to do the next frame.  When the
+ * Finally, it arranges for itself to be called again to do the next frame. When the
  * value of animating is set to false, this function does not schedule the next frame,
  * so the animation stops.
  */
@@ -246,7 +246,7 @@ function doFrame() {
 }
 
 
-/* Responds when the setting of the "Animate" checkbox is changed.  This
+/* Responds when the setting of the "Animate" checkbox is changed. This
  * function will start or stop the animation, depending on its setting.
  */
 function doAnimateCheckbox() {
@@ -263,7 +263,7 @@ function doAnimateCheckbox() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the model.
+/*  Responds to user's key press. Here, it is used to rotate the model.
  */
 function doKey(event) {
 	var code = event.keyCode;
@@ -290,7 +290,7 @@ function doKey(event) {
 //------------------ handle the radio buttons that select the model-------------------------
 
 /*  Changes the model that is displayed, when the user changes the setting of
- *  radio buttons that are used to select the model.  The model is reset to
+ *  radio buttons that are used to select the model. The model is reset to
  *  its initial rotation.
  */
 function doChangeModel() {

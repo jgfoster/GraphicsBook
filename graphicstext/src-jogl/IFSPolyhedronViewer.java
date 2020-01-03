@@ -8,15 +8,15 @@ import com.jogamp.opengl.awt.*;
 /**
  *  A viewer for the polyhedral models defined in Polyhedron.java.
  *  The user can select the model and can control some aspects of the
- *  display.  If a model does not already have colors for its faces,
- *  then random colors are assigned.  The user can drag the polyhedron
+ *  display. If a model does not already have colors for its faces,
+ *  then random colors are assigned. The user can drag the polyhedron
  *  to rotate the view.
  */
 public class IFSPolyhedronViewer extends GLJPanel implements GLEventListener {
 
     /**
      * A main routine to create and show a window that contains a
-     * panel of type IFSPolyhedronViewer.  The program ends when the
+     * panel of type IFSPolyhedronViewer. The program ends when the
      * user closes the window.
      */
     public static void main(String[] args) {

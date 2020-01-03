@@ -155,9 +155,9 @@ function draw2() {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -166,7 +166,7 @@ function draw2() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -298,7 +298,7 @@ rotation about the <i>x</i>-axis is restricted to the range -85 to 85 degrees.</
 <p>The demo lets the user compare the two kinds of rotators.
 There are two canvases on which cubes are drawn using WebGL.
 The user can rotate the cube in either canvas by dragging the mouse
-on that canvas.  The canvas on the left uses a <i>SimpleRotator</i>
+on that canvas. The canvas on the left uses a <i>SimpleRotator</i>
 while the one on the right uses a <i>TrackballRotator</i>.</p>
 </div>
 

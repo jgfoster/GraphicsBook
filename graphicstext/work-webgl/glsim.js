@@ -1,11 +1,11 @@
 "use strict";
 
 /*-----------------------------------------------------------------------------
- *   This section copied from gl-matrix.js (http://glmatrix.com).  Just the
- * parts of mat4 that are needed by GLSim are included here.  This section
- * is subject to the original license, reproduced below.  The software has
+ *   This section copied from gl-matrix.js (http://glmatrix.com). Just the
+ * parts of mat4 that are needed by GLSim are included here. This section
+ * is subject to the original license, reproduced below. The software has
  * been modified by deleting unneeded parts and by moving and renaming one
- * function from mat3 into mat4 (mat4.normalTransformMatrix).  Also, vec4.transformMat4
+ * function from mat3 into mat4 (mat4.normalTransformMatrix). Also, vec4.transformMat4
  * has been moved to mat4 and renamed to mat4.applyToVec4
  */
 
@@ -563,7 +563,7 @@ mat4.str = function (a) {
 * Calculates a 3x3 normal matrix (transpose inverse) from the 4x4 matrix
 *
 * This function is copied from mat3.normalFromMat4 in gl-matrix.js and
-* is renamed and added here to the mat4 API.  Modification made by D.Eck
+* is renamed and added here to the mat4 API. Modification made by D.Eck
 *
 * @param {Array} out an array of length 9 to receive operation result
 * @param {mat4} a Mat4 to derive the normal matrix from
@@ -933,7 +933,7 @@ GLSim.vertexShaderSource =
     "vec4 lighting(vec3 vertex, vec3 V, vec3 N) {\n" +
     "       // A function to compute the color of this fragment using the lighting equation.\n" +
     "       // vertex contains the coords of the points; V is a unit vector pointing to viewer;\n" +
-    "       // N is the normal vector.  This function also uses the values in the global variables\n" +
+    "       // N is the normal vector. This function also uses the values in the global variables\n" +
     "       // material, globalAmbient, and light[0]..light[7].\n" +
     "   vec3 color = material.emissive + material.ambient * globalAmbient;\n" +
     "   for (int i = 0; i < " + GLSim.lightCount + "; i++) {\n" +
@@ -1919,7 +1919,7 @@ function glsimDrawModel(ifsModel) {  // ifsModel must have structure of objects 
 
 /**
  * An object of type SimpleRotator can be used to implement a trackball-like mouse rotation
- * of a WebGL scene about the origin.  Only the first parameter to the constructor is required.
+ * of a WebGL scene about the origin. Only the first parameter to the constructor is required.
  * When an object is created, mouse event handlers are set up on the canvas to respond to rotation.
  * The class defines the following methods for an object rotator of type SimpleRotator:
  *    rotator.setView(viewDirectionVector, viewUpVector, viewDistance) set up the view, where the
@@ -1933,17 +1933,17 @@ function glsimDrawModel(ifsModel) {  // ifsModel must have structure of objects 
  *    rotator.getViewMatrixArray() returns the view transformation matrix as a regular JavaScript
  * array, but still represents as a 1D array of 16 elements, in column-major order.
  *
- * @param canvas the HTML canvas element used for WebGL drawing.  The user will rotate the
- *    scene by dragging the mouse on this canvas.  This parameter is required.
+ * @param canvas the HTML canvas element used for WebGL drawing. The user will rotate the
+ *    scene by dragging the mouse on this canvas. This parameter is required.
  * @param callback if present must be a function, which is called whenever the rotation changes.
  *    It is typically the function that draws the scene
- * @param viewDirectionVector if present must be an array of three numbers, not all zero.  The
- *    view is from the direction of this vector towards the origin (0,0,0).  If not present,
+ * @param viewDirectionVector if present must be an array of three numbers, not all zero. The
+ *    view is from the direction of this vector towards the origin (0,0,0). If not present,
  *    the value [0,0,10] is used.
  * @param viewUpVector if present must be an array of three numbers. Gives a vector that will
- *    be seen as pointing upwards in the view.  If not present, the value is [0,1,0].
- * @param viewDistance if present must be a positive number.  Gives the distance of the viewer
- *    from the origin.  If not present, the length of viewDirectionVector is used.
+ *    be seen as pointing upwards in the view. If not present, the value is [0,1,0].
+ * @param viewDistance if present must be a positive number. Gives the distance of the viewer
+ *    from the origin. If not present, the length of viewDirectionVector is used.
  */
 function SimpleRotator(canvas, callback, viewDirectionVector, viewUpVector, viewDistance) {
     var unitx = new Array(3);

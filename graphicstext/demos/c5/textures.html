@@ -48,7 +48,7 @@ function createWorld() {
         side: THREE.DoubleSide  // so it will  work with open tube and plane
     } );
 
-    /* Create an array of objects.  Only one of these objects is shown at a time.
+    /* Create an array of objects. Only one of these objects is shown at a time.
      * They all use the same material.*/
     
     objects.push( new THREE.Mesh( new THREE.BoxGeometry(12,12,12), material ) );
@@ -80,7 +80,7 @@ function createWorld() {
 
 /**
  *  When an animation is in progress, this function is called just before rendering each
- *  frame of the animation.  In this case, small amounts are added to the horizontal and
+ *  frame of the animation. In this case, small amounts are added to the horizontal and
  *  veritcal textrue obbsets.
  */
 function updateForFrame() { 
@@ -92,7 +92,7 @@ function updateForFrame() {
 
 
 /**
- *  Add one of the available textures to the array.  It's assumed that the textures are
+ *  Add one of the available textures to the array. It's assumed that the textures are
  *  in fact available in a texture folder in the same folder as this file.
  */
 function installTexture(textureNum) {
@@ -104,7 +104,7 @@ function installTexture(textureNum) {
        }
 	   catch (e) {
             document.getElementById("headline").innerHTML =
-			   "Can't access texture.  Note that some browsers<br>can't use a texture from a local disk.";
+			   "Can't access texture. Note that some browsers<br>can't use a texture from a local disk.";
 	   }
    };
    var loader = new THREE.TextureLoader();
@@ -196,9 +196,9 @@ function doAnimationCheckbox() {
 
 
 /*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
- *  the view.  TrackballControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
@@ -302,11 +302,11 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The demo can render a variety of standard <i>three.js</i> objects with a
-selection of different image textures.  When animation is turned on, the
+selection of different image textures. When animation is turned on, the
 texture offset is animated, which has the effect of making the texture
 move across the surface.</p>
 <p>The "pill" object in the demo is a compond object, composed of
-an open cylinder and two hemispheres.  The hemispheres are added
+an open cylinder and two hemispheres. The hemispheres are added
 as children of the cylinder.</p>
 </div>
 

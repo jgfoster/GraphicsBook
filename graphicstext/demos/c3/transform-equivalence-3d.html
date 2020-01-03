@@ -301,26 +301,26 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The point of this demo is to help you to understand the equivalence
-between modeling transformations and viewing transformations in 3D.  Modeling
-transforms apply to objects; they scale, rotate, and translate objects.    A viewing
-transform can scale, rotate and translate the viewer.  (This demo,
+between modeling transformations and viewing transformations in 3D. Modeling
+transforms apply to objects; they scale, rotate, and translate objects.   A viewing
+transform can scale, rotate and translate the viewer. (This demo,
 however, only does translation and rotation, not scaling.)</p>
 <p>In OpenGL, if we keep the same projection, so that the size and shape
 of the view volume remains unchanged, then we can think of the viewing
-transform as moving the view volume around in 3D space.  As the viewer moves,
+transform as moving the view volume around in 3D space. As the viewer moves,
 the region in space enclosed by the view volume will change.</p>
 <p>The image in the top left section of the demo shows a view of a 3D
-scene consisting of eight cubes.  The projection is a perspective projection,
+scene consisting of eight cubes. The projection is a perspective projection,
 with the viewer fairly close to the cubes. The
 sliders to the right allow you to control the modelview transformation that
-is used to create image.  But are they applied to the <b>objects</b>
+is used to create image. But are they applied to the <b>objects</b>
 as modeling transforms, or are they applied to the <b>viewer</b>?</p>
 <p>The two lower pictures will help you understand that the question can't
 really be answered, because of the equivalence between the two types of
-transformation.  They give a bird's eye view of the scene, from a different
-perspective.  The view volume for the upper left image is shown as a translucent
-gray box in the lower images.  Remember that the view volume encloses the
-region in 3D space that is rendered in the upper image.  Note that in the
+transformation. They give a bird's eye view of the scene, from a different
+perspective. The view volume for the upper left image is shown as a translucent
+gray box in the lower images. Remember that the view volume encloses the
+region in 3D space that is rendered in the upper image. Note that in the
 initial configuration, sections of the four back cubes lie outside the
 view volume and so are not visible in the image.</p>
 <p>Suppose that you apply transforms by dragging the sliders. In the image
@@ -333,10 +333,10 @@ is visualizing the same transforms as a viewing transformation.</p>
 are exactly the same, and they agree with what is rendered in the image.</p>
 <p>Spend some time playing with the sliders!  Try dragging the z-translation
 slider back and forth, and notice how different parts of the cubes are cut
-off as they move into and out of the view volumen.  Notice how the effect
+off as they move into and out of the view volumen. Notice how the effect
 of a transform on the objects is the opposite of its effect on the view
-volume.  It will be easiest to see what is going on if you work with
-one slider at a time.  Use the "Reset" button to reset all the sliders
+volume. It will be easiest to see what is going on if you work with
+one slider at a time. Use the "Reset" button to reset all the sliders
 to their initial values.</p>
 </div>
 

@@ -9,9 +9,9 @@ import com.jogamp.opengl.util.gl2.GLUT;  // for drawing GLUT objects (such as th
 
 /**
  * A template for a basic JOGL application with support for animation, and for
- * keyboard and mouse event handling, and for a menu.  To enable the support, 
+ * keyboard and mouse event handling, and for a menu. To enable the support, 
  * uncomment the appropriate lines in main(), in the constructor, and in the
- * init() method.  See all the lines that are marked with "TODO".
+ * init() method. See all the lines that are marked with "TODO".
  * 
  * See the JOGL documentation at http://jogamp.org/jogl/www/
  * Note that this program is based on JOGL 2.3, which has some differences
@@ -85,7 +85,7 @@ public class JoglStarter extends JPanel implements
     }
 
     /**
-     * This is called when the GLJPanel is first created.  It can be used to initialize
+     * This is called when the GLJPanel is first created. It can be used to initialize
      * the OpenGL drawing context.
      */
     public void init(GLAutoDrawable drawable) {
@@ -99,13 +99,13 @@ public class JoglStarter extends JPanel implements
         // lighting and materials.
 
         // gl.glEnable(GL2.GL_LIGHTING);        // Enable lighting.
-        // gl.glEnable(GL2.GL_LIGHT0);          // Turn on a light.  By default, shines from direction of viewer.
+        // gl.glEnable(GL2.GL_LIGHT0);          // Turn on a light. By default, shines from direction of viewer.
         // gl.glEnable(GL2.GL_NORMALIZE);       // OpenGL will make all normal vectors into unit normals
         // gl.glEnable(GL2.GL_COLOR_MATERIAL);  // Material ambient and diffuse colors can be set by glColor*
     }
 
     /**
-     * Called when the size of the GLJPanel changes.  Note:  glViewport(x,y,width,height)
+     * Called when the size of the GLJPanel changes. Note:  glViewport(x,y,width,height)
      * has already been called before this method is called!
      */
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -114,7 +114,7 @@ public class JoglStarter extends JPanel implements
     }
 
     /**
-     * This is called before the GLJPanel is destroyed.  It can be used to release OpenGL resources.
+     * This is called before the GLJPanel is destroyed. It can be used to release OpenGL resources.
      */
     public void dispose(GLAutoDrawable drawable) {
     }
@@ -171,7 +171,7 @@ public class JoglStarter extends JPanel implements
     }
 
     /**
-     * Called when the user types a character.  This function is called in
+     * Called when the user types a character. This function is called in
      * addition to one or more calls to keyPressed and keyTyped. Note that ch is an
      * actual character such as 'A' or '@'.
      */
@@ -190,12 +190,12 @@ public class JoglStarter extends JPanel implements
     
     // --------------------------- animation support ---------------------------
     
-    /* You can call startAnimation() to run an animation.  A frame will be drawn every
-     * 30 milliseconds (can be changed in the call to glutTimerFunc.  The global frameNumber
-     * variable will be incremented for each frame.  Call pauseAnimation() to stop animating.
+    /* You can call startAnimation() to run an animation. A frame will be drawn every
+     * 30 milliseconds (can be changed in the call to glutTimerFunc. The global frameNumber
+     * variable will be incremented for each frame. Call pauseAnimation() to stop animating.
      */
     
-    private boolean animating;  // True if animation is running.  Do not set directly.
+    private boolean animating;  // True if animation is running. Do not set directly.
                                 // This is set by startAnimation() and pauseAnimation().
     
     private void updateFrame() {

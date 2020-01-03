@@ -4,8 +4,8 @@
    This page uses a cube map in 2D graphics by converting
    2D texture coordinates to 3D vectors, wrapping the
    texture coordinate square around a sphere, to get the
-   vec3 needed to do cubemap lookup.  The effect is
-   something like a fisheye camera.  Two versions of the
+   vec3 needed to do cubemap lookup. The effect is
+   something like a fisheye camera. Two versions of the
    result are shown, one with a 170 degree field of view
    and one with a 330 degree field of view.
    
@@ -73,7 +73,7 @@ var textureObject = null;   // A texture object to hold the texture image.
  * Draws two squares that cover the viewport. Each one shows a view of the
  * cubemap texture that is similar to a photo made with a fisheye lens.
  * Note that the fragment shader colors pixels white if they lie outide a disk
- * inscribed in the square.  
+ * inscribed in the square. 
  */
 function draw() {
 
@@ -124,9 +124,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -153,7 +153,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 
 /**
- * Loads the six images for the cubemap texture asynchronously.  When all six
+ * Loads the six images for the cubemap texture asynchronously. When all six
  * have finished loading, the image is drawn using the texture.
  */
 function loadCubemapTexture() {
@@ -174,7 +174,7 @@ function loadCubemapTexture() {
             }
             catch (e) {
                 document.getElementById("headline").innerHTML =
-                   "Can't access texture.  Note that some browsers can't use  a texture from a local file.";
+                   "Can't access texture. Note that some browsers can't use  a texture from a local file.";
                 return;
             }
             imageCt++;
@@ -216,7 +216,7 @@ function initGL() {
 }
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

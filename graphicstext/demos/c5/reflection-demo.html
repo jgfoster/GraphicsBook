@@ -103,8 +103,8 @@ function createSkybox(textureNumber) {
 }
 
 /**
- *  Creates the material to use on the models.  This is a MeshBasicMaterial with
- *  the skybox as an environment map.  The base color, which is blended with the
+ *  Creates the material to use on the models. This is a MeshBasicMaterial with
+ *  the skybox as an environment map. The base color, which is blended with the
  *  environment map, is taken from the current color selection.
  */
 function makeReflectionMaterial() {
@@ -141,17 +141,17 @@ function installModel(modelNum) {
 function installJSONModel(modelNum) {
     /*
      * The callback function that is called by the JSONLoader when it
-     * has finished loading the object.  This function creates a three.js
-     * function to hold the object.  It translates the object so that
-     * its center is in the origin.  It wraps the object in another object
-     * that is used to scale and rotate the object.  The scale is set
+     * has finished loading the object. This function creates a three.js
+     * function to hold the object. It translates the object so that
+     * its center is in the origin. It wraps the object in another object
+     * that is used to scale and rotate the object. The scale is set
      * so that the maximum coordinate in its vertices, in absolute
-     * value, is scaled to 1.  The rotation is controlled by the arrow
-     * keys.  (The material from the JSON loader file is ignored.)
+     * value, is scaled to 1. The rotation is controlled by the arrow
+     * keys. (The material from the JSON loader file is ignored.)
      */ 
     function modelLoadedCallback(geometry) {
     
-        /* create the object from the geometry and materials that were loaded.  There
+        /* create the object from the geometry and materials that were loaded. There
            can be multiple materials, which can be applied to the object using MeshFaceMaterials.
            Note tha the material can include references to texture images might finish
            loading later. */
@@ -218,7 +218,7 @@ function installJSONModel(modelNum) {
     catch (e) {
         // Chrome, at least, get's a security error here if running from the local file system.
         document.getElementById("headline").innerHTML =
-            "Can't access model.  Note that some browsers<br>can't use models from a local disk.";
+            "Can't access model. Note that some browsers<br>can't use models from a local disk.";
     }
     render();
 }
@@ -244,8 +244,8 @@ function setObjectColor(colorNum) {
 
 
 /**
- *  Called when the user clicks one of the "show" choices.  Determines whether
- *  the skybox and object are shown.  Possibilites are 'skybox', 'object' or 'both'.
+ *  Called when the user clicks one of the "show" choices. Determines whether
+ *  the skybox and object are shown. Possibilites are 'skybox', 'object' or 'both'.
  */
 function show(what) {  console.log("show " + what + " currently " + currentlyShowing);
     if (what == currentlyShowing) {
@@ -277,15 +277,15 @@ function show(what) {  console.log("show " + what + " currently " + currentlySho
 
 
 /*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
- *  the view.  OrbitControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
  *  event with one touch.
  *     The first parameter is the camera that will be rotated by the controls.
- *  The second is the canvas where the scene is rendered.  The second
+ *  The second is the canvas where the scene is rendered. The second
  *  is the callback function that should be called when the controls change; it
  *  should be the function that renders the scene.
  */
@@ -381,13 +381,13 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The demo shows a cubemap texture used on a skybox and as a reflection map on an object.
-You have a choice of two textures and six objects.  The "Base Color" radio buttons change the
-color of the object.  The color is multiplied by the reflection map, which adds a tint to the
-reflection.  The colors that are used on the object are only a little different from white.</p>
-<p>Note that the object does not really reflect its environment in the scene.  It only looks
+You have a choice of two textures and six objects. The "Base Color" radio buttons change the
+color of the object. The color is multiplied by the reflection map, which adds a tint to the
+reflection. The colors that are used on the object are only a little different from white.</p>
+<p>Note that the object does not really reflect its environment in the scene. It only looks
 like it does because the same texture is used on the skybox and for reflection map on the
-object.  The radio buttons above the scene let you choose to see just the skybox, just the object,
-or both.  Note that the object shows the same reflection whether the skybox is there or not.
+object. The radio buttons above the scene let you choose to see just the skybox, just the object,
+or both. Note that the object shows the same reflection whether the skybox is there or not.
 </p>
 <p>Drag your mouse on the canvas to rotate the scene.</p>
 <p>Cubemap textures are by Emil Persson, downloaded from

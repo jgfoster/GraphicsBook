@@ -53,7 +53,7 @@ function draw() {
     var pixels;  // This will be used for a Uint8Array that holds pixel data
                  // for the textures that will be used on the squares.
                  
-    /* Set the texture to use gl.LINEAR as the minification filter.  It won't be
+    /* Set the texture to use gl.LINEAR as the minification filter. It won't be
        used for the objects drawn in this program, but since there are no mipmaps,
        the default minification filter has to be changed, or the texture will
        come out as all black. */
@@ -104,9 +104,9 @@ function draw() {
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
     
     /* For the third square use a 2-by-2 texture using the gl.LUMINANCE format, to get a black/white
-       checkerboard.  Note that each row of the texture must begin at an index in the Uint8Array
+       checkerboard. Note that each row of the texture must begin at an index in the Uint8Array
        that is a multiple of 4, so two extra numbers are needed to pad the data for the first row.
-       The texture is repeated 10 times over the square.  For this square, the mag filter is gl.LINEAR. */
+       The texture is repeated 10 times over the square. For this square, the mag filter is gl.LINEAR. */
     
     pixels = new Uint8Array([ 255, 0, 0, 0, 0, 255 ]);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, 2, 2, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, pixels);
@@ -152,9 +152,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -220,7 +220,7 @@ function initGL() {
 }
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {
@@ -272,8 +272,8 @@ array was used to create the texture using a version of <i>gl.texImage2D</i>
 that takes the image data from an array.</p>
 
 <p>The square on the left uses a 16-by-16 texture, made up of four 8-by-8 squares of different colors.
-The square is covered by one copy of the texture.  Note the blending of colors along the edges between
-the subsquares.  The blending is cause by the magnification filter, which is set to <i>gl.LINEAR</i>.
+The square is covered by one copy of the texture. Note the blending of colors along the edges between
+the subsquares. The blending is cause by the magnification filter, which is set to <i>gl.LINEAR</i>.
 There is blending even along the outer edges of the square because the texture repeat mode is
 <i>gl.REPEAT</i>.</p>
 
@@ -281,12 +281,12 @@ There is blending even along the outer edges of the square because the texture r
 This eliminates the blending.</p>
 
 <p>The third and fourth squares use a tiny 2-by-2 texture with the <i>gl.LUMINANCE</i> format, which requires
-only one bit per pixel.  The texture is repeated ten times horizontally and ten times vertically
-on the square.  The third square uses <i>gl.LINEAR</i> as the magnification filter.  The fourth
+only one bit per pixel. The texture is repeated ten times horizontally and ten times vertically
+on the square. The third square uses <i>gl.LINEAR</i> as the magnification filter. The fourth
 uses <i>gl.NEAREST</i>.</p>
 
-<p>For the final square, a 256-by-1 <i>gl.LUMINANCE</i> texture was uses.  The texture is given
-by an array of 256 bytes, with values increasing from 0 to 255.  One copy of the texture is
+<p>For the final square, a 256-by-1 <i>gl.LUMINANCE</i> texture was uses. The texture is given
+by an array of 256 bytes, with values increasing from 0 to 255. One copy of the texture is
 used on the square, giving a gradient effect.</p>
 
 

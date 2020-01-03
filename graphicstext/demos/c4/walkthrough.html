@@ -300,9 +300,9 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>In this demo, you move around on the top of a large
-green disk.  The top of the disk lies in the <i>xz</i>-plane.
+green disk. The top of the disk lies in the <i>xz</i>-plane.
 Various objects are scattered about the disk
-for you to look at.  You can turn left and right.  You can
+for you to look at. You can turn left and right. You can
 move forward and backward in the direction that you are facing.
 You can tilt your gaze upwards and downwards (but only to
 a limited extent).</p>
@@ -310,13 +310,13 @@ a limited extent).</p>
 The display area on the bottom right shows the view from above,
 with your position marked with a white arrow.</p>
 <p>Your view is determined by four variables:  The variables <i>x</i> and
-<i>z</i> give the x- and z-coordinates of your position.  (Your
+<i>z</i> give the x- and z-coordinates of your position. (Your
 y-coordinate is always 2, which is meant to be the height of your
-eyes above the plane of the disk.  That's 2 meters; you are rather
+eyes above the plane of the disk. That's 2 meters; you are rather
 tall.)  The variable <i>facing</i> gives the angle that your gaze
-makes with the negative direction of the <i>z</i>-axis.  The
+makes with the negative direction of the <i>z</i>-axis. The
 variable <i>headTilt</i> gives that angle that your gaze makes with
-the horizontal.  The viewing transformation is then given by
+the horizontal. The viewing transformation is then given by
 setting up a modelview tranform as follows, before drawing the world:</p>
 <pre>
     glLoadIdentity();
@@ -330,7 +330,7 @@ account for the tilt of your head, then rotated to the direction that you are fa
 then translated to the position of your eyes.
 Also remember that the effect of a viewing transform is the
 inverse of the effect that it would have on objects as a modeling transform.
-This accounts for all the negative values in the commands.  As a modeling
+This accounts for all the negative values in the commands. As a modeling
 transform, the effect would be to translate the world by (<i>&minus;x,&minus;2,&minus;z</i>), then
 rotate it by <i>&minus;facing</i>, then tilt it by <i>&minus;headTilt</i>.</p>
 </div>

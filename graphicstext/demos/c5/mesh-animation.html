@@ -25,7 +25,7 @@ var mixer = null;  // The object that animates the model, of type THREE.Animatio
 var prevMixerTime; // Used to record time of last update of mixer
 
 var controls;  // A TrackballControls object that is used to implement
-               // rotation of the scene using the mouse.  (It actually rotates
+               // rotation of the scene using the mouse. (It actually rotates
                // the camera around the scene.)
 
 var model = null; // The three.js object that represents the current model.
@@ -51,8 +51,8 @@ function render() {
 }
 
 
-/*  This function is called by the init() method to create the world.  In this program,
- *  it just creates a light and a camera.  The model will be added in modelLoaded,
+/*  This function is called by the init() method to create the world. In this program,
+ *  it just creates a light and a camera. The model will be added in modelLoaded,
  *  after the model has been loaded.
  */
 function createWorld() {
@@ -69,12 +69,12 @@ function createWorld() {
 
 /**
  * This function will be called when the JSONLoader has
- * finished loading a model.  This function creates a three.js
- * Mesh object to hold the model.  It translates the object so that
- * its center is at the origin.  It wraps the object in another object
- * that is used to scale and rotate the object.  The scale is set
+ * finished loading a model. This function creates a three.js
+ * Mesh object to hold the model. It translates the object so that
+ * its center is at the origin. It wraps the object in another object
+ * that is used to scale and rotate the object. The scale is set
  * so that the maximum coordinate in its vertices, in absolute
- * value, is scaled to 10.  The rotation is set to the second parameter,
+ * value, is scaled to 10. The rotation is set to the second parameter,
  * which is used to set up an appropriate orientation for viewing
  * the model. 
  */ 
@@ -145,7 +145,7 @@ function modelLoaded(geometry, rotation) {
 
 /**
  * Called when the setting of the model-selection radio buttons is changed.
- * starts loading the model from the specified file.  When the model has
+ * starts loading the model from the specified file. When the model has
  * has been loaded, the function modelLoaded() will be called.
  */
 function installModel(modelNumber) {
@@ -178,9 +178,9 @@ function installModel(modelNumber) {
 
 
 /*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
- *  the view.  TrackballControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
@@ -319,17 +319,17 @@ animate models of a running horse and a flying stork.</p>
 <p>The models are in
 the JSON format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 89).
 Each of the two model files includes a set of "morph targets." A morph target is
-an alternate set of vertices for the mesh geomety of the model.  The morph targets
-describe the geometry of the model at different points in time.  Those points in time
+an alternate set of vertices for the mesh geomety of the model. The morph targets
+describe the geometry of the model at different points in time. Those points in time
 are "key frames" for the animation; that is, the geometry for points between the
 key frames is obtained by interpolating the vertex positions from their values
-at the key frames.  A <i>THREE.AnimationMixer</i> is used to apply the interpolation to
-the mesh object.  (This "mixer" works with a <i>THREE.AnimationClip</i> and
-a <i>THREE.AniamtionAction</i> in a rather complex animation system.  See the
+at the key frames. A <i>THREE.AnimationMixer</i> is used to apply the interpolation to
+the mesh object. (This "mixer" works with a <i>THREE.AnimationClip</i> and
+a <i>THREE.AniamtionAction</i> in a rather complex animation system. See the
 source code.)  The colors for the horse and for the stork are part of the models.</p>
 <p>The techniques for this demo are based on the sample program
 canvas_morphtargets_horse.html, which is part of the download of <i>three.js</i>
-from its web site, threejs.org.  You can look at the source code of this
+from its web site, threejs.org. You can look at the source code of this
 demo or of that sample program to see how the animation is programmed.</p>
 <p>You can use your mouse to rotate the model, even when it is animating.</p>
 </div>

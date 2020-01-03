@@ -6,11 +6,11 @@ import com.jogamp.opengl.awt.*;
 
 /**
  * Use JOGL to draw a simple cube
- * with each face being a different color.  Rotations
+ * with each face being a different color. Rotations
  * can be applied with the arrow keys, the page up
- * key, and the page down key.  The home key will set
- * all rotations to 0.  Initial rotations about the
- * x, y, and z axes are 15, -15, and 0.  
+ * key, and the page down key. The home key will set
+ * all rotations to 0. Initial rotations about the
+ * x, y, and z axes are 15, -15, and 0. 
  *
  * This program is meant as an example of using modeling
  * transforms, with glPushMatrix and glPopMatrix.
@@ -21,7 +21,7 @@ public class UnlitCube extends GLJPanel implements GLEventListener, KeyListener 
     
     /**
      * A main routine to create and show a window that contains a
-     * panel of type UnlitCube.  The program ends when the
+     * panel of type UnlitCube. The program ends when the
      * user closes the window.
      */
     public static void main(String[] args) {

@@ -228,7 +228,7 @@ void drawDisk(double radius) {
 }
 
 /**
- * Draw a sun with radius 0.5 centered at (0,0).  There are also 13 rays which
+ * Draw a sun with radius 0.5 centered at (0,0). There are also 13 rays which
  * extend outside from the sun for another 0.25 units.
  */
 void drawSun() {
@@ -246,10 +246,10 @@ void drawSun() {
 }
 
 /**
- * Draw a windmill, consisting of a pole and three vanes.  The pole extends from the
- * point (0,0) to (0,3).  The vanes radiate out from (0,3).  A rotation that depends
+ * Draw a windmill, consisting of a pole and three vanes. The pole extends from the
+ * point (0,0) to (0,3). The vanes radiate out from (0,3). A rotation that depends
  * on the frame number is applied to the whole set of vanes, which causes the windmill
- * to rotate as the animation proceeds.  Note that this method changes the current
+ * to rotate as the animation proceeds. Note that this method changes the current
  * transform in the GL context gl!  The caller of this subroutine should take care
  * to save and restore the original transform, if necessary.
  */
@@ -298,10 +298,10 @@ void drawWheel() {
 }
 
 /**
- * Draw a cart consisting of a rectangular body and two wheels.  The wheels
+ * Draw a cart consisting of a rectangular body and two wheels. The wheels
  * are drawn by the drawWheel() method; a different translation is applied to each
- * wheel to move them into position under the body.  The body of the cart
- * is a red rectangle with corner at (0,-2.5), width 5, and height 2.  The
+ * wheel to move them into position under the body. The body of the cart
+ * is a red rectangle with corner at (0,-2.5), width 5, and height 2. The
  * center of the bottom of the rectangle is at (0,0).
  */
 void drawCart() {
@@ -326,7 +326,7 @@ void drawCart() {
 
 /**
  * This method is called by display() to draw the 2D scene that
- * will be used as a texture.  The scene is the same one that
+ * will be used as a texture. The scene is the same one that
  * was used in the program JoglHierarchicalModeling2D.
  */
 void draw2DFrame() {
@@ -368,7 +368,7 @@ void draw2DFrame() {
     glEnd();
 
     /* Draw a dashed white line to represent the stripe down the middle
-     * of the road.  Dotted/dashed lines use line "stippling" -- look it up
+     * of the road. Dotted/dashed lines use line "stippling" -- look it up
      * if you want to know how to do it. */
 
     glLineWidth(6);  // Set the line width to be 6 pixels.
@@ -379,7 +379,7 @@ void draw2DFrame() {
     glEnd();
     glLineWidth(1);  // Reset the line width to be 1 pixel.
 
-    /* Draw the sun.  The drawSun method draws the sun centered at (0,0).  A 2D translation
+    /* Draw the sun. The drawSun method draws the sun centered at (0,0). A 2D translation
      * is applied to move the center of the sun to (5,3.3). */
 
     glPushMatrix();
@@ -388,10 +388,10 @@ void draw2DFrame() {
     drawSun();
     glPopMatrix();
 
-    /* Draw three windmills.  The drawWindmill method draws the windmill with its base 
-     * at (0,0), and the top of the pole at (0,3).  Each windmill is first scaled to change
-     * its size and then translated to move its base to a different paint.  In the animation,
-     * the vanes of the windmill rotate.  That rotation is done with a transform inside the
+    /* Draw three windmills. The drawWindmill method draws the windmill with its base 
+     * at (0,0), and the top of the pole at (0,3). Each windmill is first scaled to change
+     * its size and then translated to move its base to a different paint. In the animation,
+     * the vanes of the windmill rotate. That rotation is done with a transform inside the
      * drawWindmill method. */
 
     glPushMatrix();
@@ -412,13 +412,13 @@ void draw2DFrame() {
     drawWindmill();
     glPopMatrix();
 
-    /* Draw the cart.  The drawCart method draws the cart with the center of its base at
-     * (0,0).  The body of the cart is 5 units long and 2 units high.  A scale is first
-     * applied to the cart to make its size more reasonable for the picture.  Then a
-     * translation is applied to move the cart horizontally.  The amount of the translation
+    /* Draw the cart. The drawCart method draws the cart with the center of its base at
+     * (0,0). The body of the cart is 5 units long and 2 units high. A scale is first
+     * applied to the cart to make its size more reasonable for the picture. Then a
+     * translation is applied to move the cart horizontally. The amount of the translation
      * depends on the frame number, which makes the cart move from left to right across
-     * the screen as the animation progresses.  The cart animation repeats every 300 
-     * frames.  At the beginning of the animation, the cart is off the left edge of the
+     * the screen as the animation progresses. The cart animation repeats every 300 
+     * frames. At the beginning of the animation, the cart is off the left edge of the
      * screen. */
 
     glPushMatrix();

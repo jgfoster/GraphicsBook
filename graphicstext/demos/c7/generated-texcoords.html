@@ -137,9 +137,9 @@ function draw() {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -148,7 +148,7 @@ function draw() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -191,14 +191,14 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 
 
 /**
- *  Create an object representing an IFS model.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create an object representing an IFS model. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, texture coordinates, and indices
- *  from the IFS, and it loads the data into those buffers.  The function
+ *  from the IFS, and it loads the data into those buffers. The function
  *  creates a new object whose properties are the identifiers of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. 
  */
 function createModel(modelData) {
     var model = {};
@@ -216,7 +216,7 @@ function createModel(modelData) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer);
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -383,32 +383,32 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>Texture coordinates are often specified as a vertex attribute.  However, in
+<p>Texture coordinates are often specified as a vertex attribute. However, in
 some cases it can make sense to compute texture coordinates based on other data.
 This demo textures objects using texture coordinates that are computed
-from object coordinates or, in one case, eye coordinates.  (Object coordinates
+from object coordinates or, in one case, eye coordinates. (Object coordinates
 are simply the coordinates specified as vertex attributes, before any transformation.)
 Note that a texture transformation by (0.5,0.5) is applied to textures, since
 the generated texture coordinates in this demo tend to run from &minus;0.5 to 0.5
 instead of from 0 to&nbsp;1.</p>
 <p>The first option simply uses the x and y coordinates from
-the object coordintate system as the texture coordinates.  This works OK for
-texturing the front face of a cube.  In this demo, the cube is of size 1, so
-one copy of the texture image is mapped onto the front face.  
+the object coordintate system as the texture coordinates. This works OK for
+texturing the front face of a cube. In this demo, the cube is of size 1, so
+one copy of the texture image is mapped onto the front face. 
 On the back face, the texture is mirror-reversed.
 On the other four faces, x or y is constant, so you get one pixel from the edge
-of the image smeared out across the face.  The second option uses the z and x
-coordinates instead of the x and y coordinates.  This is similar to the first
+of the image smeared out across the face. The second option uses the z and x
+coordinates instead of the x and y coordinates. This is similar to the first
 option, but it projects the texture from a different direction.</p>
-<p>The "Cubical" option might be the most useful for general purposes.  It projects
-a copy of the texture onto each face of a cube.  The direction of projection is
-along one of the coordinate axes.  The axis is chosen depending on the normal
+<p>The "Cubical" option might be the most useful for general purposes. It projects
+a copy of the texture onto each face of a cube. The direction of projection is
+along one of the coordinate axes. The axis is chosen depending on the normal
 vector to the surface.</p>
 <p>The cylindrical option wraps a copy of the texture once around a cylinder whose
-axis is the z-axis.  It gives an undistorted copy of the texture on the side of a cylinder.</p>
+axis is the z-axis. It gives an undistorted copy of the texture on the side of a cylinder.</p>
 <p>The final option is to take the x and y coordinates from the eye coordinate system.
 Using eye coordinates effectivly pins the texture to the screen instead of to the object.
-The texture doesn't move as you rotate the object.  The effect is interesting, but
+The texture doesn't move as you rotate the object. The effect is interesting, but
 maybe not very useful.</p>
 </div>
 

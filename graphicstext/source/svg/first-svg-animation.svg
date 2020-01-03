@@ -8,15 +8,15 @@
 
 <!-- A first example of animation shows trees that
      grows during the period from 3 seconds to 20
-     seconds after the image loads.  It also uses
+     seconds after the image loads. It also uses
      keyframe animation to move a disk around the
-     edge of a square.  A black square moves across
+     edge of a square. A black square moves across
      the bottom of the image repeatedly. -->
      
      
 
 <!-- A back square with an animated x attribute transform to make
-     it move along the bottom of the picture.  The animation takes
+     it move along the bottom of the picture. The animation takes
      7 seconds and repeats forever. -->
      
 <rect x="0" y="210" width="40" height="40">
@@ -25,12 +25,12 @@
      repeatCount="indefinite"/>
 </rect>
      
-<!-- A keyframe animation.  The cx and cy properties of a circle are
+<!-- A keyframe animation. The cx and cy properties of a circle are
      animated to make its center move around the edge of a rect. 
      For cx, the value goes from 30 to 170 in the first 1/4 of the
      animation, then stays equal to 170 for the second quarter,
      then decreases from 170 to 30 in the third quarter, and stays
-     fixed at 30 in the final quarter.  cy is similar.  The
+     fixed at 30 in the final quarter. cy is similar. The
      animation lasts 4 second and will repeat indefinitely.
      Note that the cx and cy attributes on the circle element will
      only be used when animation is not supported.-->
@@ -49,16 +49,16 @@
 </g>
 
 
-<!-- A "tree" made of a rectangle and a triangle.  This tree has
-     the center of its base at (0,0) and its tip at (0,200).  In 
+<!-- A "tree" made of a rectangle and a triangle. This tree has
+     the center of its base at (0,0) and its tip at (0,200). In 
      the default coordinate system, it is pointed downwards.
      A scale(1,-1) flips it vertically, so that its tip is now
-     at (0,-200) with the base still at (0,0).  This lies
+     at (0,-200) with the base still at (0,0). This lies
      outside the view rectangle, so I need to translate it
      by 200 vertically to get it back inside the view rect.
-     The tip is then at (0,0) and the  base at (0,200).  But
+     The tip is then at (0,0) and the  base at (0,200). But
      I also translate it by 400 horizontally, moving the base
-     to (400,200) and the tip to (0,0).  -->
+     to (400,200) and the tip to (0,0). -->
 
 <g transform="translate(400,200) scale(1,-1)">
    <g>
@@ -69,12 +69,12 @@
 
 
 <!-- This is a copy of the same tree with a different translation and
-     a transform animation.  The animation makes it grow from size
-     0 to 0.6 times its normal size.  The animation starts five seconds
+     a transform animation. The animation makes it grow from size
+     0 to 0.6 times its normal size. The animation starts five seconds
      after the image loads and last for a duration of 10 seconds.
      The fill="freeze" makes it keep the final value after the animation 
-     ends.  The scale(0,0) on the <g> element applies until the animation
-     starts, so the tree is not visible until then.  -->
+     ends. The scale(0,0) on the <g> element applies until the animation
+     starts, so the tree is not visible until then. -->
      
 <g transform="translate(300,170) scale(1,-1)">
    <g transform="scale(0,0)">

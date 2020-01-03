@@ -5,7 +5,7 @@
    A filter computes a new image by replacing each
    color component of each pixel in the image by a
    weighted average of the colors of that pixel and
-   its neighbors.  The demo illustrates the use
+   its neighbors. The demo illustrates the use
    of graphics.getImageData, graphics.createImageData,
    and graphics.putImageData.
 -->
@@ -49,8 +49,8 @@ function setButtonsEnabled(enable) {
 }
 
 /**
- * Draws an image onto the canvas.  The number of the image is given by the
- * value of a pop-up menu.  The value is an index into the array of image URLs.
+ * Draws an image onto the canvas. The number of the image is given by the
+ * value of a pop-up menu. The value is an index into the array of image URLs.
  * If the image has not previously been loaded, then the image file is loaded,
  * and the image is drawn after it has been loaded. If the image was previously
  * loaded, then the loaded image is drawn onto the canvas immediately.
@@ -76,8 +76,8 @@ function loadImage() {
 }
 
 /**
- *  This is called when the user clicks "Reload Current" button.  It draws the
- *  current image onto the canvas.  (This allows the user to recover the original
+ *  This is called when the user clicks "Reload Current" button. It draws the
+ *  current image onto the canvas. (This allows the user to recover the original
  *  image after applying a filter to it.)
  */
 function reload() { 
@@ -85,10 +85,10 @@ function reload() {
 }
 
 /**
- * Applies a filter to the contents of the canvas.  Note that for convenience,
+ * Applies a filter to the contents of the canvas. Note that for convenience,
  * a 1-pixel border around the image is left unmodified, since pixels in the
  * border don't have a full set of neighbors and would have to be treated as
- * a special case.  In a color data array, there are four array elements per
+ * a special case. In a color data array, there are four array elements per
  * pixel, giving the RGBA componets of the color of each pixel, starting with
  * the pixel in the upper left and proceding row-by-row down the image.
  */
@@ -119,7 +119,7 @@ function filter(filterName) {
         document.getElementById("canvas-holder").innerHTML = "<p>" +
         "An error occurred while trying to process the image.<br>" +
         "Note that some browsers will not allow you to work with<br>" +
-        "an image loaded from a local file.  If you are loading this<br>" +
+        "an image loaded from a local file. If you are loading this<br>" +
         "page from a local file, you might try the on-line version." +
         "</p>";
         return;
@@ -147,9 +147,9 @@ function filter(filterName) {
         }
     }
     graphics.putImageData(newImage,0,0,1,1,canvas.width-2,canvas.height-2);
-       // The putImageData copies the new color data onto the canvas.  The last four
+       // The putImageData copies the new color data onto the canvas. The last four
        // parameters specify the "dirty" rectangle in the data, which is the only part that
-       // is actually copied.  In this case, a 1-pixel border around the edge of the canvas
+       // is actually copied. In this case, a 1-pixel border around the edge of the canvas
        // is omitted.
     setButtonsEnabled(true);
 }
@@ -203,11 +203,11 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About This Demo...</h3>
-<p>The demo lets you apply "filters" to images.  A filter replaces the color
+<p>The demo lets you apply "filters" to images. A filter replaces the color
 of each pixel in the image with a weighted average of the color of the pixel
-and its neighbors.  In this case, only the eight neighbors immediately surrounding
-the pixel are used.  For a "Blur" filter, all the weights are equal, so you get a
-simple average.  Using different weights for different neighbors can give
+and its neighbors. In this case, only the eight neighbors immediately surrounding
+the pixel are used. For a "Blur" filter, all the weights are equal, so you get a
+simple average. Using different weights for different neighbors can give
 surprising effects, considering how simple the basic algorithm is.</p>
 <p>You can look at the source code for the demo to see how the colors of
 individual pixels can be manipulated.</p>

@@ -11,15 +11,15 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  *  Shows a scene (a teapot on a short cylindrical base) that is illuminated
- *  by up to four lights plus global ambient light.  The user can turn the
- *  lights on and off.  The global ambient light is a dim white.  There is 
+ *  by up to four lights plus global ambient light. The user can turn the
+ *  lights on and off. The global ambient light is a dim white. There is 
  *  a white "viewpoint" light that points from the direction of the viewer
- *  into the scene.  There is a red light, a blue light, and a green light
- *  that rotate in circles above the teapot.  (The user can turn the animation
+ *  into the scene. There is a red light, a blue light, and a green light
+ *  that rotate in circles above the teapot. (The user can turn the animation
  *  on and off.)  The locations of the colored lights are marked by spheres,
  *  which are gray when the light is off and are colored by some emission color
- *  when the light is on.  The teapot is gray with weak specular highlights.
- *  The base is colored with a spectrum.  (The user can turn the display of
+ *  when the light is on. The teapot is gray with weak specular highlights.
+ *  The base is colored with a spectrum. (The user can turn the display of
  *  the base on and off.) The mouse can be used to rotate the scene.
  */
 public class FourLights extends JPanel implements GLEventListener {
@@ -124,7 +124,7 @@ public class FourLights extends JPanel implements GLEventListener {
 
     /**
      *  Sets the positions of the colored lights and turns them on and off, depending on
-     *  the state of the redLight, greenLight, and blueLight options.  Draws a small
+     *  the state of the redLight, greenLight, and blueLight options. Draws a small
      *  sphere at the location of each light.
      */
     private void lights(GL2 gl) {
@@ -191,7 +191,7 @@ public class FourLights extends JPanel implements GLEventListener {
 
     /**
      * Creates an array containing the RGBA corresponding to the specified hue, with saturation
-     * 1 and brightness 0.6.  The hue should be in the range 0.0 to 1.0.
+     * 1 and brightness 0.6. The hue should be in the range 0.0 to 1.0.
      */
     private float[] colorArrayForHue(double hue) {
         Color c = Color.getHSBColor((float)hue, 1, 0.6F);
@@ -200,8 +200,8 @@ public class FourLights extends JPanel implements GLEventListener {
 
     /**
      *  Draws a cylinder with height 2 and radius 1, centered at the origin, with its axis
-     *  along the z-axis.  A spectrum of hues is applied to the vertices along the edges
-     *  of the cylinder.  (Since GL_COLOR_MATERIAL is enabled in this program, the colors
+     *  along the z-axis. A spectrum of hues is applied to the vertices along the edges
+     *  of the cylinder. (Since GL_COLOR_MATERIAL is enabled in this program, the colors
      *  specified here are used as ambient and diffuse material colors for the cylinder.)
      */
     private void drawCylinder(GL2 gl) {

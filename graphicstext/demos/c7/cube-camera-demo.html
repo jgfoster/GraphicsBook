@@ -12,10 +12,10 @@
      
      This page is an example of reflection mapping, using a
      dynamic cubemap texture that is redrawn in each frame
-     of an animation.  The animation shows colored cubes rotating
-     around a perfectly reflective object.  The cubemap texture 
+     of an animation. The animation shows colored cubes rotating
+     around a perfectly reflective object. The cubemap texture 
      applied as a reflection map to the object in the center of
-     the scene.  There is also a skybox, which uses a separate,
+     the scene. There is also a skybox, which uses a separate,
      static cubemap texture.
 -->
 
@@ -222,7 +222,7 @@ function draw() {
     
     // Get the inverse of the rotation that was applied to the skybox.
     // This is needed in the environment map shader to account for the rotation
-    // of the skybox.  (Note that it is passed to the shader in the
+    // of the skybox. (Note that it is passed to the shader in the
     // teapot's render function.)
     
     mat3.fromMat4(inverseViewTransform, modelview);
@@ -255,16 +255,16 @@ function draw() {
 
 /* This function is called by draw() to render the dynamic cubemap texture for the current frame.
  * It takes 6 "photos" of the environment using a "camera" that is located at the origin and
- * has a 90-degree field of view.  The camera points in the direction of the negative z-axis.
+ * has a 90-degree field of view. The camera points in the direction of the negative z-axis.
  * (There is no viewing transformation.)  With no modeling transformation, the camera takes
- * the picture that is needed for the "NEGATIVE_Z" face of the cube.  However, since the environment
+ * the picture that is needed for the "NEGATIVE_Z" face of the cube. However, since the environment
  * map needs a view from the outside of the cube, and the camera is inside, the resulting image
- * has to be flipped in the x-direction.  I found that it also has be be flipped in the y-direction,
- * but I'm not sure why.  (But that does agree with the fact that Web images that are loaded into
+ * has to be flipped in the x-direction. I found that it also has be be flipped in the y-direction,
+ * but I'm not sure why. (But that does agree with the fact that Web images that are loaded into
  * a cubemap texture do NOT have to be flipped vertically, even though Web images are upside down
  * with respect to the OpenGL convention for images.)  For the other five faces of the cube,
  * the environment is rotated into position in front of the camera by applying a modeling transformation
- * (or, if you prefer, the camera is rotated by applying a viewing transformation).  There is no x and
+ * (or, if you prefer, the camera is rotated by applying a viewing transformation). There is no x and
  * y flip for the positive and negative y directions becasue the flip is already built into the
  * modeling transformation that is use to position the scene in front of the camera.
  */
@@ -307,8 +307,8 @@ function createDynamicCubemap() {
     renderSkyboxAndCubes();
     
     /* The commented out section below is an alternative way of computing the positive and negative Y images,
-       including the x/y flip.  The rotations that are used in this version correspond are the correct rotations
-       based on the layout of the six images in a cubemap.   The single rotation used above is equivalent to the
+       including the x/y flip. The rotations that are used in this version correspond are the correct rotations
+       based on the layout of the six images in a cubemap.  The single rotation used above is equivalent to the
        flip and two rotations used below. */
     
     //mat4.identity(modelview);
@@ -330,12 +330,12 @@ function createDynamicCubemap() {
 }
 
 
-/* Draws the entire scene except for the central reflective object.  It is called by draw() and
+/* Draws the entire scene except for the central reflective object. It is called by draw() and
  * is called six times by createDyanmicCubeMap() to draw the six faces of the cubemap texture. (Note that
  * we don't want the central object in the environment map -- especially since the camera is inside that
  * object, and the camera would only see the inside of the object!)  This function assumes that the
  * modelview and projection matrices already exist; the values leaveing the method are the same as
- * the values coming in.  The modelview matrix should be set to the viewing transform.  Note that different
+ * the values coming in. The modelview matrix should be set to the viewing transform. Note that different
  * projection and modelview transformations are used for the main image and for the cubemap texture.
  */
 function renderSkyboxAndCubes() {
@@ -362,9 +362,9 @@ function renderSkyboxAndCubes() {
     gl.enableVertexAttribArray(dataLIT.a_normal_loc); 
     
     // lights must have their position multiplied by the modelview transform, which now
-    // is only the viewing transform, to place them into world coordinates.  Light 0
+    // is only the viewing transform, to place them into world coordinates. Light 0
     // is at (0,0,0) which modelview would only map to itself, so it is not transformed.
-    // Light color was set in initGL() and all three lights are enabled.  (The lights are white,
+    // Light color was set in initGL() and all three lights are enabled. (The lights are white,
     // of various intensities.)
     
     gl.uniform4f( dataLIT.u_lights[0].position, 0, 0, 0, 1 ); // positional light at origin
@@ -390,7 +390,7 @@ function renderSkyboxAndCubes() {
     gl.disableVertexAttribArray(dataLIT.a_normal_loc); 
 }
 
-/* Create the array of objects with data needed to draw the cubes.  Each cube has a random color.
+/* Create the array of objects with data needed to draw the cubes. Each cube has a random color.
  * It rotates in its own object coordinate system, and the rotating cube then rotates about the
  * origin.
  */
@@ -531,7 +531,7 @@ function createModelSB(modelData) {  // For creating the model for the skybox cu
 
 
 /**
- *  An event listener for the keydown event.  It is installed by the init() function.  Rotates the reflective object.
+ *  An event listener for the keydown event. It is installed by the init() function. Rotates the reflective object.
  */
 function doKey(evt) {
     var rotationChanged = true;
@@ -555,9 +555,9 @@ function doKey(evt) {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -566,7 +566,7 @@ function doKey(evt) {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -609,7 +609,7 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 
 
 
-/* Initialize the WebGL context.  Called by init().
+/* Initialize the WebGL context. Called by init().
    Gets locations for shader program attributes and uniforms, sets the values
    of uniforms that don't change, and creates the model data for drawing the
    object in the scene. */
@@ -707,12 +707,12 @@ function initGL() {
     gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer); // so we can create storage for the depthBuffer
     gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, 512, 512);
     gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
-        // The same framebuffer will be used to draw all six faces of the cubemap.  Each side will be attached
+        // The same framebuffer will be used to draw all six faces of the cubemap. Each side will be attached
         // as the color buffer of the framebuffer while that side is being drawn.
     
     // Check form WebGL errors (since I'm not sure all platforms will be able to create the framebuffer)
     if (gl.getError() != gl.NO_ERROR) {
-        throw "Some WebGL error occurred while trying to create framebuffer.  Maybe you need more resources; try another browser or computer.";
+        throw "Some WebGL error occurred while trying to create framebuffer. Maybe you need more resources; try another browser or computer.";
     }
  
 }  // end initGL()
@@ -822,15 +822,15 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This demo shows a perfectly reflective object surrounded by
-a skybox and 21 moving cubes.  You have to turn on animation
-for the cubes to move, of course.  Initially, all the cubes are
+a skybox and 21 moving cubes. You have to turn on animation
+for the cubes to move, of course. Initially, all the cubes are
 lined up behind the teapot.</p>
 <p>The cubemap texture used for the reflection
 map is not the same as the texture for the skybox, since the
-reflection map texture has to include the moving cubes.  All six
+reflection map texture has to include the moving cubes. All six
 faces of the reflection cubemap are redrawn for each frame of the
 animation.</p>
-<p>You can drag on the image to rotate the entire scene.  (You might
+<p>You can drag on the image to rotate the entire scene. (You might
 be able to rotate the reflective object with the left and right
 arrow keys, if keyboard input can be directed to the demo.)</p>
 <p>This demo is essentially a copy of the sample WebGL program cube-camera.html.</p>

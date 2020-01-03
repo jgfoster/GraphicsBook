@@ -4,10 +4,10 @@
 <intro>
 
 <p1>The previous chapter covered WebGL, but only in the context of
-two-dimensional graphics.   As we move into 3D, we will have to
+two-dimensional graphics.  As we move into 3D, we will have to
 work with more complex <word term="geometric transform">transformations</word>.
 For that, we will rely mainly on an open-source JavaScript library for 
-vector and matrix math.  We will also need to implement
+vector and matrix math. We will also need to implement
 <word>lighting</word> and <word>material</word>, which we will
 do directly in <word>GLSL</word>.</p1>
 

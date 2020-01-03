@@ -289,7 +289,7 @@ A.4) The JOGL source tree contains fonts from Ubuntu
 
    <http://font.ubuntu.com/>
 
-   Copyright 2010 Canonical Ltd.  
+   Copyright 2010 Canonical Ltd. 
    Licensed under the Ubuntu Font Licence 1.0
 
    Author: Canonical Ltd., Dalton Maag
@@ -313,7 +313,7 @@ A.5) The JOGL source tree also contains header files from NVIDIA,
    NVIDIA Corporation("NVIDIA") supplies this software to you in consideration 
    of your agreement to the following terms, and your use, installation, 
    modification or redistribution of this NVIDIA software constitutes 
-   acceptance of these terms.  If you do not agree with these terms, please do 
+   acceptance of these terms. If you do not agree with these terms, please do 
    not use, install, modify or redistribute this NVIDIA software.
    
    In consideration of your agreement to abide by the following terms, and 
@@ -326,7 +326,7 @@ A.5) The JOGL source tree also contains header files from NVIDIA,
    disclaimers in all such redistributions of the NVIDIA Software. Neither the 
    name, trademarks, service marks nor logos of NVIDIA Corporation may be used 
    to endorse or promote products derived from the NVIDIA Software without 
-   specific prior written permission from NVIDIA.  Except as expressly stated 
+   specific prior written permission from NVIDIA. Except as expressly stated 
    in this notice, no other rights or licenses express or implied, are granted 
    by NVIDIA herein, including but not limited to any patent rights that may be 
    infringed by your derivative works or by other works in which the NVIDIA 

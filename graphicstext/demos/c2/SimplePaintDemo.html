@@ -2,7 +2,7 @@
 <html>
 <!--
    This page is a simple paint program that lets the user draw on a
-   canvas.  It demonstrates using an "overlay canvas."  The "smudge
+   canvas. It demonstrates using an "overlay canvas."  The "smudge
    tool" demonstrates pixel manipulation in HTML canvas graphics.
    (Note: on my old desktop, drawing ovals crashes Firefox!)
 -->
@@ -49,7 +49,7 @@
     var overlayCanvas;  // A canvas element that exactly overlays the main canvas.
                         // It is used for temporarily drawing Ovals, Lines, and
                         // Rectangles while the user is dragging the mouse to create
-                        // one of those shapes.  Aside from that, the overlay canvas
+                        // one of those shapes. Aside from that, the overlay canvas
                         // is transparent.
     var overlayGraphics;  // A 2D graphics context for drawing on the overlay canvas.
     
@@ -63,7 +63,7 @@
         
     /**
      *  Draws a Line, Oval, or Rectangle to the graphics context g. The shape is determined
-     *  by the points (x1,y1) and (x2,y2).  The second parameter is a string nameing the shape.
+     *  by the points (x1,y1) and (x2,y2). The second parameter is a string nameing the shape.
      */
     function putShape(g, shape, x1, y1, x2, y2) { 
         var x = Math.min(x1,x2); // upper left corner, used for ovals and rectangles.
@@ -99,8 +99,8 @@
 
     /**
      *  Read the contents of a 9-by-9 square of pixels centered at (x,y), from the main canvas.
-     *  The data is obtained in an "ImageData" object.  It is copied into a Float32Array that can
-     *  be used for floating-point computations.  If that array does not already exist, it is created.
+     *  The data is obtained in an "ImageData" object. It is copied into a Float32Array that can
+     *  be used for floating-point computations. If that array does not already exist, it is created.
      *  A new ImageData object is also created that will be used for putting new color data into the
      *  image, in the swapSmudgeData function.
      */
@@ -118,9 +118,9 @@
     
     /**
      *  The data in the smudgeColorArray, which was set in the grabSmudgeData function,
-     *  is blended with the colors in a square of pixels centered at (x,y).  Effectively,
+     *  is blended with the colors in a square of pixels centered at (x,y). Effectively,
      *  some of the color from the array is moved to the image, and some of the color from
-     *  the image is moved to the array.  The effect is that the smudgeColorArray carries
+     *  the image is moved to the array. The effect is that the smudgeColorArray carries
      *  color from the point where the mouse was first pressed and drops some of that color
      *  at each point that is visited by the mouse as it moves (while picking up some
      *  new color from those points.)
@@ -129,11 +129,11 @@
         var colors = graphics.getImageData(x-5,y-5,9,9);  // get color data form image
         for (var i = 0; i < smudgeColorArray.length; i += 4) {
                 // The color arrays contain four numbers for each pixel, giving red, blue,
-                // green, and alpha color components.  An alpha value of 0 means that the
-                // pixel was outside the image; such pixels are ignored.  Otherwise,
+                // green, and alpha color components. An alpha value of 0 means that the
+                // pixel was outside the image; such pixels are ignored. Otherwise,
                 // the red, green, and blue components in the two color arrays,
                 // smudgeColorArray and colors.data, are replaced by weighted averages
-                // of the existing values.  The alpha component is simply set to 255 (fully
+                // of the existing values. The alpha component is simply set to 255 (fully
                 // opaque), which is actually what it should already be.
             if (smudgeColorArray[i+3] && colors.data[i+3]) {
                 for (var j = i; j < i+3; j++) {
@@ -171,15 +171,15 @@
     
     /**
      *  Applies the "Erase" or "Smudge" tool to each point along a line from (x1,y1)
-     *  to (x2,y2).  This is used when the user drags the mouse, with (x1,y1) being the
-     *  previous mouse location and (x2,y2) the current location.  This is necessary
+     *  to (x2,y2). This is used when the user drags the mouse, with (x1,y1) being the
+     *  previous mouse location and (x2,y2) the current location. This is necessary
      *  since the mouse can move by several pixels at each step, and it's necessary to
      *  apply the tools at every point along the path for the tool to work properly.
      */
     function applyToolAlongLine(tool, x1, y1, x2, y2) {
         var x, y, slope;
         if (Math.abs(x1-x2) >= Math.abs(y1-y2)) {
-               // Horizontal distance is greater than vertical distance.  Apply the
+               // Horizontal distance is greater than vertical distance. Apply the
                // tool once for each x-value between x1 and x2, computing the
                // y-value for each x-value from the equation of a line. 
             slope = (y2-y1)/(x2-x1);
@@ -197,7 +197,7 @@
             }
         }
         else {
-               // Vertical distance is greater than horizontal distance.  Apply the
+               // Vertical distance is greater than horizontal distance. Apply the
                // tool once for each y-value between y1 and y2, computing the
                // x-value for each y-value from the equation of a line. 
             slope = (x2-x1)/(y2-y1);
@@ -345,7 +345,7 @@
     
     /**
      * The init() funciton is called after the page has been
-     * loaded.  It initializes the canvas and graphics variables,
+     * loaded. It initializes the canvas and graphics variables,
      * and sets up some event handlers with input elements on
      * the web page.
      */
@@ -451,21 +451,21 @@ Canvas not supported.
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>Drag your mouse on the canvas to draw.  Use the "Sketch",
-"Line", "Rectangle", or "Oval" tool for drawing shapes.  The
+<p>Drag your mouse on the canvas to draw. Use the "Sketch",
+"Line", "Rectangle", or "Oval" tool for drawing shapes. The
 "Drawing Color" and "Line Width" menus control properties
-of the shapes.  (Line width applies only to the "Sketch" and
+of the shapes. (Line width applies only to the "Sketch" and
 "Line" tools.)</p>
 <p>Be sure to try the "Smudge" tool!  It smudges existing colors
-as if they were made of wet paint.  (You have to draw some shape
+as if they were made of wet paint. (You have to draw some shape
 before you can smudge it.)  The implementation of this tool is
 an example of pixel manipulation using the getImageData() and
 putImageData() functions in an HTML canvas graphics context.</p>
 <p>This demo uses an "overlay" canvas for drawing with the "Line",
-"Oval" and "Rectangle" tools.  As you drag with one of those tools,
+"Oval" and "Rectangle" tools. As you drag with one of those tools,
 the shape is drawn in an extra canvas that exactly covers the
 main canvas, so the shape can be drawn without changing the
-picture in the main canvas.  The shape is drawn to the main
+picture in the main canvas. The shape is drawn to the main
 canvas when you release the mouse at the end of the drag action.
 The overlay canvas is completely transparent, except for the shape
 that is drawn during dragging with the "Line", "Oval" and "Rectangle"

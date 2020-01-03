@@ -1,4 +1,4 @@
-// This file was automatically generated.  Do not modify.
+// This file was automatically generated. Do not modify.
 
 'use strict';
 

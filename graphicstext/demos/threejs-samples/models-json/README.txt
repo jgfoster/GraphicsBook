@@ -1,6 +1,6 @@
 Except for arrowhead.js, the js model files in this folder are from the examples 
 in a three.js download from threejs.org (release 71 and/or 89), which is distributed 
-under an MIT license.  arrowhead.js was exported from Blender by me (David Eck),
+under an MIT license. arrowhead.js was exported from Blender by me (David Eck),
 and is hearby released into the public domain.
 
 -----------

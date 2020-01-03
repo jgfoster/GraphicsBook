@@ -20,13 +20,13 @@
 </style>
 
 <!--
-     A mostly successful attempt to do bumpmapping.  Grayscale height
+     A mostly successful attempt to do bumpmapping. Grayscale height
      maps are used to perturb the normals to a surface, making the
-     surface look "bumpy".  The implementation requires tangent vectors
-     for the surface.  The three object models used here have tangent
+     surface look "bumpy". The implementation requires tangent vectors
+     for the surface. The three object models used here have tangent
      vectors that can be passed as an attribute to the shader program.
      (I haven't learned how to make the appropriate tangent vectors
-     in general.  It took some experimentation for me to get them
+     in general. It took some experimentation for me to get them
      pointed in directions that seem to work.)
  -->
 
@@ -194,10 +194,10 @@ var bumpmapURLs = [
 // --------------- functions copied from basic-object-models-IFS.js, with tangent vectors added -----------
 
 /**
-  * Create a model of a cube, centered at the origin.  (This is not
+  * Create a model of a cube, centered at the origin. (This is not
   * a particularly good format for a cube, since an IFS representation
   * has a lot of redundancy.)
-  * @side the length of a side of the cube.  If not given, the value will be 1.
+  * @side the length of a side of the cube. If not given, the value will be 1.
   */
 function cube(side) {
    var s = (side || 1)/2;
@@ -237,14 +237,14 @@ function cube(side) {
 }
 
 /**
- * Create a model of a torus (surface of a doughnut).  The z-axis goes through the doughnut hole,
+ * Create a model of a torus (surface of a doughnut). The z-axis goes through the doughnut hole,
  * and the center of the torus is at (0,0,0).
  * @param outerRadius the distance from the center to the outside of the tube, 0.5 if not specified.
  * @param innerRadius the distance from the center to the inside of the tube, outerRadius/3 if not
- *    specified.  (This is the radius of the doughnut hole.)
- * @param slices the number of lines of longitude, default 32.  These are slices parallel to the
+ *    specified. (This is the radius of the doughnut hole.)
+ * @param slices the number of lines of longitude, default 32. These are slices parallel to the
  * z-axis and go around the tube the short way (through the hole).
- * @param stacks the number of lines of latitude plus 1, default 16.  These lines are perpendicular
+ * @param stacks the number of lines of latitude plus 1, default 16. These lines are perpendicular
  * to the z-axis and go around the tube the long way (arouind the hole).
  */
 function uvTorus(outerRadius, innerRadius, slices, stacks) {
@@ -312,10 +312,10 @@ function uvTorus(outerRadius, innerRadius, slices, stacks) {
 }
 
 /**
- * Defines a model of a cylinder.  The axis of the cylinder is the z-axis,
+ * Defines a model of a cylinder. The axis of the cylinder is the z-axis,
  * and the center is at (0,0,0).
  * @param radius the radius of the cylinder
- * @param height the height of the cylinder.  The cylinder extends from -height/2
+ * @param height the height of the cylinder. The cylinder extends from -height/2
  * to height/2 along the z-axis.
  * @param slices the number of slices, like the slices of an orange.
  * @param noTop if missing or false, the cylinder has a top; if set to true,
@@ -485,14 +485,14 @@ function draw() {
 
 
 /**
- *  Create an object representing an IFS model.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create an object representing an IFS model. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, tangent vectors, texture
  *  coordinates and indices from the IFS, and it loads the data into those buffers.
  *  The function creates a new object whose properties are the identifiers of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. 
  */
 function createModel(modelData) {
     var model = {};
@@ -516,7 +516,7 @@ function createModel(modelData) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer); 
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -573,7 +573,7 @@ function setDiffuse() {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);
@@ -649,9 +649,9 @@ function initGL() {
 } // end initGL()
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -660,7 +660,7 @@ function initGL() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;

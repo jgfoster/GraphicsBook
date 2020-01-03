@@ -8,8 +8,8 @@
 <script>
 
 /* This is a starter file for experimenting with 3D animated models
- * in three.js.  The user can rotate the model using the keyboard, and
- * can turn animation on and off.  As an example, it shows  a sphere
+ * in three.js. The user can rotate the model using the keyboard, and
+ * can turn animation on and off. As an example, it shows  a sphere
  * rotating around a cube.
  *
  * To make your own model, add any global variables that you need for
@@ -28,7 +28,7 @@ var canvas;  // The canvas on which the image is rendered.
 
 
 var model;   // Contains the visible objects in the scene, but
-             // not the lights or camera.  The model can be
+             // not the lights or camera. The model can be
 			 // rotated using the keyboard. 
 
 // Nodes in the scene graphs that are modified as part of the animation:
@@ -38,14 +38,14 @@ var sphereRotator;  // The sphere is a child of this object; rotating
 var animating = false;  // This is set to true when an animation is running.
 
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  */
 function createWorld() {
     renderer.setClearColor( 0x444444 );  // Set background color (0x444444 is dark gray).
 	scene = new THREE.Scene();
 	
-	// create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+	// create a camera, sitting on the positive z-axis. The camera is not part of the scene.
 	camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 30);
 	camera.position.z = 15;
 	
@@ -84,7 +84,7 @@ function createWorld() {
 }
 
 
-/*  Render the scene.  This is called for each frame of the animation.
+/*  Render the scene. This is called for each frame of the animation.
  */
 function render() {
     renderer.render(scene, camera);
@@ -103,7 +103,7 @@ function updateForFrame() {
 //--------------------------- animation support -----------------------------------
 
 /* This function runs the animation by calling updateForFrame() then calling render().
- * Finally, it arranges for itself to be called again to do the next frame.  When the
+ * Finally, it arranges for itself to be called again to do the next frame. When the
  * value of animating is set to false, this function does not schedule the next frame,
  * so the animation stops.
  */
@@ -116,7 +116,7 @@ function doFrame() {
 }
 
 
-/* Responds when the setting of the "Animate" checkbox is changed.  This
+/* Responds when the setting of the "Animate" checkbox is changed. This
  * function will start or stop the animation, depending on its setting.
  */
 function doAnimateCheckbox() {
@@ -133,7 +133,7 @@ function doAnimateCheckbox() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the model.
+/*  Responds to user's key press. Here, it is used to rotate the model.
  */
 function doKey(event) {
 	var code = event.keyCode;

@@ -177,7 +177,7 @@ function draw() {
     }
     
     
-    /* Set the position and direction for the spotlights.  These properties are affected
+    /* Set the position and direction for the spotlights. These properties are affected
        by the modelview transformation, since the values must be specified in eye coordinates. */
     
     var modelviewForLights = mat4.clone(modelview); // so I can apply modeling transforms to lights
@@ -219,7 +219,7 @@ function setSpotlight( light, modelview, lightPosition, lightDirection ) {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);
@@ -262,7 +262,7 @@ function initGL() {
     gl.disableVertexAttribArray(a_normal_loc);
     gl.vertexAttrib3f(a_normal_loc,0,1,0);
     
-    /* Set up values for material uniforms. Enable lights and set their color.  Also,
+    /* Set up values for material uniforms. Enable lights and set their color. Also,
        all viewpoint light properties. These values don't change in this program. The other
        spotlight properties do change, and they are set in draw. */
     
@@ -283,9 +283,9 @@ function initGL() {
 } // end initGL()
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -294,7 +294,7 @@ function initGL() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;

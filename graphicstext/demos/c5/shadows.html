@@ -38,7 +38,7 @@ function createWorld() {
     scene.add(camera);
     
     renderer.shadowMap.enabled = true; // This is required for this renderer to
-                                       // do shadow computations.  Note that
+                                       // do shadow computations. Note that
                                        // renderer.setSize(width,height) must also be
                                        // called for the rendering with shadows to work.
     renderer.setSize( canvas.width, canvas.height );
@@ -53,7 +53,7 @@ function createWorld() {
     base.receiveShadow = true;  // This allows shadows to be rendered onto the base.
     scene.add(base);
     /* Due to a bug(?) in three.js, shadows are rendered onto the back (non-illuminated) side
-       of the base.  So, instead of making the base material two-sided, I hide the back with
+       of the base. So, instead of making the base material two-sided, I hide the back with
        another plane that does not receive shadows. */
     var baseBack = new THREE.Mesh(
          new THREE.PlaneGeometry(25,25),
@@ -89,7 +89,7 @@ function createWorld() {
     scene.add(cyl);
     
     /* Create a directional light that casts shadows. Also make a small sphere that
-       will be in the same position as the light.  Put the light and the sphere into
+       will be in the same position as the light. Put the light and the sphere into
        another object that is used to animate the light/sphere position. */
     var light1 = new THREE.DirectionalLight(0xffffff, 0.7);
     light1.castShadow = true;  // allows the light to cast shadows
@@ -164,8 +164,8 @@ function doSecondLightCheckbox() {
 
 /**
  *  When an animation is in progress, this function is called just before rendering each
- *  frame of the animation.  In this case, the shadow-casting lights are animated so that
- *  they move in a circle around the y-axis and at the same time move up and down.  In
+ *  frame of the animation. In this case, the shadow-casting lights are animated so that
+ *  they move in a circle around the y-axis and at the same time move up and down. In
  *  addition, the bar, one of the objects that casts a shadow, spins.
  */
 function updateForFrame() { 
@@ -218,9 +218,9 @@ function doAnimationCheckbox() {
 
 
 /*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
- *  the view.  OrbitControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
@@ -304,7 +304,7 @@ function init() {
 <p>A demostration of support for shadows in <i>three.js</i>. 
 <p>Shadows require a lot of configuration and tuning to get right, and they are still not
 perfect. For example, a spotlight generates shadows outside its cone of illumination,
-and the shadow doesn't seem to take the color of the light into account.  However,
+and the shadow doesn't seem to take the color of the light into account. However,
 the demo shows that resonable looking shadows are possible.</p>
 <p>The "Animate" checkbox makes the lights move and one of the objects rotate in place, so
 you can see how the shadows depend on the light positions as well as the objects.</p>

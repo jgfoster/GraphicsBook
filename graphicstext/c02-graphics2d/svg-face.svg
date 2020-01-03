@@ -7,12 +7,12 @@
      viewBox="-100 -100 200 200"
      preserveAspectRatio="xMidYMid">
      
-<!--  A simple example of grouping using the <g> element.  This
-      draws a face, centered at (0,0), with radius 98.  The attributes
+<!--  A simple example of grouping using the <g> element. This
+      draws a face, centered at (0,0), with radius 98. The attributes
       on the <g> element set up default values for the group for the
-      fill, stroke, and stroke-width attributes.  The default 
+      fill, stroke, and stroke-width attributes. The default 
       stroke-width is overridden with a different value for the
-      <path> element.  The transform on the <g> element flips the
+      <path> element. The transform on the <g> element flips the
       picture vertically, just because I am more comfortable with
       a flipped coordinate system. -->
      

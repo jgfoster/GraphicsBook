@@ -1,14 +1,14 @@
 
 /* A minimal implementation of affine transformations in 2D, supporting rotation,
-   scaling, and translation.  An affine transform is represented as an object
-   of type AffineTransform2D.  No error checking of parameter vaues is done! */
+   scaling, and translation. An affine transform is represented as an object
+   of type AffineTransform2D. No error checking of parameter vaues is done! */
 
 /**
  *  Create a 2D affine transform object representing the transform from (x,y)
- *  to ( a*x + c*y + e, b*x + d*y + e ).  If exaclty one parameter is passed
+ *  to ( a*x + c*y + e, b*x + d*y + e ). If exaclty one parameter is passed
  *  and it is of type AffineTransform2D, then a copy is made of the paramter.
- *  Otherwise, parameters should be numeric.  Missing parameter values are
- *  taken from the identity transform.  If no parameters are passed, the
+ *  Otherwise, parameters should be numeric. Missing parameter values are
+ *  taken from the identity transform. If no parameters are passed, the
  *  result is the identity transform.
  */
 function AffineTransform2D(a, b, c, d, e, f) {
@@ -43,7 +43,7 @@ AffineTransform2D.prototype.getMat3 = function() {
 }
 
 /**
- * Multiply this transform on the right by a rotation transform.  Angle is given in radians.
+ * Multiply this transform on the right by a rotation transform. Angle is given in radians.
  * Replaces this transform with the modified transform, and returns the modified transform.
  */
 AffineTransform2D.prototype.rotate = function(radians) {

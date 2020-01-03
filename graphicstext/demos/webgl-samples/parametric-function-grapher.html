@@ -14,7 +14,7 @@
 
 <!--
    Graphs a parametric function (x(u,v),y(u,v),z(u,v)) input by the
-   user.   The two sides of the graph are colored yellow and blue.
+   user.  The two sides of the graph are colored yellow and blue.
    A demo of using multiple lights and two-sided lighting.
    Note that the functions are defined using JavaScript syntax,
    except that certain Math functions have been given alternative
@@ -170,7 +170,7 @@ function draw() {
     gl.uniformMatrix4fv(u_modelview, false, modelview );
     gl.uniformMatrix4fv(u_projection, false, projection );
     
-    /* Draw the model.  The data for the model was set up in installModel() */
+    /* Draw the model. The data for the model was set up in installModel() */
     
     gl.uniform1i(u_lit, 1);  // Turn on lighting for drawin the graph.
     gl.enable(gl.POLYGON_OFFSET_FILL);  // polygon offset is used to make grid lines show up properly
@@ -228,8 +228,8 @@ var atan = Math.atan;
 var pi = Math.PI;
 
 /* Called during init() and when the user clicks Draw Graph to create the data for
-   graphing the graph.  The vertex coordinates and normals are stored in the buffers
-   a_coords_buffer and a_coords_normal.  If any error occurs, an error message
+   graphing the graph. The vertex coordinates and normals are stored in the buffers
+   a_coords_buffer and a_coords_normal. If any error occurs, an error message
    is displayed and graphOK is set to false; the canvas will turn red.
 */
 function installFunction() {
@@ -369,7 +369,7 @@ function installFunction() {
 
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);
@@ -472,9 +472,9 @@ function initGL() {
 } // end initGL()
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -483,7 +483,7 @@ function initGL() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -614,11 +614,11 @@ function init() {
 and z(u,v) can use: the variables <i>u</i> and <i>v</i>; the operators +, &minus;, <code>*</code>,
 and <code>/</code>; the functions <i>sin</i>(<i>x</i>), <i>cos</i>(<i>x</i>), <i>atan</i>(<i>x</i>),
 <i>abs</i>(<i>x</i>), <i>exp</i>(<i>x</i>), <i>log</i>(<i>x</i>), and <i>pow</i>(<i>x,y</i>); and
-the constant <i>pi</i>.  Note that there is no exponential operator, but <i>pow</i>(<i>x,y</i>)
-does exponentiation.  Angles are measured in radians. The <i>scale</i> determines the range of
-coordinates that are in view.  Coordinates in the range &minus;<i>scale</i> to <i>scale</i>
+the constant <i>pi</i>. Note that there is no exponential operator, but <i>pow</i>(<i>x,y</i>)
+does exponentiation. Angles are measured in radians. The <i>scale</i> determines the range of
+coordinates that are in view. Coordinates in the range &minus;<i>scale</i> to <i>scale</i>
 should be visible. If axes are drawn, they extend from &minus;<i>scale</i> to scale along
-each coordinate axis.  The y-axis (green) points upward, the z-axis (blue) points out of the screen,
+each coordinate axis. The y-axis (green) points upward, the z-axis (blue) points out of the screen,
 and the x-axis (red) points to the right.</p>
 </div>
 

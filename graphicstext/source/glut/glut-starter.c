@@ -1,15 +1,15 @@
 
 /* A framework for writing simple 3D applications with GLUT, with
  * support for animation, for mouse and keyboard events, and for a
- * menu.  Note that you need to uncomment some lines in main() and
- * initGL() to enable various features.  Drawing code must be
- * added to display().  See lines marked with "TODO".  See the
+ * menu. Note that you need to uncomment some lines in main() and
+ * initGL() to enable various features. Drawing code must be
+ * added to display(). See lines marked with "TODO". See the
  * GLUT documentation at 
  *    www.opengl.org/resources/libraries/glut/spec3/node1.html
  * or the FreeGLUT documentation at
  *    freeglut.sourceforge.net/docs/api.php
  *
- *    This program must be linked to the GL and glut libraries.  
+ *    This program must be linked to the GL and glut libraries. 
  * For example, in Linux with the gcc compiler:
  *
  *        gcc -o executableProg glut-starter.c -lGL -lglut
@@ -41,7 +41,7 @@ void initGL() {
     // lighting and materials.
 
     // glEnable(GL_LIGHTING);        // Enable lighting.
-    // glEnable(GL_LIGHT0);          // Turn on a light.  By default, shines from direction of viewer.
+    // glEnable(GL_LIGHT0);          // Turn on a light. By default, shines from direction of viewer.
     // glEnable(GL_NORMALIZE);       // OpenGL will make all normal vectors into unit normals
     // glEnable(GL_COLOR_MATERIAL);  // Material ambient and diffuse colors can be set by glColor*
 
@@ -50,9 +50,9 @@ void initGL() {
 
 /* display() is set up in main() as the function that is called when the window is
  * first opened, when glutPostRedisplay() is called, and possibly at other times when
- * the window needs to be redrawn.  Usually it will redraw the entire contents of
- * the window.  (Drawing can also be done in other functions, but usually only when
- * single buffer mode is used.  The projection is often set up in intiGL() or reshape()
+ * the window needs to be redrawn. Usually it will redraw the entire contents of
+ * the window. (Drawing can also be done in other functions, but usually only when
+ * single buffer mode is used. The projection is often set up in intiGL() or reshape()
  * instead of in display().)
  */
 void display() {
@@ -75,8 +75,8 @@ void display() {
 
 
 /* reshape() is set up in main() as the functin that is called when the window changes size.
- * It is also called when the window is first opened.  The parameters give the size of
- * the drawing area.  If no reshape function is provided, the default is to set the
+ * It is also called when the window is first opened. The parameters give the size of
+ * the drawing area. If no reshape function is provided, the default is to set the
  * viewport to match the size of the drawing area.
  */
 void reshape(int w, int h) {
@@ -90,9 +90,9 @@ void reshape(int w, int h) {
 
 // --------------- support for animation ------------------------------------------
 
-/* You can call startAnimation() to run an animation.  A frame will be drawn every
- * 30 milliseconds (can be changed in the call to glutTimerFunc.  The global frameNumber
- * variable will be incremented for each frame.  Call pauseAnimation() to stop animating.
+/* You can call startAnimation() to run an animation. A frame will be drawn every
+ * 30 milliseconds (can be changed in the call to glutTimerFunc. The global frameNumber
+ * variable will be incremented for each frame. Call pauseAnimation() to stop animating.
  */
 
 int animating = 0;      // 0 or 1 to indicate whether an animation is in progress;
@@ -131,7 +131,7 @@ void pauseAnimation() {
 // --------------- keyboard event functions ---------------------------------------
 
 /* charTyped() is set up in main() to be called when the user types a character.
- * The ch parameter is an actual character such as 'A', '7', or '@'.  The parameters
+ * The ch parameter is an actual character such as 'A', '7', or '@'. The parameters
  * x and y give the mouse position, in pixel coordinates, when the character was typed,
  * with (0,0) at the UPPER LEFT.
  */
@@ -143,11 +143,11 @@ void charTyped(unsigned char ch, int x, int y) {
 
 
 /* specialKeyPressed() is set up in main() to be called when the user presses certaub keys
- * that do NOT type an actual character, such as an arrow or function key.  The
+ * that do NOT type an actual character, such as an arrow or function key. The
  * key parameter is a GLUT constant such as GLUT_KEY_LEFT, GLUT_KEY_RIGHT,
  * GLUT_KEY_UP and GLUT_KEY_DOWN for the arrow keys; GLUT_KEY_HOME for the home key,
- * and GLUT_KEY_F1 for a funtion key.  Note that escape, backspace, and delete are
- * considered to be characters and result in a call to charTyped.  The x and y
+ * and GLUT_KEY_F1 for a funtion key. Note that escape, backspace, and delete are
+ * considered to be characters and result in a call to charTyped. The x and y
  * parameters give the mouse position when the key was pressed.
  */
 void specialKeyPressed(int key, int x, int y) {
@@ -165,9 +165,9 @@ int startX, startY;  // mouse position at start of drag
 int prevX, prevY;    // previous mouse position during drag
 
 /*  mouseUpDown() is set up in main() to be called when the user presses or releases
- *  a mutton ont he mouse.  The button paramter is one of the contants GLUT_LEFT_BUTTON,
- *  GLUT_MIDDLE_BUTTON, or GLUT_RIGHT_BUTTON.  The buttonState is GLUT_UP or GLUT_DOWN and
- *  tells whether this is a mouse press or a mouse release event.  x and y give the
+ *  a mutton ont he mouse. The button paramter is one of the contants GLUT_LEFT_BUTTON,
+ *  GLUT_MIDDLE_BUTTON, or GLUT_RIGHT_BUTTON. The buttonState is GLUT_UP or GLUT_DOWN and
+ *  tells whether this is a mouse press or a mouse release event. x and y give the
  *  mouse position in pixel coordinates, with (0,0) at the UPPER LEFT.
  */
 void mouseUpOrDown(int button, int buttonState, int x, int y) {
@@ -192,7 +192,7 @@ void mouseUpOrDown(int button, int buttonState, int x, int y) {
 }
 
 /*  mouseDragged() is set up in main() to be called when the user moves the mouse,
- *  but only when one or more mouse buttons are pressed.  x and y give the position
+ *  but only when one or more mouse buttons are pressed. x and y give the position
  *  of the mouse in pixel coordinates.
  */
 void mouseDragged(int x, int y) {
@@ -208,7 +208,7 @@ void mouseDragged(int x, int y) {
 
 // ------------------------------- Menu support ----------------------------------
 
-/* A function to be called when the user selects a command from the menu.  The itemCode
+/* A function to be called when the user selects a command from the menu. The itemCode
  * is the value that was associated with the command in the call to glutAddMenuEntry()
  * that added the command to the menu.
  */
@@ -219,7 +219,7 @@ void doMenu( int itemCode ) {
    // TODO: Add support for other commands.
 }
 
-/* createMenu() is called in main to add a pop-up menu to the window.  The menu
+/* createMenu() is called in main to add a pop-up menu to the window. The menu
  * pops up when the user right-clicks the display.
  */
 void createMenu() {
@@ -229,7 +229,7 @@ void createMenu() {
                                  // The code will be passed as a parameter to doMenu() when
                                  // the user selects this command from the menu.
                                  
-   // TODO: Add additional menu items.  (It is also possible to have submenus.)
+   // TODO: Add additional menu items. (It is also possible to have submenus.)
                                 
    glutAttachMenu(GLUT_RIGHT_BUTTON);  // Menu will appear when user RIGHT-clicks the display.
 }

@@ -3,7 +3,7 @@
 /*
    glsim.js is written by David J. Eck (http://math.hws.edu/eck/index.html) for use
    with his free, on-line computer graphics textbook, http://math.hws.edu/graphicsbook
-   It implements a subset of OpenGL 1.1 on top of WebGL.  It uses some code from
+   It implements a subset of OpenGL 1.1 on top of WebGL. It uses some code from
    gl-matrix.js (see below), and it can be freely used and distributed in any way
    that is compatible with the glmatrix license.
    
@@ -12,11 +12,11 @@
 */
 
 /*-----------------------------------------------------------------------------
- *   This section copied from gl-matrix.js (http://glmatrix.net).  Just the
- * parts of mat4 that are needed by GLSim are included here.  This section
- * is subject to the original license, reproduced below.  The software has
+ *   This section copied from gl-matrix.js (http://glmatrix.net). Just the
+ * parts of mat4 that are needed by GLSim are included here. This section
+ * is subject to the original license, reproduced below. The software has
  * been modified by deleting unneeded parts and by moving and renaming one
- * function from mat3 into mat4 (mat4.normalTransformMatrix).  Also,
+ * function from mat3 into mat4 (mat4.normalTransformMatrix). Also,
  * vec4.transformMat4 has been moved to mat4 and renamed to mat4.applyToVec4
  */
 
@@ -574,7 +574,7 @@ mat4.str = function (a) {
 * Calculates a 3x3 normal matrix (transpose inverse) from the 4x4 matrix
 *
 * This function is copied from mat3.normalFromMat4 in gl-matrix.js and
-* is renamed and added here to the mat4 API.  Modification made by D.Eck
+* is renamed and added here to the mat4 API. Modification made by D.Eck
 *
 * @param {Array} out an array of length 9 to receive operation result
 * @param {mat4} a Mat4 to derive the normal matrix from
@@ -1044,7 +1044,7 @@ GLSim.error = function(message) {
 },
 GLSim.vertexShaderSource = function() {  // This is a function so it can incorporate the number of lights.
           // NOTE:  I originally used type bool for shader variables that are logically boolean,
-          // but the resulting code didn't work in some WebGL implementations.  So, I am using type int
+          // but the resulting code didn't work in some WebGL implementations. So, I am using type int
           // for boolean values, which seems to increase the number of implementations on which it works. 
     return "struct materialProperties {\n" +
         "     vec3 ambient;\n" +
@@ -1095,7 +1095,7 @@ GLSim.vertexShaderSource = function() {  // This is a function so it can incorpo
         "vec4 lighting(vec3 vertex, vec3 V, vec3 N) {\n" +
         "       // A function to compute the color of this fragment using the lighting equation.\n" +
         "       // vertex contains the coords of the points; V is a unit vector pointing to viewer;\n" +
-        "       // N is the normal vector.  This function also uses the values in the global variables\n" +
+        "       // N is the normal vector. This function also uses the values in the global variables\n" +
         "       // material, globalAmbient, and light[0]..light[7].\n" +
         "   vec3 color = material.emission + material.ambient * globalAmbient;\n" +
         "   for (int i = 0; i < " + GLSim.lightCount + "; i++) {\n" +
@@ -2876,20 +2876,20 @@ function glsimUnprojectFromPixelCoords(pixelCoords) {
 
 /**
  * A Camera object encapsulates the information needed to define a
- * viewing transform and a projection for an OpenGL context.  The
+ * viewing transform and a projection for an OpenGL context. The
  * apply method can be called to applied this information to
- * a context.  The default view is from the point (0,0,30),
+ * a context. The default view is from the point (0,0,30),
  * looking at (0,0,0), with (0,1,0) pointing upwards on the screen.
- * The default projection is a perspective projection.  The
- * x and y limits on the screen include at least -5 to 5.  Limits
+ * The default projection is a perspective projection. The
+ * x and y limits on the screen include at least -5 to 5. Limits
  * in either the x or y direction will be expanded if necessary
- * to match the aspect ratio of the screen.  And the view volume
- * extends from -10 to 10 along the z-axis.  Only the default
- * constructor exists.  Non-default properties must be set by
+ * to match the aspect ratio of the screen. And the view volume
+ * extends from -10 to 10 along the z-axis. Only the default
+ * constructor exists. Non-default properties must be set by
  * calling methods.
  *     The camera comes along with a simulated trackball that
  * lets the user rotate the view by dragging on the drawing
- * surface.  See the installTrackball() method.
+ * surface. See the installTrackball() method.
  */
  
 function Camera() {
@@ -2936,7 +2936,7 @@ Camera.prototype.getOrthographic = function() {
 
 /**
  * Set whether the projection preserves the aspect ratio of the
- * viewport.  Value is true or false; the default is true.
+ * viewport. Value is true or false; the default is true.
  */
 Camera.prototype.setPreserveAspect = function(preserveAspect) {
     this.preserveAspect = preserveAspect;
@@ -2946,14 +2946,14 @@ Camera.prototype.getPreserveAspect = function() {
 }
 
 /**
-* Set the limits of the view volume.  The limits are set with respect to the
-* viewing coordinates.  That is, the view center is assumed to be at the point
-* (0,0) in the plane of the screen.  The view up vector (more precisely, its projection
-* onto the screen) points upwards on the screen.  The z-axis is perpendicular to the
+* Set the limits of the view volume. The limits are set with respect to the
+* viewing coordinates. That is, the view center is assumed to be at the point
+* (0,0) in the plane of the screen. The view up vector (more precisely, its projection
+* onto the screen) points upwards on the screen. The z-axis is perpendicular to the
 * screen, with the positive direction of the z-axis pointing out of the screen.
 * In this coordinate system, xmin and xmax give the horizontal limits on the screen,
 * ymin and ymax give the vertical limits on the screen, and zmin and zmax give
-* the limits of the view volume along the z-axis.  (Note that this is NOT exactly
+* the limits of the view volume along the z-axis. (Note that this is NOT exactly
 * the same as the parameters in either glOrtho or glFrustum!  Most important to 
 * note is that zmin and zmax are given with reference to the view center, not the
 * eye.)  Note that xmin/xmax or ymin/ymax might be adjusted to match the aspect
@@ -2982,8 +2982,8 @@ Camera.prototype.setScale = function (limit) {
 }
    
 /**
-* Returns the view limits.  The return value is an array that contains the same data as
-* the parameters to setLimits().  Note that the returned values included the
+* Returns the view limits. The return value is an array that contains the same data as
+* the parameters to setLimits(). Note that the returned values included the
 * originally requested xmin/xmax and ymin/ymax, and NOT values that have been
 * adjusted to reflect the aspect ratio of the display area.
 */
@@ -2994,8 +2994,8 @@ Camera.prototype.getLimits = function() {
 
 /**
 * Returns the actual xmin, xmax, ymin, ymax limits that were used when the apply
-* method was most recently called.  These are the limits after they were, possibly,
-* adjusted to match the aspect ratio of the display.  If apply has not been called
+* method was most recently called. These are the limits after they were, possibly,
+* adjusted to match the aspect ratio of the display. If apply has not been called
 * since the limits were set, then the return value contains the unadjusted, requested
 * limits.
 */
@@ -3004,7 +3004,7 @@ Camera.prototype.getActualXYLimits = function() {
 }
 
 /**
-* Set the information for the viewing transformation.  The view will be set
+* Set the information for the viewing transformation. The view will be set
 * in the apply method with a call to
 * gluLookAt(eyeX,eyeY,eyeZ,viewCenterX,viewCenterY,viewCenterZ,viewUpX,viewUpY,viewUpZ)
 * If the viewUp paramters are omitted, they are set to (0,1,0).
@@ -3048,10 +3048,10 @@ Camera.prototype.getViewParameters = function() {
 }
 
 /**
-* Apply the camera to the current GLSim context.  This method completely replaces the
-* projection and the modelview transformation in the context.  It sets these
+* Apply the camera to the current GLSim context. This method completely replaces the
+* projection and the modelview transformation in the context. It sets these
 * transformations to the identity and then applies the view and projection
-* represented by the camera.  This method is meant to be called at the begining
+* represented by the camera. This method is meant to be called at the begining
 * of the display method and should replace any other means of setting the
 * projection and view.
 */
@@ -3110,10 +3110,10 @@ Camera.prototype.apply = function apply() {
 
 /**
  * Installs a trackball rotator for the camera in the current GLSim context.
- * The user can drag the mouse on the canvas to rotate the view.  The eye and
+ * The user can drag the mouse on the canvas to rotate the view. The eye and
  * viewup vectors specified in Camera.lookAt are modified to implement the rotation.
  * The displayCallback should be a function that is to be called each time the
- * view has been changed.  Ordinarily, it is a display routine that calls
+ * view has been changed. Ordinarily, it is a display routine that calls
  * Camera.apply and then draws the scene.
  */
 Camera.prototype.installTrackball = function(displayCallback) {

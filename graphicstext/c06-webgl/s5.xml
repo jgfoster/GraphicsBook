@@ -3,20 +3,20 @@
 
 <section title="Implementing 2D Transforms" id="webgl.5">
 
-<p1>This chapter uses WebGL for 2D drawing.  Of course, the real motivation
+<p1>This chapter uses WebGL for 2D drawing. Of course, the real motivation
 for using WebGL is to have high-performance 3D graphics on the web.
 We will turn to that in the <localref href="webgl3d">next chapter</localref>.
 With WebGL, implementing <word term="geometric transform">transformations</word> is the
 responsibility of the programmer, which adds a level of complexity 
-compared to OpenGL&nbsp;1.1.  But before we attempt to deal with that complexity
+compared to OpenGL&nbsp;1.1. But before we attempt to deal with that complexity
 in three dimensions, this short section shows how to implement
 transforms and <word>hierarchical modeling</word> in a 2D context.</p1>
 
 <subsection title="Transforms in GLSL" id="webgl.5.1">
 
-<p>Transforms in 2D were covered in <localref href="graphics2d.3"/>.  To review: The basic
-transforms are scaling, rotation, and translation.  A sequence of such transformations
-can be combined into a single <word>affine transform</word>.  A&nbsp;2D affine transform maps
+<p>Transforms in 2D were covered in <localref href="graphics2d.3"/>. To review: The basic
+transforms are scaling, rotation, and translation. A sequence of such transformations
+can be combined into a single <word>affine transform</word>. A&nbsp;2D affine transform maps
 a point (<i>x1,y1</i>) to the point (<i>x2,y2</i>) given by formulas of the form</p>
 
 <pre>x2 = a*x1 + c*y1 + e
@@ -33,28 +33,28 @@ the 3-by-3 matrix</np>
 by the matrix.</np>
 
 <p>To apply a transformation to a primitive, each vertex of the primitive has to be
-multiplied by the transformation matrix.  In GLSL, the natural place to do that
-is in the vertex shader.  Technically, it would be possible to do the multiplication
+multiplied by the transformation matrix. In GLSL, the natural place to do that
+is in the vertex shader. Technically, it would be possible to do the multiplication
 on the JavaScript side, but GLSL can do it more efficiently, since it can work on multiple
 vertices in parallel, and it is likely that the GPU has efficient hardware support for
-matrix math.  (It is, by the way, a property of affine transformations that it suffices
+matrix math. (It is, by the way, a property of affine transformations that it suffices
 to apply them at the vertices of a primitive. Interpolation of the transformed vertex coordinates
 to the interior pixels of the primitive will given the correct result; that is, it gives the same
 answer as interpolating the original vertex coordinates and then applying the transformation
 in the fragment shader.)</p>
 
 <p>In GLSL, the type <i>mat3</i> represents 3-by-3 matrices, and <i>vec3</i> represents three-dimensional
-vectors.  When applied to a <i>mat3</i> and a <i>vec3</i>, the multiplication operator <code>*</code>
-computes the product.  So, a transform can applied using a simple GLSL assignment statement such as</p>
+vectors. When applied to a <i>mat3</i> and a <i>vec3</i>, the multiplication operator <code>*</code>
+computes the product. So, a transform can applied using a simple GLSL assignment statement such as</p>
 
 <pre>transformedCoords = transformMatrix * originalCoords;</pre>
 
 <np>For 2D drawing, the original coordinates are likely to come into the vertex shader
-as an <word term="attribute variable">attribute</word> of type <i>vec2</i>.  
+as an <word term="attribute variable">attribute</word> of type <i>vec2</i>. 
 We need to make the attribute value into a 
-<i>vec3</i> by adding 1.0 as the <i>z</i>-coordinate.  The transformation matrix
+<i>vec3</i> by adding 1.0 as the <i>z</i>-coordinate. The transformation matrix
 is likely to be a <word>uniform variable</word>, to allow the JavaScript side
-to specify the transformation.  This leads to the following minimal vertex shader
+to specify the transformation. This leads to the following minimal vertex shader
 for working with 2D transforms:</np>
 
 <pre>attribute vec2 a_coords;
@@ -64,14 +64,14 @@ void main() {
    gl_Position = vec4(transformedCoords.xy, 0.0, 1.0);
 }</pre>
 
-<np>In the last line, the value for <i>gl_Position</i> must be a <i>vec4</i>.  For a 2D point,  the
+<np>In the last line, the value for <i>gl_Position</i> must be a <i>vec4</i>. For a 2D point,  the
 <i>z</i>-coordinate should be 0.0, not 1.0, so we use only the <i>x</i>- and <i>y</i>-coordinates
 from <i>transformedCoords</i>.</np>
 
 <p>On the JavaScript side, the function <i>gl.uniformMatrix3fv</i> is used to specify a
 value for a uniform of type <i>mat3</i> (<localref href="webgl.3.3"/>).
 To use it, the nine elements of the matrix must be
-stored in an array in <word>column-major order</word>.  For loading an affine transformation matrix into
+stored in an array in <word>column-major order</word>. For loading an affine transformation matrix into
 a <i>mat3</i>, the command would be something like this:</p>
 
 <pre>gl.uniformMatrix3fv(u_transform_location, false, [ a, b, 0, c, d, 0, e, f, 1 ]);</pre>
@@ -82,23 +82,23 @@ a <i>mat3</i>, the command would be something like this:</p>
 <subsection title="Transforms in JavaScript" id="webgl.5.2">
 
 <p>To work with transforms on the JavaScript side, we need a way to represent
-the transforms.  We also need to keep track of a
+the transforms. We also need to keep track of a
 "current transform" that is the product all the individual
 <word term="modeling transformation">modeling transformations</word> that are in effect.
 The current transformation changes whenever a transformation such as rotation or
-translation is applied.  We need a way to save a copy of the current transform
-before drawing a complex object and to restore it after drawing.  Typically, a
-stack of transforms is used for that purpose.  You should be well familiar 
-with this pattern from both 2D and 3D graphics.  The difference here is that
+translation is applied. We need a way to save a copy of the current transform
+before drawing a complex object and to restore it after drawing. Typically, a
+stack of transforms is used for that purpose. You should be well familiar 
+with this pattern from both 2D and 3D graphics. The difference here is that
 the data structures and operations that we need are not built into the
 standard API, so we need some extra JavaScript code to implement them.</p>
 
 <p>As an example, I have written a JavaScript class, <classname>AffineTransform2D</classname>,
-to represent affine transforms in 2D.  This is a very minimal implementation.
+to represent affine transforms in 2D. This is a very minimal implementation.
 The data for an object of type <classname>AffineTransform2D</classname>
 consists of the numbers <i>a</i>, <i>b</i>, <i>c</i>, <i>d</i>, <i>e</i>, and <i>f</i>
-in the transform matrix.  There are methods in the class for multiplying the transform
-by scaling, rotation, and translation transforms.  These methods modify the transform
+in the transform matrix. There are methods in the class for multiplying the transform
+by scaling, rotation, and translation transforms. These methods modify the transform
 to which they are applied, by multiplying it on the right by the appropriate matrix.
 Here is a full description of the API, where <i>transform</i> is an object of type 
 <classname>AffineTransform2D</classname>:</p>
@@ -123,8 +123,8 @@ for <i>transform</i> in column-major order.</li>
 </ul>
 
 <p>In fact, an <classname>AffineTransform2D</classname> object does not represent an affine
-transformation as a matrix.  Instead, it stores the coefficients <i>a</i>, <i>b</i>, <i>c</i>, 
-<i>d</i>, <i>e</i>, and <i>f</i> as properties of the object.  With this representation,
+transformation as a matrix. Instead, it stores the coefficients <i>a</i>, <i>b</i>, <i>c</i>, 
+<i>d</i>, <i>e</i>, and <i>f</i> as properties of the object. With this representation,
 the <i>scale</i> method in the <classname>AffineTransform2D</classname> class can defined as
 follows:</p>
 
@@ -140,23 +140,23 @@ follows:</p>
 }</pre>
 
 <np>This code multiplies the transform represented by "this" object by a scaling matrix,
-on the right.  Other methods have similar definitions, but you don't need to understand
+on the right. Other methods have similar definitions, but you don't need to understand
 the code in order to use the API.</np>
 
 <break/>
 
 <p>Before a primitive is drawn, the current transform must sent as a <i>mat3</i> into the
 vertex shader, where the <i>mat3</i> is needed to transform 
-the vertices of the primitive.  The method <i>transform.getMat3</i>() returns the 
+the vertices of the primitive. The method <i>transform.getMat3</i>() returns the 
 transform as an array that can be passed to <i>gl.uniformMatrix3fv</i>, which sends
 it to the shader program.</p>
 
 <p>To implement the stack of transformations, we can use an array of objects of
-type <classname>AffineTransform2D</classname>.  In JavaScript, an array does not
+type <classname>AffineTransform2D</classname>. In JavaScript, an array does not
 have a fixed length, and it comes with <i>push</i>() and <i>pop</i>() methods
-that make it possible to use the array as a stack.  For convenience,
+that make it possible to use the array as a stack. For convenience,
 we can define functions <i>pushTransform</i>() and <i>popTransform</i>()
-to manipulate the stack.  Here, the current transform is stored in a global
+to manipulate the stack. Here, the current transform is stored in a global
 variable named <i>transform</i>:</p>
 
 <pre>var transform = new AffineTransform2D();  // Initially the identity.
@@ -172,7 +172,7 @@ function pushTransform() {
 
 /**
  *  Remove the top item from the transform stack, and set it to be the current
- *  transform.  If the stack is empty, nothing is done (and there is no error).
+ *  transform. If the stack is empty, nothing is done (and there is no error).
  */
 function popTransform() {
     if (transformStack.length > 0) {
@@ -208,26 +208,26 @@ function nestedSquares() {
 }</pre>
 
 <p>The function <i>square</i>() draws a square that has size 1 and is centered at (0,0) in its
-own object coordinate system.  The coordinates for the square have been stored in a
+own object coordinate system. The coordinates for the square have been stored in a
 buffer, <i>squareCoordsVBO</i>, and <i>a_coords_loc</i> is the location of an attribute variable
-in the shader program.  The variable <i>transform</i> holds the current modeling transform that
-must be applied to the square.  It is sent to the shader program by calling</p>
+in the shader program. The variable <i>transform</i> holds the current modeling transform that
+must be applied to the square. It is sent to the shader program by calling</p>
 
 <pre>gl.uniformMatrix3fv(u_transform_loc, false, transform.getMat3());</pre>
 
 <np>The second function, <i>nestedSquares</i>(), draws
-16 squares.  Between the squares, it modifies the modeling transform with</np>
+16 squares. Between the squares, it modifies the modeling transform with</np>
 
 <pre>transform.scale(0.8);
 transform.rotate(framenumber / 200);</pre>
 
 <np>The effect of these commands is cumulative, so that each square is a little smaller than 
-the previous one, and is rotated a bit more than the previous one.  The amount of rotation
+the previous one, and is rotated a bit more than the previous one. The amount of rotation
 depends on the frame number in an animation.</np>
 
-<p>The nested squares are one of three compound objects drawn by the program.  The function
-draws the nested squares centered at (0,0).  In the main <i>draw</i>() routine, I wanted to
-move them and make them a little smaller.  So, they are drawn using the code:</p>
+<p>The nested squares are one of three compound objects drawn by the program. The function
+draws the nested squares centered at (0,0). In the main <i>draw</i>() routine, I wanted to
+move them and make them a little smaller. So, they are drawn using the code:</p>
 
 <pre>pushTransform();
     
@@ -239,12 +239,12 @@ popTransform();</pre>
 
 <np>The <i>pushTransform</i>() and <i>popTransform</i>() ensure that all of the changes
 made to the modeling transform while drawing the squares will have no effect on 
-other objects that are drawn later.  Transforms are, as always, applied to objects in the
+other objects that are drawn later. Transforms are, as always, applied to objects in the
 opposite of the order in which they appear in the code.</np>
 
 <p>I urge you to read the <sourceref href="webgl/simple-hierarchy2D.html">source code</sourceref>
-and take a look at what it draws.  The essential ideas for working with transforms are
-all there.  It would be good to understand them before we move on to 3D.</p>
+and take a look at what it draws. The essential ideas for working with transforms are
+all there. It would be good to understand them before we move on to 3D.</p>
 
 </subsection>
 

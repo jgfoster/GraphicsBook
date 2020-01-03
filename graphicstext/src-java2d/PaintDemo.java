@@ -41,7 +41,7 @@ public class PaintDemo extends JPanel {
 
     /**
      * The display area of the program shows a filled polygon that can be filled
-     * with various kinds of paint.  The vertices of the polygon can be dragged
+     * with various kinds of paint. The vertices of the polygon can be dragged
      * by the user.
      */
     private class Display extends JPanel implements MouseListener, MouseMotionListener {
@@ -106,7 +106,7 @@ public class PaintDemo extends JPanel {
 
     /**
      * Responds when a user clicks on the radio button to set up the labels and sliders
-     * to correspond to the kind of paint that has been selected.  Calls setPaint()
+     * to correspond to the kind of paint that has been selected. Calls setPaint()
      * to make the display use the new selected paint.
      */
     private ActionListener buttonlistener = new ActionListener() {

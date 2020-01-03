@@ -65,7 +65,7 @@ function updateForDrift() {
         if (v.length() > 1) {
 			    // When outside the sphere, change to a random velocity,
 				// and multiply the point by 0.9997 to move it back
-				// towards the inside of the sphere.  Using a value
+				// towards the inside of the sphere. Using a value
 				// close to 1 allows the sphere to get a little
 				// fuzzy.
             driftSpeeds[i] = randomVelocity();
@@ -181,11 +181,11 @@ function init() {
     countSlider.addSlider({min:100, max:MAX_POINTS, value: 1000, step:100});
     countSlider.draw();
     countSlider.onChange = function() {
-		   // Change the number of points.  I don't know why I had to create
-			 // a whole new Points object to implement this.  I was not
+		   // Change the number of points. I don't know why I had to create
+			 // a whole new Points object to implement this. I was not
 			 // able to get the renderer to recognize a change in the length
 			 // of the vertex array in the geometry, or to recognize a new
-			 // geometry object in the original pointCloud object.  Setting
+			 // geometry object in the original pointCloud object. Setting
 			 // geometry.verticesNeedUpdate didn't do it.
 		var length = countSlider.value(0);
 		geometry = new THREE.Geometry();
@@ -232,13 +232,13 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This three.js application uses an object of type <i>THREE.Points</i> to
-create a spherical cloud of points.  The cloud can be animated.
-A "Spin" animation makes the points rotate about the y-axis.  Each
-point rotates with its own random angular velocity.  A "Drift" animation
+create a spherical cloud of points. The cloud can be animated.
+A "Spin" animation makes the points rotate about the y-axis. Each
+point rotates with its own random angular velocity. A "Drift" animation
 gives the points arbitrary random velocities, but points are not allowed
 to move too far out of the sphere.</p>
 <p>The user controls the number of points and the size of each point.
-The size is given in pixels.  Note that a point is rendered as a square.</p>
+The size is given in pixels. Note that a point is rendered as a square.</p>
 <p>The animations look nice with a lot of points of very small size!</p>
 </div>
 

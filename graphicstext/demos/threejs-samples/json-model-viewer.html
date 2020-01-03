@@ -7,16 +7,16 @@
 <script>
 
 /* Uses JSONLoader to load objects that have been saved
- * in three.js's json format.  Requires the folder models-json
- * that contains the seven sample models.  (Most of the models
- * have a "faceted" appearance.  There is a button to modify their
+ * in three.js's json format. Requires the folder models-json
+ * that contains the seven sample models. (Most of the models
+ * have a "faceted" appearance. There is a button to modify their
  * normal vectors to give them a more smooth appearance.)
  */
 
 var canvas, renderer, scene, camera; // Standard three.js requirements.
 
 var controls;  // A TrackballControls object that is used to implement
-               // rotation of the scene using the mouse.  (It actually rotates
+               // rotation of the scene using the mouse. (It actually rotates
                // the camera around the scene.)
 
 var model = null; // The three.js object that represents the current model.
@@ -52,8 +52,8 @@ function render() {
 }
 
 
-/*  This function is called by the init() method to create the world.  In this program,
- *  it just creates a light and a camera.  The model will be added in modelLoaded,
+/*  This function is called by the init() method to create the world. In this program,
+ *  it just creates a light and a camera. The model will be added in modelLoaded,
  *  after the model has been loaded.
  */
 function createWorld() {
@@ -70,14 +70,14 @@ function createWorld() {
 
 /**
  * This function will be called when the JSONLoader has
- * finished loading a model.  This function creates a three.js
- * Mesh object to hold the model.  It translates the object so that
- * its center is at the origin.  It wraps the object in another object
- * that is used to scale and rotate the object.  The scale is set
+ * finished loading a model. This function creates a three.js
+ * Mesh object to hold the model. It translates the object so that
+ * its center is at the origin. It wraps the object in another object
+ * that is used to scale and rotate the object. The scale is set
  * so that the maximum coordinate in its vertices, in absolute
- * value, is scaled to 10.  The rotation is set to the second parameter,
+ * value, is scaled to 10. The rotation is set to the second parameter,
  * which is used to set up an appropriate orientation for viewing
- * the model.  A plain white Lambert material is used for the model;
+ * the model. A plain white Lambert material is used for the model;
  * the material from the model file is ignored.
  */ 
 function modelLoaded(geometry, rotation, useMorphColors) {
@@ -146,7 +146,7 @@ function modelLoaded(geometry, rotation, useMorphColors) {
 
 /**
  * Called when the setting of the model-selection radio buttons is changed.
- * starts loading the model from the specified file.  When the model has
+ * starts loading the model from the specified file. When the model has
  * has been loaded, the function modelLoaded() will be called.
  */
 function installModel(modelNumber) {
@@ -179,7 +179,7 @@ function installModel(modelNumber) {
 
 
 /* To be called when the user clicks the "make smooth" button, which is only
- * available for the four models that have a faceted appearance.  This function
+ * available for the four models that have a faceted appearance. This function
  * replaces the current vertex normals with ones that are appropriate for
  * a smooth appeance.
  */
@@ -195,9 +195,9 @@ function makeSmooth() {
 
 
 /*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
- *  the view.  TrackballControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
+ *  the view. TrackballControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame. The scene
+ *  is not automatically updated just because the user drags the mouse. To get
  *  the rotation to work without animation, I add another mouse listener to the
  *  canvas, just to call the render() function when the user drags the mouse.
  *  The same thing holds for touch events -- I call render for any mouse move
@@ -230,9 +230,9 @@ function installTrackballControls() {
 
 /**
  *  This function is called by the onload event so it will run after the
- *  page has loaded.  It creates the renderer, canvas, and scene objects,
+ *  page has loaded. It creates the renderer, canvas, and scene objects,
  *  calls createWorld() to add objects to the scene, and renders the
- *  initial view of the scene.  If an error occurs, it is reported.
+ *  initial view of the scene. If an error occurs, it is reported.
  */
 function init() {
     try {
@@ -300,7 +300,7 @@ function init() {
 
 <p style="font-size:smaller; clear: both">
 Except for arrowhead.js, the models are from the <a href="http://threejs.org">three.js</a> download;<br>
-arrowhead.js was modeled in <a href="http://blender.org">Blender</a>.  Horse and stork colors<br>
+arrowhead.js was modeled in <a href="http://blender.org">Blender</a>. Horse and stork colors<br>
 come with the models.
 </p> 
 

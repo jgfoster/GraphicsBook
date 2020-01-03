@@ -11,7 +11,7 @@
    
    Note that in this program, the WebGL context option preserveDrawingBuffer
    is set to true, which means that the image in the buffer will be retained
-   after the image is copied to the web page.  This is essential in this
+   after the image is copied to the web page. This is essential in this
    program because the response to a click is simply to draw one shape -- the
    previous image still has to be there!
 -->
@@ -83,8 +83,8 @@ var colorList = [ // available colors for shapes
 
 /**
  *  The init() function installs this function as a handler for mousedown events
- *  on the canvas.  It's purpose is to draw one shape at the current mouse position,
- *  with the properties specified by the popup menu.  However, if the user is holding
+ *  on the canvas. It's purpose is to draw one shape at the current mouse position,
+ *  with the properties specified by the popup menu. However, if the user is holding
  *  the shift key down, then the canvas is cleared.
  */
 function doMouseDown(event) {
@@ -108,7 +108,7 @@ function doMouseDown(event) {
     gl.uniform3fv( uniformColor, colorList[colorNumber] );
     gl.uniform1f( uniformAlpha, alpha );
     
-    /* Create the values for the a_coords attribute, depending on the shape.  The shape
+    /* Create the values for the a_coords attribute, depending on the shape. The shape
        will be drawn as a primitive of type gl.TRIANGLE_FAN. */
        
     var coords;  // a Float32Array to hold the coordinates.
@@ -171,9 +171,9 @@ function doMouseDown(event) {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -221,7 +221,7 @@ function initGL() {
 } 
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

@@ -2,15 +2,15 @@
 <html>
 <!--
    This web page does the minimal setup for using mouse and key events along
-   with 2D canvas graphics.  Use it as a starting point for experimentation.
+   with 2D canvas graphics. Use it as a starting point for experimentation.
 -->
 <head>
 <meta charset="UTF-8">
 <title>Canvas Graphics Starter with Events</title>
 <style>
     /* This style section is here to make the canvas more obvious on the
-       page.  It is white on a light gray page background, with a thin
-       black border.  Also, turn off text selection to avoid having
+       page. It is white on a light gray page background, with a thin
+       black border. Also, turn off text selection to avoid having
        selection interfere with mouse action. */
     body {
         background-color: #DDDDDD;
@@ -39,9 +39,9 @@
     /**
      *  The draw() method is not currently used in this example.
      *  You might use it to completely redraw the canvas, based on
-     *  values of variables.  Event-handling mehtods would modify
+     *  values of variables. Event-handling mehtods would modify
      *  those variables and call draw() to update the canvas to
-     *  reflect the new data.  In this example, the event-handling
+     *  reflect the new data. In this example, the event-handling
      *  methods draw on the canvas directly.
      */
     function draw() {
@@ -50,9 +50,9 @@
     
     /**
      * This function is called in init() to set up mouse event handling
-     * on the canvas.  You can modify the nested functions doMouseDown,
+     * on the canvas. You can modify the nested functions doMouseDown,
      * doMouseDrag, and possibly doMouseUp to change the reponse to
-     * mouse events.  As an example, this program does some simple drawing.
+     * mouse events. As an example, this program does some simple drawing.
      */
     function installMouseHandler() {
 
@@ -93,7 +93,7 @@
             y = Math.round(evt.clientY - r.top);
             
             // As an example, if the shift key is down, then a black line is drawn from the
-            // previous mouse position to the current position.  Otherwise, a randomly colored
+            // previous mouse position to the current position. Otherwise, a randomly colored
             // square is drawn at the current mouse position.
             if (evt.shiftKey) {
                 graphics.lineWidth = 10;
@@ -134,10 +134,10 @@
     var sqLoc = { x: 380, y: 280 }; // Data for this example, location of red square.
     
     /**
-     *  Respond when the user presses a key.  The keyCode in the event
-     *  tells what key was pressed.  Several keyCodes are shown here as
+     *  Respond when the user presses a key. The keyCode in the event
+     *  tells what key was pressed. Several keyCodes are shown here as
      *  examples, with simple responses: The space bar clears the canvas;
-     *  the arrow keys draw a red square at a changing position.  (The square
+     *  the arrow keys draw a red square at a changing position. (The square
      *  is not drawn at all until an arrow key is pressed.)
      */
     function doKeyDown(evt) {
@@ -177,8 +177,8 @@
        
     /**
      * The init() function is called after the page has been
-     * loaded.  It initializes the canvas and graphics variables,
-     * and it installs mouse and key listeners.  If an error
+     * loaded. It initializes the canvas and graphics variables,
+     * and it installs mouse and key listeners. If an error
      * occurs, a message is displayed in place of the canvas.
      */
     function init() {

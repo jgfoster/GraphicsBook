@@ -141,9 +141,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -187,7 +187,7 @@ function loadTextures() {
             catch (e) {
                 // Chrome, at least, gets a security error if it tries to use a local file.
                 document.getElementById("headline").innerHTML =
-                    "Sorry, can't access textures.  Note that some<br>browsers can't use textures from a local disk.";
+                    "Sorry, can't access textures. Note that some<br>browsers can't use textures from a local disk.";
                 return;
             }
             gl.generateMipmap(gl.TEXTURE_2D);
@@ -256,7 +256,7 @@ function initGL() {
 /*-------------------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {
@@ -364,19 +364,19 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>This WebGL demo uses two textures in the same shader program.  To do
+<p>This WebGL demo uses two textures in the same shader program. To do
 this, it uses two texture units, and it used two sampler varables in
-the shader.  One texture provides a basic color for the image.  That
+the shader. One texture provides a basic color for the image. That
 basic color can then be modified by the color from the second texture.</p>
 <p>The "Mode" popup menu sets the formula that is used to combine the
-colors from the two textures.  The values can be multiplied, they can
+colors from the two textures. The values can be multiplied, they can
 be averaged, or the second color can be subtracted from the first.
 Use the "Replace" mode to see the second texture with no contribution
-from the first texture.  Use the "Ignore" mode to see the first texture
+from the first texture. Use the "Ignore" mode to see the first texture
 with no contribution from the second.</p>
-<p>The program uses 11 texture images.  Each texture has been loaded
+<p>The program uses 11 texture images. Each texture has been loaded
 into its own VBO. So, to change from one texture to another, it is
-only necessary to bind a different buffer.  The values of the
+only necessary to bind a different buffer. The values of the
 sampler variables are set to 0 and 1 during initialization and are
 never changed, since the same two texture units are used in all cases;
 only the VBOs that are bound to the texture units are changed.</p>
@@ -384,7 +384,7 @@ only the VBOs that are bound to the texture units are changed.</p>
 used as either the first texture or the second texture; this is done
 just to demonstrate that you can use the same texture VBO with two
 texture units, even at the same time.</p>
-<p>The texture can be displayed either on a square or on a ring.  When
+<p>The texture can be displayed either on a square or on a ring. When
 the ring is used, four copies of the texture are shown around the ring.</p>
 <p>When the "Wavy" checkbox is checked, a distortion is applied to the
 texture. This is done my modifying the texture coordinates, by the

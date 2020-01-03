@@ -80,7 +80,7 @@ var textureURL = [  // URLs of the available textures.
 
 
 /* Data for the points, including their coordinates, velocities and colors.
-   The values for the arrays are created during initialization.  The random
+   The values for the arrays are created during initialization. The random
    colors are used when the user selects colored rather than red points.
    The positions of the points are updated for each frame of the animation. */
 
@@ -91,7 +91,7 @@ var pointVelocities = new Float32Array( 2*POINT_COUNT );
 function createPointData() { // called during initialization to fill the arrays with data.
     var i;
     for (i = 0; i < POINT_COUNT; i++) {
-           // Each point has two coordinates and two velocities.  Velocity number k
+           // Each point has two coordinates and two velocities. Velocity number k
            // tells how fast coordinate number k changes in pixels per frame.
         pointCoords[2*i] = 12 + (canvas.width-24) * Math.random();  // x-coordinate of point
         pointCoords[2*i+1] = 12 + (canvas.height-24) * Math.random();  // y-coordinate of point
@@ -159,7 +159,7 @@ function draw() {
         gl.uniform1i(uniformUseTexture, 0);
     }
     
-    /* If the "Feather Edges" option is on, turn on alpha blending.  When alpha
+    /* If the "Feather Edges" option is on, turn on alpha blending. When alpha
        blending is off, the alpha component of gl_FragColor is ignored. */
     
     if (document.getElementById("featherCheckbox").checked) {
@@ -177,9 +177,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -223,7 +223,7 @@ function loadTextures() {
             catch (e) {
                 // Chrome, at least, gets a security error if it tries to use a local file.
                 document.getElementById("headline").innerHTML =
-                    "Sorry, can't access textures.  Note that some<br>browsers can't use textures from a local disk.";
+                    "Sorry, can't access textures. Note that some<br>browsers can't use textures from a local disk.";
                 return;
             }
             gl.generateMipmap(gl.TEXTURE_2D);
@@ -288,7 +288,7 @@ function doAnimationCheckbox() {
 /*-------------------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {
@@ -380,21 +380,21 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This is a simple demo, whose purpose is simply to show image textures
-being used on a primitive of type gl.POINTS.  It is similar to
+being used on a primitive of type gl.POINTS. It is similar to
 moving-points-demo.html, which also shows a gl.POINTS primitive, but without
 the texture.</p>
 <p>This program uses a single texture unit, texture unit zero, and the value
 of the uniform sampler variable in the fragment shader is initialized to zero
-and is never changed after that.  The program uses
+and is never changed after that. The program uses
 six texture objects for the six different texture images.</p>
-<p>Each vertex of the POINTS primitive is rendered as a disk.  The texture
+<p>Each vertex of the POINTS primitive is rendered as a disk. The texture
 is applied to the disk by using the special <i>vec2</i> fragment shader variable
 <i>gl_PointCoord</i> as the texture coordinates. Since the x and y coordinates
 in <i>gl_PointCoord</i> range from 0.0 to 1.0, this effectively cuts a disk out
 of the texture image.</p>
 <p>The "Feature Edges" option will smooth the edges of the disks using alpha
-blending.  The disk fades from opaque to transparent as the distance of the
-pixel from the center increases from 0.45 to 0.5.  Distance is measured in
+blending. The disk fades from opaque to transparent as the distance of the
+pixel from the center increases from 0.45 to 0.5. Distance is measured in
 the <i>gl_PointCoord</i> coordinate ststem.</p>
 </div>
 

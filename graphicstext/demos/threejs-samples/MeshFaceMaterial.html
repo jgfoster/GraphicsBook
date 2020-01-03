@@ -7,11 +7,11 @@
 <script src="three.min.js"></script>
 <script>
 
-/* Shows a pyramid and a cube.  The pyramid is constructed
- * as an indexed face set.  Both objects can be displayed with
+/* Shows a pyramid and a cube. The pyramid is constructed
+ * as an indexed face set. Both objects can be displayed with
  * all faces colored white or multicolored, with a different
- * material for each face.  Display of edges can be turned
- * on and off.  The objects can be rotated using the arrow,
+ * material for each face. Display of edges can be turned
+ * on and off. The objects can be rotated using the arrow,
  * Home, PageUp, and PageDown keys.
  */
 
@@ -23,7 +23,7 @@ var canvas;  // The canvas on which the image is rendered.
 
 
 var model;   // Contains the visible objects in the scene, but
-             // not the lights or camera.  The model can be
+             // not the lights or camera. The model can be
              // rotated using the keyboard. 
 
 var cube, pyramid;  // The two visible objects.
@@ -38,14 +38,14 @@ var pyramidMaterialArray;// An array of Materials for use on the pyramid.
 
 
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  */
 function createWorld() {
     renderer.setClearColor( 0 );  // Set background color (0, or 0x000000, is black).
     scene = new THREE.Scene();
     
-    // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+    // create a camera, sitting on the positive z-axis. The camera is not part of the scene.
     camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
     camera.position.z = 10;
     
@@ -79,8 +79,8 @@ function createWorld() {
     pyramidGeom.computeFaceNormals();
     
     /* For the pyramid, the two triangles on the bottom both have materialIndex 0,
-     * so that they will have the same color.  The material indices for the other
-     * four sides are all different.  The materialIndex is an index into the
+     * so that they will have the same color. The material indices for the other
+     * four sides are all different. The materialIndex is an index into the
      * array of materials (when the object's material property is an array).
      * Note that the cube already comes with appropriate material indices.
      */
@@ -134,7 +134,7 @@ function createWorld() {
 }
 
 
-/*  Render the scene.  This is called for each frame of the animation.
+/*  Render the scene. This is called for each frame of the animation.
  */
 function render() {
     renderer.render(scene, camera);
@@ -169,7 +169,7 @@ function doChangeMaterial() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the models.
+/*  Responds to user's key press. Here, it is used to rotate the models.
  */
 function doKey(event) {
     var code = event.keyCode;

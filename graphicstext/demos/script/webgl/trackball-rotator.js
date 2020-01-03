@@ -1,6 +1,6 @@
 /**
  * An object of type TrackballRotator can be used to implement a trackball-like mouse rotation
- * of a WebGL scene about the origin.  Only the first parameter to the constructor is required.
+ * of a WebGL scene about the origin. Only the first parameter to the constructor is required.
  * When an object is created, mouse event handlers are set up on the canvas to respond to rotation.
  * It will also work with a touchscreen.
  * 
@@ -16,27 +16,27 @@
  *         changing the direction of view. The parameter must be a positive number.
  *    rotator.getViewDistance() returns the current value.
  *    rotation.setRotationCenter( vector ) -- Sets the center of rotation.
- *       The parameter must be an array of (at least) three numbers.  The
- *       view is rotated about this point.  Usually, you want the rotation
+ *       The parameter must be an array of (at least) three numbers. The
+ *       view is rotated about this point. Usually, you want the rotation
  *       center to be the point that appears at the middle of the canvas,
- *       but that is not a requirement.  The initial value is effectively
+ *       but that is not a requirement. The initial value is effectively
  *       equal to [0,0,0].
  *    rotation.getRotationCenter() -- returns the current value.
  *
- * @param canvas the HTML canvas element used for WebGL drawing.  The user will rotate the
- *    scene by dragging the mouse on this canvas.  This parameter is required.
+ * @param canvas the HTML canvas element used for WebGL drawing. The user will rotate the
+ *    scene by dragging the mouse on this canvas. This parameter is required.
  * @param callback if present must be a function, which is called whenever the rotation changes.
  *    It is typically the function that draws the scene
- * @param viewDistance if present must be a positive number.  Gives the distance of the viewer
- *    from the origin.  If not present, the length is zero, which can be OK for orthographic projection,
+ * @param viewDistance if present must be a positive number. Gives the distance of the viewer
+ *    from the origin. If not present, the length is zero, which can be OK for orthographic projection,
  *    but never for perspective projection.
- * @param viewpointDirection if present must be an array of three numbers, not all zero.  The
- *    view is from the direction of this vector towards the origin (0,0,0).  If not present,
- *    the value [0,0,10] is used.  This is just the initial value for viewpointDirection; it will
+ * @param viewpointDirection if present must be an array of three numbers, not all zero. The
+ *    view is from the direction of this vector towards the origin (0,0,0). If not present,
+ *    the value [0,0,10] is used. This is just the initial value for viewpointDirection; it will
  *    be modified by rotation.
  * @param viewUp if present must be an array of three numbers. Gives a vector that will
- *    be seen as pointing upwards in the view.  If not present, the value is [0,1,0].
- *    Cannot be a multiple of viewpointDirection.  This is just the initial value for
+ *    be seen as pointing upwards in the view. If not present, the value is [0,1,0].
+ *    Cannot be a multiple of viewpointDirection. This is just the initial value for
  *    viewUp; it will be modified by rotation.
  */
 function TrackballRotator(canvas, callback, viewDistance, viewpointDirection, viewUp) {

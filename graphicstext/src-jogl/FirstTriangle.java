@@ -8,7 +8,7 @@ public class FirstTriangle extends GLJPanel implements GLEventListener{
     
     /**
      * A main routine to create and show a window that contains a
-     * panel of type FirstTriangle.  The program ends when the
+     * panel of type FirstTriangle. The program ends when the
      * user closes the window.
      */
     public static void main(String[] args) {

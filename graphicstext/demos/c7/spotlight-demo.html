@@ -175,7 +175,7 @@ function draw() {
     }
     
     
-    /* Set the position and direction for the spotlights.  These properties are affected
+    /* Set the position and direction for the spotlights. These properties are affected
        by the modelview transformation, since the values must be specified in eye coordinates. */
        
     var yRotate = frameNumber/77;
@@ -242,7 +242,7 @@ function setSpotlight( light, modelview, lightPosition, lightDirection ) {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);
@@ -285,7 +285,7 @@ function initGL() {
     gl.disableVertexAttribArray(a_normal_loc);
     gl.vertexAttrib3f(a_normal_loc,0,1,0);
     
-    /* Set up values for material uniforms. Enable lights and set their color.  Also,
+    /* Set up values for material uniforms. Enable lights and set their color. Also,
        all viewpoint light properties. These values don't change in this program. The other
        spotlight properties do change, and they are set in draw. */
     
@@ -306,9 +306,9 @@ function initGL() {
 } // end initGL()
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -317,7 +317,7 @@ function initGL() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         var element = document.getElementById(elementID);
         var node = element.firstChild;
@@ -469,23 +469,23 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The demo shows a white square illuminated by a rather dim white viewpoint light
-and three bright spotlights.  The spotlights are red, green, and blue.  In the default
+and three bright spotlights. The spotlights are red, green, and blue. In the default
 view, they are located above the front face of the square, and they are pointed in
 the direction of a point located below the center of the square, so that the centers of the
-three spots are at the vertices of a triangle on the square.  The spotlights are fixed
-with respect to the square.  You can drag your mouse on the square to rotate it,
-and the spotlights rotate with the square.  Note that the square is shiny, and both
+three spots are at the vertices of a triangle on the square. The spotlights are fixed
+with respect to the square. You can drag your mouse on the square to rotate it,
+and the spotlights rotate with the square. Note that the square is shiny, and both
 the viewpoint light and the spotlights produce specular highlights.</p>
 <p>The checkboxes allow you to turn off the viewpoint light and to turn off specular
-reflection, so you can see the effect of the spotlights better.  If you turn off
+reflection, so you can see the effect of the spotlights better. If you turn off
 "Spotlights Rotate with Square" option, then the spotlights are fixed with respect
 to the viewer instead of with respect to the square, and the spots that they make
-on the square change shape as the square is rotated.  The animation changes the
+on the square change shape as the square is rotated. The animation changes the
 position and direction of the spotlights.</p>
 <p>The sliders control the cutoff angle and the spot exponent for the spotlights.
 If you set the spot exponent to zero, the spotlight will illuminate the points
 in the light cone evenly (though the illumination can look different at different
-points because the light hits the points at different angles).  If the spot
+points because the light hits the points at different angles). If the spot
 exponent is large, then only small cutoff angles will hava an effect, because
 the light dims to almost zero even at fairly small angles.
 For an interesting effect, try running the animation with 

@@ -2,15 +2,15 @@
 <html>
 <!--
  *  Shows a scene (a teapot on a short cylindrical base) that is illuminated
- *  by up to four lights plus global ambient light.  The user can turn the
- *  lights on and off.  The global ambient light is a dim white.  There is 
+ *  by up to four lights plus global ambient light. The user can turn the
+ *  lights on and off. The global ambient light is a dim white. There is 
  *  a white "viewpoint" light that points from the direction of the viewer
- *  into the scene.  There is a red light, a blue light, and a green light
- *  that rotate in circles above the teapot.  (The user can turn the animation
+ *  into the scene. There is a red light, a blue light, and a green light
+ *  that rotate in circles above the teapot. (The user can turn the animation
  *  on and off.)  The locations of the colored lights are marked by spheres,
  *  which are gray when the light is off and are colored by some emission color
- *  when the light is on.  The teapot is gray with weak specular highlights.
- *  The base is colored with a spectrum.  (The user can turn the display of
+ *  when the light is on. The teapot is gray with weak specular highlights.
+ *  The base is colored with a spectrum. (The user can turn the display of
  *  the base on and off.)  The mouse can be used to rotate the scene.
 -->
 <head>
@@ -65,7 +65,7 @@ function uvSphere(radius, slices, stacks) {
 } // end uvSphere
 
 /*  Sets the positions of the colored lights and turns them on and off, depending on
- *  the state of the redLight, greenLight, and blueLight options.  Draws a small
+ *  the state of the redLight, greenLight, and blueLight options. Draws a small
  *  sphere at the location of each light.
  */
 function lights() {
@@ -156,8 +156,8 @@ function colorArrayForHue(h, s, v) {
 }
 
 /*  Draws a cylinder with height 2 and radius 1, centered at the origin, with its axis
- *  along the z-axis.  A spectrum of hues is applied to the vertices along the edges
- *  of the cylinder.  (Since GL_COLOR_MATERIAL is enabled in this program, the colors
+ *  along the z-axis. A spectrum of hues is applied to the vertices along the edges
+ *  of the cylinder. (Since GL_COLOR_MATERIAL is enabled in this program, the colors
  *  specified here are used as ambient and diffuse material colors for the cylinder.)
  */
 function drawCylinder() {
@@ -366,18 +366,18 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The demo shows a scene that is illuminated by four light sources, as well
-as by a dim global ambiant light.  There is a "viewpoint" light, which is a
+as by a dim global ambiant light. There is a "viewpoint" light, which is a
 white light shining into the scene from the direction of the viewer.
 There are three colored positional lights, with a small sphere at the
-position of each light.  The checkboxes allow you to turn the
-lights off and on.  You can control whether the base is displayed.
+position of each light. The checkboxes allow you to turn the
+lights off and on. You can control whether the base is displayed.
 You can turn an an animation that makes the colored lights fly
-in circles around the teapot.  And you can rotate the scene as a whole
+in circles around the teapot. And you can rotate the scene as a whole
 using your mouse.</p>
 <p>Some things to do:  Turn off all of the lights except one, and note
-the effect of that light on the teapot.  (Maybe turn off the base so it
+the effect of that light on the teapot. (Maybe turn off the base so it
 doesn't distract you.) For the colored lights, be sure to use animation
-so that you can see how the colors visible on the teapot change.  Try it
+so that you can see how the colors visible on the teapot change. Try it
 with only two colored lights turned on, and see how their colors combine.
 Note that when one a colored light is turned on, it adds some of its
 color to the ambient light; to see the effect look at the bottom

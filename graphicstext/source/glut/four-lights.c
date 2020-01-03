@@ -1,19 +1,19 @@
 /*
  *  Shows a scene (a teapot on a short cylindrical base) that is illuminated
- *  by up to four lights plus global ambient light.  The user can turn the
- *  lights on and off.  The global ambient light is a dim white.  There is 
+ *  by up to four lights plus global ambient light. The user can turn the
+ *  lights on and off. The global ambient light is a dim white. There is 
  *  a white "viewpoint" light that points from the direction of the viewer
- *  into the scene.  There is a red light, a blue light, and a green light
- *  that rotate in circles above the teapot.  (The user can turn the animation
+ *  into the scene. There is a red light, a blue light, and a green light
+ *  that rotate in circles above the teapot. (The user can turn the animation
  *  on and off.)  The locations of the colored lights are marked by spheres,
  *  which are gray when the light is off and are colored by some emission color
- *  when the light is on.  The teapot is gray with weak specular highlights.
- *  The base is colored with a spectrum.  (The user can turn the display of
+ *  when the light is on. The teapot is gray with weak specular highlights.
+ *  The base is colored with a spectrum. (The user can turn the display of
  *  the base on and off.)  The mouse can be used to rotate the scene.
  *  Either the menu or the keyboard can be used to turn options on and off.
  *
- *    This program dependes on camera.c.  It must also be linked to the GL, GLU, 
- * glut, and math libraries.  For example, in Linux with the gcc compiler:
+ *    This program dependes on camera.c. It must also be linked to the GL, GLU, 
+ * glut, and math libraries. For example, in Linux with the gcc compiler:
  *
  *        gcc -o four-lights four-lights.c camera.c -lGL -lglut -lGLU -lm
  */
@@ -43,7 +43,7 @@ int width, height;  // Size of the display, set in reshape().
 //------------------- Drawing functions ----------------------------------------
 
 /*  Sets the positions of the colored lights and turns them on and off, depending on
- *  the state of the redLight, greenLight, and blueLight options.  Draws a small
+ *  the state of the redLight, greenLight, and blueLight options. Draws a small
  *  sphere at the location of each light.
  */
 void lights() {
@@ -135,8 +135,8 @@ void colorArrayForHue(double array[4], double h, double s, double v) {
 }
 
 /*  Draws a cylinder with height 2 and radius 1, centered at the origin, with its axis
- *  along the z-axis.  A spectrum of hues is applied to the vertices along the edges
- *  of the cylinder.  (Since GL_COLOR_MATERIAL is enabled in this program, the colors
+ *  along the z-axis. A spectrum of hues is applied to the vertices along the edges
+ *  of the cylinder. (Since GL_COLOR_MATERIAL is enabled in this program, the colors
  *  specified here are used as ambient and diffuse material colors for the cylinder.)
  */
 void drawCylinder() {
