@@ -11,6 +11,10 @@
 
 TOP_DIR=`pwd`
 
+# Allow local overrides that are ignored by Git
+if [ -f "./LOCAL-env.sh" ]; then
+    source ./LOCAL-env.sh
+fi
 
 # GRAPHICSTEXT_SOURCE_DIR is the directory that contains all the source
 # files from which the web site and PDF files will be built.

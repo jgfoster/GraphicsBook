@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Graphics Demo</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/ch2-lines.js"></script>
+    <script src="../script/blockly/blockly_compressed.js"></script>
+    <script src="../script/blockly/javascript_compressed.js"></script>
+    <script src="../script/blockly/blocks_compressed.js"></script>
+    <script src="../script/blockly/msg/js/en.js"></script>
+    <script src="../script/blockly/graphicsBlocks.js"></script>
+    <script src="../script/blockly/graphicsDemo.js"></script>
+    <script src="../script/blockly/graphicsStubs.js"></script>
+    <script src="../script/blockly/graphicsToolbox.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body onload="injectBlockly()">
+    <h1>Blockly Exercise for Paths</h1>
+    <table>
+      <tr>
+        <td>
+          <canvas id="canvas" width="500" height="500">
+            <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
+            Canvas not supported.
+          </canvas>
+        </td>
+      </tr>
+      <tr>
+        <td id="blocklyArea">
+          <div id="blocklyDiv" style="height: 500px; width: 500px;"></div>
+        </td>
+      </tr>
+      <tr>
+        <td style="height: 500px; width: 400px; display: none;">
+          <textarea id="textarea" rows="38" cols="40"></textarea>
+        </td>
+      </tr>
+  </table>
+
+    <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
+      <block type="graphics_createpath" x="63" y="38">
+        <next>
+          <block type="graphics_moveto">
+            <field name="X">100</field>
+            <field name="Y">100</field>
+            <next>
+              <block type="graphics_lineto">
+                <field name="X">300</field>
+                <field name="Y">100</field>
+                <next>
+                  <block type="graphics_lineto">
+                    <field name="X">200</field>
+                    <field name="Y">200</field>
+                    <next>
+                      <block type="graphics_closepath">
+                        <next>
+                          <block type="graphics_stroke"></block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </xml>
+  </body>
+  </html>

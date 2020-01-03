@@ -1,0 +1,244 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" id="}zpYLKZ($.Fi|aiNN{*X" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_createPath</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="^gu=+FsF-?--b%IQJW%!">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="WRil(KA`WlNAklCoafQJ">
+            <field name="TEXT">createPath()</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1|_f$8@Op4VHvl?[P1tB" deletable="false" movable="false">
+        <field name="TEXT">start a new, empty path</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="{E5l0+BFZ)zu+NtIO=qq" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="~5#{`o]1TkAd^zvNV5(I"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="irXVOp![6_l}wu(g{07p"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="y[~dTa(5]o.`J!ehYw0;">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="SZ*$@0T%9j),S_Ynjr1|" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_moveTo</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="@Q15Q67NvF~FR]/I.15o">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="|m@wZ-e1@,_4vjZ[r^LB">
+            <field name="TEXT">moveTo(</field>
+            <next>
+              <block type="field_number" id="n[$ZW]pQ}6K4n}|/`x-{">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="},)Cu).19bSrAyE%~0PR">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="Hs*aUy%*Zp5BvieE^6[k">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="!gb]ai7X^yR$q@J22EQ*">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=")B?XMEi}Rk.d.K4$^@O3" deletable="false" movable="false">
+        <field name="TEXT">move the pen to the point (x,y), without adding a segment to the path; that is, without drawing anything</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="gp9D{2mvWu:*$?N$(igt" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="}F$LD`|Q/E:~$h-1al6i"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="djpgtZn5,Q`atjO5C`S!"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="rNAsKsePZJ4#PW|C2dT6">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="3)hzyu%+!MCRl.O~KaU(" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_lineto</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="-jZNqZ@bLwmSjmoW)?}K">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="!Jn}jDUi)Fgbj}E0!VO$">
+            <field name="TEXT">lineTo(</field>
+            <next>
+              <block type="field_number" id="0_+yFo,:tmm[UIJ{cPIz">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="12(DjXm6boq([*X:l6MI">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="1K8B+`f[o^0VDjgeur~U">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="P!4BK-[u5{K!N$+Le}vB">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1z;lZidJC?m`gCdcc*7W" deletable="false" movable="false">
+        <field name="TEXT">add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="2(DF,2QCpP~Pp-)NSGmf" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="A;ZTw-s0H1CJyZKLy|)2"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Rn}wh[cv7|B5fE0p,Hm]"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="fL|n8.@GHO{QOQ)w5$/:">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="n_w]kx`#-q:{-UG%%siH" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_closePath</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="3+$)]kl^*Yy3-V;!f]vb">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="S%g}uuS7:tpLI,n,.`O3">
+            <field name="TEXT">closePath()</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="cEL:[dp5S2HTziUSIJ;2" deletable="false" movable="false">
+        <field name="TEXT">add a line segment from the current pen location back to the starting point, unless the pen is already there, producing a closed path</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="hlQg-BnWul:t/Nx`u`Hu" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="-l(p8[?j#y)/]wl{S,Qk"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="E[3vq0,BD6u4DFZbz%b*"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="dWN/ZW/Ij@9gm5}rHbB/">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="b][?2rdjEDU]`lMrgJ$e" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_stroke</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="2HWco.LHx]a_,V}4B_nA">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="VnC+Fa,}IoNr+iNv^y8X">
+            <field name="TEXT">stroke()</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="i33{8,]:{nxO*tjL`o){" deletable="false" movable="false">
+        <field name="TEXT">Drawing the outline of a shape, as if a pen is dragged along the boundary of the shape. For a shape with no interior, such as a line segment, stroking the shape simply means dragging the pen along the shape.</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="O[7OiehBIwa*Gs4kaO{b" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="3+?j/KzlB}7aQHv3Jpim"/>
+      <block type="type_null" id="-d5Uwt;n0o.hd/r9hlKn"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="j7sFHmhhlDsP8pC/vK|a"/>
+      <block type="type_null" id="9^dfcvBKDyZID+g)Min+"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="fU,;^s9mb?vET|~_X.NB">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block></xml>
