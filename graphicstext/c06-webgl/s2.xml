@@ -28,7 +28,7 @@ with options:</p>
 };
 gl = canvas.getContext( "webgl", options );</pre>
               
-<np>All of the options are boolean-valued. I will discuss the most useful
+<np>All of the options are boolean-valued. We will discuss the most useful
 ones here:</np>
 
 <p><b>alpha</b> &mdash; determines whether the drawing
@@ -170,15 +170,15 @@ usual RGB color triangle, as shown here:</p>
 <np>The source code can be found in <sourceref href="webgl/webgl-rgb-triangle.html"/>.
 The code includes the usual <i>init</i>() and <i>createProgram</i>() functions
 as discussed in <localref href="webgl.1.1"/> and <localref href="webgl.1.2"/>,
-except that I have turned off the "alpha" and "depth" options in the WebGL
-context. I won't discuss them further.</np>
+except that we have turned off the "alpha" and "depth" options in the WebGL
+context. We won't discuss them further.</np>
 
 <p>The example uses an attribute of type <i>vec2</i> to specify the coordinates
 of the vertices of the triangle. Coordinates range from &minus;1 to 1 in the
 default WebGL coordinate system. For the triangle, the vertex coordinates that
-I use are in that range, so no coordinate transformation is needed.
+we use are in that range, so no coordinate transformation is needed.
 Since the color is different at each vertex of the triangle, the vertex color
-is also an attribute. I use an attribute of type <i>vec3</i> for the vertex colors,
+is also an attribute. We use an attribute of type <i>vec3</i> for the vertex colors,
 since no alpha component is needed in this program.</p>
 
 <p>The color of interior pixels in the triangle is interpolated from the
@@ -237,7 +237,7 @@ WebGL context. And we need to provide values for the attribute variables.
 The rather complicated process was discussed in
 <localref href="webgl.1.5"/>. We need global variables to represent the
 location of each attribute in the shader program, and to represent the <word term="VBO">VBOs</word>
-that will hold the attribute values. I use the variables</p>
+that will hold the attribute values. We use the variables</p>
 
 <pre>var gl;  // The WebGL graphics context.
 
@@ -536,7 +536,7 @@ gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STATIC_DRAW);</pre>
 the data can be reused to draw many different circles.</np>
 
 <p>To draw a shape with its center at (<i>x,y</i>), a <word>translation</word> must be
-applied to the coordinates in the VBO. I added the translation to the vertex shader,
+applied to the coordinates in the VBO. We added the translation to the vertex shader,
 with a new uniform variable to represent the translation amount:</p>
 
 <pre>attribute vec2 a_coords;
@@ -605,7 +605,7 @@ statement</np>
 <pre>discard;</pre>
 
 <np>the fragment shader terminates, and all further processing of the pixel is prevented.
-In particular, the color of the pixel in the image does not change. I use <i>discard</i> if the
+In particular, the color of the pixel in the image does not change. We use <i>discard</i> if the
 distance from <i>gl_PointCoord</i> to the center, (0.5,0.5), is greater than 0.5.
 This discards pixels that do not lie in the disk of radius&nbsp;0.5.
 GLSL has a function for computing the distance between two vectors, so the test

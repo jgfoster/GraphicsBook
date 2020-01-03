@@ -163,7 +163,7 @@ String concatenation can be done using a function, <i>strcat</i>, from the
 <i>string.h</i> header file. We will see that some operators can be also used with pointers
 in&nbsp;C, in ways that have no analog in Java or JavaScript.</p>
 
-<p>The header file <i>stdio.h</i> declares C's standard input/output functions. I mention
+<p>The header file <i>stdio.h</i> declares C's standard input/output functions. We mention
 it here mostly for the function <i>printf</i>(), which outputs text to the command line
 and is useful for writing debugging messages. It is essentially the same function as
 <i>System.out.printf</i> in Java. For example:</p>

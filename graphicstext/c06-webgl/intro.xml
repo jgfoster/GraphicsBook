@@ -25,7 +25,7 @@ WebGL.</p>
 <p>There are two sides to any WebGL program. Part of the program is written in
 <word>JavaScript</word>, the programming language for the web. The second part is
 written in <word>GLSL</word>, a language for writing "shader" programs that run on the
-<word>GPU</word>. I will try to always be clear about which language I am
+<word>GPU</word>. We will try to always be clear about which language we are
 talking about.</p>
 
 <p>For this introductory chapter about WebGL, we will stick to basic 

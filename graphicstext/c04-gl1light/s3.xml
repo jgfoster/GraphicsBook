@@ -578,15 +578,15 @@ calling <i>glTexImage2D</i>. One possibility is to compute the data&mdash;you ca
 actually have your program generate texture data on the fly. More likely,
 however, you want to load it from a file. This section looks at how that
 might be done in C. You will probably want to
-use a library of image-manipulation functions. Several free image processing libraries are available. I will
+use a library of image-manipulation functions. Several free image processing libraries are available. We will
 discuss one of them, <i>FreeImage</i>.
 FreeImage can be obtained from <a href="http://freeimage.sourceforge.net/">http://freeimage.sourceforge.net/</a>,
-but I was able to use it in Linux simply by installing the package <i>libfreeimage-dev</i>.
-To make it available to my program, I added <i>#include&nbsp;&leftquote;FreeImage.h"</i> to the
-top of my C program, and I added the option <i>-lfreeimage</i> to the <i>gcc</i> command to make
+but you may be able to use it in Linux simply by installing the package <i>libfreeimage-dev</i>.
+To make it available to your program, add <i>#include&nbsp;&leftquote;FreeImage.h"</i> to the
+top of a C program, and add the option <i>-lfreeimage</i> to the <i>gcc</i> command to make
 the library available to the compiler. (See the sample program
 <sourceref href="glut/texture-demo.c"/> for an example that uses
-this library.)  Instead of discussing FreeImage in detail, I present a
+this library.)  Instead of discussing FreeImage in detail, we present a
 well-commented function that uses it to load image data from a file:</p>
 
 <pre>void* imgPixels; // Pointer to raw RGB data for texture in memory.

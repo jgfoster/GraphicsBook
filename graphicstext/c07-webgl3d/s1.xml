@@ -33,7 +33,7 @@ There is another technique that is often used:  Put the GLSL shader source code 
 the <tag>script</tag> element, so it will not try to execute the script. However,
 it does store the content of the <tag>script</tag> element in the <word>DOM</word> data structure that
 represents the web page. The content can be retrieved as a string using the standard 
-DOM API. I won't explain the API functions that are used, but
+DOM API. We won't explain the API functions that are used, but
 here is a function that takes the <i>id</i> of the script element as its parameter and returns a
 string containing the text from inside the element:
 </np>
@@ -427,7 +427,7 @@ void main() {
 experience is enhanced considerably just by letting the user rotate the scene, to view
 it from various directions. The <sourceref href="webgl/glmatrix-cube-unlit.html">unlit cube</sourceref>
 example lets the user rotate the scene using the keyboard. But using the mouse for rotation
-gives the user much better control. I have written two JavaScript classes,
+gives the user much better control. We have written two JavaScript classes,
 <classname>SimpleRotator</classname> and <classname>TrackballRotator</classname>,
 to implement two different styles of rotation-by-mouse.</p>
 
@@ -477,7 +477,7 @@ mat4.multiply( modelviewProjection, projection, modelview );
 gl.uniformMatrix4fv(u_modelviewProjection, false, modelviewProjection );</pre>
 
 <p>That's really all that you need to know if you just want to use <classname>SimpleRotator</classname>
-in your own programs. I have also written an alternative rotator class,
+in your own programs. We have also written an alternative rotator class,
 <classname>TrackballRotator</classname>, which is defined in the JavaScript file
 <sourceref href="webgl/trackball-rotator.js"/>. A <classname>TrackballRotator</classname>
 can be used in the same way as a <classname>SimpleRotator</classname>.

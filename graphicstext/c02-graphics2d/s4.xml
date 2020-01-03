@@ -115,8 +115,8 @@ have written a subroutine</np>
 <np>that draws a wheel. This subroutine draws the wheel in its own natural coordinate system. 
 In this coordinate system, the wheel is centered at (0,0) and has radius&nbsp;1.</np>
 
-<p>In the cart's coordinate system, I found it convenient to use the midpoint of the base of the
-large rectangle as the reference point. I 
+<p>In the cart's coordinate system, We found it convenient to use the midpoint of the base of the
+large rectangle as the reference point. We 
 assume that the positive direction of the <i>y</i>-axis points upward, which is the common
 convention in mathematics. The rectangular body of the cart has
 width 6 and height 2, so the coordinates of the lower left corner of the rectangle are (-3,0),

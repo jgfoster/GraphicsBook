@@ -51,13 +51,13 @@ of OpenGL 1.1 that is used in this book.</p>
 
 <p>To work with GLUT, you will need
 a C compiler and copies of the OpenGL and GLUT (or FreeGLUT)
-development libraries. I can't tell you exactly that means on
-your own computer. On my computer, which runs Linux Mint, for example,
+development libraries. We can't tell you exactly that means on
+your own computer. On a computer which runs Linux Mint, for example,
 the free C compiler gcc is already available. To do OpenGL
-development, I installed several packages, including
+development, you would install several packages, including
 <i>freeglut3-dev</i> and <i>libgl1-mesa-dev</i>.
 (Mesa is a Linux implementation of OpenGL.)  If <i>glutprog.c</i> contains
-a complete C program that uses GLUT, I can compile it using a command such as
+a complete C program that uses GLUT, you can compile it using a command such as
 </p>
 
 <pre>gcc -o glutprog glutprog.c -lGL -lglut</pre>
@@ -162,11 +162,11 @@ program that uses most of the common event handlers:</p>
 
 
 <np>The first five lines do some necessary initialization, the next seven lines install event
-handlers, and the call to <i>glutMainLoop</i>() runs the GLUT event loop. I will discuss all of
+handlers, and the call to <i>glutMainLoop</i>() runs the GLUT event loop. We will discuss all of
 the functions that are used here. The first GLUT function call must be <i>glutInit</i>,
 with the parameters as shown. (Note that <i>argc</i> and <i>argv</i>
 represent command-line arguments for the program. Passing them to <i>glutInit</i> allows
-it to process certain command-line arguments that are recognized by GLUT. I won't discuss those
+it to process certain command-line arguments that are recognized by GLUT. We won't discuss those
 arguments here.)  The functions <i>glutInitWindowSize</i> and <i>glutInitWindowPosition</i>
 do the obvious things; size is given in pixels, and 
 window position is given in terms of pixel coordinates on the computer
@@ -351,7 +351,7 @@ in <i>main</i>(), after calling <i>glutCreateWindow</i>:</np>
     glutAttachMenu(GLUT_RIGHT_BUTTON); // Show menu on right-click.
 }</pre>
 
-<p>It's possible to have submenus in a menu. I won't discuss the procedure here, but you can look
+<p>It's possible to have submenus in a menu. We won't discuss the procedure here, but you can look
 at the sample program <sourceref href="glut/ifs-polyhedron-viewer.c"/> for an example of using submenus.</p>
 
 <break/>
@@ -406,7 +406,7 @@ not come with <word>texture coordinates</word>, which are required for applying
 textures to objects. </np>
 
 <p>GLUT also includes some limited support for drawing text in an OpenGL drawing
-context. I won't discuss that possibility here. You can check the API
+context. We won't discuss that possibility here. You can check the API
 documentation if you are interested, and you can find an example in the
 sample program <sourceref href="glut/color-cube-of-spheres.c"/>.</p>
 

@@ -90,8 +90,8 @@ on most desktop computers). The result is a much more powerful API
 but one that is much harder to learn. In particular, modern OpenGL in its pure form
 does not make for a good introduction to graphics programming.</p>
 
-<p>My approach in this book is to use a subset of OpenGL 1.1 to introduce the fundamental
-concepts of three-dimensional graphics. I then go on to cover WebGL&mdash;a version of OpenGL
+<p>Our approach in this book is to use a subset of OpenGL 1.1 to introduce the fundamental
+concepts of three-dimensional graphics. We then go on to cover WebGL&mdash;a version of OpenGL
 that runs in a web browser&mdash;as an example of the more modern approach to computer graphics.
 While OpenGL makes up the major foundation for the course, the real emphasis is on fundamental
 concepts such as geometric modeling and transformations; hierarchical modeling and scene graphs;
@@ -124,7 +124,7 @@ OpenGL.</p>
 
 <p><i>Appendix A</i> contains brief introductions to three programming languages that are
 used in the book: Java, C, and JavaScript. <i>Appendix&nbsp;B</i> is meant to get readers started
-with the most basic uses of Blender, a sophisticated 3D modeling program. I have found that
+with the most basic uses of Blender, a sophisticated 3D modeling program. We have found that
 introducing students to Blender is a good way to help them develop their three-dimensional
 intuition. <i>Appendix&nbsp;C</i> contains even briefer introductions to two 2D graphics
 programs, Gimp and Inkscape.</p>

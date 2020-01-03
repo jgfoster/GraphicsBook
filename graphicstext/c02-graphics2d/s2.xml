@@ -26,7 +26,7 @@ the most basic shape. It can be drawn by coloring pixels that lie along the infi
 geometric line segment. An algorithm for drawing the line has to decide exactly which pixels
 to color. One of the first computer graphics algorithms, 
 <newword term="Bresenham's line algorithm">Bresenham's algorithm</newword> for line drawing, implements
-a very efficient procedure for doing so. I won't discuss such low-level details here, but it's
+a very efficient procedure for doing so. We won't discuss such low-level details here, but it's
 worth looking them up if you want to start learning about what graphics hardware actually has to do.
 In any case, lines are typically more complicated. Antialiasing is one complication. Line width is
 another. A wide line might actually be drawn as a rectangle.</p>

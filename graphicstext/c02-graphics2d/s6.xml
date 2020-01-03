@@ -5,7 +5,7 @@
 
 <p1>Most modern web browsers support a 2D graphics <word>API</word> that can be used
 to create images on a web page. The API is implemented using <word>JavaScript</word>, the client-side programming 
-language for the web. I won't cover the JavaScript language in this section. To understand the 
+language for the web. We won't cover the JavaScript language in this section. To understand the 
 material presented here, you don't need to know much about it. Even if you
 know nothing about it at all, you can learn something about its 2D graphics API and
 see how it is similar to, and how it differs from, the Java API presented in the

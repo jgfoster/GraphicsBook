@@ -38,8 +38,7 @@ of semicolons, which are not required at the end of a statement, unless another
 statement follows on the same line. Like many cases of loose syntax rules, this
 can lead to some unexpected bugs. If a line is a legal statement, it is considered to
 be a complete statement, and the next line is the start of a new statement&mdash;even if
-you meant the next line to be a continuation of the same statement. I have been 
-burned by this fact with code of the form</p>
+you meant the next line to be a continuation of the same statement. Consider code of the form</p>
 
 <pre>return
        "very long string";</pre>
@@ -523,10 +522,10 @@ be executed when the user clicks on the text of the &lt;h1&gt; element. The valu
 of an event handler attribute such as <i>onclick</i> can be any JavaScript code.
 It can include multiple statements, separated by semicolons, and can even extend over several lines.
 Here, the code is "doClick()", so that clicking the &lt;h1&gt; element
-will cause the JavaScript function <i>doClick</i>() to be called. I should note
+will cause the JavaScript function <i>doClick</i>() to be called. We should note
 that this is a very old-fashioned way to attach an event handler to an element,
 and it should not be considered good style. There are better alternatives
-that I will mention later. Nevertheless, I sometimes do things the old-fashioned way.</np>
+that we will mention later. Nevertheless, we sometimes do things the old-fashioned way.</np>
 
 <p>It is important to understand that all the JavaScript code in &lt;script&gt; elements,
 including code in imported files, is read and executed as the page is being loaded. Usually,

@@ -216,7 +216,7 @@ calling <i>glDisable</i>(<i>GL_BLEND</i>). When the <i>GL_BLEND</i> option is
 disabled, alpha is simply ignored. 
 The second command tells how the alpha component of a
 color will be used. The parameters shown here are the
-most common; they implement transparency in the usual way. I should note that 
+most common; they implement transparency in the usual way. We should note that 
 while transparency works fine in 2D, it is much more difficult to use transparency correctly
 in 3D.</np>
 
@@ -407,11 +407,11 @@ gl2.glEnd();</pre>
 
 <np>There is really not much difference in the parameters, although the zero in the first <i>glVertex2fv</i> is a little
 annoying. The main difference is the prefixes "gl2" and "GL2", which are required by the object-oriented
-nature of the JOGL API. I won't say more about JOGL here, but if you need to translate my
+nature of the JOGL API. We won't say more about JOGL here, but if you need to translate these
 examples into JOGL, you should keep in mind the extra parameter that is required when working
 with arrays.</np>
 
-<p>For the record, here are the <i>glVertex*</i> and <i>glColor*</i> functions that I will use
+<p>For the record, here are the <i>glVertex*</i> and <i>glColor*</i> functions that we will use
 in this book. This is not the complete set that is available in OpenGL:</p>
 
 <pre>glVertex2f( x, y );             glVertex2fv( xyArray );

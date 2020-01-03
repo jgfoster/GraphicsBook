@@ -180,7 +180,7 @@ direction of rotation in 3D, we use the <newword>right-hand rule</newword>, whic
 says:  Point the thumb of your right hand in the direction of the
 axis, from the point (0,0,0) to the point (<i>ax,ay,az</i>) that determines the
 axis. Then the direction of rotation for positive angles is given by the
-direction in which your fingers curl. I should emphasize that the right-hand rule
+direction in which your fingers curl. We should emphasize that the right-hand rule
 only works if you are working in a right-handed coordinate system. If you have
 switched to a left-handed coordinate system, then you need to use a
 left-hand rule to determine the positive direction of rotation.</p>

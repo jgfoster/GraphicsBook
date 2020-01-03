@@ -508,7 +508,7 @@ type <classname>Vector2</classname> for each face. The coordinates have to be ch
 to map the image in a reasonable way onto the faces. My choice of coordinates
 maps the entire texture image onto the square base of the pyramid, and it cuts
 a triangle out of the image to apply to each of the sides. It takes some
-care to come up with the correct coordinates. I define the texture
+care to come up with the correct coordinates. We define the texture
 coordinates for the pyramid geometry as follows:</p>
 
 <pre>pyramidGeometry.faceVertexUvs = [[
@@ -661,7 +661,7 @@ function modelLoaded( geometry, material ) { // callback function for loader
 
 <p>The sample program <sourceref href="threejs/json-model-viewer.html"/>
 uses <classname>JSONLoader</classname> to read model descriptions. It can display seven
-different objects. I created one of the objects using Blender. The other objects
+different objects. We created one of the objects using Blender. The other objects
 came with <i>three.js</i>. Five of the objects use a simple white material;
 the "horse" and "stork" use colors that are provided as vertex colors (not materials) in the model file.</p>
 

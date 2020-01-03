@@ -67,7 +67,7 @@ will need at least one object of each type. Those objects are often stored in gl
 
 <p>Note that almost all of the <i>three.js</i> classes and constants that we will use 
 are properties  of an object named <i>THREE</i>,
-and their names begin with "<classname>THREE.</classname>". I will sometimes
+and their names begin with "<classname>THREE.</classname>". We will sometimes
 refer to classes without using this prefix, and it is not usually used in the
 <i>three.js</i> documentation, but the prefix must always be included in actual 
 program code.</p>
@@ -907,8 +907,8 @@ to experiment with your own models, you can use the program <sourceref href="thr
 as a starting point.</np>
 
 <p>To start with something simple, let's look at how to make a tree from a
-brown cylinder and a green cone. I use an <classname>Object3D</classname>
-to represent the tree as a whole, so that I can treat it as a unit. The
+brown cylinder and a green cone. We use an <classname>Object3D</classname>
+to represent the tree as a whole, so that we can treat it as a unit. The
 two geometric objects are added as children of the <classname>Object3D</classname>.</p>
 
 <pre>var tree = new THREE.Object3D();
@@ -950,7 +950,7 @@ covered in <localref href="graphics2d.4.1"/>.)</np>
 <p>Once we have a tree object, it can be added to the model that represents the
 diskworld. In the program, the model is an object of type <classname>Object3D</classname>
 named <i>diskworldModel</i>. The model will contain several trees, but the trees
-don't have to be constructed individually. I can
+don't have to be constructed individually. We can
 make additional trees by cloning the one that I have already created. For example:</p>
 
 <pre>tree.position.set(-1.5,0,2);
@@ -966,7 +966,7 @@ tree is cloned, the clone gets its own copies of the modeling transformation pro
 <i>position</i> and <i>scale</i>. Changing the values of those properties in the
 original tree object does not affect the clone.</np>
 
-<p>Lets turn to a more complicated object, the axle and wheels. I start by creating
+<p>Lets turn to a more complicated object, the axle and wheels. We start by creating
 a wheel, using a torus for the tire and using three copies of a cylinder for the spokes. 
 In this case, instead of making a new <classname>Object3D</classname> to hold all 
 the components of the wheel, I add the cylinders as children of the torus. Remember that any screen

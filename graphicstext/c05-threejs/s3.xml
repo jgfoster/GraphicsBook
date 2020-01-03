@@ -82,8 +82,8 @@ To use one of them, you need the JavaScript file <sourceref href="threejs/OrbitC
 or <sourceref href="threejs/TrackballControls.js">TrackballControls.js</sourceref>, which can be
 found in the folder <i>examples/js/controls</i> in the <i>three.js</i> download.</p>
 
-<p>The two classes are used in a similar way. I will discuss <classname>OrbitControls</classname>.
-In my examples, I create a camera and move it away from the origin. I usually add a light object
+<p>The two classes are used in a similar way. We will discuss <classname>OrbitControls</classname>.
+In these examples, we create a camera and move it away from the origin. We usually add a light object
 to the camera object, so that the light will move along with the camera, providing some
 illumination to anything that is visible to the camera. The <classname>OrbitControls</classname>
 object is used to rotate the camera around the scene. The constructor for the
@@ -108,14 +108,14 @@ to mouse events. It is also necessary to call</np>
 <np>just before each rendering of the scene. This method adjusts the camera rotation.
 The controls are designed to be used in a scene that is constantly being animated,
 so that the render function is being called regularly. No change will be visible until
-the render function is called. (In my programs that don't use animation, I add an extra
+the render function is called. (In programs that don't use animation, you can add an extra
 listener to make sure that <i>consrols.update</i>() and <i>render</i>() are called whenever
 the mouse is dragged. See, for example, the source code for 
 <sourceref href="threejs/reflection.html"/> to see how it's done.)</np>
 
 <p>The controls can also do "panning" (dragging the scene in the plane of the screen)
 with the right mouse button and "zooming" (scaling the scene) with the middle mouse button
-or scroll wheel. I generally turn off those features by setting</p>
+or scroll wheel. We generally turn off those features by setting</p>
 
 <pre>controls.enablePan = false;
 controls.enableZoom = false;</pre>
@@ -640,7 +640,7 @@ to this problem in WebGL. However, you can make an object reflect or refract oth
 by making an environment map that includes those objects. If the objects are moving, this means
 that you have to make a new environment map for every frame. Recall that an environment map
 can be made by taking six pictures of the environment from different directions. <i>Three.js</i> has a kind of camera that
-can do just that, <classname>THREE.CubeCamera</classname>. I won't go into the
+can do just that, <classname>THREE.CubeCamera</classname>. We won't go into the
 full details, but a CubeCamera can take a
 six-fold picture of a scene from a given point of view and make a cubemap texture from
 those images. To use the camera, you have to place it at the location of an object&mdash;and make the

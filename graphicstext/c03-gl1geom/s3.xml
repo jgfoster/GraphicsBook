@@ -589,7 +589,7 @@ since a real camera doesn't do clipping in its <i>z</i>-direction.)</p>
 <p>I have written a camera utility to implement this idea. The camera is meant to
 take over the job of setting the projection and view. Instead of doing that by hand, you set
 properties of the camera. The API is available for both C and Java. The two versions are
-somewhat different because the Java version is object-oriented. I will discuss the
+somewhat different because the Java version is object-oriented. We will discuss the
 C implementation first. (See <localref href="gl1geom.6"/> for basic information about
 programming OpenGL in C and Java. For an example of using a camera in a program, see
 the polyhedron viewer example in the <localref href="gl1geom.4">next section</localref>.

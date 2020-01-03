@@ -18,9 +18,9 @@ article about the 2013 animated movie <i>Frozen</i>, some complex scenes in that
 movie used 30 hours of computing to render each frame.)</p1>
 
 <p>This chapter is a very brief look at some techniques that can be used for very
-high quality graphics. The discussion will be in general terms. I won't be giving 
+high quality graphics. The discussion will be in general terms. We won't be giving 
 sample code or detailed discussions of the mathematics behind the techniques,
-but I hope to provide at least a basic conceptual understanding.</p>
+but we hope to provide at least a basic conceptual understanding.</p>
 
 <p>The first thing that you should understand, though, is
 that most of what you have leaned so far still applies. Scenes are still composed

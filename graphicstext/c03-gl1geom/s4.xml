@@ -402,7 +402,7 @@ vertex numbers. The <i>dataType</i> must be given as one of the constants
 
 <p>As an example, we can draw a cube. We can draw all six faces of the cube as one
 primitive of type <i>GL_QUADS</i>. We need the vertex coordinates in one array
-and the vertex numbers for the faces in another array. I will also use a color
+and the vertex numbers for the faces in another array. We will also use a color
 array for vertex colors. The vertex colors will be interpolated to pixels on the
 faces, just like the red/green/blue triangle.
 Here is code that could be used to draw the cube.

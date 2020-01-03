@@ -20,9 +20,9 @@ and somewhat verbose syntax. This can make it a little annoying to write,
 but on the other hand, it makes it possible to read and understand
 SVG documents even if you are not familiar with the syntax. It's possible
 that SVG originally stood for "Simple" Vector Graphics, but it is by
-no means a simple language at this point. I will cover only a part of it
-here, and there are many parts of the language and many options that I will
-not mention. My goal is to introduce the idea of a scene description language
+no means a simple language at this point. We will cover only a part of it
+here, and there are many parts of the language and many options that we will
+not mention. Our goal is to introduce the idea of a scene description language
 and to show how such a language can use the same basic ideas that are
 used in the rest of this chapter.</p>
 
@@ -422,8 +422,8 @@ for the group, replacing the current default. Here is an example:</p>
 default values of the attributes. The default can be overridden by specifying
 a different value for the element, as is done for the stroke-width of the
 <tag>path</tag> element in this example. Setting transform=&leftquote;scale(1,&minus;1)"
-for the group flips the entire image vertically. I do this only because
-I am more comfortable working in a coordinate system in which y increases
+for the group flips the entire image vertically. We do this because
+we am more comfortable working in a coordinate system in which y increases
 from bottom-to-top rather than top-to-bottom. Here is the simple line
 drawing of a face that is produced by this group:</np>
 

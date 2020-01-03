@@ -156,12 +156,12 @@ as floating point values in the GPU, not as eight-bit integers.</p>
 
 <break/>
 
-<p>I use this technique in the sample program <sourceref href="webgl/image-evolver.html"/>.
+<p>We use this technique in the sample program <sourceref href="webgl/image-evolver.html"/>.
 In that program, the problem is to find the average <i>difference</i> in color between two
-images. I start by drawing the two images to two textures. I then
+images. We start by drawing the two images to two textures. We then
 render a difference image, in which the color of a pixel is the
 absolute value of the difference between the colors of the same pixel in the two textures.
-This is done with another special-purpose shader program. I then apply the above averaging
+This is done with another special-purpose shader program. We then apply the above averaging
 process to the difference image.</p>
 
 <p>The actual point of the sample program is to try to "evolve" an approximation to a given image,
@@ -225,9 +225,9 @@ value is legal in <i>gl.readPixels</i> only because the extensions have been act
 
 <subsection title="Deferred Shading" id="webgl3d.5.3">
 
-<p>I will discuss one more WebGL extension, one that is useful for an important
-rendering technique called <newword>deferred shading</newword>. I don't have a sample
-program for deferred rendering, and I will only discuss it in general terms.</p>
+<p>We will discuss one more WebGL extension, one that is useful for an important
+rendering technique called <newword>deferred shading</newword>. We don't have a sample
+program for deferred rendering, and we will only discuss it in general terms.</p>
 
 <p>Deferred shading is used as
 an optimization when rendering complex scenes, and it is often used to speed up rendering

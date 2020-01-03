@@ -299,7 +299,7 @@ interpolated normal vectors in the fragment shader. The original normal vectors 
 vertex shader should also be normalized, for the interpolation to work properly.</p>
 
 <p>The sample program <sourceref href="webgl/basic-specular-lighting-Phong.html"/> uses
-per-pixel lighting. I urge you to read the shader source code in that program.
+per-pixel lighting. We urge you to read the shader source code in that program.
 Aside from the fact that lighting calculations have been moved
 to the fragment shader, it is identical to the previous sample program.</p>
 

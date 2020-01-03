@@ -258,10 +258,10 @@ p.setWindingrule( Path2D.WIND_EVEN_ODD );</pre>
 
 <np>The default is <code>WIND_NON_ZERO</code>.</np>
 
-<p>Finally, I will note that it is possible to draw a copy of an image into a graphics context.
-The image could be loaded from a file or created by the program. I discuss the second possibility
+<p>Finally, we note that it is possible to draw a copy of an image into a graphics context.
+The image could be loaded from a file or created by the program. We discuss the second possibility
 later in this section. An image is represented by an object of type <classname>Image</classname>.
-In fact, I will assume here that the object is of type <classname>BufferedImage</classname>,
+In fact, we will assume here that the object is of type <classname>BufferedImage</classname>,
 which is a subclass of <classname>Image</classname>. If <i>img</i> is such an object, then</p>
 
 <pre>g2.drawImage( img, x, y, null );</pre>
@@ -646,7 +646,7 @@ pixel and its neighbors. Using different weights for each pixel can produce some
 striking effects.</p>
 
 <p>The pixel manipulation in the sample program produces effects that can't be achieved
-with pure <word>vector graphics</word>. I encourage you to learn more by looking at
+with pure <word>vector graphics</word>. We encourage you to learn more by looking at
 the <sourceref href="java2d/JavaPixelManipulation.java">source code</sourceref>.
 You might also take a look at the live demos in the  <localref href="graphics2d.6">next section</localref>,
 which implement the same effects using <word>HTML canvas</word> graphics.</p>

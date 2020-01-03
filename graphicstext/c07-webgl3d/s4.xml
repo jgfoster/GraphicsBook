@@ -303,7 +303,7 @@ In outline form, the rendering function in the sample program has the form</p>
 <np>Note that the <word>viewport</word> has to be set by hand when drawing
 to a non-default frame buffer. It then has to be reset when drawing the
 on-screen image to match the size of the <word term="HTML canvas">canvas</word>
-where the on-screen image is rendered. I should also note that only one texture
+where the on-screen image is rendered. We should also note that only one texture
 object is used in this program, so it can be bound once and for all
 during initialization. In this case, it is not necessary to call 
 <i>gl.bindTexture</i>() in the <i>draw</i>() function.</np>

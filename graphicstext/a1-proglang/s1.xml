@@ -367,10 +367,10 @@ automatically through all of the objects in the list.)</np>
 <subsection title="Windows and Events" id="proglang.1.3">
 
 <p>Java comes with a set of standard classes for working with windows
-and events. I will mention some of the most common. I will try to tell you
+and events. We will mention some of the most common. We will try to tell you
 enough to understand and work with the sample programs in this book. Writing programs from
 scratch will require more in-depth knowledge. All of the classes
-that I discuss are in the packages <i>java.awt</i>, <i>javax.swing</i>,
+that we discuss are in the packages <i>java.awt</i>, <i>javax.swing</i>,
 and <i>java.awt.event</i>, and many of my programs begin with the following
 <i>import</i> directives to make the classes that they contain available:</p>
 

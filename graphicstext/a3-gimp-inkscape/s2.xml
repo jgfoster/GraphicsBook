@@ -139,8 +139,8 @@ to have the same length.</np>
 
 <break/>
 
-<p>Hopefully, I have given you enough information to get you started with Inkscape. There is a lot
-more to learn. I will mention just a few more features.</p>
+<p>Hopefully, we have given you enough information to get you started with Inkscape. There is a lot
+more to learn. We will mention just a few more features.</p>
 
 <p>The "Symbols" command in the "Object" menu will open a dialog box, on the right side of the window,
 with several sets of "symbols" that can be added to an image. (This is new in version 0.91.)
@@ -153,7 +153,7 @@ get nice looking symbols at any size!  Also, in general, you can change the stro
 of a symbol.</p>
 
 <p>Here's an example of a shape that you can make as a "difference" of
-two shapes. For this shape, a square was subtracted from a circle. I added a blue rectangle behind the shape
+two shapes. For this shape, a square was subtracted from a circle. We added a blue rectangle behind the shape
 so that you can see that there's actually a square hole in the circle, not simply a 
 white square on top of a red circle:</p>
 

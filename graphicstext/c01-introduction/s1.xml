@@ -194,7 +194,7 @@ or from bottom-to-top.)</p>
 
 <p>For a vector image, it is natural to use real-number coordinates. The coordinate system for an
 image is arbitrary to some degree; that is, the same image can be specified using different coordinate
-systems. I do not want to say a lot about coordinate systems here, but they will be a major
+systems. We do not say a lot about coordinate systems here, but they will be a major
 focus of a large part of the book, and they are even more important in three-dimensional graphics
 than in two dimensions.</p>
 

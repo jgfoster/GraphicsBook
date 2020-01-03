@@ -304,12 +304,12 @@ shape as well as possibly stretching or shrinking it. For example, <i>scale</i>(
 reflect objects vertically, through the <i>x</i>-axis.</p>
 
 <demo src="c2/transforms-2d.html" width="680" height="500"><p>It is a fact that every affine transform can be created by combining translations, rotations
-about the origin, and scalings about the origin. I won't try to prove that, but 
+about the origin, and scalings about the origin. We won't try to prove that, but 
 <web>here</web><tex><demoref href="c2/transforms-2d.html"/></tex> is an
 interactive demo that will let you experiment with translations, rotations, and scalings, and with the
 transformations that can be made by combining them.</p></demo>
 
-<p>I also note that a transform that is made from translations and rotations, with no scaling, will preserve
+<p>We also note that a transform that is made from translations and rotations, with no scaling, will preserve
 length and angles in the objects to which it is applied. It will also preserve
 <word term="aspect ratio">aspect ratios</word> of rectangles. Transforms with this property
 are called "<newword term="Euclidean transform">Euclidean</newword>."   If you also allow <b>uniform</b> 

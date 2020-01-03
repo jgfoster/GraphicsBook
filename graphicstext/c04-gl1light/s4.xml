@@ -92,7 +92,7 @@ its descendants.</p>
 <break/>
 
 <p>There is an alternative way to save and restore values. OpenGL has a variety of "get" functions
-for reading the values of various state variables. I will discuss just some of them here.
+for reading the values of various state variables. We will discuss just some of them here.
 For example,</p>
 
 <pre>glGetFloatv( GL_CURRENT_COLOR, floatArray );</pre>

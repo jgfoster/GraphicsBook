@@ -8,8 +8,8 @@ http://www.grsites.com/archive/textures/
 a collection of free background images.
 
 Earth-512x256.jpg is a version of an image
-that seems to be all over the Internet. I don't
-know its original origin.
+that seems to be all over the Internet but we don't
+know its origin.
 
 The .gif files were made from scratch in Gimp, except
 for brick.gif, which was just modified in Gimp from

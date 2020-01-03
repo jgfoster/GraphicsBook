@@ -397,7 +397,7 @@ the same change in the normal vector by adding some multiple of the vector from 
 to the original normal vector, as shown on the right above. Changing the number that is multiplied
 by the height map vector changes the degree of tilting of the surface. Increasing the mulitplier
 gives a stronger bump effect. Using a negative multiple will tilt the surface in the opposite
-direction, which will transform "bumps" into "dimples," and vice versa. I will refer to the
+direction, which will transform "bumps" into "dimples," and vice versa. We will refer to the
 multiplier as the <i>bump strength</i>.</p>
 
 <p>Things get a lot more complicated for two-dimensional surfaces in 3D space. A 1D "surface"
@@ -445,9 +445,9 @@ see how a bumpmap texture differs from an image texture. The effect might
 be more obvious if you change the "Diffuse Color" from white to some other color. The
 specular color is always white.</p>
 
-<p>(For this program, I had to add tangent vectors to my objects. I chose three objects&mdash;a cube,
+<p>(For this program, we had to add tangent vectors to our objects. We chose three objects&mdash;a cube,
 a cylinder, and a torus&mdash;for which tangent vectors were relatively easy to compute.
-But, honestly, it took me a while to get all the tangent vectors pointing in the correct
+But, honestly, it took a while to get all the tangent vectors pointing in the correct
 directions.)</p>
 
 <p>The bumpmapping is implemented in the fragment shader in the sample program. The essential
@@ -485,7 +485,7 @@ the current pixel in the texture; the coordinates are computed by adding
 Since texture coordinates in the image run from 0.0 to 1.0, the difference in the
 <i>y</i>-coordinates of the two pixels is 1.0/<i>bumpmapSize.y</i>. Similarly,
 <i>bmRight</i> is the height map value for the pixel to the right of the current pixel
-in the bumpmap texture. I should note that the <word>minification filter</word> for
+in the bumpmap texture. We should note that the <word>minification filter</word> for
 the bumpmap texture was set to <i>gl.NEAREST</i>, because we need to read the actual value from
 the texture, not a value averaged from several pixels, as would be returned by the
 default minification filter.</p>
