@@ -31,6 +31,14 @@ coordinates (<i>x</i>,<i>y</i>) depends on the choice of coordinate system.
 You always need to know what coordinate system is in use before you know what
 point you are talking about.</np>
 
+<demo height="900" width="570" src="c2/pixels.html">
+<p><web>The following interactive exercise helps you identify pixels.</web>
+<tex>The interactive exercise <i>c2/pixels.html</i> helps you identify pixels.
+Interactive demos can be found on the web pages in the on-line version of this
+book. If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
 
 <p>Row and column numbers identify a pixel, not a point. A pixel contains many points;
 mathematically, it contains an infinite number of points. The goal of computer graphics is not
@@ -40,7 +48,34 @@ each pixel. Pixels are an approximation. If we imagine that there is a true, ide
 image that we want to display, then any image that we display by coloring pixels is
 an approximation. This has many implications.</p>
 
-<p>Suppose, for example, that we want to draw a line segment. A mathematical line
+<p>For example, which point in a pixel should correspond to integer-valued coordinates
+such as (3,5)?  The center of the pixel?  One of the corners of the pixel?
+In general, we think of the numbers as referring to the top-left corner of the pixel
+(using left-to-right and top-to-bottom coordinates).
+Another way of thinking about this is to say that integer coordinates refer to the
+lines between pixels, rather than to the pixels themselves.</p>
+
+<demo height="870" width="570" src="c2/points.html">
+<p><web>The following interactive exercise helps you identify points.</web>
+<tex>The interactive exercise <i>c2/points.html</i> helps you identify points.
+points. Interactive demos can be found on the web pages in the on-line version of this
+book. If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+<p>Next, consider a line segment that connects two points. </p>
+
+<demo height="865" width="570" src="c2/lines.html">
+<p><web>The following interactive exercise helps you identify lines.</web>
+<tex>The interactive exercise <i>c2/lines.html</i> helps you identify lines.
+Interactive demos can be found on the web pages in the on-line version of this
+book. If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
+<p>A mathematical line
 has no thickness and would be invisible. So we really want to draw a thick line
 segment, with some specified width. Let's say that the line should be 
 one pixel wide. The problem is that, unless the line is horizontal or vertical,
@@ -74,10 +109,7 @@ middle is not:</p>
 are caused by aliasing (at least when it is viewed on a normal scale).</np>
 
 <p>There are other issues involved in mapping real-number coordinates to pixels.
-For example, which point in a pixel should correspond to integer-valued coordinates
-such as (3,5)?  The center of the pixel?  One of the corners of the pixel?
-In general, we think of the numbers as referring to the top-left corner of the pixel.
-Another way of thinking about this is to say that integer coordinates refer to the
+As mentioned earlier, we say that integer coordinates refer to the
 lines between pixels, rather than to the pixels themselves. But that still
 doesn't determine exactly which pixels are affected when a geometric shape is drawn.
 For example, here are two lines drawn using HTML canvas graphics,
@@ -112,50 +144,14 @@ named <i>demos</i>.</tex>
 the question mark icon in the upper left for more information about how to use it.)</p>
 </demo>
 
-<demo height="900" width="570" src="c2/pixels.html">
-<p><web>The following interactive exercise lets you experiment with
-pixels.</web>
-<tex>The interactive exercise <i>c2/pixels.html</i> lets you experiment with
-pixels. Interactive demos can be found on the web pages 
-in the on-line version of this
-book. If you have downloaded the web site, you can also find the demos in the folder
-named <i>demos</i>.</tex>
-</p>
-</demo>
-
-<demo height="870" width="570" src="c2/points.html">
-<p><web>The following interactive exercise lets you experiment with
-points.</web>
-<tex>The interactive exercise <i>c2/points.html</i> lets you experiment with
-points. Interactive demos can be found on the web pages 
-in the on-line version of this
-book. If you have downloaded the web site, you can also find the demos in the folder
-named <i>demos</i>.</tex>
-</p>
-</demo>
-
-<demo height="865" width="570" src="c2/lines.html">
-<p><web>The following interactive exercise lets you experiment with
-lines.</web>
-<tex>The interactive exercise <i>c2/lines.html</i> lets you experiment with
-lines. Interactive demos can be found on the web pages 
-in the on-line version of this
-book. If you have downloaded the web site, you can also find the demos in the folder
-named <i>demos</i>.</tex>
-</p>
-</demo>
-
 <demo height="1045" width="570" src="c2/antialiasing.html">
-<p><web>The following interactive exercise lets you experiment with
-antialiasing.</web>
-<tex>The interactive exercise <i>c2/antialiasing.html</i> lets you experiment with
-antialiasing. Interactive demos can be found on the web pages 
-in the on-line version of this
+<p><web>The following interactive exercise tests your understanding of antialiasing.</web>
+<tex>The interactive exercise <i>c2/antialiasing.html</i> tests your understanding of 
+antialiasing. Interactive demos can be found on the web pages in the on-line version of this
 book. If you have downloaded the web site, you can also find the demos in the folder
 named <i>demos</i>.</tex>
 </p>
 </demo>
-
 
 <break/>
 
@@ -290,7 +286,7 @@ this in <localref href="graphics2d.3"/>.</p>
 <p>The <newword>aspect ratio</newword> of a rectangle is the ratio of its width to its height.
 For example an aspect ratio of 2:1 means that a rectangle is twice as wide as it is tall,
 and an aspect ratio of 4:3 means that the width is 4/3 times the height. Although aspect ratios
-are often written in the form <i>width</i>:<i>height</i>, I will use the term to refer to the
+are often written in the form <i>width</i>:<i>height</i>, we will use the term to refer to the
 fraction <i>width/height</i>. A square has aspect ratio equal to&nbsp;1. A rectangle with aspect
 ratio 5/4 and height 600 has a width equal to 600*(5/4), or 750.</p>
 
