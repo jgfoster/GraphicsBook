@@ -17,10 +17,10 @@ that are typically provided by 2D graphics APIs.</p1>
 <p>In a graphics <word>API</word>, there will be certain basic shapes that can be drawn with one command, whereas
 more complex shapes will require multiple commands. Exactly what qualifies as a basic shape varies
 from one API to another. In the JavaScript API for drawing on an <word>HTML canvas</word>, for example,
-the only basic shapes are lines and rectangles. In this subsection, I consider lines, rectangles, and ovals
+the only basic shapes are lines and rectangles. In this subsection, we consider lines, rectangles, and ovals
 to be basic.</p>
 
-<p>By "line," I really mean line segment, that is a straight line segment connecting two given
+<p>By "line," we really mean "line segment,"" that is, a straight line segment connecting two given
 points in the plane. A simple one-pixel-wide line segment, without <word>antialiasing</word>, is 
 the most basic shape. It can be drawn by coloring pixels that lie along the infinitely thin
 geometric line segment. An algorithm for drawing the line has to decide exactly which pixels
@@ -78,7 +78,7 @@ right, the two radii of the ellipse are shown:</p>
 
 <img src="round-rects.png" width="306" height="87" tex="round-rects.eps" texscale="0.8"/>
 
-<p>My final basic shape is the oval. (An oval is also called an ellipse.)  An oval is a closed
+<p>Our final basic shape is the oval. (An oval is also called an ellipse.)  An oval is a closed
 curve that has two radii. For a basic oval, we assume that the radii are vertical and horizontal.
 An oval with this property can be specified by giving the rectangle that just contains it.
 Or it can be specified by giving its center point and the lengths of its vertical radius and
@@ -183,7 +183,7 @@ while the second shape uses a radial gradient.</np>
 after all, the same as filling a band of pixels along the boundary of the shape,
 and that can be done with a gradient or a pattern, instead of with  a solid color.</p>
 
-<p>Finally, I will mention that a string of text can be considered to be a shape for the purpose of
+<p>Finally, note that a string of text can be considered to be a shape for the purpose of
 drawing it. The boundary of the shape is the outline of the characters.
 The text is drawn by filling that shape. In some graphics systems, it is also possible to
 stroke the outline of the shape that defines the text. 
@@ -267,7 +267,7 @@ to move the pen back to the first vertex.</np>
 one does not make it visible on the screen. Once we have a path, to make it visible we need additional
 commands for stroking and filling the path.</p>
 
-<demo height="1080" width="550" src="c2/paths.html">
+<demo height="480" width="780" src="c2/paths.html">
 <p><web>The following interactive exercise lets you experiment with drawing paths.</web>
 <tex>The interactive exercise <i>c2/paths.html</i> lets you experiment with
 drawing paths. Interactive demos can be found on the web pages in the on-line version of this
@@ -277,7 +277,7 @@ named <i>demos</i>.</tex>
 </demo>
 
 <p>Earlier in this section, we saw how to approximate an oval by drawing, in effect, a regular
-polygon with a large number of sides. In that example, I drew each side as a separate line segment,
+polygon with a large number of sides. In that example, we drew each side as a separate line segment,
 so we really had a bunch of separate lines rather than a polygon. There is no way to fill such
 a thing. It would be better to approximate the oval with a polygonal path. For an oval with
 center (x,y) and radii r1 and r2:</p>
@@ -298,7 +298,7 @@ earlier in this section.</np>
 
 <break/>
 
-<p>I noted above that a path can contain other kinds of segments besides lines. For example,
+<p>We noted above that a path can contain other kinds of segments besides lines. For example,
 it might be possible to include an arc of a circle as a segment. Another type of curve
 is a <newword>Bezier curve</newword>. Bezier curves can be used to create very general 
 curved shapes. They are fairly intuitive, so that they are often used in programs that

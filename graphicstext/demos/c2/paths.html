@@ -30,26 +30,19 @@
     <table>
       <tr>
         <td>
-          <canvas id="canvas" width="500" height="500">
+          <canvas id="canvas" width="400" height="400">
             <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
             Canvas not supported.
           </canvas>
         </td>
-      </tr>
-      <tr>
         <td id="blocklyArea">
-          <div id="blocklyDiv" style="height: 500px; width: 500px;"></div>
-        </td>
-      </tr>
-      <tr>
-        <td style="height: 500px; width: 400px; display: none;">
-          <textarea id="textarea" rows="38" cols="40"></textarea>
+          <div id="blocklyDiv" style="height: 400px; width: 350px;"></div>
         </td>
       </tr>
   </table>
 
     <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
-      <block type="graphics_createpath" x="63" y="38">
+      <block type="graphics_createpath" x="20" y="20">
         <next>
           <block type="graphics_moveto">
             <field name="X">100</field>
@@ -78,4 +71,4 @@
       </block>
     </xml>
   </body>
-  </html>
+</html>

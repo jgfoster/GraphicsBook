@@ -362,7 +362,7 @@ Three basic colors can produce a reasonably large fraction of the set of perceiv
 but there are colors that you can see in the world that you will never see on your computer
 screen. (This whole discussion only applies to people who actually have three kinds of
 cone cell. Color blindness, where someone is missing one or more kinds of cone cell, is
-surprisingly common.)</p>
+surprisingly common and some people have tetrachromacy, or four kinds of cone cells.)</p>
 
 <p>The range of colors that can be produced by a device such as a computer screen is called
 the <newword>color gamut</newword> of that device. Different computer screens can have different
@@ -421,7 +421,7 @@ get bright, pure colors. S=0.5 gives paler, less saturated colors. V=0.5 gives d
 <demo height="370" width="600" src="c2/rgb-hsv.html">
 <p>It's probably easier to understand color models by looking at some actual colors
 and how they are represented. <web>Here is an interactive demo that 
-let's you do that for the RGB and HSV color models:</web>
+lets you do that for the RGB and HSV color models:</web>
 <tex>The interactive demo <i>c2/rgb-hsv.html</i> lets you experiment with
 the RGB and HSV color models.</tex></p>
 </demo>
