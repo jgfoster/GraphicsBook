@@ -17,7 +17,7 @@ of JavaScript, see <localref href="proglang.3"/> in <localref href="proglang"/>.
 <p>The visible content of a web page is made up of "elements" such
 as headlines and paragraphs. The content is specified using the <word>HTML</word> language.
 A "canvas" is an HTML element. It appears on the page as a blank rectangular area which can
-be used as a drawing surface by what I am calling the "<word>HTML canvas</word>" graphics API.
+be used as a drawing surface by what we are calling the "<word>HTML canvas</word>" graphics API.
 In the source code of a web page, a canvas element is created with code of the form</p>
 
 <pre>&lt;canvas width="800" height="600" id="theCanvas"&gt;&lt;/canvas&gt;</pre>
@@ -27,7 +27,7 @@ In the source code of a web page, a canvas element is created with code of the f
 
 <p>To draw on a canvas, you need a graphics context. A graphics context is an object that
 contains functions for drawing shapes. It also contains variables that record the current graphics 
-state, including  things like the current drawing color, transform, and font. Here, I will 
+state, including  things like the current drawing color, transform, and font. Here, we will 
 generally use <i>graphics</i> as the name of the variable that refers to the graphics context, 
 but the variable name is, of course, up to the programmer. This graphics context plays the same role in 
 the canvas API that a variable of type <classname>Graphics2D</classname> plays in Java.
@@ -109,7 +109,7 @@ and mouse events.</np>
 and the <i>y</i>-coordinate increases downward.  The range of <i>x</i> and <i>y</i>
 values are given by the <i>width</i> and <i>height</i> properties of the <tag>canvas</tag>
 element. The term "pixel" here for the unit of measure is not really correct. 
-Probably, I should say something like "one nominal pixel."
+Probably, we should say something like "one nominal pixel."
 The unit of measure is one pixel at typical desktop resolution with no magnification.
 If you apply a magnification to a browser window, the unit of measure gets stretched.
 And on a high-resolution screen, one unit in the default coordinate system might 
@@ -316,7 +316,7 @@ the color at the initial point; a color stop at 1 specifies the color
 at the final point. Once a gradient has been created, it can be used both
 as a fill style and as a stroke style in the graphics context.</np>
 
-<p>Finally, I note that the font that is used for drawing text is the
+<p>Finally, we note that the font that is used for drawing text is the
 value of the property <i>graphics.font</i>. The value is a string
 that could be used to specify a font in <word>CSS</word>.
 As such, it can be fairly complicated, but the simplest versions
@@ -581,12 +581,12 @@ with its color data modified. Or you can create a blank image data object by
 calling <i>graphics.createImageData</i>(<i>w,h</i>) and fill it with data.</p>
 
 <p>Let's consider the "Smudge" tool in the sample program. When the user clicks the
-mouse with this tool, I use <i>OSG.getImageData</i> to get the color data from a 
+mouse with this tool, we use <i>OSG.getImageData</i> to get the color data from a 
 9-by-9 square of pixels surrounding the mouse location. <i>OSG</i> is the graphics
-context for the canvas that contains the image. Since I want to do real-number
-arithmetic with color values, I copy the color components into another typed array,
+context for the canvas that contains the image. Since we want to do real-number
+arithmetic with color values, we copy the color components into another typed array,
 one of type <i>Float32Array</i>, which can hold 32-bit floating point numbers.
-Here is the function that I call to do this:</p>
+Here is the function that we call to do this:</p>
 
 <pre>function grabSmudgeData(x, y) {  // (x,y) gives mouse location
     var colors = OSG.getImageData(x-5,y-5,9,9);
@@ -739,9 +739,9 @@ after it has loaded:</np>
 <np>A similar technique is used to load the images in the filter demo.</np>
 
 <p>There is one last mystery to clear up. When discussing the use of an off-screen
-canvas in the <i>SimplePaintProgram</i> example earlier in this section, I noted that
+canvas in the <i>SimplePaintProgram</i> example earlier in this section, we noted that
 the contents of the off-screen canvas have to be copied to the main canvas,
-but I didn't say how that can be done. In fact, it is done using <i>drawImage</i>.
+but we didn't say how that can be done. In fact, it is done using <i>drawImage</i>.
 In addition to drawing an image onto a canvas, <i>drawImage</i> can be used to draw the contents of
 one canvas into another canvas. In the sample program, the command</p>
 

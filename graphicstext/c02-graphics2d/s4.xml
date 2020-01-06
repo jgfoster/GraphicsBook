@@ -115,7 +115,7 @@ have written a subroutine</np>
 <np>that draws a wheel. This subroutine draws the wheel in its own natural coordinate system. 
 In this coordinate system, the wheel is centered at (0,0) and has radius&nbsp;1.</np>
 
-<p>In the cart's coordinate system, We found it convenient to use the midpoint of the base of the
+<p>In the cart's coordinate system, we found it convenient to use the midpoint of the base of the
 large rectangle as the reference point. We 
 assume that the positive direction of the <i>y</i>-axis points upward, which is the common
 convention in mathematics. The rectangular body of the cart has
@@ -318,7 +318,7 @@ more compact code and can eliminate the need for a lot of extra temporary variab
 
 <p>Another decision has to be made about how to handle color. One possibility would be
 to make a <classname>ColoredObject</classname> class similar to
-<classname>TransformedObject</classname>. However, in this case I just added
+<classname>TransformedObject</classname>. However, in this case we just added
 a <i>setColor</i>() method to the main <classname>ScreenGraphNode</classname>
 class. A color that is set on a compound object is inherited by any sub-objects,
 unless a different color is set on the sub-object. In other words, a color on a compound object
@@ -328,7 +328,7 @@ acts as a default color for its sub-objects, but color can be overridden on the 
 nodes to represent the basic graphical objects that occupy the bottom level of the scene graph.
 These are the nodes that do the actual drawing in the end.</p>
 
-<p>For those who are familiar with data structures, I will note that
+<p>For those who are familiar with data structures, we note that
 a scene graph is actually an example of a "directed acyclic graph" or "dag."
 The process of drawing the scene involves a traversal of this dag. The
 term "acyclic" means that there can't be cycles in the graph. For a scene graph,
@@ -377,7 +377,7 @@ hierarchical graphics for an HTML canvas.</p>
 
 <p>Let's try to bring this all together by considering how it applies to a simple object
 in a complex scene: one of the filled circles that is part of the front wheel on the cart
-in our example scene. Here, I have rearranged part of the scene graph for that scene, and I've added
+in our example scene. Here, we rearranged part of the scene graph for that scene, and added
 labels to show the modeling transformations that are applied to each object:</p>
 
 <img src="hierarchical-transforms.png" width="425" height="179" tex="hierarchical-transforms.eps" texscale="0.8"/>
@@ -406,7 +406,7 @@ And when the cart is done, the original transform, the identity, is popped. When
 goes onto the next object in the scene, it starts the whole process again, with the identity
 transform as the starting point.</p>
 
-<p>This might sound complicated, but I should emphasize that it something that the computer
+<p>This might sound complicated, but it something that the computer
 does for you. Your responsibility is simply to design the individual objects, in their
 own natural coordinate system. As part of that, you specify the modeling transformations that are applied
 to the sub-objects of that object. You construct the scene as a whole in a similar way.

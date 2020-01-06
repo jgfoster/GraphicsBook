@@ -101,7 +101,7 @@ If no unit of measure is specified, pixels are used. There cannot be any space b
 the number and the unit of measure.</p>
 
 <p>The <i>viewBox</i> attribute sets up the <word>coordinate system</word> that will be used for 
-drawing the image. It is what I called the <word>view window</word> in <localref href="graphics2d.3.1"/>.
+drawing the image. It is what we called the <word>view window</word> in <localref href="graphics2d.3.1"/>.
 The value for viewBox is a list of four numbers,
 giving the minimum <i>x-</i>value, the minimum <i>y-value</i>, the width, and the height
 of the view window. The width and the height must be positive, so <i>x</i> increases from
@@ -171,8 +171,8 @@ browser's "view source" command.)</np>
 shape, and attributes give the properties of the shape. There are attributes to specify
 the geometry, such as the endpoints of a line or the radius of a circle.
 Other attributes specify style properties, such as fill color and line width.
-(The style properties are what I call <word term="attribute">attributes</word> elsewhere
-in this book; in this section, I am using the term "attribute" in its XML sense.)
+(The style properties are what we call <word term="attribute">attributes</word> elsewhere
+in this book; in this section, we are using the term "attribute" in its XML sense.)
 And there is a <i>transform</i> attribute that can be used to apply a
 <word>geometric transform</word> to the shape.</p>
 
@@ -206,7 +206,7 @@ common style attributes:</p>
 "none" to indicate that the shape is not filled. It can be be a color, in the same format
 as the <word>CSS</word> colors that are used in the <word>HTML canvas</word> API. For example,
 it can be a common color name such as "black" or "red", or an <word>RGB color</word>
-such as "rgb(255,200,180)". There are also gradient and pattern fills, though I will not
+such as "rgb(255,200,180)". There are also gradient and pattern fills, though we will not
 discuss them here.</li>
 <li><codedef>stroke</codedef> &mdash; specifies how to stroke the shape, with the same
 possible values as "fill".</li>
@@ -347,7 +347,7 @@ missing side were added.</np>
 
 <p>The <tag>path</tag> element is much more interesting. In fact, all of the other basic shapes,
 except text, could be made using path elements. A path can consist of line segments,
-<word term="Bezier curve">Bezier curves</word>, and elliptical arcs (although I won't
+<word term="Bezier curve">Bezier curves</word>, and elliptical arcs (although we won't
 discuss elliptical arcs here). The syntax for
 specifying a path is very succinct, and it has some features that we have not seen before.
 A path element has an attribute named <i>d</i> that contains the data for the path. The
@@ -510,10 +510,10 @@ Here is the image:</np>
 
 <subsection title="Animation" id="graphics2d.7.5">
 
-<p>SVG has a number of advanced features that I won't discuss here, but I do want to
+<p>SVG has a number of advanced features that we won't discuss here, but we do want to
 mention one: <word>animation</word>. It is possible to animate almost any property
 of an SVG object, including geometry, style, and transforms. The syntax for animation
-is itself fairly complex, and I will only do a few examples. But I will tell you enough
+is itself fairly complex, and we will only do a few examples. But we will tell you enough
 to produce a fairly complex hierarchical animation like the "cart-and-windmills"
 example that was discussed and used as a demo in <localref href="graphics2d.4.1"/>.
 An SVG version of that animation can be found in <sourceref href="svg/cart-and-windmills.svg"/>.

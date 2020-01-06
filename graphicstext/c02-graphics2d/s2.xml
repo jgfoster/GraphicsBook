@@ -140,7 +140,7 @@ interior of the shape and the outline of the shape can have a different appearan
 entirely clear what should count as the interior of the shape. In fact, there are at least
 two different rules for filling such a shape. Both are based on something called the
 <newword>winding number</newword>. The winding number of a shape about a point is, roughly,
-how many times the shape winds around the point in the positive direction, which I take here
+how many times the shape winds around the point in the positive direction, which we take here
 to be counterclockwise.
 Winding number can be negative when the winding is in the opposite direction. 
 In the illustration, the shapes
@@ -245,7 +245,7 @@ and ends at the point (x,y), and move the pen to (x,y)</li>
 the starting point, unless the pen is already there, producing a closed path.</li>
 </ul>
 
-<np>(For <code>closePath</code>, I need to define "starting point."  A path can be made up
+<np>(For <code>closePath</code>, we need to define "starting point."  A path can be made up
 of "subpaths"  A subpath consists of a series of connected segments. A <code>moveTo</code>
 always starts a new subpath. A <code>closePath</code> ends the current segment and implicitly
 starts a new one. So "starting point" means the position of the pen after the most recent

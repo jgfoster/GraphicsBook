@@ -160,7 +160,7 @@ actually used, so that after the translation, the "F" will be centered at (4,2):
 <np>The light gray "F" in this picture shows what would be drawn without the translation; the
 dark red "F" shows the same "F" drawn after applying a translation by (4,2). The top arrow shows
 that the upper left corner of the "F" has been moved over 4 units and up 2 units. Every point
-in the "F" is subjected to the same displacement. Note that in my examples, I am assuming that
+in the "F" is subjected to the same displacement. Note that in these examples, we are assuming that
 the y-coordinate increases from bottom to top. That is, the y-axis points up.</np>
 
 <p>Remember that when you give the command <i>translate</i>(<i>e</i>,<i>f</i>), the translation applies

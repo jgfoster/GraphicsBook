@@ -84,9 +84,9 @@ method usually looks something like this:</p>
        .
 }</pre>
 
-<np>In the rest of this section, I will assume that <i>g2</i> is a variable of
-type <classname>Graphics2D</classname>, and I will discuss some of the things
-that you can do with it. As a first example, I note that <classname>Graphics2D</classname>
+<np>In the rest of this section, we will assume that <i>g2</i> is a variable of
+type <classname>Graphics2D</classname>, and we will discuss some of the things
+that you can do with it. As a first example, note that <classname>Graphics2D</classname>
 supports <word>antialiasing</word>, but it is not turned on by default. It
 can be enabled in a graphics context <i>g2</i> with the rather intimidating
 command</np>
@@ -163,7 +163,7 @@ If <i>pd</i> is a variable of type <classname>Point2D.Double</classname>, you ca
 directly to the coordinates as <i>pd.x</i> and <i>pd.y</i>
 (and similarly for <classname>Point2D.Float</classname>).
 Other classes in <i>java.awt.geom</i> offer a similar variety of ways
-to manipulate their properties, and I won't try to list them all here.
+to manipulate their properties, and we won't try to list them all here.
 </p>
 
 <p>There is a variety of classes that represent geometric shapes, including  <classname>Line2D</classname>,
@@ -325,7 +325,7 @@ where two segments meet. (See <localref href="graphics2d.2.1"/>.)  For example,<
 <pre>g2.setStroke( new BasicStroke( 5.0F,
            BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );</pre>
            
-<np>It is also possible to make strokes out of dashes and dots, but I won't discuss how
+<np>It is also possible to make strokes out of dashes and dots, but we won't discuss how
 to do it here.</np>
 
 <break/>
@@ -360,7 +360,7 @@ from values in the HSB color model (which is another name for <word term="HSV co
 In this case, the hue, saturation, and brightness color components must be given as values of
 type <ptype>float</ptype>. And there are constants to represent about a dozen common
 colors, such as <i>Color.WHITE</i>, <i>Color.RED</i>, and <i>Color.YELLOW</i>.
-For example, here is how I might draw a square with a black outline and a light
+For example, here is how you might draw a square with a black outline and a light
 blue interior:</np>
 
 <pre>Rectangle2D square = new Rectangle2D.double(-2,-2,4,4);
@@ -495,10 +495,10 @@ function from <localref href="graphics2d.3.7"/>. See the sample program
 
 <break/>
 
-<p>I will mention one more use for <classname>AffineTransform</classname> objects:  Sometimes,
+<p>We will mention one more use for <classname>AffineTransform</classname> objects:  Sometimes,
 you do need to explicitly transform coordinates. For example, given <word>object coordinates</word>
-(<i>x</i>,<i>y</i>), I might need to know where they will actually end up on the screen, in 
-pixel coordinates. That is, I would like to transform (<i>x</i>,<i>y</i>) by the current transform
+(<i>x</i>,<i>y</i>), you might need to know where they will actually end up on the screen, in 
+pixel coordinates. That is, you would like to transform (<i>x</i>,<i>y</i>) by the current transform
 to get the corresponding pixel coordinates. The <classname>AffineTransform</classname> class
 has a method for applying the affine transform to a point. It works with objects of type
 <classname>Point2D</classname>. Here is an example:</p>
@@ -511,10 +511,10 @@ trns.transform( originalPoint, transformedPoint );
 int pixelX = (int)transformedPoint.x;
 int pixelY = (int)transformedPoint.y;</pre>
 
-<np>One way I have used this is when working with strings. Often when displaying a string in a
-transformed coordinate system, I want to transform the basepoint of a string, but not
-the string itself. That is, I want the transformation to affect the location of the string
-but not its size or rotation. To accomplish this, I use the above technique to obtain
+<np>One way to use this is when working with strings. Often when displaying a string in a
+transformed coordinate system, you want to transform the basepoint of a string, but not
+the string itself. That is, you want the transformation to affect the location of the string
+but not its size or rotation. To accomplish this, you can use the above technique to obtain
 the pixel coordinates for the transformed basepoint, and then draw the string at
 those coordinates, using an original, untransformed graphics context.</np>
 
@@ -547,7 +547,7 @@ the transformation of coordinates.)</p>
 <subsection title="BufferedImage and Pixels" id="graphics2d.5.5">
 
 <p>In some graphics applications, it is useful to be able to work with images that
-are not visible on the screen. That is, you need what I call an <newword>off-screen canvas</newword>.
+are not visible on the screen. That is, you need what we call an <newword>off-screen canvas</newword>.
 You also need a way to quickly copy the off-screen canvas onto the screen.
 For example, it can be useful to store a copy of the on-screen image in an off-screen canvas.
 The canvas is the official copy of the image. Changes to the image are made to the canvas,
