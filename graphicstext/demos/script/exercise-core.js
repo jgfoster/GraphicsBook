@@ -173,6 +173,6 @@ function reportResults(widgets, totalTime, attempts) {
     widgets.graphics.setTransform(1, 0, 0, 1, 0, 0);
     widgets.graphics.fillStyle = "#0F0";
     widgets.graphics.fillRect(1, 1, 499, 499);
-    const string = attempts + " attempts in " + Math.round(totalTime / 1000) + " seconds";
-    widgets.paragraph.textContent = string + "  (" + hash(string) + ")";
+    const string = attempts + " attempts in " + Math.round(totalTime / 100) / 10 + " seconds";
+    widgets.paragraph.textContent = string + "  (check " + Math.abs(hash(string) % 1000) + ")";
 }
