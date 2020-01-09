@@ -267,9 +267,9 @@ to move the pen back to the first vertex.</np>
 one does not make it visible on the screen. Once we have a path, to make it visible we need additional
 commands for stroking and filling the path.</p>
 
-<demo height="480" width="780" src="c2/paths.html">
+<demo height="480" width="780" src="c2/blockly-paths.html">
 <p><web>The following interactive exercise lets you experiment with drawing paths.</web>
-<tex>The interactive exercise <i>c2/paths.html</i> lets you experiment with
+<tex>The interactive exercise <i>c2/blockly-paths.html</i> lets you experiment with
 drawing paths. Interactive demos can be found on the web pages in the on-line version of this
 book. If you have downloaded the web site, you can also find the demos in the folder
 named <i>demos</i>.</tex>
