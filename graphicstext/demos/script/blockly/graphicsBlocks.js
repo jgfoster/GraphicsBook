@@ -13,12 +13,11 @@ Blockly.Blocks['graphics_createpath'] = {
 Blockly.Blocks['graphics_moveto'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("moveTo(")
-        .appendField(new Blockly.FieldNumber(0), "X")
-        .appendField(",")
-        .appendField(new Blockly.FieldNumber(0), "Y")
-        .appendField(")");
-    this.setInputsInline(true);
+        .appendField("moveTo()");
+    this.appendValueInput("X")
+        .setCheck("Number");
+    this.appendValueInput("Y")
+        .setCheck("Number");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -30,12 +29,11 @@ Blockly.Blocks['graphics_moveto'] = {
 Blockly.Blocks['graphics_lineto'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("lineTo(")
-        .appendField(new Blockly.FieldNumber(0), "X")
-        .appendField(",")
-        .appendField(new Blockly.FieldNumber(0), "Y")
-        .appendField(")");
-    this.setInputsInline(true);
+        .appendField("lineTo()");
+    this.appendValueInput("X")
+        .setCheck("Number");
+    this.appendValueInput("Y")
+        .setCheck("Number");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

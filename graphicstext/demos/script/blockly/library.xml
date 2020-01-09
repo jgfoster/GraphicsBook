@@ -38,44 +38,36 @@
   </block><block type="factory_base" id="SZ*$@0T%9j),S_Ynjr1|" deletable="false" movable="false" x="10" y="10">
     <mutation connections="BOTH"/>
     <field name="NAME">graphics_moveTo</field>
-    <field name="INLINE">INT</field>
+    <field name="INLINE">EXT</field>
     <field name="CONNECTIONS">BOTH</field>
     <statement name="INPUTS">
       <block type="input_dummy" id="@Q15Q67NvF~FR]/I.15o">
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id="|m@wZ-e1@,_4vjZ[r^LB">
-            <field name="TEXT">moveTo(</field>
+            <field name="TEXT">moveTo()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="Q7nAU;VL1WR[?2TlV6BO">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id=";icz5n}_g$vxt!9!uG1u"/>
+              <block type="type_number" id="PCFkHx8jO?gzsaV}u4gW"/>
+            </value>
             <next>
-              <block type="field_number" id="n[$ZW]pQ}6K4n}|/`x-{">
-                <field name="VALUE">0</field>
-                <field name="FIELDNAME">X</field>
-                <field name="MIN">-Infinity</field>
-                <field name="MAX">Infinity</field>
-                <field name="PRECISION">0</field>
-                <next>
-                  <block type="field_static" id="},)Cu).19bSrAyE%~0PR">
-                    <field name="TEXT">,</field>
-                    <next>
-                      <block type="field_number" id="Hs*aUy%*Zp5BvieE^6[k">
-                        <field name="VALUE">0</field>
-                        <field name="FIELDNAME">Y</field>
-                        <field name="MIN">-Infinity</field>
-                        <field name="MAX">Infinity</field>
-                        <field name="PRECISION">0</field>
-                        <next>
-                          <block type="field_static" id="!gb]ai7X^yR$q@J22EQ*">
-                            <field name="TEXT">)</field>
-                          </block>
-                        </next>
-                      </block>
-                    </next>
-                  </block>
-                </next>
+              <block type="input_value" id="=P_IAbwR%1Fi*PoA3k*a">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="~Q6W--ahG]:R.3}C{,t@"/>
+                  <block type="type_number" id="5Us(26(:N/L*|K^2LC4-"/>
+                </value>
               </block>
             </next>
           </block>
-        </statement>
+        </next>
       </block>
     </statement>
     <value name="TOOLTIP">
@@ -103,44 +95,36 @@
   </block><block type="factory_base" id="3)hzyu%+!MCRl.O~KaU(" deletable="false" movable="false" x="10" y="10">
     <mutation connections="BOTH"/>
     <field name="NAME">graphics_lineto</field>
-    <field name="INLINE">INT</field>
+    <field name="INLINE">AUTO</field>
     <field name="CONNECTIONS">BOTH</field>
     <statement name="INPUTS">
       <block type="input_dummy" id="-jZNqZ@bLwmSjmoW)?}K">
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id="!Jn}jDUi)Fgbj}E0!VO$">
-            <field name="TEXT">lineTo(</field>
+            <field name="TEXT">lineTo()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="i}Yq7YHm%[kU^mc}yx.N">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="QH=X*wD6]xoEp;]H^bCS"/>
+              <block type="type_number" id="TgnCX~lT+U@I*m,]zW.]"/>
+            </value>
             <next>
-              <block type="field_number" id="0_+yFo,:tmm[UIJ{cPIz">
-                <field name="VALUE">0</field>
-                <field name="FIELDNAME">X</field>
-                <field name="MIN">-Infinity</field>
-                <field name="MAX">Infinity</field>
-                <field name="PRECISION">0</field>
-                <next>
-                  <block type="field_static" id="12(DjXm6boq([*X:l6MI">
-                    <field name="TEXT">,</field>
-                    <next>
-                      <block type="field_number" id="1K8B+`f[o^0VDjgeur~U">
-                        <field name="VALUE">0</field>
-                        <field name="FIELDNAME">Y</field>
-                        <field name="MIN">-Infinity</field>
-                        <field name="MAX">Infinity</field>
-                        <field name="PRECISION">0</field>
-                        <next>
-                          <block type="field_static" id="P!4BK-[u5{K!N$+Le}vB">
-                            <field name="TEXT">)</field>
-                          </block>
-                        </next>
-                      </block>
-                    </next>
-                  </block>
-                </next>
+              <block type="input_value" id="9etRp#}QmJOP}4a~,.c+">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="Yb{o[o(ke5?Lvp8*},cm"/>
+                  <block type="type_number" id="Q_0{t`3bnq**P[2P6=%#"/>
+                </value>
               </block>
             </next>
           </block>
-        </statement>
+        </next>
       </block>
     </statement>
     <value name="TOOLTIP">
