@@ -48,14 +48,12 @@ Blockly.JavaScript['graphics_translateex'] = function(block) {
 
 Blockly.JavaScript['graphics_rotate'] = function(block) {
   var number_angle = block.getFieldValue('ANGLE');
-  return 'graphics.rotate(' + number_angle + ');\n';
+  return 'graphics.rotate(' + (number_angle * (Math.PI / 180)) + ');\n';
 };
 
 Blockly.JavaScript['graphics_rotateex'] = function(block) {
-  var value_name = Blockly.JavaScript.valueToCode(block, 'ANGLE', Blockly.JavaScript.ORDER_ATOMIC);
-  // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
-  return code;
+  var number_angle = Blockly.JavaScript.valueToCode(block, 'ANGLE', Blockly.JavaScript.ORDER_ATOMIC);
+  return 'graphics.rotate(' + (number_angle * (Math.PI / 180)) + ');\n';
 };
 
 Blockly.JavaScript['graphics_scale'] = function(block) {
