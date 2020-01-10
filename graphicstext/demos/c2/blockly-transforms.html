@@ -21,10 +21,10 @@ let goalTransform;  // where we drew the goal
 let userTransform;  // what the user has currently
 let level = 1;
 let levels = [      // values for a-f at each level
-  [1, 0, 0, 1, 50, 100],
-  [1, -1, -1, 1, 300, 150],
-  [1, 0, 0, 1, 50, 100],
-  [1, 0, 0, 1, 50, 100],
+  [1, 0, 0, -1, 300.5, 150.5], 
+  [0, -1, -1, 0, 300.5, 150.5],
+  [0.7071, -0.7071, -0.7071, -0.7071, 321.21, 179.79],
+  [-0.7071, -0.7071, -0.7071, 0.7071, 250.5, 391.92],
 ];
 
 function logTransform() {
@@ -89,7 +89,7 @@ function before(graphics) {
   graphics.transform(1, 0, 0, -1, 0, 0);
   const savedTransform = graphics.getTransform();
   // draw goal
-  graphics.transform(
+  graphics.setTransform(
     levels[level - 1][0], 
     levels[level - 1][1], 
     levels[level - 1][2], 
@@ -97,6 +97,8 @@ function before(graphics) {
     levels[level - 1][4], 
     levels[level - 1][5]
   );
+  // graphics.rotate(135*Math.PI/180);
+  // graphics.translate(-100, 100);
   goalTransform = graphics.getTransform();
   graphics.fillStyle = "DDD";
   graphics.fillRect(-20, -20, 40, 40);
@@ -110,6 +112,29 @@ function before(graphics) {
   graphics.setTransform(savedTransform);
 }
 
+function compareTransforms(userTransform, goalTransform) {
+  const pairs = [
+    [userTransform.a, goalTransform.a],
+    [userTransform.b, goalTransform.b],
+    [userTransform.c, goalTransform.c],
+    [userTransform.d, goalTransform.d],
+    [userTransform.e, goalTransform.e],
+    [userTransform.f, goalTransform.f]
+  ];
+  for (i = 0; i < pairs.length; i++) {
+    const user = pairs[i][0];
+    const goal = pairs[i][1];
+    let off = Math.abs(goal - user);
+    // if (goal != 0) {
+    //   off = Math.abs(off / goal);
+    // };
+    // console.log(i, off);
+    if (off > 0.01) {
+      return false;
+    }
+  }
+  return true;
+}
 function after(graphics, userCode) {
   graphics.fillStyle = "F00";
   graphics.fillRect(-20, -20, 40, 40);
@@ -123,16 +148,11 @@ function after(graphics, userCode) {
   graphics.closePath();
   graphics.fill();
   userTransform = graphics.getTransform();
-  const success = 
-    userTransform.a == goalTransform.a &&
-    userTransform.b == goalTransform.b &&
-    userTransform.c == goalTransform.c &&
-    userTransform.d == goalTransform.d &&
-    userTransform.e == goalTransform.e &&
-    userTransform.f == goalTransform.f;
+  const success = compareTransforms(userTransform, goalTransform);
   if (success) {
-    document.getElementById("codeArea").value = "// level " + level + `
+    const text = document.getElementById("codeArea").value + "// level " + level + `
 ` + userCode;
+    document.getElementById("codeArea").value = text;
   }
 }
 
@@ -164,11 +184,13 @@ function onLoad() {
     <h1>Blockly Exercise for Transforms</h1>
     <table>
       <tr>
-        <td style="display: none">
+        <td style="display: inline">
           <button id="reset" type="button" onclick="resetWorkspace();">Reset</button>
           <button id="prev"  type="button" onclick="previousLevel();">Previous</button>
+          Level <span id="level"></span> of <span id="levels"></span>
           <button id="next"  type="button" onclick="nextLevel();">Next</button>
-          On level <span id="level"></span> of <span id="levels"></span>
+        </td>
+        <td>
           <button id="log"   type="button" onclick="logTransform();">Log</button>
         </td>
       </tr>
@@ -183,22 +205,22 @@ function onLoad() {
           <div id="blocklyDiv" style="width: 400px; height: 500px;"></div>
         </td>
         <td>
-          <textarea id="codeArea" rows="38" cols="40" style="display: none"></textarea>
+          <textarea id="codeArea" rows="38" cols="40" style="display: inline"></textarea>
         </td>
       </tr>
     </table>
 
     <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
-      <block type="graphics_translate">
-        <field name="X">0</field>
-        <field name="Y">0</field>
+      <block type="graphics_scale">
+        <field name="X">1</field>
+        <field name="Y">1</field>
         <next>
           <block type="graphics_rotate">
             <field name="ANGLE">0</field>
             <next>
-              <block type="graphics_scale">
-                <field name="X">1</field>
-                <field name="Y">1</field>
+              <block type="graphics_translate">
+                <field name="X">0</field>
+                <field name="Y">0</field>
               </block>
             </next>
           </block>
