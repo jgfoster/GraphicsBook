@@ -13,6 +13,22 @@ Blockly.Blocks['graphics_createpath'] = {
 Blockly.Blocks['graphics_moveto'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField("moveTo(")
+        .appendField(new Blockly.FieldNumber(0), "X")
+        .appendField(",")
+        .appendField(new Blockly.FieldNumber(0), "Y")
+        .appendField(")");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("move the pen to the point (x,y), without adding a segment to the path; that is, without drawing anything");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_movetoex'] = {
+  init: function() {
+    this.appendDummyInput()
         .appendField("moveTo()");
     this.appendValueInput("X")
         .setCheck("Number");
@@ -27,6 +43,22 @@ Blockly.Blocks['graphics_moveto'] = {
 };
 
 Blockly.Blocks['graphics_lineto'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("lineTo(")
+        .appendField(new Blockly.FieldNumber(0), "X")
+        .appendField(",")
+        .appendField(new Blockly.FieldNumber(0), "Y")
+        .appendField(")");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_linetoex'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("lineTo()");
@@ -65,3 +97,96 @@ Blockly.Blocks['graphics_stroke'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['graphics_translate'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("translate(")
+        .appendField(new Blockly.FieldNumber(0), "X")
+        .appendField(",")
+        .appendField(new Blockly.FieldNumber(0), "Y")
+        .appendField(")");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Move every point by a certain amount horizontally and a certain amount vertically");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_translateex'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("translate()");
+    this.appendValueInput("X")
+        .setCheck("Number");
+    this.appendValueInput("Y")
+        .setCheck("Number");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Move every point by a certain amount horizontally and a certain amount vertically");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_rotate'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("rotate(")
+        .appendField(new Blockly.FieldNumber(0), "ANGLE")
+        .appendField(")");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("rotate each point about the origin");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_rotateex'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("rotate()");
+    this.appendValueInput("ANGLE")
+        .setCheck("Number");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("rotate each point about the origin");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_scale'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("scale(")
+        .appendField(new Blockly.FieldNumber(1), "X")
+        .appendField(",")
+        .appendField(new Blockly.FieldNumber(1), "Y")
+        .appendField(")");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("multiply each x-coordinate by a given amount and each y-coordinate by a certain amount");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['graphics_scaleex'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("scale()");
+    this.appendValueInput("X")
+        .setCheck("Number");
+    this.appendValueInput("Y")
+        .setCheck("Number");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("multiply each x-coordinate by a given amount and each y-coordinate by a certain amount");
+ this.setHelpUrl("");
+  }
+};
+

@@ -1,15 +1,4 @@
-/*
- * Rather than put the XML into index.html, I've put it in a separate file.
- * Since HTML doesn't support <include>, I've made it into a JavaScript function
- * that returns the string needed to create the desired toolbox.
- * 
- * The XML was created with https://blockly-demo.appspot.com/static/demos/blockfactory/index.html
- * 
- */
-
-function graphicsToolbox() {
-  return `
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
   <category name="Graphics" colour="#ffff00">
     <block type="graphics_createpath"></block>
     <block type="graphics_moveto">
@@ -396,5 +385,4 @@ function graphicsToolbox() {
   <sep></sep>
   <category name="Variables" colour="#a55b80" custom="VARIABLE"></category>
   <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
-</xml>`;
-}
+</xml>

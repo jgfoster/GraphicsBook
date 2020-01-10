@@ -38,36 +38,44 @@
   </block><block type="factory_base" id="SZ*$@0T%9j),S_Ynjr1|" deletable="false" movable="false" x="10" y="10">
     <mutation connections="BOTH"/>
     <field name="NAME">graphics_moveTo</field>
-    <field name="INLINE">EXT</field>
+    <field name="INLINE">AUTO</field>
     <field name="CONNECTIONS">BOTH</field>
     <statement name="INPUTS">
       <block type="input_dummy" id="@Q15Q67NvF~FR]/I.15o">
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id="|m@wZ-e1@,_4vjZ[r^LB">
-            <field name="TEXT">moveTo()</field>
-          </block>
-        </statement>
-        <next>
-          <block type="input_value" id="Q7nAU;VL1WR[?2TlV6BO">
-            <field name="INPUTNAME">X</field>
-            <field name="ALIGN">LEFT</field>
-            <value name="TYPE">
-              <shadow type="type_null" id=";icz5n}_g$vxt!9!uG1u"/>
-              <block type="type_number" id="PCFkHx8jO?gzsaV}u4gW"/>
-            </value>
+            <field name="TEXT">moveTo(</field>
             <next>
-              <block type="input_value" id="=P_IAbwR%1Fi*PoA3k*a">
-                <field name="INPUTNAME">Y</field>
-                <field name="ALIGN">LEFT</field>
-                <value name="TYPE">
-                  <shadow type="type_null" id="~Q6W--ahG]:R.3}C{,t@"/>
-                  <block type="type_number" id="5Us(26(:N/L*|K^2LC4-"/>
-                </value>
+              <block type="field_number" id="T-k}dnw0d~27WzXK/976">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="qu)A%5//C?MR5HPLmY^1">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="tea,WKn?e,dKVhaQPL.B">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="f3LJceCEz=shcl#hWyFo">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
               </block>
             </next>
           </block>
-        </next>
+        </statement>
       </block>
     </statement>
     <value name="TOOLTIP">
@@ -102,29 +110,37 @@
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id="!Jn}jDUi)Fgbj}E0!VO$">
-            <field name="TEXT">lineTo()</field>
-          </block>
-        </statement>
-        <next>
-          <block type="input_value" id="i}Yq7YHm%[kU^mc}yx.N">
-            <field name="INPUTNAME">X</field>
-            <field name="ALIGN">LEFT</field>
-            <value name="TYPE">
-              <shadow type="type_null" id="QH=X*wD6]xoEp;]H^bCS"/>
-              <block type="type_number" id="TgnCX~lT+U@I*m,]zW.]"/>
-            </value>
+            <field name="TEXT">lineTo(</field>
             <next>
-              <block type="input_value" id="9etRp#}QmJOP}4a~,.c+">
-                <field name="INPUTNAME">Y</field>
-                <field name="ALIGN">LEFT</field>
-                <value name="TYPE">
-                  <shadow type="type_null" id="Yb{o[o(ke5?Lvp8*},cm"/>
-                  <block type="type_number" id="Q_0{t`3bnq**P[2P6=%#"/>
-                </value>
+              <block type="field_number" id="|h@KzTS5.F%y(}Er3tKR">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="`F=8Z%DZR*OAfBE%u`HF">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="Y_T~i0^IeAZ[0R7o^6e5">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="yYiGO)X|h6?.ajw%c^:d">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
               </block>
             </next>
           </block>
-        </next>
+        </statement>
       </block>
     </statement>
     <value name="TOOLTIP">
@@ -221,6 +237,462 @@
     </value>
     <value name="COLOUR">
       <block type="colour_hue" id="fU,;^s9mb?vET|~_X.NB">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Kn?vbt?l~vR2!$W4vAFC" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_translate</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id=":bziX1Si_LBA63ujr#ar">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="1W`e@]|S80-la%c!#L7_">
+            <field name="TEXT">translate(</field>
+            <next>
+              <block type="field_number" id="+P~e9GWmU--=gpO2LXp8">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="TlH.s,_{X9U=^)nwUZ3q">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="pm,4x;yL)=7*D1YPO:-P">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="H$Oblr{?-+elCR1fGqJO">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="!^+B9PW})CXU,bJe83SH" deletable="false" movable="false">
+        <field name="TEXT">Move every point by a certain amount horizontally and a certain amount vertically</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="h(Ue(zdVG)f)C!7JvReN" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="[+ec)#Q~P}C~]rZd^jpY"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="kVfb3uL5LZsku0+7T)u}"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="W|2z0e63Yb$3W#WxVdGB">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="rpZwH-Eb{c4IhDvs}KtT" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_rotate</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="zo^1RDTgJfFlPF8U^q3=">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="?7Ml$JF9)_rllVcTubZL">
+            <field name="TEXT">rotate(</field>
+            <next>
+              <block type="field_number" id="]!!^F=UjWPyr,TlPj_*n">
+                <field name="VALUE">0</field>
+                <field name="FIELDNAME">ANGLE</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="T-rQNtm{zzML|t~stK_W">
+                    <field name="TEXT">)</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1-d$Q@!YYAUh;cQ1UMrG" deletable="false" movable="false">
+        <field name="TEXT">rotate each point about the origin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Nzb_B|c#pzUGtz8R_3o8" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="HG_03{r9RjGj9S8n!YMG"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="^JxmX~^3Ugh66t-2fla-"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=",pUi?q|.0.X@i[v_q@_l">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="(mh/$6qi|FffzU2Lp$X." deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_scale</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="Zn13OlV[%ZF}K@D4c{M!">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="o_nP!*WDXOG85tNG(E?,">
+            <field name="TEXT">scale(</field>
+            <next>
+              <block type="field_number" id="l.DH[_zSz$TZF|3*{dv!">
+                <field name="VALUE">1</field>
+                <field name="FIELDNAME">X</field>
+                <field name="MIN">-Infinity</field>
+                <field name="MAX">Infinity</field>
+                <field name="PRECISION">0</field>
+                <next>
+                  <block type="field_static" id="LaVFbO8%,a[)2;YR{aPm">
+                    <field name="TEXT">,</field>
+                    <next>
+                      <block type="field_number" id="Si^BWy(0Lk#:k?SAfRJr">
+                        <field name="VALUE">1</field>
+                        <field name="FIELDNAME">Y</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="+tw]h|##(|m!h/UEh,_d">
+                            <field name="TEXT">)</field>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="HqZa5MJ7.YmsqQa*Xr4/" deletable="false" movable="false">
+        <field name="TEXT">multiply each x-coordinate by a given amount and each y-coordinate by a certain amount</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="j6QA*u,eC%C%f~Rn_Z{7" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="qa_v/~2FeXH-=xe${n[-"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="@Xoli`Ngsv+4Z*r(FuS*"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="3biGw1XBO/sjSxF4:13O">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="SZ*$@0T%9j),S_Ynjr1|" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_moveToEx</field>
+    <field name="INLINE">EXT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="@Q15Q67NvF~FR]/I.15o">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="|m@wZ-e1@,_4vjZ[r^LB">
+            <field name="TEXT">moveTo()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="Q7nAU;VL1WR[?2TlV6BO">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id=";icz5n}_g$vxt!9!uG1u"/>
+              <block type="type_number" id="PCFkHx8jO?gzsaV}u4gW"/>
+            </value>
+            <next>
+              <block type="input_value" id="=P_IAbwR%1Fi*PoA3k*a">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="~Q6W--ahG]:R.3}C{,t@"/>
+                  <block type="type_number" id="5Us(26(:N/L*|K^2LC4-"/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=")B?XMEi}Rk.d.K4$^@O3" deletable="false" movable="false">
+        <field name="TEXT">move the pen to the point (x,y), without adding a segment to the path; that is, without drawing anything</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="gp9D{2mvWu:*$?N$(igt" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="}F$LD`|Q/E:~$h-1al6i"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="djpgtZn5,Q`atjO5C`S!"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="rNAsKsePZJ4#PW|C2dT6">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="3)hzyu%+!MCRl.O~KaU(" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_linetoex</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="-jZNqZ@bLwmSjmoW)?}K">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="!Jn}jDUi)Fgbj}E0!VO$">
+            <field name="TEXT">lineTo()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="i}Yq7YHm%[kU^mc}yx.N">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="QH=X*wD6]xoEp;]H^bCS"/>
+              <block type="type_number" id="TgnCX~lT+U@I*m,]zW.]"/>
+            </value>
+            <next>
+              <block type="input_value" id="9etRp#}QmJOP}4a~,.c+">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="Yb{o[o(ke5?Lvp8*},cm"/>
+                  <block type="type_number" id="Q_0{t`3bnq**P[2P6=%#"/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1z;lZidJC?m`gCdcc*7W" deletable="false" movable="false">
+        <field name="TEXT">add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="2(DF,2QCpP~Pp-)NSGmf" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="A;ZTw-s0H1CJyZKLy|)2"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Rn}wh[cv7|B5fE0p,Hm]"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="fL|n8.@GHO{QOQ)w5$/:">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="Kn?vbt?l~vR2!$W4vAFC" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_translateEx</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id=":bziX1Si_LBA63ujr#ar">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="1W`e@]|S80-la%c!#L7_">
+            <field name="TEXT">translate()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="r$1}ED=#?`oYSHFP.w;Z">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="fE,v|sW~gs}@)e;#rTch"/>
+              <block type="type_number" id="1WsJ3aw?IGu%LxF%)o9J"/>
+            </value>
+            <next>
+              <block type="input_value" id="qz9(FoLsNKhPNQsV!kh:">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="T0iZA53?t.Q~fO6D!16G"/>
+                  <block type="type_number" id="}NZ=/6x,(.Ldv1f^VE=~"/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="!^+B9PW})CXU,bJe83SH" deletable="false" movable="false">
+        <field name="TEXT">Move every point by a certain amount horizontally and a certain amount vertically</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="h(Ue(zdVG)f)C!7JvReN" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="[+ec)#Q~P}C~]rZd^jpY"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="kVfb3uL5LZsku0+7T)u}"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="W|2z0e63Yb$3W#WxVdGB">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="rpZwH-Eb{c4IhDvs}KtT" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_rotateex</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="zo^1RDTgJfFlPF8U^q3=">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="?7Ml$JF9)_rllVcTubZL">
+            <field name="TEXT">rotate()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="tKMoeDM_KBJ`e(W;C8Dz">
+            <field name="INPUTNAME">ANGLE</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="$WVThx.?Sd6T60E7JnSZ"/>
+              <block type="type_number" id="~CbHWUkT.8!.sa2q1IH$"/>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="1-d$Q@!YYAUh;cQ1UMrG" deletable="false" movable="false">
+        <field name="TEXT">rotate each point about the origin</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Nzb_B|c#pzUGtz8R_3o8" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="HG_03{r9RjGj9S8n!YMG"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="^JxmX~^3Ugh66t-2fla-"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=",pUi?q|.0.X@i[v_q@_l">
+        <mutation colour="#5b67a5"/>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="(mh/$6qi|FffzU2Lp$X." deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"/>
+    <field name="NAME">graphics_scaleex</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="Zn13OlV[%ZF}K@D4c{M!">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="o_nP!*WDXOG85tNG(E?,">
+            <field name="TEXT">scale()</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_value" id="uU9SSu[2a50wP?;|cW6[">
+            <field name="INPUTNAME">X</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="zxr,?|iDsB~rhw9I!)zP"/>
+              <block type="type_number" id="Id9PbAwt@:jW76PJ82r7"/>
+            </value>
+            <next>
+              <block type="input_value" id="z}5Kn!oNc~#mYBQ%)sr+">
+                <field name="INPUTNAME">Y</field>
+                <field name="ALIGN">LEFT</field>
+                <value name="TYPE">
+                  <shadow type="type_null" id="Ic=N!E-[X{R]A6QbQ:T_"/>
+                  <block type="type_number" id="pL-t-V!)MUeR(C=!T}+("/>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="HqZa5MJ7.YmsqQa*Xr4/" deletable="false" movable="false">
+        <field name="TEXT">multiply each x-coordinate by a given amount and each y-coordinate by a certain amount</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="j6QA*u,eC%C%f~Rn_Z{7" deletable="false" movable="false">
+        <field name="TEXT"/>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="qa_v/~2FeXH-=xe${n[-"/>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="@Xoli`Ngsv+4Z*r(FuS*"/>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="3biGw1XBO/sjSxF4:13O">
         <mutation colour="#5b67a5"/>
         <field name="HUE">230</field>
       </block>

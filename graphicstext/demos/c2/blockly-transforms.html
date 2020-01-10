@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Graphics Demo</title>
+    <link rel="stylesheet" href="../demo.css">
+    <script src="../script/exercise-core.js"></script>
+    <script src="../script/blockly/blockly_compressed.js"></script>
+    <script src="../script/blockly/javascript_compressed.js"></script>
+    <script src="../script/blockly/blocks_compressed.js"></script>
+    <script src="../script/blockly/msg/js/en.js"></script>
+    <script src="../script/blockly/graphicsBlocks.js"></script>
+    <script src="../script/blockly/graphicsDemo.js"></script>
+    <script src="../script/blockly/graphicsStubs.js"></script>
+    <script src="../script/blockly/graphicsToolbox.js"></script>
+    <script>
+      function onLoad() {
+        const args = {
+          width: 400,
+          height: 500, 
+          before: `
+// before
+// set new origin; use 0.5 to get thin lines
+graphics.translate(200.5, 250.5);
+// draw horizontal axis and vertical axis
+graphics.beginPath();
+graphics.strokeStyle = "AAA";
+graphics.fillStyle = "AAA";
+graphics.moveTo(-200, 0);
+graphics.lineTo(200, 0);
+graphics.moveTo(0, -250);
+graphics.lineTo(0, 250);
+for (i = -250; i < 250; i = i + 50) {
+  if (i != 0) {
+    graphics.moveTo(i, -5);
+    graphics.lineTo(i, 5);
+    graphics.fillText(i, i, -10);
+    graphics.moveTo(-5, i);
+    graphics.lineTo(5, i);
+    graphics.fillText(i, 10, -i);
+  }
+}
+graphics.closePath();
+graphics.stroke();
+// switch from top-to-bottom to bottom-to-top after drawing numbers
+graphics.transform(1, 0, 0, -1, 0, 0);
+const savedTransform = graphics.getTransform();
+// draw goal
+graphics.transform(1, 0, 0, 1, 100, 0);
+graphics.fillStyle = "DDD";
+graphics.fillRect(-20, -20, 40, 40);
+graphics.fillRect(5, -19, 10, 15);
+graphics.beginPath();
+graphics.moveTo(-20, 20);
+graphics.lineTo(0, 40);
+graphics.lineTo(20, 20);
+graphics.closePath();
+graphics.fill();
+graphics.setTransform(savedTransform);
+`,
+          after: `
+// after
+graphics.fillStyle = "F00";
+graphics.fillRect(-20, -20, 40, 40);
+graphics.fillStyle = "0F0";
+graphics.fillRect(5, -19, 10, 15);
+graphics.fillStyle = "00F";
+graphics.beginPath();
+graphics.moveTo(-20, 20);
+graphics.lineTo(0, 40);
+graphics.lineTo(20, 20);
+graphics.closePath();
+graphics.fill();
+`
+        };
+        injectBlockly(args);
+      }
+    </script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body onload="onLoad()">
+    <h1>Blockly Exercise for Paths</h1>
+    <table>
+      <tr>
+        <td>
+          <canvas id="canvas" width="400" height="500">
+            <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
+            Canvas not supported.
+          </canvas>
+        </td>
+        <td id="blocklyArea">
+          <div id="blocklyDiv" style="width: 500px; height: 500px;"></div>
+        </td>
+      </tr>
+  </table>
+
+    <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
+      <block type="graphics_translate">
+        <field name="X">0</field>
+        <field name="Y">0</field>
+        <next>
+          <block type="graphics_rotate">
+            <field name="ANGLE">0</field>
+            <next>
+              <block type="graphics_scale">
+                <field name="X">1</field>
+                <field name="Y">1</field>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </xml>
+  </body>
+</html>
