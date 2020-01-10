@@ -46,7 +46,8 @@ graphics.stroke();
 graphics.transform(1, 0, 0, -1, 0, 0);
 const savedTransform = graphics.getTransform();
 // draw goal
-graphics.transform(1, 0, 0, 1, 100, 0);
+graphics.transform(1, 0, 0, 1, 50, 100);
+const goalTransform = graphics.getTransform();
 graphics.fillStyle = "DDD";
 graphics.fillRect(-20, -20, 40, 40);
 graphics.fillRect(5, -19, 10, 15);
@@ -71,6 +72,15 @@ graphics.lineTo(0, 40);
 graphics.lineTo(20, 20);
 graphics.closePath();
 graphics.fill();
+const userTransform = graphics.getTransform();
+const flag = 
+  userTransform.a == goalTransform.a &&
+  userTransform.b == goalTransform.b &&
+  userTransform.c == goalTransform.c &&
+  userTransform.d == goalTransform.d &&
+  userTransform.e == goalTransform.e &&
+  userTransform.f == goalTransform.f;
+  console.log(flag);
 `
         };
         injectBlockly(args);
@@ -88,7 +98,7 @@ graphics.fill();
     </style>
   </head>
   <body onload="onLoad()">
-    <h1>Blockly Exercise for Paths</h1>
+    <h1>Blockly Exercise for Transforms</h1>
     <table>
       <tr>
         <td>
