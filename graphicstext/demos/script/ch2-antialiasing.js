@@ -133,7 +133,8 @@ function onload() {
             guess.end.x = Math.floor((point.x + 25) / 50) / 2;
             guess.end.y = Math.floor((point.y + 25) / 50) / 2;
             drawGrid(widgets);
-            drawLine(widgets, guess, "blue");
+            drawLine(widgets, guess, "#00F");
+            // console.log("mouseMove");
         }
     }
 
@@ -152,10 +153,10 @@ function onload() {
             drawGrid(widgets);
         }
         if (equalLines(guess, target)) {
-            drawLine(widgets, guess, "green");
+            drawLine(widgets, guess, "#0F0");
             document.getElementById("submit").disabled = false;
         } else {
-            drawLine(widgets, guess, "red");
+            drawLine(widgets, guess, "#F00");
             document.getElementById("next").disabled = false;
         }
     }
