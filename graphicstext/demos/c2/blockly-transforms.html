@@ -65,8 +65,8 @@ function before(graphics) {
   graphics.translate(250.5, 250.5);
   // draw horizontal axis and vertical axis
   graphics.beginPath();
-  graphics.strokeStyle = "AAA";
-  graphics.fillStyle = "AAA";
+  graphics.strokeStyle = "#AAA";
+  graphics.fillStyle = "#AAA";
   graphics.moveTo(-250, 0);
   graphics.lineTo(250, 0);
   graphics.moveTo(0, -250);
@@ -100,7 +100,7 @@ function before(graphics) {
   // graphics.rotate(135*Math.PI/180);
   // graphics.translate(-100, 100);
   goalTransform = graphics.getTransform();
-  graphics.fillStyle = "DDD";
+  graphics.fillStyle = "#DDD";
   graphics.fillRect(-20, -20, 40, 40);
   graphics.fillRect(5, -19, 10, 15);
   graphics.beginPath();
