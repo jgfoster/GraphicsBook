@@ -1821,7 +1821,7 @@ function glVertex2fv(vArray) {
     if (arguments.length != 1 || !vArray.length || vArray.length < 2) {
         GLSim.error("glVertex2*v requres one argument that is an array of length at least 2"); return;
     }
-    glVertex3f(vArray[0],vArray[2],0);
+    glVertex3f(vArray[0],vArray[1],0);
 }
 var glVertex2dv = glVertex2fv;
 var glVertex2iv = glVertex2iv;

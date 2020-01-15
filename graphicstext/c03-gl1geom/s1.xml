@@ -131,8 +131,8 @@ an outline of the polygon, we can use a <i>GL_LINE_LOOP</i> primitive:</p>
 <pre>glBegin( GL_LINE_LOOP );
 for (i = 0; i &lt; 64; i++) {
     angle = 6.2832 * i / 64;  // 6.2832 represents 2*PI
-    x = 0.5 * cos(angle);
-    y = 0.5 * sin(angle);
+    x = 0.5 * Math.cos(angle);
+    y = 0.5 * Math.sin(angle);
     glVertex2f( x, y );
 }
 glEnd();</pre>
@@ -374,14 +374,15 @@ a square. We need two coordinates for each vertex of the square.
 In C, we can put all 8 coordinates into one array and use <i>glVertex2fv</i>
 to pull out the coordinates that we need:</p>
 
-<pre>float coords[] = { -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5 };
+<pre>  const coords = [ -0.5, -0.5,  0.5, -0.5,  0.5, 0.5,  -0.5, 0.5 ];
 
-glBegin(GL_TRIANGLE_FAN);
-glVertex2fv(coords);      // Uses coords[0] and coords[1].
-glVertex2fv(coords + 2);  // Uses coords[2] and coords[3].
-glVertex2fv(coords + 4);  // Uses coords[4] and coords[5].
-glVertex2fv(coords + 6);  // Uses coords[6] and coords[7].
-glEnd();</pre>
+  glBegin( GL_TRIANGLE_FAN );
+  glVertex2fv(coords.slice(0, 2));  // Uses coords[0] and coords[1].
+  glVertex2fv(coords.slice(2, 4));  // Uses coords[2] and coords[3].
+  glVertex2fv(coords.slice(4, 6));  // Uses coords[4] and coords[5].
+  glVertex2fv(coords.slice(6, 8));  // Uses coords[6] and coords[7].
+  glEnd();
+</pre>
 
 <np>This example uses "pointer arithmetic," in which <i>coords&nbsp;+&nbsp;N</i> represents
 a pointer to the N-th element of the array. An alternative notation would be &amp;<i>coords</i>[<i>N</i>],
