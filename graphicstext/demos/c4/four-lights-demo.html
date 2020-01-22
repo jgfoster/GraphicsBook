@@ -56,8 +56,8 @@ function uvSphere(radius, slices, stacks) {
             var y2 = sinLong * cosLat2;
             var z2 = sinLat2;
             glNormal3d(x2,y2,z2);
-	    glVertex3d(radius*x2,radius*y2,radius*z2);
-	    glNormal3d(x1,y1,z1);
+            glVertex3d(radius*x2,radius*y2,radius*z2);
+            glNormal3d(x1,y1,z1);
             glVertex3d(radius*x1,radius*y1,radius*z1);
         }
         glEnd();
