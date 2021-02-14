@@ -21,7 +21,7 @@ not already read the relevant chapters of the book.</p>
 
 <p>The Blender window is divided into non-overlapping sections, which are called "frames"
 but are sometimes referred to as "windows" even though they are really just panes in a 
-window. The frames can contain in turn contains smaller sections that I will
+window. The frames in turn contain smaller sections that I will
 refer to as "panels."  The layout is very customizable.</p>
 
 <p>If you have not customized the layout, the central frame of the window is a large

@@ -12,15 +12,14 @@ documentation and tutorials on Gimp, starting with its "Help" menu.</p1>
 
 <p>Gimp can be downloaded from <a href="http://www.gimp.org">http://www.gimp.org</a>. It is 
 available for Linux, Mac&nbsp;OS, and Windows. This appendix is based
-on Gimp&nbsp;2.8, which is the latest stable version as of January, 2018.
-The user manual is available on-line at <a href="http://docs.gimp.org/2.8/en/">http://docs.gimp.org/2.8/en</a>.
+on Gimp&nbsp;2.10, which is the latest stable version as of February, 2020.
+Documentation is available on-line at <a href="https://docs.gimp.org">https://docs.gimp.org</a>.
 </p>
 
-<p>Note that when you start Gimp 2.8 for the first time, it will be in 
-"multi-window mode."  I find it much easier to use "single-window mode,"
+<p>Note that when you start Gimp 2.10 for the first time it will be in 
+"single-window mode,"
 which organizes all of Gimp's open images and dialogs into one window.
-To use it, just  enable the option "Single-Window Mode" in the "Windows" menu.
-You will then see a window with a central area where you can work on
+You will see a window with a central area where you can work on
 images, with dialogs along the left and right edges. The central
 editing area uses tabs when multiple images are open. There are
 also tabs on the dialog window to the right that allow you to
@@ -30,9 +29,7 @@ access several different dialogs.</p>
 figure out how to get it back. To do that:  Select the "Preferences" command
 from the menu. Go to the "Window Management" section
 of the preferences. Click "Reset Saved Window Positions to Default
-Values."  Restart Gimp for the changes to take effect. And finally,
-switch back to single-window mode by selecting the option in the "Windows"
-menu.</p>
+Values."  Restart Gimp for the changes to take effect.</p>
 
 <break/>
 
@@ -68,6 +65,7 @@ window in its original configuration.)  You can hover your mouse
 over a tool button to find out what the tool is for. Click a button to select a tool.
 Click or drag the mouse on an image window to apply the selected tool.
 The Toolbox also has buttons for controlling the foreground and background color.
+The top left of the windows shows a Toolbox. 
 Here is an illustration of the Toolbox with a few annotations:</p>
 
 <img src="gimp-tools.png" width="459" height="286" tex="gimp-tools.eps" texscale="0.7"/>
