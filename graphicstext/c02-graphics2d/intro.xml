@@ -16,8 +16,4 @@ particular languages: Java with <classname>Graphics2D</classname>,
 JavaScript with HTML <tag>canvas</tag> graphics, and SVG. We will see how these
 languages use many of the general ideas from earlier in the chapter.</p>
 
-<p>(By the way, readers might be interested in the labs that were used when this
-textbook was used in 2017. They can be found on that course's web page,
-at <a href="http://math.hws.edu/eck/cs424/index_f17.html">http://math.hws.edu/eck/cs424/index_f17.html</a>.)</p>
-
 </intro>

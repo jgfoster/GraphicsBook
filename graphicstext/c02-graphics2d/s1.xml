@@ -31,7 +31,7 @@ coordinates (<i>x</i>,<i>y</i>) depends on the choice of coordinate system.
 You always need to know what coordinate system is in use before you know what
 point you are talking about.</np>
 
-<demo height="900" width="570" src="c2/pixels.html">
+<demo height="500" width="600" src="c2/pixels.html">
 <p><web>The following interactive exercise helps you identify pixels.</web>
 <tex>The interactive exercise <i>c2/pixels.html</i> helps you identify pixels.
 Interactive demos can be found on the web pages in the on-line version of this

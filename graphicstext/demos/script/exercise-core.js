@@ -54,7 +54,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-function setupGrid(widgets, labelOffset = 0, allowNegative = true) {
+function setupGrid(widgets, labelOffset = 0, allowNegative = true, cellSize = 100) {
     widgets.offset.topToBottom = getRandomInt(2) == 0;
     widgets.offset.x = allowNegative ? -getRandomInt(5) : 0;
     widgets.offset.y = allowNegative ? -getRandomInt(5) : 0;
@@ -65,52 +65,51 @@ function setupGrid(widgets, labelOffset = 0, allowNegative = true) {
     if (widgets.offset.topToBottom) {
         widgets.graphics.setTransform(1, 0, 0, 1, 0, 0);
     } else {
-        widgets.graphics.setTransform(1, 0, 0, -1, 0, 501);
+        widgets.graphics.setTransform(1, 0, 0, -1, 0, cellSize * 5 + 1);
     }
     widgets.graphics.transform(1, 0, 0, 1, 
-        widgets.offset.x * -100,     // horizontal translation
-        widgets.offset.y * -100);    // vertical translation
+        widgets.offset.x * -cellSize,     // horizontal translation
+        widgets.offset.y * -cellSize);    // vertical translation
     resetPixels(widgets.pixels);
-    drawGrid(widgets, labelOffset);
+    drawGrid(widgets, labelOffset, cellSize);
 }
 
-function setProgress(widgets, value) {
-    widgets.progress.clearRect(0, 0, 500, 20);
+function setProgress(widgets, value, cellSize = 100) {
     widgets.progress.fillStyle = "#FFF";
-    widgets.progress.fillRect(0, 0, 500, 20);
+    widgets.progress.fillRect(0, 0, cellSize * 5, 20);
     widgets.progress.fillStyle = "#0F0";
-    widgets.progress.fillRect(0, 0, value * 50, 20);
+    widgets.progress.fillRect(0, 0, value * cellSize / 2, 20);
 }
 
-function labelAxes(widgets, point, labelOffset = 0) {
-    const x = Math.max(-(widgets.offset.x - point.x) * 100 + labelOffset, 6);
+function labelAxes(widgets, point, labelOffset = 0, cellSize = 100) {
+    const x = Math.max(-(widgets.offset.x - point.x) * cellSize + labelOffset, 6);
     widgets.topEdge.fillText(point.x, x, 15);
     const y = widgets.offset.topToBottom ? 
-        -(widgets.offset.y - point.y) * 100 + labelOffset + 15 : 
-        510 - labelOffset + (widgets.offset.y - point.y) * 100;
+        -(widgets.offset.y - point.y) * cellSize + labelOffset + 15 : 
+        cellSize * 5 + 10 - labelOffset + (widgets.offset.y - point.y) * cellSize;
     widgets.leftEdge.fillText(point.y, 20, y);
 }
 
-function drawGrid(widgets, labelOffset = 0) {
-    widgets.graphics.clearRect(-500, -500, 1000, 1000);
+function drawGrid(widgets, labelOffset = 0, cellSize = 100) {
+    widgets.graphics.clearRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
     widgets.graphics.fillStyle = "#FFF";
-    widgets.graphics.fillRect(-500, -500, 1000, 1000);
-    widgets.topEdge.clearRect(0, 0, 510, 15);
-    widgets.leftEdge.clearRect(0, 0, 30, 520);
+    widgets.graphics.fillRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
+    widgets.topEdge.clearRect(0, 0, cellSize * 5 + 10, 15);
+    widgets.leftEdge.clearRect(0, 0, 30, cellSize * 5 + 20);
 
     widgets.graphics.beginPath();
     for (let i = -4; i <= 5; i++) {
         widgets.graphics.strokeStyle = '#AAA';
-        widgets.graphics.moveTo(-500, i * 100 + 0.5);
-        widgets.graphics.lineTo(500, i * 100 + 0.5);
+        widgets.graphics.moveTo(-cellSize * 5, i * cellSize + 0.5);
+        widgets.graphics.lineTo(cellSize * 5, i * cellSize + 0.5);
         widgets.graphics.closePath();    
-        widgets.graphics.moveTo(i * 100 + 0.5, -500);
-        widgets.graphics.lineTo(i * 100 + 0.5, 500);
+        widgets.graphics.moveTo(i * cellSize + 0.5, -cellSize * 5);
+        widgets.graphics.lineTo(i * cellSize + 0.5, cellSize * 5);
         widgets.graphics.closePath();
         widgets.graphics.stroke();
         widgets.graphics.strokeStyle = '#AAA';
     }
-    labelAxes(widgets, {x: 0, y: 0}, labelOffset);
+    labelAxes(widgets, {x: 0, y: 0}, labelOffset, cellSize);
 
     for (let i = -4; i < 5; i++) {
         for (let j = -4; j < 5; j++) {
@@ -125,10 +124,10 @@ function drawGrid(widgets, labelOffset = 0) {
                 color = "rgb(" + fill + "," + fill + "," + fill + ")";
             }
             widgets.graphics.fillStyle = color;
-            widgets.graphics.fillRect(i * 100 + 1, j * 100 + 1, 99, 99);
+            widgets.graphics.fillRect(i * cellSize + 1, j * cellSize + 1, cellSize - 1, cellSize - 1);
             widgets.graphics.strokeStyle = "#FFF";
             widgets.graphics.font = '16px sans-serif';
-            widgets.graphics.strokeText('. . . . . '.substring(0, Math.floor((256 - fill) / 64) * 2), i * 100 + 25, j * 100 + 25);
+            widgets.graphics.strokeText('. . . . . '.substring(0, Math.floor((256 - fill) / 64) * 2), i * cellSize + 25, j * cellSize + 25);
         }
     }
 }

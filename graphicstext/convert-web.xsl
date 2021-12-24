@@ -15,7 +15,7 @@
         <div class="content">
         <hr/>
         <h2 class="chapter_title">Introduction to Computer Graphics</h2>
-        <h3 class="chapter_title">jgfoster/2020</h3>
+        <h3 class="chapter_title">jgfoster/2022</h3>
         <h4 align="center">Primary Author:&#160; <a href="http://math.hws.edu/eck/">David J. Eck</a>&#160;
                  (<a href="mailto:eck@hws.edu">eck@hws.edu</a>)</h4>        
         <h4 align="center">Revised by:&#160; <a href="mailto:james.foster@wallawalla.edu">james.foster@wallawalla.edu</a></h4>        

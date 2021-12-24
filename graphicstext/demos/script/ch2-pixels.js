@@ -1,5 +1,6 @@
 function onload() {
     const widgets = getWidgets();
+    let cellSize = 20;
     let score = 0;
     let attempts = 0;
     let startTime;
@@ -13,11 +14,11 @@ function onload() {
     doIt();
 
     function doIt() {
-        setProgress(widgets, score);
+        setProgress(widgets, score, cellSize);
         if (score >= 10) {
             reportResults(widgets, totalTime, attempts);            
         } else {
-            setupGrid(widgets, 50, false);
+            setupGrid(widgets, cellSize / 2, false, cellSize);
             target.x = getRandomInt(5) + widgets.offset.x;
             target.y = getRandomInt(5) + widgets.offset.y;
             prompt(target);
@@ -36,25 +37,19 @@ function onload() {
         if (waitingForClick) {
             waitingForClick = false;
             const point = getMouseLocation(canvas, event, widgets);
-            const x = Math.floor(point.x / 100);
-            const y = Math.floor(point.y / 100);
+            const x = Math.floor(point.x / cellSize);
+            const y = Math.floor(point.y / cellSize);
             if (x == target.x && y == target.y) {
                 widgets.graphics.fillStyle = "#0F0";
-                widgets.graphics.fillRect(x * 100 + 1, y * 100 + 1, 99, 99);
+                widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize - 1);
                 score = score + 1;
-                setProgress(widgets, score);
+                setProgress(widgets, score, cellSize);
                 setTimeout(doIt, 500);
             } else {
                 widgets.graphics.fillStyle = "red";
-                widgets.graphics.fillRect(x * 100 + 1, y * 100 + 1, 99, 99);
-                const matrix = widgets.graphics.getTransform();
-                widgets.graphics.translate(x * 100 + 10, y * 100 + 15);
-                widgets.graphics.transform(1, 0, 0, matrix.d, 0, 0);
-                widgets.graphics.font = '14px sans-serif';
-                widgets.graphics.strokeText('(' + x + ', ' + y + ')', 0, 0);
-                widgets.graphics.setTransform(matrix);
+                widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize -  1);
                 score = 0;
-                setProgress(widgets, score);
+                setProgress(widgets, score, cellSize);
                 waitingForClick = true;
             }
             attempts = attempts + 1;

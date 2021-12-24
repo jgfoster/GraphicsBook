@@ -144,7 +144,7 @@ formats include GIF, PNG, JPEG, and SVG. Most images used on the Web are GIF, PN
 Modern web browsers also have support for SVG images.
 </p>
 
-<p>GIF, PNG, and JPEG are basically raster graphics formats; an image is specified by storing a color 
+<p>GIF, PNG, JPEG, and WebP are basically raster graphics formats; an image is specified by storing a color 
 value for each pixel. GIF is an older file format,
 which has largely been superseded by PNG, but you can still find GIF images on the web. (The GIF
 format supports animated images, so GIFs are often used for simple animations on Web pages.) GIF uses
@@ -163,7 +163,7 @@ This might not sound like a good idea, but in fact the difference is often not v
 using lossy compression usually permits a greater reduction in the size of the compressed data.
 JPEG generally works well for photographic images, but not as well for images that have sharp edges
 between different colors. It is especially bad for line drawings and images that contain text; PNG is 
-the preferred format for such images. 
+the preferred format for such images.  WebP can use both lossless and lossy compression.
 </p>
 
 <p>SVG, on the other hand, is fundamentally a vector graphics format (although SVG images can include
