@@ -1,5 +1,6 @@
 function onload() {
     const widgets = getWidgets();
+    let cellSize = 40;
     const form = document.getElementById("form");
     let score = 0;
     let attempts = 0;
@@ -27,14 +28,13 @@ function onload() {
     function submit(e) {
         e.preventDefault();
         if (!equalLines(guess, target)) {
-            console.log(target, guess);
-            drawLine(widgets, target, "gray");
+            drawLine(widgets, target, "gray", cellSize);
             score = 0;
-            setProgress(widgets, score);
+            setProgress(widgets, score, cellSize);
             return false;
         }
         target.flag = true;
-        drawWuLine(target, plot);
+        drawWuLine(target, plot, cellSize);
         widgets.color = "black";
         if (target.flag) {
             widgets.color = "green";
@@ -43,9 +43,9 @@ function onload() {
             widgets.color = "red";
             score = 0;
         }
-        drawGrid(widgets);
-        drawLine(widgets, target, widgets.color);
-        setProgress(widgets, score);
+        drawGrid(widgets, cellSize);
+        drawLine(widgets, target, widgets.color, cellSize);
+        setProgress(widgets, score, cellSize);
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = false;
         attempts = attempts + 1;
@@ -71,12 +71,12 @@ function onload() {
     function doIt() {
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = true;
-        setProgress(widgets, score);
+        setProgress(widgets, score, cellSize);
         widgets.color = "black";
         if (score >= 10) {
-            reportResults(widgets, totalTime, attempts);            
+            reportResults(widgets, totalTime, attempts, cellSize);            
         } else {
-            setupGrid(widgets);
+            setupGrid(widgets, cellSize);
             do {
                 target.start.x = getRandomInt(8) / 2 + widgets.offset.x + 1;
                 target.start.y = getRandomInt(8) / 2 + widgets.offset.y + 1;
@@ -120,43 +120,37 @@ function onload() {
         if (!event.shiftKey) {
             document.getElementById("submit").disabled = true;
             document.getElementById("next").disabled = true;
-            const point = getMouseLocation(canvas, event, widgets);
-            guess.start.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.start.y = Math.floor((point.y + 25) / 50) / 2;
+            guess.start = getMousePointLocation(canvas, event, widgets, cellSize);
             isDrawing = true;
         }
     }
 
     function mouseMove(canvas, event) {
         if (!event.shiftKey && isDrawing) {
-            const point = getMouseLocation(canvas, event, widgets);
-            guess.end.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.end.y = Math.floor((point.y + 25) / 50) / 2;
-            drawGrid(widgets);
-            drawLine(widgets, guess, "#00F");
-            // console.log("mouseMove");
+            guess.end = getMousePointLocation(canvas, event, widgets, cellSize);
+            drawGrid(widgets, cellSize);
+            drawLine(widgets, guess, "#00F", cellSize);
         }
     }
 
     function mouseUp(canvas, event) {
-        const point = getMouseLocation(canvas, event, widgets);
         if (!event.shiftKey) {
-            guess.end.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.end.y = Math.floor((point.y + 25) / 50) / 2;
+            guess.end = getMousePointLocation(canvas, event, widgets, cellSize);
             isDrawing = false;
         } else {
-            const x = Math.floor(point.x / 100);
-            const y = Math.floor(point.y / 100);
+            const point = getMousePixelLocation(canvas, event, widgets, cellSize);
+            const x = point.x;
+            const y = point.y;
             let fill = widgets.pixels[y + 4][x + 4];
             fill = (fill + 25) % 125;   // percent coverage
             widgets.pixels[y + 4][x + 4] = fill;
-            drawGrid(widgets);
+            drawGrid(widgets, cellSize);
         }
         if (equalLines(guess, target)) {
-            drawLine(widgets, guess, "#0F0");
+            drawLine(widgets, guess, "#0F0", cellSize);
             document.getElementById("submit").disabled = false;
         } else {
-            drawLine(widgets, guess, "#F00");
+            drawLine(widgets, guess, "#F00", cellSize);
             document.getElementById("next").disabled = false;
         }
     }

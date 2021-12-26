@@ -35,9 +35,9 @@ function onload() {
     function mouseUp(canvas, event) {
         if (waitingForClick) {
             waitingForClick = false;
-            const point = getMouseLocation(canvas, event, widgets);
-            const x = Math.floor((point.x + cellSize / 4) / (cellSize / 2)) / 2;
-            const y = Math.floor((point.y + cellSize / 4) / (cellSize / 2)) / 2;
+            const point = getMousePointLocation(canvas, event, widgets, cellSize);
+            const x = point.x;
+            const y = point.y;
             if (x == target.x && y == target.y) {   // success
                 widgets.graphics.beginPath();
                 widgets.graphics.fillStyle = "#0F0";

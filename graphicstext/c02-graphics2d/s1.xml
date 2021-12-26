@@ -66,7 +66,7 @@ named <i>demos</i>.</tex>
 
 <p>Next, consider a line segment that connects two points. </p>
 
-<demo height="865" width="600" src="c2/lines.html">
+<demo height="600" width="600" src="c2/lines.html">
 <p><web>The following interactive exercise helps you identify lines.</web>
 <tex>The interactive exercise <i>c2/lines.html</i> helps you identify lines.
 Interactive demos can be found on the web pages in the on-line version of this
@@ -144,7 +144,7 @@ named <i>demos</i>.</tex>
 the question mark icon in the upper left for more information about how to use it.)</p>
 </demo>
 
-<demo height="1045" width="600" src="c2/antialiasing.html">
+<demo height="740" width="600" src="c2/antialiasing.html">
 <p><web>The following interactive exercise tests your understanding of antialiasing.</web>
 <tex>The interactive exercise <i>c2/antialiasing.html</i> tests your understanding of 
 antialiasing. Interactive demos can be found on the web pages in the on-line version of this

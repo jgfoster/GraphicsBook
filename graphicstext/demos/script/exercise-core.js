@@ -42,11 +42,23 @@ function getWidgets() {
     }
 }
 
-function getMouseLocation(canvas, event, widgets) {
+function getMousePixelLocation(canvas, event, widgets, cellSize = 40) {
     const rect = canvas.getBoundingClientRect();
     const transform = widgets.graphics.getTransform();
-    const x = (event.clientX - rect.left - transform.e) / transform.a;
-    const y = (event.clientY - rect.top - transform.f) / transform.d;
+    let x = (event.clientX - rect.left - transform.e) / transform.a;
+    let y = (event.clientY - rect.top - transform.f) / transform.d;
+    x = Math.floor(x / cellSize);
+    y = Math.floor(y / cellSize);
+    return { x: x, y: y };
+}
+
+function getMousePointLocation(canvas, event, widgets, cellSize = 40) {
+    const rect = canvas.getBoundingClientRect();
+    const transform = widgets.graphics.getTransform();
+    let x = (event.clientX - rect.left - transform.e) / transform.a;
+    let y = (event.clientY - rect.top - transform.f) / transform.d;
+    x = Math.floor((x + cellSize / 4) / (cellSize / 2)) / 2;
+    y = Math.floor((y + cellSize / 4) / (cellSize / 2)) / 2;
     return { x: x, y: y };
 }
 
@@ -54,7 +66,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-function setupGrid(widgets, cellSize = 100, labelOffset = 0, allowNegative = true) {
+function setupGrid(widgets, cellSize = 40, labelOffset = 0, allowNegative = true) {
     widgets.offset.topToBottom = getRandomInt(2) == 0;
     widgets.offset.x = allowNegative ? -getRandomInt(5) : 0;
     widgets.offset.y = allowNegative ? -getRandomInt(5) : 0;
@@ -74,14 +86,14 @@ function setupGrid(widgets, cellSize = 100, labelOffset = 0, allowNegative = tru
     drawGrid(widgets, cellSize, labelOffset);
 }
 
-function setProgress(widgets, value, cellSize = 100) {
+function setProgress(widgets, value, cellSize = 40) {
     widgets.progress.fillStyle = "#FFF";
     widgets.progress.fillRect(0, 0, cellSize * 5, 20);
     widgets.progress.fillStyle = "#0F0";
     widgets.progress.fillRect(0, 0, value * cellSize / 2, 20);
 }
 
-function labelAxes(widgets, point, cellSize = 100, labelOffset = 0) {
+function labelAxes(widgets, point, cellSize = 40, labelOffset = 0) {
     const x = Math.max(-(widgets.offset.x - point.x) * cellSize + labelOffset, 6);
     widgets.topEdge.fillText(point.x, x, 15);
     const y = widgets.offset.topToBottom ? 
@@ -90,7 +102,7 @@ function labelAxes(widgets, point, cellSize = 100, labelOffset = 0) {
     widgets.leftEdge.fillText(point.y, 20, y);
 }
 
-function drawGrid(widgets, cellSize = 100, labelOffset = 0) {
+function drawGrid(widgets, cellSize = 40, labelOffset = 0) {
     widgets.graphics.clearRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
     widgets.graphics.fillStyle = "#FFF";
     widgets.graphics.fillRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
@@ -127,15 +139,18 @@ function drawGrid(widgets, cellSize = 100, labelOffset = 0) {
             widgets.graphics.fillRect(i * cellSize + 1, j * cellSize + 1, cellSize - 1, cellSize - 1);
             widgets.graphics.strokeStyle = "#FFF";
             widgets.graphics.font = '16px sans-serif';
-            widgets.graphics.strokeText('. . . . . '.substring(0, Math.floor((256 - fill) / 64) * 2), i * cellSize + 25, j * cellSize + 25);
+            widgets.graphics.strokeText(
+                '. . . . . '.substring(0, Math.floor((256 - fill) / 64) * 2), 
+                i * cellSize + (10 * cellSize) / 100, 
+                j * cellSize + (25 * cellSize) / 100);
         }
     }
 }
 
-function drawLine(widgets, line, style) {
+function drawLine(widgets, line, style, cellSize = 40) {
     widgets.graphics.fillStyle = style;
     widgets.graphics.beginPath();
-    widgets.graphics.arc(line.start.x * 100, line.start.y * 100, 15, 0, Math.PI * 2);
+    widgets.graphics.arc(line.start.x * cellSize, line.start.y * cellSize, 15 * cellSize / 100, 0, Math.PI * 2);
     widgets.graphics.closePath();
     widgets.graphics.fill();
     widgets.graphics.beginPath();
@@ -143,12 +158,12 @@ function drawLine(widgets, line, style) {
     widgets.graphics.fill();
     widgets.graphics.strokeStyle = style;
     widgets.graphics.beginPath();
-    widgets.graphics.moveTo(line.start.x * 100, line.start.y * 100);
-    widgets.graphics.lineTo(line.end.x * 100, line.end.y * 100);
+    widgets.graphics.moveTo(line.start.x * cellSize, line.start.y * cellSize);
+    widgets.graphics.lineTo(line.end.x * cellSize, line.end.y * cellSize);
     widgets.graphics.closePath();
     widgets.graphics.stroke();
     const transform = widgets.graphics.getTransform();
-    widgets.graphics.transform(1, 0, 0, 1, line.end.x * 100, line.end.y * 100);
+    widgets.graphics.transform(1, 0, 0, 1, line.end.x * cellSize, line.end.y * cellSize);
     // https://math.stackexchange.com/questions/1327253/how-do-we-find-out-angle-from-x-y-coordinates
     const x = line.end.x - line.start.x;
     const y = line.end.y - line.start.y;
@@ -157,21 +172,21 @@ function drawLine(widgets, line, style) {
     const t3 = pi / 4 * (2 + Math.sign(x)) * Math.sign(y);
     const t4 = Math.sign(x * y) * Math.atan((Math.abs(x) - Math.abs(y)) / (Math.abs(x) + Math.abs(y)));
     widgets.graphics.rotate(pi - t2 - t3 - t4);
-    widgets.graphics.moveTo(-20, 20);
+    widgets.graphics.moveTo(-20 * cellSize / 100, 20 * cellSize / 100);
     widgets.graphics.lineTo(0, 0);
-    widgets.graphics.moveTo(-20, -20);
+    widgets.graphics.moveTo(-20 * cellSize / 100, -20 * cellSize / 100);
     widgets.graphics.lineTo(0, 0);
     widgets.graphics.closePath();
     widgets.graphics.stroke();
     widgets.graphics.setTransform(transform);
 }
 
-function reportResults(widgets, totalTime, attempts) {
-    widgets.topEdge.clearRect(0, 0, 510, 15);
-    widgets.leftEdge.clearRect(0, 0, 30, 520);
+function reportResults(widgets, totalTime, attempts, cellSize = 40) {
+    widgets.topEdge.clearRect(0, 0, 5 * cellSize + 10, 15);
+    widgets.leftEdge.clearRect(0, 0, 30, 5 * cellSize + 20);
     widgets.graphics.setTransform(1, 0, 0, 1, 0, 0);
     widgets.graphics.fillStyle = "#0F0";
-    widgets.graphics.fillRect(1, 1, 499, 499);
+    widgets.graphics.fillRect(1, 1, 5 * cellSize - 1, 5 * cellSize - 1);
     const string = attempts + " attempts in " + Math.round(totalTime / 100) / 10 + " seconds";
     widgets.paragraph.textContent = string + "  (check " + Math.abs(hash(string) % 1000) + ")";
 }

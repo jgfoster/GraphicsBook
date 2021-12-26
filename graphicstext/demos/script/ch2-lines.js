@@ -1,5 +1,6 @@
 function onload() {
     const widgets = getWidgets();
+    let cellSize = 40;
     const form = document.getElementById("form");
     let score = 0;
     let attempts = 0;
@@ -26,16 +27,16 @@ function onload() {
 
     function submit(e) {
         e.preventDefault();
-        drawGrid(widgets);
+        drawGrid(widgets, cellSize);
         if (equalLines(guess, target)) {
-            drawLine(widgets, guess, "#0F0");
+            drawLine(widgets, guess, "#0F0", cellSize);
             score = score + 1;
         } else {
-            drawLine(widgets, guess, "#F00");
-            drawLine(widgets, target, "#AAA");
+            drawLine(widgets, guess, "#F00", cellSize);
+            drawLine(widgets, target, "#AAA", cellSize);
             score = 0;
         }
-        setProgress(widgets, score);
+        setProgress(widgets, score, cellSize);
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = false;
         attempts = attempts + 1;
@@ -53,11 +54,11 @@ function onload() {
     function doIt() {
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = true;
-        setProgress(widgets, score);
+        setProgress(widgets, score, cellSize);
         if (score >= 10) {
             reportResults(widgets, totalTime, attempts);            
         } else {
-            setupGrid(widgets);
+            setupGrid(widgets, cellSize);
             do {
                 target.start.x = getRandomInt(5) + widgets.offset.x;
                 target.start.y = getRandomInt(5) + widgets.offset.y;
@@ -99,28 +100,22 @@ function onload() {
 
     function mouseDown(canvas, event) {
         if (allowAttempt) {
-            const point = getMouseLocation(canvas, event, widgets);
-            guess.start.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.start.y = Math.floor((point.y + 25) / 50) / 2;
+            guess.start = getMousePointLocation(canvas, event, widgets, cellSize);
             isDrawing = true;
         }
     }
 
     function mouseMove(canvas, event) {
         if (allowAttempt && isDrawing) {
-            const point = getMouseLocation(canvas, event, widgets);
-            guess.end.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.end.y = Math.floor((point.y + 25) / 50) / 2;
-            drawGrid(widgets);
-            drawLine(widgets, guess, "#00F");
+            guess.end = getMousePointLocation(canvas, event, widgets, cellSize);
+            drawGrid(widgets, cellSize);
+            drawLine(widgets, guess, "#00F", cellSize);
         }
     }
 
     function mouseUp(canvas, event) {
         if (allowAttempt && isDrawing) {
-            const point = getMouseLocation(canvas, event, widgets);
-            guess.end.x = Math.floor((point.x + 25) / 50) / 2;
-            guess.end.y = Math.floor((point.y + 25) / 50) / 2;
+            guess.end = getMousePointLocation(canvas, event, widgets, cellSize);
             isDrawing = false;
             document.getElementById("submit").disabled = false;
         }
