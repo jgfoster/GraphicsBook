@@ -54,7 +54,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-function setupGrid(widgets, labelOffset = 0, allowNegative = true, cellSize = 100) {
+function setupGrid(widgets, cellSize = 100, labelOffset = 0, allowNegative = true) {
     widgets.offset.topToBottom = getRandomInt(2) == 0;
     widgets.offset.x = allowNegative ? -getRandomInt(5) : 0;
     widgets.offset.y = allowNegative ? -getRandomInt(5) : 0;
@@ -71,7 +71,7 @@ function setupGrid(widgets, labelOffset = 0, allowNegative = true, cellSize = 10
         widgets.offset.x * -cellSize,     // horizontal translation
         widgets.offset.y * -cellSize);    // vertical translation
     resetPixels(widgets.pixels);
-    drawGrid(widgets, labelOffset, cellSize);
+    drawGrid(widgets, cellSize, labelOffset);
 }
 
 function setProgress(widgets, value, cellSize = 100) {
@@ -81,7 +81,7 @@ function setProgress(widgets, value, cellSize = 100) {
     widgets.progress.fillRect(0, 0, value * cellSize / 2, 20);
 }
 
-function labelAxes(widgets, point, labelOffset = 0, cellSize = 100) {
+function labelAxes(widgets, point, cellSize = 100, labelOffset = 0) {
     const x = Math.max(-(widgets.offset.x - point.x) * cellSize + labelOffset, 6);
     widgets.topEdge.fillText(point.x, x, 15);
     const y = widgets.offset.topToBottom ? 
@@ -90,7 +90,7 @@ function labelAxes(widgets, point, labelOffset = 0, cellSize = 100) {
     widgets.leftEdge.fillText(point.y, 20, y);
 }
 
-function drawGrid(widgets, labelOffset = 0, cellSize = 100) {
+function drawGrid(widgets, cellSize = 100, labelOffset = 0) {
     widgets.graphics.clearRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
     widgets.graphics.fillStyle = "#FFF";
     widgets.graphics.fillRect(-cellSize * 5, -cellSize * 5, cellSize * 10, cellSize * 10);
@@ -109,7 +109,7 @@ function drawGrid(widgets, labelOffset = 0, cellSize = 100) {
         widgets.graphics.stroke();
         widgets.graphics.strokeStyle = '#AAA';
     }
-    labelAxes(widgets, {x: 0, y: 0}, labelOffset, cellSize);
+    labelAxes(widgets, {x: 0, y: 0}, cellSize, labelOffset);
 
     for (let i = -4; i < 5; i++) {
         for (let j = -4; j < 5; j++) {

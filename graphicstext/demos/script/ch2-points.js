@@ -1,5 +1,6 @@
 function onload() {
     const widgets = getWidgets();
+    let cellSize = 40;
     let score = 0;
     let waitingForClick = true;
     const target = { x: 0, y: 0 };
@@ -13,11 +14,11 @@ function onload() {
     doIt();
 
     function doIt() {
-        setProgress(widgets, score);
+        setProgress(widgets, score, cellSize);
         if (score >= 10) {
             reportResults(widgets, totalTime, attempts);            
         } else {
-            setupGrid(widgets);
+            setupGrid(widgets, cellSize);
             target.x = getRandomInt(10) / 2 + widgets.offset.x;
             target.y = getRandomInt(10) / 2 + widgets.offset.y;
             prompt(target);
@@ -35,27 +36,27 @@ function onload() {
         if (waitingForClick) {
             waitingForClick = false;
             const point = getMouseLocation(canvas, event, widgets);
-            const x = Math.floor((point.x + 25) / 50) / 2;
-            const y = Math.floor((point.y + 25) / 50) / 2;
+            const x = Math.floor((point.x + cellSize / 4) / (cellSize / 2)) / 2;
+            const y = Math.floor((point.y + cellSize / 4) / (cellSize / 2)) / 2;
             if (x == target.x && y == target.y) {   // success
                 widgets.graphics.beginPath();
                 widgets.graphics.fillStyle = "#0F0";
-                widgets.graphics.arc(x * 100, y * 100, 15, 0, Math.PI * 2);
+                widgets.graphics.arc(x * cellSize, y * cellSize, (15 * cellSize / 100), 0, Math.PI * 2);
                 widgets.graphics.closePath();
                 widgets.graphics.fill();
-                labelAxes(widgets, {x, y});
+                labelAxes(widgets, {x, y}, cellSize);
                 score = score + 1;
-                setProgress(widgets, score);
-                setTimeout(doIt, 500);
+                setProgress(widgets, score, cellSize);
+                setTimeout(doIt, 1000);
             } else {                                // failure
                 widgets.graphics.beginPath();
                 widgets.graphics.fillStyle = "#F00";
-                widgets.graphics.arc(x * 100, y * 100, 15, 0, Math.PI * 2);
+                widgets.graphics.arc(x * cellSize, y * cellSize, (15 * cellSize / 100), 0, Math.PI * 2);
                 widgets.graphics.closePath();
                 widgets.graphics.fill();
-                labelAxes(widgets, {x, y});
+                labelAxes(widgets, {x, y}, cellSize);
                 score = 0;
-                setProgress(widgets, score);
+                setProgress(widgets, score, cellSize);
                 waitingForClick = true;
             }
             attempts = attempts + 1;

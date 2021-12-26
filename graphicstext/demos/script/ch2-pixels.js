@@ -1,6 +1,6 @@
 function onload() {
     const widgets = getWidgets();
-    let cellSize = 20;
+    let cellSize = 40;
     let score = 0;
     let attempts = 0;
     let startTime;
@@ -18,7 +18,7 @@ function onload() {
         if (score >= 10) {
             reportResults(widgets, totalTime, attempts);            
         } else {
-            setupGrid(widgets, cellSize / 2, false, cellSize);
+            setupGrid(widgets, cellSize, cellSize / 2, false);
             target.x = getRandomInt(5) + widgets.offset.x;
             target.y = getRandomInt(5) + widgets.offset.y;
             prompt(target);
@@ -44,11 +44,12 @@ function onload() {
                 widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize - 1);
                 score = score + 1;
                 setProgress(widgets, score, cellSize);
-                setTimeout(doIt, 500);
+                setTimeout(doIt, 1000);
             } else {
                 widgets.graphics.fillStyle = "red";
                 widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize -  1);
                 score = 0;
+                labelAxes(widgets, {x, y}, cellSize, cellSize / 2);
                 setProgress(widgets, score, cellSize);
                 waitingForClick = true;
             }
