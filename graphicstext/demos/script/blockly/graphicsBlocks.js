@@ -53,7 +53,7 @@ Blockly.Blocks['graphics_lineto'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)");
+ this.setTooltip("add a line segment to the path that starts at the current pen location and ends at the point (x, y), and move the pen to (x, y)");
  this.setHelpUrl("");
   }
 };
@@ -69,7 +69,7 @@ Blockly.Blocks['graphics_linetoex'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)");
+ this.setTooltip("add a line segment to the path that starts at the current pen location and ends at the point (x, y), and move the pen to (x, y)");
  this.setHelpUrl("");
   }
 };

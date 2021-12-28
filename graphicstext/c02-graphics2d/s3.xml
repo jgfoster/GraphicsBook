@@ -29,7 +29,7 @@ or view window. A coordinate transform is used to map the window to the viewport
      
 <np>In this illustration, <b>T</b> represents the coordinate transformation. <b>T</b>&nbsp;is a function that
 takes world coordinates (<i>x</i>,<i>y</i>) in some window and maps them to pixel coordinates <b>T</b>(<i>x</i>,<i>y</i>)
-in the viewport. (I've drawn the viewport and window with different sizes to emphasize that they
+in the viewport. (The viewport and window are drawn with different sizes to emphasize that they
 are not the same thing, even though they show the same objects, but in fact they don't even exist in
 the same space, so it doesn't really make sense to compare their sizes.) In this example, as you
 can check,</np>
@@ -97,7 +97,7 @@ it's all the same.</p>
 
 <demo src="c2/transform-equivalence-2d.html" width="700" height="750"><p>
 <web>Here is a live demo that can help you to understand the equivalence between modeling transformations
-and viewport transformations. The sliders control objects applied to the objects in the picture.
+and viewport transformations. The sliders control transformations that are applied to the objects in the picture.
 In the lower section of the demo, you see a larger view in which the viewport for the upper
 image is represented as a translucent black rectangle.</web>
 <tex>The on-line version of this section includes the live demo 
@@ -185,8 +185,8 @@ for the transformation; you just need to understand what it does geometrically.<
 <p>A <word>rotation</word> transform, for our purposes here, rotates each point about the origin, (0,0).
 Every point is rotated through the same
 angle, called the angle of rotation. For this purpose, angles can be measured either
-in degrees or in radians. (The 2D graphics <word term="API">APIs</word> that we will look at
-later in this chapter use radians, but OpenGL uses degrees.)
+in degrees or in radians. (The 2D graphics <word term="API">APIs</word> for Java and JavaScript that we will look at
+later in this chapter use radians, but OpenGL and SVG uses degrees.)
 A rotation with a positive angle rotates objects in the direction from the positive x-axis towards the positive y-axis. 
 This is counterclockwise in a coordinate system where the y-axis points up, 
 as it does in my examples here, but it is
@@ -345,6 +345,15 @@ y1 = c * x + y</pre>
 
 <np>Shear is occasionally called "skew," but skew is usually specified as an angle rather than as a shear factor.</np>
 
+<demo height="530" width="850" src="c2/blockly-transforms.html">
+<p><web>The following interactive exercise lets you experiment with combining transformations.</web>
+<tex>The interactive exercise <i>c2/blockly-transforms.html</i> lets you experiment with
+combining transformations. Interactive demos can be found on the web pages in the on-line version of this
+book. If you have downloaded the web site, you can also find the demos in the folder
+named <i>demos</i>.</tex>
+</p>
+</demo>
+
 </subsection>
 
 
@@ -442,7 +451,7 @@ give a product matrix <i>C</i>&nbsp;=&nbsp;<i>AB</i>. If <i>A</i>&nbsp;is an N-b
 matrix, and <i>v</i> is a vector of length N, then <i>v</i> can be multiplied
 by <i>A</i> to give another vector <i>w</i>&nbsp;=&nbsp;<i>Av</i>. The function
 that takes <i>v</i> to <i>Av</i> is a transformation; it transforms any given
-vector of length N into another vector of length&nbsp;N. A&nbsp;transformation of this
+vector of size N into another vector of size&nbsp;N. A&nbsp;transformation of this
 form is called a <newword>linear transformation</newword>.</p>
 
 <p>Now, suppose that <i>A</i> and <i>B</i> are N-by-N matrices and <i>v</i> is 
@@ -496,7 +505,7 @@ and rotation (<i>R<sub>d</sub></i>) in 2D are</p>
 <img src="transform-matrices-2d.png" width="486" height="73" tex="transform-matrices-2d.eps" texscale="0.75"/>
 
 <np>You can compare multiplication by these matrices to the formulas given above for translation, scaling,
-and rotation. However, you won't need to do the multiplication yourself. For now,
+and rotation. But when doing graphics programming, you won't need to do the multiplication yourself. For now,
 the important idea that you should take away from this discussion is that a sequence of transformations
 can be combined into a single transformation. The computer only needs to keep track of a single matrix, which we
 can call the "current matrix" or "current transformation."  To implement transform commands such as <i>translate</i>(a,b)

@@ -145,7 +145,7 @@
     </statement>
     <value name="TOOLTIP">
       <block type="text" id="1z;lZidJC?m`gCdcc*7W" deletable="false" movable="false">
-        <field name="TEXT">add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)</field>
+        <field name="TEXT">add a line segment to the path that starts at the current pen location and ends at the point (x, y), and move the pen to (x, y)</field>
       </block>
     </value>
     <value name="HELPURL">
@@ -516,7 +516,7 @@
     </statement>
     <value name="TOOLTIP">
       <block type="text" id="1z;lZidJC?m`gCdcc*7W" deletable="false" movable="false">
-        <field name="TEXT">add a line segment to the path that starts at the current pawn location and ends at the point (x, y), and move the pen to (x, y)</field>
+        <field name="TEXT">add a line segment to the path that starts at the current pen location and ends at the point (x, y), and move the pen to (x, y)</field>
       </block>
     </value>
     <value name="HELPURL">

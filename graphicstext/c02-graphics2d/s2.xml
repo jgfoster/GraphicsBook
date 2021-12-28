@@ -16,18 +16,18 @@ that are typically provided by 2D graphics APIs.</p1>
 
 <p>In a graphics <word>API</word>, there will be certain basic shapes that can be drawn with one command, whereas
 more complex shapes will require multiple commands. Exactly what qualifies as a basic shape varies
-from one API to another. In the JavaScript API for drawing on an <word>HTML canvas</word>, for example,
-the only basic shapes are lines and rectangles. In this subsection, we consider lines, rectangles, and ovals
+from one API to another. In the <word>WebGL</word> <word>API</word>, for example,
+the only basic shapes are points, lines, and triangles. In this subsection, we consider lines, rectangles, and ovals
 to be basic.</p>
 
-<p>By "line," we really mean "line segment,"" that is, a straight line segment connecting two given
+<p>By "line," we really mean line segment, that is, a straight line segment connecting two given
 points in the plane. A simple one-pixel-wide line segment, without <word>antialiasing</word>, is 
 the most basic shape. It can be drawn by coloring pixels that lie along the infinitely thin
 geometric line segment. An algorithm for drawing the line has to decide exactly which pixels
 to color. One of the first computer graphics algorithms, 
 <newword term="Bresenham's line algorithm">Bresenham's algorithm</newword> for line drawing, implements
 a very efficient procedure for doing so. We won't discuss such low-level details here, but it's
-worth looking them up if you want to start learning about what graphics hardware actually has to do.
+worth looking them up if you want to start learning about what graphics hardware actually has to do on a low level.
 In any case, lines are typically more complicated. Antialiasing is one complication. Line width is
 another. A wide line might actually be drawn as a rectangle.</p>
 
@@ -164,8 +164,9 @@ instead of taking the colors from an image, they are computed. There are a lot o
 to the basic idea, but there is always a line segment along which the color varies.
 The color is specified at the endpoints of the line segment, and possibly at additional
 points; between those points, the color is <word term="interpolation">interpolated</word>.
-For other points on the line that contains the line segment, the pattern on the line segment
-can be repeated, or the color of the endpoint can simply be extended. For a
+The color can also be extrapolated to other points on the line that contains the line segment 
+but lying outside the line segment; this can be done either by repeating the pattern from the 
+line segment or by simply extending the color from the nearest endpoint. For a
 <newword>linear gradient</newword>, the color is constant along lines perpendicular to the basic
 line segment, so you get lines of solid color going in that direction.
 In a <newword>radial gradient</newword>, the color is constant along circles centered at one
@@ -267,7 +268,7 @@ to move the pen back to the first vertex.</np>
 one does not make it visible on the screen. Once we have a path, to make it visible we need additional
 commands for stroking and filling the path.</p>
 
-<demo height="480" width="780" src="c2/blockly-paths.html">
+<demo height="600" width="780" src="c2/blockly-paths.html">
 <p><web>The following interactive exercise lets you experiment with drawing paths.</web>
 <tex>The interactive exercise <i>c2/blockly-paths.html</i> lets you experiment with
 drawing paths. Interactive demos can be found on the web pages in the on-line version of this
@@ -276,7 +277,7 @@ named <i>demos</i>.</tex>
 </p>
 </demo>
 
-<p>Earlier in this section, we saw how to approximate an oval by drawing, in effect, a regular
+<p>Earlier in this section, we saw how to approximate an oval by drawing, in effect, a
 polygon with a large number of sides. In that example, we drew each side as a separate line segment,
 so we really had a bunch of separate lines rather than a polygon. There is no way to fill such
 a thing. It would be better to approximate the oval with a polygonal path. For an oval with

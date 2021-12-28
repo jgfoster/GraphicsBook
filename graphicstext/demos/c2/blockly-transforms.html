@@ -19,12 +19,13 @@ let workspace;      // https://developers.google.com/blockly/reference/js/Blockl
 let initialBlocks;  // saved initial set of workspace blocks
 let goalTransform;  // where we drew the goal
 let userTransform;  // what the user has currently
+const scale = 0.85;
 let level = 1;
 let levels = [      // values for a-f at each level
-  [1, 0, 0, -1, 300.5, 150.5], 
-  [0, -1, -1, 0, 300.5, 150.5],
-  [0.7071, -0.7071, -0.7071, -0.7071, 321.21, 179.79],
-  [-0.7071, -0.7071, -0.7071, 0.7071, 250.5, 391.92],
+  [scale, 0, 0, -scale, 297.925, 149.175], 
+  [0, -scale, -scale, 0, 297.925, 149.175],
+  [0.6010, -0.6010, -0.6010, -0.6010, 319.175, 170.425],
+  [-0.6010, -0.6010, -0.6010, 0.6010, 255.425, 382.925],
 ];
 
 function logTransform() {
@@ -60,7 +61,7 @@ function resetWorkspace() {
   Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
 }
 
-function before(graphics) {
+function drawAxisLines(graphics) {
   // set new origin; use 0.5 to get thin lines
   graphics.translate(250.5, 250.5);
   // draw horizontal axis and vertical axis
@@ -71,20 +72,25 @@ function before(graphics) {
   graphics.lineTo(250, 0);
   graphics.moveTo(0, -250);
   graphics.lineTo(0, 250);
-  for (i = -250; i < 250; i = i + 50) {
+  for (i = -250; i <= 250; i = i + 50) {
     if (i != 0) {
       graphics.moveTo(i, -5);
       graphics.lineTo(i, 5);
       graphics.moveTo(-5, i);
       graphics.lineTo(5, i);
       if (i % 100 == 0) {
-        graphics.fillText(i, i, -10);
-        graphics.fillText(i, 10, -i);
+        graphics.fillText(i, i - (i < 0 ? 10 : 8), -10);
+        graphics.fillText(i, 10, -i + 2);
       }
     }
   }
   graphics.closePath();
   graphics.stroke();
+}
+
+function before(graphics) {
+  graphics.scale(scale, scale);
+  drawAxisLines(graphics);
   // switch from top-to-bottom to bottom-to-top after drawing numbers
   graphics.transform(1, 0, 0, -1, 0, 0);
   const savedTransform = graphics.getTransform();
@@ -97,8 +103,6 @@ function before(graphics) {
     levels[level - 1][4], 
     levels[level - 1][5]
   );
-  // graphics.rotate(135*Math.PI/180);
-  // graphics.translate(-100, 100);
   goalTransform = graphics.getTransform();
   graphics.fillStyle = "#DDD";
   graphics.fillRect(-20, -20, 40, 40);
@@ -125,16 +129,13 @@ function compareTransforms(userTransform, goalTransform) {
     const user = pairs[i][0];
     const goal = pairs[i][1];
     let off = Math.abs(goal - user);
-    // if (goal != 0) {
-    //   off = Math.abs(off / goal);
-    // };
-    // console.log(i, off);
     if (off > 0.01) {
       return false;
     }
   }
   return true;
 }
+
 function after(graphics, userCode) {
   graphics.fillStyle = "#F00";
   graphics.fillRect(-20, -20, 40, 40);
@@ -158,8 +159,8 @@ function after(graphics, userCode) {
 
 function onLoad() {
   const args = {
-    width: 500,
-    height: 500, 
+    width: 501,
+    height: 501, 
     before: before,
     after: after
   };
@@ -195,17 +196,19 @@ function onLoad() {
         </td>
       </tr>
       <tr>
-        <td>
-          <canvas id="canvas" width="500" height="500">
+        <td id="blocklyArea">
+          <div id="blocklyDiv" style="width: 400px; height: 220px;"></div>
+        </td>
+        <td rowspan="2">
+          <canvas id="canvas" width="426" height="426">
             <!-- This message is shown on the page if the browser doesn't support the canvas element. -->
             Canvas not supported.
           </canvas>
         </td>
-        <td id="blocklyArea">
-          <div id="blocklyDiv" style="width: 400px; height: 500px;"></div>
-        </td>
+      </tr>
+      <tr>
         <td>
-          <textarea id="codeArea" rows="38" cols="40" style="display: inline"></textarea>
+          <textarea id="codeArea" rows="15" cols="54" style="display: inline"></textarea>
         </td>
       </tr>
     </table>
