@@ -2,16 +2,7 @@
 
 This repository contains the files used to create David Eck's [*Introduction to Computer Graphics*](http://math.hws.edu/graphicsbook/).
 
-## Online Versions
-
-* Foster, 2022
-  * [Web](https://jgfoster.github.io/GraphicsBook/2022/web-site/index.html)
-  * [PDF to Print](https://jgfoster.github.io/GraphicsBook/2022/graphicsbook.pdf)
-  * [PDF with Links](https://jgfoster.github.io/GraphicsBook/2022/graphicsbook-linked.pdf)
-* Eck, 2018
-  * [Web](https://jgfoster.github.io/GraphicsBook/1.2/web-site/index.html)
-  * [PDF to Print](https://jgfoster.github.io/GraphicsBook/1.2/graphicsbook.pdf)
-  * [PDF with Links](https://jgfoster.github.io/GraphicsBook/1.2/graphicsbook-linked.pdf)
+## [Online Versions](https://jgfoster.github.io/GraphicsBook/index.html)
 
 ## Build
 

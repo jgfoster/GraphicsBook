@@ -64,36 +64,36 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
    copyfiles c06-webgl c6
    copyfiles c07-webgl3d c7
    copyfiles c08-advanced c8
-   
+
    copyfiles a1-proglang a1
    copyfiles a2-blender a2
    copyfiles a3-gimp-inkscape a3
-   
+
    if [ ! -e "$BUILD_OUTPUT_DIR" ] ; then
       mkdir $BUILD_OUTPUT_DIR
    else
       rm -rf $BUILD_OUTPUT_DIR/web-site
    fi
-   
+
    if [ ! -e "web/index.html" ] ; then
       echo Some error occurred while creating the web site.
       exit 1
    fi
-   
+
    echo
    echo Fixing html DOCTYPES...
-   sed -i '.bak' '1 s/<html>/<!DOCTYPE html>\
+   sed -i'.bak' -e '1 s/<html>/<!DOCTYPE html>\
 <html>/' `find . -name "*.html"`
 
    if [ $? -eq 0 ]
    then
       echo "Successful DOCTYPE fixup"
-      rm *html.bak */*html.bak */*/*html.bak */*/*/*html.bak 
+      rm *html.bak */*html.bak */*/*html.bak */*/*/*html.bak
    else
       echo "DOCTYPE fixup error" >&2
       exit 1
    fi
-   
+
    if ! mv web $BUILD_OUTPUT_DIR/web-site ; then
       echo
       echo Web site successfully generated, but could not be moved to $BUILD_OUTPUT_DIR.
@@ -106,7 +106,7 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
    echo "Created Graphics Book web site in $BUILD_OUTPUT_DIR/web-site."
    echo
    exit 0
-   
+
 else
    echo
    echo "An error occurred while trying to run xalan on convert-web.xsl."

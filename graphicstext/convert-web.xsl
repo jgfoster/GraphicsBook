@@ -1,9 +1,9 @@
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:redirect="org.apache.xalan.xslt.extensions.Redirect"
         extension-element-prefixes="redirect">
 <xsl:output method="html"/>
-    
+
 <xsl:template match="/">
    <redirect:write file="web/index.html">
         <html>
@@ -17,8 +17,8 @@
         <h2 class="chapter_title">Introduction to Computer Graphics</h2>
         <h3 class="chapter_title">jgfoster/2022</h3>
         <h4 align="center">Primary Author:&#160; <a href="http://math.hws.edu/eck/">David J. Eck</a>&#160;
-                 (<a href="mailto:eck@hws.edu">eck@hws.edu</a>)</h4>        
-        <h4 align="center">Revised by:&#160; <a href="mailto:james.foster@wallawalla.edu">james.foster@wallawalla.edu</a></h4>        
+                 (<a href="mailto:eck@hws.edu">eck@hws.edu</a>)</h4>
+        <h4 align="center">Revised by:&#160; <a href="mailto:james.foster@wallawalla.edu">james.foster@wallawalla.edu</a></h4>
         <hr/>
         <table border="0">
         <tr valign="top"><td><p style="margin-right:20pt"><img height="235" width="180" src="resource/graphicstext-cover-180x235.png"/></p></td>
@@ -26,7 +26,7 @@
         <p><big>W</big>ELCOME TO <i>Introduction to Computer Graphics</i>,
          a free, on-line textbook covering the fundamentals of computer graphics and
          computer graphics programming. This book is designed for use as a textbook in
-         a one-term, upper-division, undergraduate computer science course. 
+         a one-term, upper-division, undergraduate computer science course.
         </p>
         <p>The web pages for this book include live, interactive demos that require a modern
         web browser. While the
@@ -35,7 +35,7 @@
         <p>Words in the book that are shown in <span class="newword" style="cursor:inherit">this&#160;style</span> or underlined
         <span class="word" style="cursor:inherit">like&#160;this</span> refer to glossary entries; click the
         word to see a definition.</p>
-         <p>You can download this web site for use on your own computer. 
+         <p>You can download this web site for use on your own computer.
          PDF versions of the textbook are also available.
          The PDF that includes links might be the best way to read it on your computer.
          Links to the downloads can be found at the bottom of this page.
@@ -64,7 +64,7 @@
         <hr/>
         <div style="margin-left: 40px; margin-right:40px">
          <i>
-            Revisions &#169;2020, James Foster.<br/>
+            Revisions &#169;2022, James Foster.<br/>
             Original text &#169;2015&#8211;2018, David J. Eck.<br/>
             <small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-Noncommercial-ShareAlike 4.0 License</a>.
             (This license allows you to redistribute this book in unmodified form for non-commercial purposes. It allows you
@@ -77,7 +77,7 @@
             The home site for the original book is:
             <a href="http://math.hws.edu/graphicsbook/">http://math.hws.edu/graphicsbook/</a>. <br />
             The home site for the revised book is:
-            <a href="https://github.com/jgfoster/GraphicsBook">https://github.com/jgfoster/GraphicsBook</a>.
+            <a href="https://github.com/jgfoster/GraphicsBook/">https://github.com/jgfoster/GraphicsBook/</a>.
             </small>
             </i>
           </div>
@@ -87,7 +87,7 @@
         1 August 2015, Version 1.0<br/>
         28 January 2016, Version 1.1<br/>
         6 January 2018, Version 1.2<br/>
-        6 January 2020, jgfoster/2020
+        6 January 2020, jgfoster/2022
         </i></small></div>
         </div>
         </div></body>
@@ -105,7 +105,7 @@
    <xsl:apply-templates select="/graphicstext/source"/>
    <xsl:call-template name="makeglossary"/>
 </xsl:template>
-   
+
 <xsl:template name="table-of-contents">
    <xsl:param name="subsections"/>
    <xsl:variable name="file">web/contents<xsl:if test="$subsections">-with-subsections</xsl:if>.html</xsl:variable>
@@ -118,7 +118,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2022</h3>
         <h2 align="center">Table of Contents</h2>
         <hr/>
         <p align="center" class="firstpar">This is the Table of Contents for the free on-line
@@ -137,20 +137,20 @@
         <xsl:for-each select="/graphicstext/chapter">
            <xsl:variable name="chapter"><xsl:value-of select="position()"/></xsl:variable>
            <p><b>Chapter <xsl:value-of select="$chapter"/>:&#160;
-              <a><xsl:attribute name="href"><xsl:value-of 
+              <a><xsl:attribute name="href"><xsl:value-of
                       select="concat('c',$chapter,'/index.html')"/></xsl:attribute><xsl:value-of select="@title"/></a></b></p>
            <ul>
            <xsl:for-each select="section">
               <xsl:variable name="section"><xsl:value-of select="position()"/></xsl:variable>
               <li>Section <xsl:value-of select="$chapter"/>.<xsl:value-of select="$section"/>&#160;
-                 <a><xsl:attribute name="href"><xsl:value-of 
+                 <a><xsl:attribute name="href"><xsl:value-of
                          select="concat('c',$chapter,'/s',$section,'.html')"/></xsl:attribute><xsl:value-of select="@title"/></a>
                <xsl:if test="$subsections and subsection">
                   <ul>
                      <xsl:for-each select="subsection">
                         <li>
                            <xsl:value-of select="$chapter"/>.<xsl:value-of select="$section"/>.<xsl:value-of select="position()"/>&#160;
-                                 <a><xsl:attribute name="href"><xsl:value-of 
+                                 <a><xsl:attribute name="href"><xsl:value-of
                                         select="concat('c',$chapter,'/s',$section,'.html#',@id)"/></xsl:attribute><xsl:value-of select="@title"/></a>
                         </li>
                      </xsl:for-each>
@@ -170,20 +170,20 @@
            <xsl:variable name="appendix"><xsl:number count="appendix" format="A"/></xsl:variable>
            <xsl:variable name="appnum"><xsl:number count="appendix"/></xsl:variable>
            <p><b>Appendix <xsl:value-of select="$appendix"/>:&#160;
-              <a><xsl:attribute name="href"><xsl:value-of 
+              <a><xsl:attribute name="href"><xsl:value-of
                       select="concat('a',$appnum,'/index.html')"/></xsl:attribute><xsl:value-of select="@title"/></a></b></p>
            <ul>
            <xsl:for-each select="section">
               <xsl:variable name="section"><xsl:value-of select="position()"/></xsl:variable>
               <li>Section <xsl:value-of select="$appendix"/>.<xsl:value-of select="$section"/>&#160;
-                 <a><xsl:attribute name="href"><xsl:value-of 
+                 <a><xsl:attribute name="href"><xsl:value-of
                          select="concat('a',$appnum,'/s',$section,'.html')"/></xsl:attribute><xsl:value-of select="@title"/></a>
                <xsl:if test="$subsections and subsection">
                   <ul>
                      <xsl:for-each select="subsection">
                         <li>
                            <xsl:value-of select="$appendix"/>.<xsl:value-of select="$section"/>.<xsl:value-of select="position()"/>&#160;
-                                 <a><xsl:attribute name="href"><xsl:value-of 
+                                 <a><xsl:attribute name="href"><xsl:value-of
                                         select="concat('a',$appnum,'/s',$section,'.html#',@id)"/></xsl:attribute><xsl:value-of select="@title"/></a>
                         </li>
                      </xsl:for-each>
@@ -265,7 +265,7 @@
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
-   
+
 <xsl:template match="appendix">
    <redirect:write select="concat('web/a',position(),'/index.html')">
         <html>
@@ -311,7 +311,7 @@
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
-   
+
 <xsl:template match="preface">
    <redirect:write select="'web/preface.html'">
      <html>
@@ -321,7 +321,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020<br/></h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2022<br/></h3>
         <h2 align="center">Preface</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
@@ -332,7 +332,7 @@
      </html>
    </redirect:write>
 </xsl:template>
-    
+
 <xsl:template match="source">
    <redirect:write select="'web/source/index.html'">
      <html>
@@ -342,7 +342,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2022</h3>
         <h2 align="center">Source Code and Demos</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
@@ -366,7 +366,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, jgfoster/2020</h3>
+        <h3 align="center">Introduction to Computer Graphics, jgfoster/2022</h3>
         <h2 align="center">Glossary</h2>
         <hr class="break"/>
         <xsl:for-each select="//gitem">
@@ -381,7 +381,7 @@
      </html>
     </redirect:write>
 </xsl:template>
-        
+
 <xsl:template match="section">
     <xsl:param name="chapternum"/>
     <xsl:variable name="file">
@@ -438,15 +438,15 @@
                <a><xsl:attribute name="href"><xsl:value-of select="concat('s',position()+1,'.html')"/></xsl:attribute>Next Section</a> |
            </xsl:if>
         <xsl:if test="ancestor::chapter">
-	        <a href="index.html">Chapter Index</a> | 
+	        <a href="index.html">Chapter Index</a> |
 	    </xsl:if>
         <xsl:if test="ancestor::appendix">
-	        <a href="index.html">Appendix Index</a> | 
+	        <a href="index.html">Appendix Index</a> |
 	    </xsl:if>
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
-    
+
 <xsl:template match="subsection">
     <xsl:variable name="num">
         <xsl:choose>
@@ -498,11 +498,11 @@
 </xsl:template>
 <xsl:template name="exercises-navbar">
     <small>
-        [  <a href="index.html">Chapter Index</a> | 
+        [  <a href="index.html">Chapter Index</a> |
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
-       
+
 <xsl:template name="do-exercise-answers">
     <xsl:variable name="chapternum">
        <xsl:number count="chapter"/>
@@ -544,7 +544,7 @@
 <xsl:template name="exercise-answer-navbar">
     <small>
         [ <a href="exercises.html">Exercises</a> |
-        <a href="index.html">Chapter Index</a> | 
+        <a href="index.html">Chapter Index</a> |
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
@@ -605,7 +605,7 @@
     <xsl:param name="answers"/>
     <small>
         [  <xsl:if test="not($answers)"><a href="quiz_answers.html">Quiz Answers</a> | </xsl:if>
-        <a href="index.html">Chapter Index</a> | 
+        <a href="index.html">Chapter Index</a> |
         <a href="../index.html">Main Index</a> ]
     </small>
 </xsl:template>
@@ -662,11 +662,11 @@
 <xsl:template match="gitem"></xsl:template>
 
 <xsl:template match="tag"><span class="tag"><xsl:text>&lt;</xsl:text><xsl:apply-templates/><xsl:text>&gt;</xsl:text></span></xsl:template>
-    
+
 <xsl:template match="a">
     <a><xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute><xsl:apply-templates/></a>
 </xsl:template>
-    
+
 <xsl:template match="sourceref">
    <xsl:variable name="ref">
       <xsl:choose>
@@ -681,7 +681,7 @@
    </xsl:choose>
    </a></span>
 </xsl:template>
-    
+
 <xsl:template match="demoref">
    <xsl:variable name="ref"><xsl:text>../demos/</xsl:text><xsl:value-of select="@href"/></xsl:variable>
    <span class="sourceref"><a><xsl:attribute name="href"><xsl:value-of select="$ref"/></xsl:attribute>
@@ -695,7 +695,7 @@
 
 <xsl:template match="jarref">
    <xsl:variable name="ref">
-      <xsl:text>../jars/chapter</xsl:text><xsl:number count="chapter"/><xsl:text>/</xsl:text><xsl:value-of select="@href"/>   
+      <xsl:text>../jars/chapter</xsl:text><xsl:number count="chapter"/><xsl:text>/</xsl:text><xsl:value-of select="@href"/>
    </xsl:variable>
    <span class="sourceref"><a><xsl:attribute name="href"><xsl:value-of select="$ref"/></xsl:attribute>
    <xsl:choose>
@@ -704,7 +704,7 @@
    </xsl:choose>
    </a></span>
 </xsl:template>
-    
+
 <xsl:template match="localref">
     <xsl:if test="not(id(@href))"><xsl:message>Undefined reference <xsl:value-of select="@href"/></xsl:message></xsl:if>
     <xsl:variable name="href">
@@ -851,15 +851,15 @@
 </xsl:template>
 
 <xsl:template match="fudgeref"/>
-    
+
 <xsl:template match="break">
     <hr class="break"/>
 </xsl:template>
-   
+
 <xsl:template match="br">
    <br/>
 </xsl:template>
-   
+
 <xsl:template match="narrower">
    <xsl:variable name="margin"><xsl:choose>
       <xsl:when test="@margin"><xsl:value-of select="@margin"/></xsl:when>
@@ -870,7 +870,7 @@
 <xsl:apply-templates/>
 </div>
 </xsl:template>
-    
+
 <xsl:template match="img">
     <xsl:choose>
     <xsl:when test="@align">
@@ -903,37 +903,37 @@
 </iframe></p>
 </div>
 </xsl:template>
-   
+
 <xsl:template match="imageclear">
    <br clear="all"/>
 </xsl:template>
-    
+
 <xsl:template match="centered">
 <div align="center">
 <xsl:apply-templates/>
 </div>
 </xsl:template>
-   
+
 <xsl:template match="endchapter">
     <hr/>
     <div align="center"><b><small>End of Chapter <xsl:number count="chapter"/></small></b></div>
     <hr/>
 </xsl:template>
-    
+
 <xsl:template match="prog">
     <xsl:apply-templates/>
 </xsl:template>
-    
+
 <xsl:template match="web">
     <xsl:apply-templates/>
 </xsl:template>
-    
+
 <xsl:template match="webdiv">
     <xsl:apply-templates/>
 </xsl:template>
-    
+
 <xsl:template match="tex"></xsl:template>
-    
+
 <xsl:template match="texdiv"></xsl:template>
-    
+
 </xsl:stylesheet>
