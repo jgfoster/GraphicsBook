@@ -4,11 +4,11 @@
 <preface>
 
 <p1>I discovered Professor Eck's book when looking for material for a undergraduate
-course on computer graphics. I've made some modifications that are tracked at 
+course on computer graphics. I've made some modifications that are tracked at
 <a href="https://github.com/jgfoster/GraphicsBook">https://github.com/jgfoster/GraphicsBook</a>.
 As I get further, I'll cycle back and update this Preface.
 </p1>
-<break/> 
+<break/>
 
 <np>Professor James Foster<br/>
 Department of Computer Science<br/>
@@ -16,14 +16,14 @@ Walla Walla University<br/>
 204 S. College Avenue<br/>
 College Place, WA, USA<br/>
 Email: <a href="mailto:james.foster@wallawalla.edu">James.Foster@WallaWalla.edu</a><br/>
-<i>January, 2020</i>
+<i>January, 2022</i>
 </np>
 
 <break/>
 
 <p1>This textbook represents my attempt to develop a modern, one-semester first course in
 computer graphics, which would typically be taken by a computer science student
-in the third or fourth year of college. (Whether it will continue to be appropriate 
+in the third or fourth year of college. (Whether it will continue to be appropriate
 is an open question, given the always-rapid changes in the field of computer graphics.)</p1>
 
 <p>A reader of this book should have substantial experience
@@ -39,11 +39,11 @@ from the beginning, try my free introductory Java textbook, which is available a
 
 <p>I used Version 1.0 of this book for a course in Fall 2015.
 Version 1.1 corrected some errors and typos and added some material.
-It was used in the Fall 2017 version of my course. 
+It was used in the Fall 2017 version of my course.
 The current version of the book, Version 1.2, makes more corrections,
 but the major change is that the chapter on <i>three.js</i>
 has been updated to use Release 89 of <i>three.js</i>.</p>
-   
+
 <p>The home web site for this book is
 <a href="http://math.hws.edu/graphicsbook">http://math.hws.edu/graphicsbook</a>.
 The page at that address contains links for downloading a copy of
@@ -84,8 +84,8 @@ developed, I had to make major changes almost every time I taught the course, bu
 much of that time, I was able to structure the course primarily around OpenGL&nbsp;1.1,
 a graphics API that was in common use for an extended period. OpenGL&nbsp;1.1 supported
 fundamental graphics concepts in a way that was fairly easy to use. OpenGL is still
-widely supported, but, for various reasons, the parts of it that were easy to use have been 
-officially dropped from the latest versions (although they are in practice supported 
+widely supported, but, for various reasons, the parts of it that were easy to use have been
+officially dropped from the latest versions (although they are in practice supported
 on most desktop computers). The result is a much more powerful API
 but one that is much harder to learn. In particular, modern OpenGL in its pure form
 does not make for a good introduction to graphics programming.</p>
@@ -100,7 +100,7 @@ color, lighting, and textures; and animation.</p>
 <p><i>Chapter&nbsp;1</i> is a short overview of computer graphics. It introduces many concepts
 that will be covered in much more detail in the rest of the book.</p>
 
-<p><i>Chapter&nbsp;2</i> covers two-dimensional graphics in Java, JavaScript, and SVG, with an 
+<p><i>Chapter&nbsp;2</i> covers two-dimensional graphics in Java, JavaScript, and SVG, with an
 emphasis on ideas such as transformations and scene graphs that carry over to
 three dimensions.</p>
 
@@ -129,7 +129,7 @@ introducing students to Blender is a good way to help them develop their three-d
 intuition. <i>Appendix&nbsp;C</i> contains even briefer introductions to two 2D graphics
 programs, Gimp and Inkscape.</p>
 
-<break/> 
+<break/>
 
 <np>Professor David J. Eck<br/>
 Department of Mathematics and Computer Science<br/>
@@ -143,6 +143,6 @@ WWW: <a href="http://math.hws.edu/eck/">http://math.hws.edu/eck/</a><br/>
 
 
 
-  
-   
+
+
 </preface>

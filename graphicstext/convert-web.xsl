@@ -87,7 +87,8 @@
         1 August 2015, Version 1.0<br/>
         28 January 2016, Version 1.1<br/>
         6 January 2018, Version 1.2<br/>
-        6 January 2020, jgfoster/2022
+        6 January 2020, jgfoster/2020<br/>
+        2 January 2022, jgfoster/2022
         </i></small></div>
         </div>
         </div></body>
@@ -197,7 +198,7 @@
         <p><b>Appendix E: </b> <a href="glossary.html">Glossary</a></p>
      </div>
      <hr/>
-     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2022</small></div>
      </div>
      </div></body>
      </html>
@@ -348,7 +349,7 @@
         <xsl:apply-templates/>
      </div>
      <hr/>
-     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2022</small></div>
      </div></body>
      <script src="../resource/glossary.js"></script>
      </html>
@@ -376,7 +377,7 @@
         </xsl:for-each>
      </div>
      <hr/>
-     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2020</small></div>
+     <div align="right"><small><a href="mailto:james.foster@wallawalla.edu">James Foster</a>, January 2022</small></div>
      </div></body>
      </html>
     </redirect:write>
