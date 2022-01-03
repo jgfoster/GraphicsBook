@@ -7,22 +7,24 @@
 and how it is possible to transform coordinates from one coordinate system to another. In this section,
 we'll look at that idea a little more closely, and also look at how 
 <word term="geometric transform">geometric transformations</word> can
-be used to place graphics objects into a coordinate system.</p1>
+be used to place graphics objects into a different coordinate system.</p1>
 
 
 <subsection title="Viewing and Modeling" id="graphics2d.3.1">
 
-<p>In a typical application, we have a rectangle made of pixels, with its natural pixel coordinates, 
-where an image will be displayed. This rectangle will be called the <newword>viewport</newword>.
-We also have a set of geometric objects that are defined in a possibly different coordinate system,
-generally one that uses real-number coordinates rather than integers. These objects make up the
-"scene" or "world" that we want to view, and the coordinates that we use to define the scene
+<p>A computer graphics application draws a picture on a display. 
+The display is a rectangle made of pixels where each pixel is identified by a pair of non-negative integers
+that increase left-to-right and top-to-bottom (or bottom-to-top). The area used for the picture could be the
+entire display or could be a rectangular subset of the display; we call this display rectangle the <newword>viewport</newword>. 
+Into this viewport we create the picture by drawing a set of geometric objects that are (typically) defined in a different 
+coordinate system using real numbers (instead of non-negative integers). These objects make up the
+"scene" or "world" that we want to picture, and the real-number coordinates that we use to define the scene
 are called <newword>world coordinates</newword>.</p>
 
-<p>For 2D graphics, the world
-lies in a plane. It's not possible to show a picture of the entire infinite plane. We need to pick some rectangular
-area in the plane to display in the image. Let's call that rectangular area the <newword term="view window">window</newword>,
-or view window. A coordinate transform is used to map the window to the viewport.</p>
+<p>For 2D graphics, the world lies in a plane. Since it is not possible (or even desirable) to show 
+the entire (infinite) plane, we select a subset of the world to display 
+in the viewport. We call this selection the <newword term="view window">window</newword>,
+or view window. A coordinate transform is used to map the window (from the world) to the viewport (on the display).</p>
 
 <img src="coordinate-transformation-2d.png" width="503" height="231"
      tex="coordinate-transformation-2d.eps" texscale="0.75"/>
@@ -30,11 +32,10 @@ or view window. A coordinate transform is used to map the window to the viewport
 <np>In this illustration, <b>T</b> represents the coordinate transformation. <b>T</b>&nbsp;is a function that
 takes world coordinates (<i>x</i>,<i>y</i>) in some window and maps them to pixel coordinates <b>T</b>(<i>x</i>,<i>y</i>)
 in the viewport. (The viewport and window are drawn with different sizes to emphasize that they
-are not the same thing, even though they show the same objects, but in fact they don't even exist in
-the same space, so it doesn't really make sense to compare their sizes.) In this example, as you
+are not the same thing, even though they contain the same objects.) In this example, as you
 can check,</np>
 
-<pre>T(x,y) = ( 800*(x+4)/8, 600*(3-y)/6 )</pre>
+<pre>T(x,y) = 800 * (x + 4) / 8, 600 * (3 - y) / 6</pre>
 
 <np>Look at the rectangle with corners at (-1,2) and (3,-1) in the window. When this rectangle
 is displayed in the viewport, it is displayed as the
