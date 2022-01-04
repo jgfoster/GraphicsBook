@@ -10,7 +10,7 @@ expensive computers designed for intensive graphical applications. (Today,
 you probably have more graphics computing power on your smart phone.)  OpenGL
 is supported by the graphics hardware in most modern computing devices, including
 desktop computers, laptops, and many mobile devices. This section will give
-you a bit of background about the history of OpenGL and about the graphics 
+you a bit of background about the history of OpenGL and about the graphics
 hardware that supports it.</p1>
 
 <p>In the first desktop computers, the contents of the screen were managed
@@ -22,8 +22,8 @@ Computers are much faster in general, of course, but the big change is that
 in modern computers, graphics processing is done by a specialized component
 called a <newword>GPU</newword>, or Graphics Processing Unit. A GPU includes processors
 for doing graphics computations; in fact, it can include a large number of such
-processors that work in parallel to greatly speed up graphical operations. 
-It also includes its own dedicated memory for storing things like images and 
+processors that work in parallel to greatly speed up graphical operations.
+It also includes its own dedicated memory for storing things like images and
 lists of coordinates. GPU processors have very fast
 access to data that is stored in GPU memory&mdash;much faster than their access to data
 stored in the computer's main memory.</p>
@@ -53,7 +53,7 @@ about how and why OpenGL has changed.</p>
 system. The server, which is responsible for controlling the computer's
 display and performing graphics computations, carries out commands issued by the
 client. Typically, the server is a GPU, including its graphics processors and memory.
-The server executes OpenGL commands. The client is the CPU in the same computer, along 
+The server executes OpenGL commands. The client is the CPU in the same computer, along
 with the application program that it is running. OpenGL commands come from the
 program that is running on the CPU. However,
 it is actually possible to run OpenGL programs remotely over a network. That
@@ -82,7 +82,7 @@ be transmitted to the GPU to draw a given image.</p>
 Specifying a primitive means specifying <word term="coordinate system">coordinates</word>
 and <word term="attribute">attributes</word> for each of its <word term="vertex">vertices</word>. In the
 original OpenGL&nbsp;1.0, a separate command was used to specify the coordinates of each vertex,
-and a command was needed each time the value of an attribute changed. To draw a single 
+and a command was needed each time the value of an attribute changed. To draw a single
 triangle would require three or more commands. Drawing a complex object made up of
 thousands of triangles would take many thousands of commands. Even in OpenGL&nbsp;1.1,
 it became possible to draw such an object with a single command instead of thousands. All the data
@@ -104,13 +104,13 @@ into the GPU, so that the GPU can easily switch between images without having to
 <p>As new capabilities were added to OpenGL, the API grew in size. But the growth was still
 outpaced by the invention of new, more sophisticated techniques for doing graphics. Some
 of these new techniques were added to OpenGL, but
-the problem is that no matter how many features you add, there will always be demands for 
-new features&mdash;as well as complaints that all the new features are making things too 
-complicated! OpenGL was a giant machine, with new pieces always being tacked onto it, 
+the problem is that no matter how many features you add, there will always be demands for
+new features&mdash;as well as complaints that all the new features are making things too
+complicated! OpenGL was a giant machine, with new pieces always being tacked onto it,
 but still not pleasing everyone. The real solution was to make the machine <b>programmable</b>.
 With OpenGL 2.0, it became possible to write programs to be executed as part of the
 graphical computation in the GPU. The programs are run on the GPU at GPU speed.
-A programmer who wants to use a new graphics technique can write a program to 
+A programmer who wants to use a new graphics technique can write a program to
 implement the feature and just hand it to the GPU. The OpenGL API doesn't have to
 be changed. The only thing that the API has to support is the ability to send programs
 to the GPU for execution.</p>
@@ -119,7 +119,7 @@ to the GPU for execution.</p>
 really describe what most of them actually do). The first shaders to be introduced were
 <newword term="vertex shader">vertex shaders</newword> and <newword term="fragment shader">fragment shaders</newword>.
 When a <word term="geometric primitive">primitive</word> is drawn, some work has to be done at each vertex of the primitive,
-such as applying a <word>geometric transform</word> to the vertex coodinates or
+such as applying a <word>geometric transform</word> to the vertex coordinates or
 using the <word term="attribute">attributes</word> and global <word>lighting</word> environment
 to compute the color of that vertex. A vertex shader is a program that can take over the
 job of doing such "per-vertex" computations. Similarly, some work has to be done for each
@@ -128,14 +128,14 @@ pixel inside the primitive. A fragment shader can take over the job of performin
 
 <p>The idea of programmable graphics hardware was very successful&mdash;so successful that
 in OpenGL&nbsp;3.0, the usual per-vertex and per-fragment processing
-was deprecated (meaning that its use was discouraged). 
+was deprecated (meaning that its use was discouraged).
 And in OpenGL&nbsp;3.1, it was removed from
 the OpenGL standard, although it is still present as an optional extension. In practice,
 all the original features of OpenGL are still supported in desktop versions of OpenGL and will
 probably continue to be available in the future. On the embedded system side, however,
 with OpenGL&nbsp;ES&nbsp;2.0 and later, the use of shaders is mandatory, and a large part
 of the OpenGL&nbsp;1.1 API has been completely removed.
-WebGL, the version of OpenGL for use in web browsers, 
+WebGL, the version of OpenGL for use in web browsers,
 is based on OpenGL&nbsp;ES&nbsp;2.0, and it also requires shaders to get anything at all done.
 Nevertheless, we will begin our study of OpenGL with version 1.1. Most of the concepts and
 many of the details from that version are still relevant, and it offers an easier entry point
