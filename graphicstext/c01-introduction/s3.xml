@@ -126,7 +126,7 @@ to the GPU for execution.</p>
 really describe what most of them actually do).  The first shaders to be introduced were
 <newword term="vertex shader">vertex shaders</newword> and <newword term="fragment shader">fragment shaders</newword>.
 When a <word term="geometric primitive">primitive</word> is drawn, some work has to be done at each vertex of the primitive,
-such as applying a <word>geometric transform</word> to the vertex coodinates or
+such as applying a <word>geometric transform</word> to the vertex coordinates or
 using the <word term="attribute">attributes</word> and global <word>lighting</word> environment
 to compute the color of that vertex.  A vertex shader is a program that can take over the
 job of doing such "per-vertex" computations.  Similarly, some work has to be done for each
