@@ -2,7 +2,7 @@ function onload() {
     const widgets = getWidgets();
     let cellSize = 40;
     const form = document.getElementById("form");
-    let score = 0;
+    let score = Math.trunc(score / 2);
     let attempts = 0;
     let startTime;
     let totalTime = 0;
@@ -11,13 +11,13 @@ function onload() {
     let isDrawing = false;
     let allowAttempt = true;
 
-    canvas.addEventListener('mousedown', function(e) {
+    canvas.addEventListener('mousedown', function (e) {
         mouseDown(canvas, e);
     });
-    canvas.addEventListener('mousemove', function(e) {
+    canvas.addEventListener('mousemove', function (e) {
         mouseMove(canvas, e);
     });
-    canvas.addEventListener('mouseup', function(e) {
+    canvas.addEventListener('mouseup', function (e) {
         mouseUp(canvas, e);
     });
     form.addEventListener('submit', submit);
@@ -29,7 +29,7 @@ function onload() {
         e.preventDefault();
         if (!equalLines(guess, target)) {
             drawLine(widgets, target, "gray", cellSize);
-            score = 0;
+            score = Math.trunc(score / 2);
             setProgress(widgets, score, cellSize);
             return false;
         }
@@ -41,7 +41,7 @@ function onload() {
             score++;
         } else {
             widgets.color = "red";
-            score = 0;
+            score = Math.trunc(score / 2);
         }
         drawGrid(widgets, cellSize);
         drawLine(widgets, target, widgets.color, cellSize);
@@ -53,7 +53,7 @@ function onload() {
         allowAttempt = false;
         return false;
     }
-    
+
     function plot(x, y, c) {
         // plot the pixel at (x, y) with brightness c (where 0 ≤ c ≤ 1)
         if (widgets.pixels[y + 4][x + 4] != (c * 100)) {
@@ -67,14 +67,14 @@ function onload() {
         doIt();
         return false;
     }
-    
+
     function doIt() {
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = true;
         setProgress(widgets, score, cellSize);
         widgets.color = "black";
         if (score >= 10) {
-            reportResults(widgets, totalTime, attempts, cellSize);            
+            reportResults(widgets, totalTime, attempts, cellSize);
         } else {
             setupGrid(widgets, cellSize);
             do {
@@ -110,10 +110,10 @@ function onload() {
     }
 
     function prompt(target) {
-        widgets.paragraph.textContent = 'Shade a line from (' 
-            + target.start.x + ', ' + target.start.y + ') to (' + target.end.x + ', ' + target.end.y + ') using ' + 
-        (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates. ' +
-        '';
+        widgets.paragraph.textContent = 'Shade a line from ('
+            + target.start.x + ', ' + target.start.y + ') to (' + target.end.x + ', ' + target.end.y + ') using ' +
+            (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates. ' +
+            '';
     }
 
     function mouseDown(canvas, event) {

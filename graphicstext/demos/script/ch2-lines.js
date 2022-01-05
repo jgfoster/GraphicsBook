@@ -2,7 +2,7 @@ function onload() {
     const widgets = getWidgets();
     let cellSize = 40;
     const form = document.getElementById("form");
-    let score = 0;
+    let score = Math.trunc(score / 2);
     let attempts = 0;
     let startTime;
     let totalTime = 0;
@@ -11,13 +11,13 @@ function onload() {
     let isDrawing = false;
     let allowAttempt = true;
 
-    canvas.addEventListener('mousedown', function(e) {
+    canvas.addEventListener('mousedown', function (e) {
         mouseDown(canvas, e);
     });
-    canvas.addEventListener('mousemove', function(e) {
+    canvas.addEventListener('mousemove', function (e) {
         mouseMove(canvas, e);
     });
-    canvas.addEventListener('mouseup', function(e) {
+    canvas.addEventListener('mouseup', function (e) {
         mouseUp(canvas, e);
     });
     form.addEventListener('submit', submit);
@@ -34,7 +34,7 @@ function onload() {
         } else {
             drawLine(widgets, guess, "#F00", cellSize);
             drawLine(widgets, target, "#AAA", cellSize);
-            score = 0;
+            score = Math.trunc(score / 2);
         }
         setProgress(widgets, score, cellSize);
         document.getElementById("submit").disabled = true;
@@ -44,19 +44,19 @@ function onload() {
         allowAttempt = false;
         return false;
     }
-    
+
     function next(e) {
         e.preventDefault();
         doIt();
         return false;
     }
-    
+
     function doIt() {
         document.getElementById("submit").disabled = true;
         document.getElementById("next").disabled = true;
         setProgress(widgets, score, cellSize);
         if (score >= 10) {
-            reportResults(widgets, totalTime, attempts);            
+            reportResults(widgets, totalTime, attempts);
         } else {
             setupGrid(widgets, cellSize);
             do {
@@ -92,10 +92,10 @@ function onload() {
     }
 
     function prompt(target) {
-        widgets.paragraph.textContent = 'Draw a line from (' 
-            + target.start.x + ', ' + target.start.y + ') to (' + target.end.x + ', ' + target.end.y + ') using ' + 
-        (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates. ' +
-        '';
+        widgets.paragraph.textContent = 'Draw a line from ('
+            + target.start.x + ', ' + target.start.y + ') to (' + target.end.x + ', ' + target.end.y + ') using ' +
+            (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates. ' +
+            '';
     }
 
     function mouseDown(canvas, event) {

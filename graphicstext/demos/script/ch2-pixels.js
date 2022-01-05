@@ -1,13 +1,13 @@
 function onload() {
     const widgets = getWidgets();
     let cellSize = 40;
-    let score = 0;
+    let score = Math.trunc(score / 2);
     let attempts = 0;
     let startTime;
     let totalTime = 0;
     let waitingForClick = true;
     const target = { x: 0, y: 0 };
-    canvas.addEventListener('mouseup', function(e) {
+    canvas.addEventListener('mouseup', function (e) {
         mouseUp(canvas, e);
     });
 
@@ -16,7 +16,7 @@ function onload() {
     function doIt() {
         setProgress(widgets, score, cellSize);
         if (score >= 10) {
-            reportResults(widgets, totalTime, attempts);            
+            reportResults(widgets, totalTime, attempts);
         } else {
             setupGrid(widgets, cellSize, cellSize / 2, false);
             target.x = getRandomInt(5) + widgets.offset.x;
@@ -28,8 +28,8 @@ function onload() {
     }
 
     function prompt(point) {
-        widgets.paragraph.textContent = 'Click on pixel (' + point.x + ', ' + point.y + ') using ' + 
-        (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates.';
+        widgets.paragraph.textContent = 'Click on pixel (' + point.x + ', ' + point.y + ') using ' +
+            (widgets.offset.topToBottom ? 'top-to-bottom' : 'bottom-to-top') + ' coordinates.';
     }
 
 
@@ -47,9 +47,9 @@ function onload() {
                 setTimeout(doIt, 1000);
             } else {
                 widgets.graphics.fillStyle = "red";
-                widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize -  1);
-                score = 0;
-                labelAxes(widgets, {x, y}, cellSize, cellSize / 2);
+                widgets.graphics.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 1, cellSize - 1);
+                score = Math.trunc(score / 2);
+                labelAxes(widgets, { x, y }, cellSize, cellSize / 2);
                 setProgress(widgets, score, cellSize);
                 waitingForClick = true;
             }
