@@ -1,7 +1,7 @@
 function onload() {
     const widgets = getWidgets();
     let cellSize = 40;
-    let score = Math.trunc(score / 2);
+    let score = 0;
     let waitingForClick = true;
     const target = { x: 0, y: 0 };
     let attempts = 0;
