@@ -257,7 +257,7 @@ setTimeout( alertFunc, 5000 );</pre>
 
 <p>In C, functions can be assigned to variables and passed as parameters to functions.
 However, there are no anonymous functions in&nbsp;C.  Anonymous functions are one
-of JavaScript's distinctive features.  Soemthing similar has been added to Java&nbsp;8
+of JavaScript's distinctive features.  Something similar has been added to Java&nbsp;8
 in the form of "lambda expressions."</p>
 
 </subsection>
