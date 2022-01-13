@@ -97,7 +97,7 @@ So, you will often see tests in JavaScript such as</p>
 <np>The value of <i>x</i> as a boolean is considered to be false if
  <i>x</i> is the number zero or is the empty string or is <i>null</i>
 or is <i>undefined</i>.
-Effectively, any type of value can be converted implicitly to boolean</np>
+Effectively, any type of value can be converted implicitly to boolean.</np>
 
 <p>In fact, JavaScript does many implicit conversions that you might not expect.
 For example, when comparing a number to string using the == operator, JavaScript will
