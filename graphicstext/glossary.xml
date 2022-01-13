@@ -297,7 +297,7 @@ off-screen canvas can be implemented as an object of type BufferedImage.</gitem>
 <gitem term="typed array">In JavaScript, an array type that is limited to holding numerical values
 of a single type. For example, the type Float32Array represents arrays that can hold 32-bit floating
 point values, and Uint8Array arrays can hold only 8-bit integer values. Such arrays are more efficient
-than general JavaScript arrays for numerical calculations. The were introduced into JavaScript
+than general JavaScript arrays for numerical calculations. They were introduced into JavaScript
 along with HTML canvas graphics and WebGL.</gitem>
 
 <gitem term="HTML">HyperText Markup Language.  A language that is used for specifying
