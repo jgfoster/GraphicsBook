@@ -3,61 +3,64 @@
 
 <section title="Other Features" id="threejs.3">
 
-<p1>We will finish this chapter with a look at several additional features
+<p1>We will finish this chapter with a look at a few additional features
 of <i>three.js</i>.  In the process, you will learn about some new aspects
 of 3D graphics.</p1>
 
-<subsection title="Anaglyph Stereo" id="threejs.3.1">
 
-<p>We start with a simple example: <newword>anaglyph stereo</newword>.
-Anaglyph refers to 3D images that are meant to be viewed through red/cyan (or red/green
-or red/blue) glasses.  The image contains two copies of the scene, one as viewed from the
-left eye, drawn using only red, and one as viewed from the right eye, drawn using only
-green and blue.  When the image is viewed through red/cyan glasses, the left eye
-sees only the left-eye view of the scene and the right eye sees only the right-eye
-view of the scene.  The result is what looks like a real 3D scene, with depth perception.
-The result isn't perfect, because screen colors and the color filters in the glasses
-aren't perfect.  You will see some "ghosts," where part of the left-eye image gets through
-to the right eye or vice versa.  Anaglyph stereo works best for monochrome images
-that contain only shades of gray.  Color images are more problematic.  There are 
-several ways of separating the colors into left and right-eye images, none of them 
-perfect. The one used in <i>three.js</i> works reasonably well.</p>
+<subsection title="Instanced Meshes" id="threejs.3.1">
 
-<p>Here is an example, from the sample program <sourceref href="threejs/anaglyph.html"/>,
-which is identical to <sourceref href="threejs/full-window.html"/>, except for the
-use of anaglyph rendering.  For a proper 3D view, you need to look at this image
-through red/cyan glasses:</p>
+<p>The class <classname>THREE.InstancedMesh</classname> makes it possible to 
+quickly render several objects, possibly a large number of objects, that
+use the same geometry but differ in the transformations that
+are applied to them and, possibly, in their material color.  Each copy of the
+object is called an "instance," and the process of creating all of the
+copies is called <word>instanced drawing</word> or instancing. 
+In WebGL&nbsp;2.0 (and in WebGL&nbsp;1.0 with an extension), it is possible to draw all of the
+instances with a single function call, making it very efficient.</p>
 
-<img src="anaglyph.png" width="366" height="367" tex="anaglyph.eps" texscale="0.6"/>
+<p><classname>InstancedMesh</classname> is fairly easy to use.  Along with
+the geometry and material for the mesh, the constructor specifies
+the maximum number of instances that it can support:
+</p>
 
-<p>In <i>three.js</i>, anaglyph stereo is implemented by the class
-<classname>THREE.AnaglyphEffect</classname>.  This class is not defined
-in the main <i>three.js</i> JavaScript file; it's defined in a separate file named
-<sourceref href="threejs/AnaglyphEffect.js">AnaglyphEffect.js</sourceref>, 
-which can be found in the <i>three.js</i> download in the folder
-<i>examples/js/effects</i>.  To use it, you need to include that file in
-a <tag>script</tag> element in your HTML file.  (In fact, my example uses the
-version of <classname>AnaglyphEffect</classname> from release 71 of <i>three.js</i>,
-which I prefer for this example.  The newer version is used in the same way.)</p>
+<p>instances = new THREE.InstancedMesh(geometry, material, count)</p>
 
-<p>The class is very easy to use.  The constructor for an object of type
-<classname>THREE.AnaglyphEffect</classname> takes an ordinary
-<classname>WebGLRenderer</classname> as a parameter. The size of the
-drawing area is also specified in the constructor (or call the object's 
-<i>setSize</i> method later to specify the size). For example:</p>
+<np>To set the transformation for instance number <i>i</i>,
+you can call</np>
 
-<pre>anaglyphRenderer = 
-        new THREE.AnaglyphEffect( renderer, canvas.width, canvas.height );</pre>
+<pre>instances.setMatrixAt( i, matrix );</pre>
 
-<np>Once you have an <classname>AnaglyphEffect</classname>,
-you can use it in place of the <classname>WebGLRenderer</classname>
-to render the image:</np>
+<np>where <i>matrix</i> is an object of type <classname>THREE.Matrix4</classname>
+representing the modeling transformation.  Similarly, you can set the
+color for instance number <i>i</i> with</np>
 
-<pre>function render() {
-    anaglyphRenderer.render( scene, camera );
-}</pre>
+<pre>instances.setColorAt( i, color );</pre>
 
-<np>That's all there is to it!  The scene will be rendered in anaglyph stereo.</np>
+<np>where <i>color</i> is of type <classname>THREE.Color</classname>.
+Instance colors are optional.  If provided, they replace the color
+property of <i>material</i>.</np>
+
+<p>The <classname>Matrix4</classname> class includes methods that make
+it easy to create a transformation matrix. The constructor</p>
+
+<pre>matrix = new THREE.Matrix4();</pre>
+
+<np>creates an
+identity matrix, which can then be modified.  For example,
+the method <i>matrix.makeTranslation</i>(<i>dx,dy,dz</i>) replaces the
+current matrix with the transformation matrix for a translation by
+the vector (<i>dx,dy,dz</i>).  There are functions for making scaling
+and rotation matrices.  To make more complex transformations, there
+is a function for multiplying matrices.</np>
+
+<p>The sample program <sourceref href="threejs/instanced-mesh.html"/>
+uses a single <classname>InstancedMesh</classname> to make 1331 spheres, arranged
+in an 11-by-11-by-11 cube.  To move the spheres into position, different
+translations are applied to each instance.  An instance color is also
+set for each instance.</p>
+
+<img src="instanced-mesh.png" width="237" height="234" tex="instanced-mesh.eps" texscale="0.6"/>
 
 
 </subsection>
@@ -70,19 +73,24 @@ of course, the program can get user input using HTML widgets such as buttons and
 But direct mouse interaction with a 3D world is more natural in many programs.</p>
 
 <p>The most basic example is using the mouse to rotate the scene.  In <i>three.js</i>,
-rotation can be implemented using the class <i>THREE.TrackballControls</i> or the
-class <i>THREE.OrbitControls</i>.  The main difference is that with <i>OrbitControls</i>,
+rotation can be implemented using the class <classname>THREE.TrackballControls</classname> or the
+class <classname>THREE.OrbitControls</classname>. Note that both classes support touchscreen
+as well as mouse interaction.  The main difference between the classes
+is that with <i>OrbitControls</i>,
 the rotation is constrained so that the positive <i>y</i>-axis is always the up direction
 in the view.  <i>TrackballControls</i>, on the other hand, allows completely free
-rotation.  These classes are used in my <i>three.js</i> examples and demos that
-implement mouse rotation.</p>
+rotation.  Another difference is that <i>TrackballControls</i> is meant to be used
+only with a scene that is continuously animated.  <i>OrbitControls</i> is used for rotation in
+most of my sample programs and demos.  <i>TrackballControls</i> is used only in
+<sourceref href="threejs/full-window.html"/> and <sourceref href="threejs/curves-and-surfaces.html"/>.</p>
+
 
 <p>The two control classes are not part of the main <i>three.js</i> JavaScript file.
 To use one of them, you need the JavaScript file <sourceref href="threejs/OrbitControls.js">OrbitControls.js</sourceref>
 or <sourceref href="threejs/TrackballControls.js">TrackballControls.js</sourceref>, which can be
 found in the folder <i>examples/js/controls</i> in the <i>three.js</i> download.</p>
 
-<p>The two classes are used in a similar way.  I will discuss <classname>OrbitControls</classname>.
+<p>The two classes are used in a similar way.  I will discuss <classname>OrbitControls</classname> first.
 In my examples, I create a camera and move it away from the origin. I usually add a light object
 to the camera object, so that the light will move along with the camera, providing some
 illumination to anything that is visible to the camera.  The <classname>OrbitControls</classname>
@@ -94,35 +102,55 @@ Here is typical setup:</p>
 camera.position.set(0,15,35);
 camera.lookAt( new THREE.Vector3(0,0,0) ); // camera looks toward origin
 
-var light = new THREE.PointLight(0xffffff, 0.6);
+let light = new THREE.PointLight(0xffffff, 0.6);
 camera.add(light);  // viewpoint light moves with camera
 scene.add(camera);
 
 controls = new THREE.OrbitControls( camera, canvas );</pre>
 
 <np>The constructor installs listeners on the <i>canvas</i> so that the controls can respond
-to mouse events.  It is also necessary to call</np>
+to mouse events.  If an animation is running, the only other thing that you need to
+do is call</np>
 
 <pre>controls.update();</pre>
 
-<np>just before each rendering of the scene.  This method adjusts the camera rotation.
-The controls are designed to be used in a scene that is constantly being animated,
-so that the render function is being called regularly.  No change will be visible until
-the render function is called.  (In my programs that don't use animation, I add an extra
-listener to make sure that <i>consrols.update</i>() and <i>render</i>() are called whenever
-the mouse is dragged.  See, for example, the source code for 
-<sourceref href="threejs/reflection.html"/> to see how it's done.)</np>
-
-<p>The controls can also do "panning" (dragging the scene in the plane of the screen)
-with the right mouse button and "zooming" (scaling the scene) with the middle mouse button
-or scroll wheel.  I generally turn off those features by setting</p>
+<np>before rendering the scene. The
+user will be able to rotate the scene by dragging on it with the left mouse button.
+The controls will also do "panning" (dragging the scene in the plane of the screen)
+with the right mouse button and "zooming" (moving the camera forward and backward) with the middle mouse button
+or scroll wheel.   To disable zooming and panning, you can set</np>
 
 <pre>controls.enablePan = false;
 controls.enableZoom = false;</pre>
 
-<np>(For <classname>TrackballControls</classname>, the corresponding properties
-are <i>controls.noPan</i> and <i>controls.noZoom</i>, which should be set to <i>true</i> to
-disable panning and zooming.)</np>
+<np>And you can return the original view of the scene by calling
+<i>controls.reset</i>().</np>
+
+<p>If your program is not running a continuous animation,
+you need a way to re-render the scene in response to user actions.
+When the user drags the mouse, the <i>controls</i> object
+generates a "change" event.  You can add a listener for that
+event, to respond to the event by redrawing the scene.  To
+do that, just call</p>
+
+<pre>controls.addEventListener( "change", callback );</pre>
+
+<np>Where <i>callback</i>() is the function that should be called
+when the event occurs.  If you have a function <i>render</i>() that
+renders your scene, you can simply pass <i>render</i> as the
+value of <i>callback</i>.</np>
+
+<p>Unfortunately, a <classname>TrackballControls</classname> object
+does not emit "change" events, and there does not seem to be any way to
+use it without having an animation running.  With an animation,
+<i>TrackballControls</i> are used in the same way as <i>OrbitControls</i>,
+except that the properties for panning and zooming 
+are <i>controls.noPan</i> and <i>controls.noZoom</i>; they 
+should be set to <i>true</i> to disable panning and zooming.
+One nice feature of <classname>TrackballControls</classname>
+is that they implement inertia: When the user releases the mouse
+after dragging, the motion of the scene will slow to a stop instead
+of stopping abruptly.</p>
 
 <break/>
 
@@ -169,12 +197,12 @@ in <word>clip coordinates</word>.  This means the horizontal coordinate ranges f
 coordinates" in <i>three.js</i>.)  So, we need to convert from pixel coordinates on a
 canvas to clip coordinates.  Here's one way to do it, given a mouse event, <i>evt</i>:</np>
 
-<pre>var r = canvas.getBoundingClientRect();
-var x = evt.clientX - r.left; // convert mouse location to canvas pixel coords
-var y = evt.clientY - r.top;
+<pre>let r = canvas.getBoundingClientRect();
+let x = evt.clientX - r.left; // convert mouse location to canvas pixel coords
+let y = evt.clientY - r.top;
 
-var a = 2*x/canvas.width - 1; // convert canvas pixel coords to clip coords
-var b = 1 - 2*y/canvas.height;
+let a = 2*x/canvas.width - 1; // convert canvas pixel coords to clip coords
+let b = 1 - 2*y/canvas.height;
 
 raycaster.setFromCamera( new THREE.Vector2(a,b), camera );</pre>
 
@@ -199,7 +227,7 @@ The function finds all such intersections, not just the first.  If no intersecti
 found, the array is empty.  The array is sorted by increasing distance from the starting 
 point of the ray.  If you just want the first intersection, use the first element of the array.</p>
 
-<p>An element in the array is an object whose properties contain information about the
+<p>Each element in the array is an object whose properties contain information about the
 intersection.  Suppose that <i>item</i> is one of the array elements.  Then the most useful
 properties are:  <i>item.object</i>, which is the <classname>Object3D</classname> that 
 was intersected by the ray; and <i>item.point</i>, which  is the point of intersection, 
@@ -224,7 +252,7 @@ For all drag, add, and delete actions, I look for intersections of these objects
 a ray that extends from the camera through the mouse position:</p>
 
 <pre>raycaster.setFromCamera( new THREE.Vector2(a,b), camera );
-var intersects = raycaster.intersectObjects( world.children );</pre>
+let intersects = raycaster.intersectObjects( world.children );</pre>
 
 <np>If <i>intersects.length</i> is zero, there are no intersections, and there is nothing
 to do.  Otherwise, I look at <i>intersects</i>[0], which represents an intersection with
@@ -254,9 +282,9 @@ return a value; it modifies the coordinates of the vector&nbsp;<i>v</i>.  (There
 
 <pre>item = intersects[0];
 if (item.object == ground) {
-    var locationX = item.point.x;  // world coords of intersection point
-    var locationZ = item.point.z;
-    var coords = new THREE.Vector3(locationX, 0, locationZ); // y is always 0
+    let locationX = item.point.x;  // world coords of intersection point
+    let locationZ = item.point.z;
+    let coords = new THREE.Vector3(locationX, 0, locationZ); // y is always 0
     world.worldToLocal(coords); // transform to local coords
     addCylinder(coords.x, coords.z); // adds a cylinder at corrected location
     render();
@@ -412,9 +440,9 @@ they are commonly used for textures.</np>
 It would be nice to put our scenes in an "environment" such as the interior of a building,
 a nature scene, or a public square.  It's not practical to build representations of
 such complex environments out of geometric primitives, but we can get a reasonably
-good effect using textures.  The technique that is used is called a
-<newword>skybox</newword>.  A skybox is a large cube where a
-different texture is applied to each face of the cube.  The textures are images
+good effect using textures.  The technique that is used in <i>three.js</i> is called a
+<newword>skybox</newword>.  A skybox is a large cube &mdash; effectively, infinitely large &mdash;
+where a different texture is applied to each face of the cube.  The textures are images
 of some environment.  For a viewer inside the cube, the six texture images on the cube fit together to provide
 a complete view of the environment in every direction.  The six texture images
 together make up what is called a <newword>cubemap texture</newword>.
@@ -442,19 +470,27 @@ large number of cube maps available for download
 at <a href="http://www.humus.name/index.php?page=Textures">http://www.humus.name/index.php?page=Textures</a>
 under a creative commons license.)</np>
 
-<p>For a skybox, a very large cube is used.  The camera, lights, and any objects that are to be part
-of the scene are inside the cube.  The skybox cube itself should not be lit; any lighting
-of the environment is already part of the cube map texture images.</p>
+<p>For a skybox, conceptually, a very large cube would be used.  
+The camera, lights, and any objects that are to be part
+of the scene would be inside the cube. 
+It is possible to construct a skybox by hand in just this way.</p>
 
-<p>One way to apply a cube map to a cube&mdash;but not the method that gives the best
-result for a skybox&mdash;is to load the cube map as a set of six separate texture images,
-and then use an array of materials on the cube to apply a different texture image to
-each face.  The material for each face should be a <classname>MeshBasicMaterial</classname>,
-which does not use lighting.  The six images can be loaded using <i>THREE.TextureLoaders</i> and
-can be applied to a material using the <i>map</i> property of the material,
-as discussed in <localref href="threejs.2.3"/>  For example:</p>
+<p>However, <i>Three.js</i> makes it very easy to use a skybox as the background for a scene.
+It has the class <classname>THREE.CubeTexture</classname> to represent 
+cube maps, and you can enclose your scene in a skybox simply by assigning
+a <classname>CubeTexture</classname> as the value of the property
+<i>scene.background</i>.  (The value of that property could also be a normal
+<classname>Texture</classname> or a <classname>Color</classname>.)</p>
 
-<pre>var textureURLs = [  // URLs of the six faces of the cube map 
+<p>A <classname>CubeTexture</classname> can be created by a <classname>CubeTextureLoader</classname>,
+which can load the six images that make up the cube map.  The loader has
+a method named <i>load</i>() that works in the same way as the <i>load</i>()
+method of a <classname>TextureLoader</classname> (<localref href="threejs.2.3"/>), 
+except that the first parameter
+to the method is an array of six strings giving the URLs of the six images
+for the cube map.  For example:</p>
+
+<pre>let textureURLs = [  // URLs of the six faces of the cube map 
         "cubemap-textures/park/posx.jpg",   // Note:  The order in which
         "cubemap-textures/park/negx.jpg",   //   the images are listed is
         "cubemap-textures/park/posy.jpg",   //   important!
@@ -462,61 +498,24 @@ as discussed in <localref href="threejs.2.3"/>  For example:</p>
         "cubemap-textures/park/posz.jpg",   
         "cubemap-textures/park/negz.jpg"
    ];
+loader = new THREE.CubeTextureLoader();
+cubeTexture = loader.load( textureURLs, onLoad, undefined, onError );</pre>
 
-var materials = [];
-for (var i = 0; i &lt; 6; i++) {
-    var texture = new THREE.TextureLoader().load( textureURLs[i] );
-    materials.push( new THREE.MeshBasicMaterial( {
-        color: "white",  // Color will be multiplied by texture color.
-        side: THREE.DoubleSide,  // IMPORTANT: To see the inside of the cube,
-                                 //            back faces must be rendered!
-        map: texture
-    } ) );
+<np>Here, <i>onLoad</i> is a function that will be called after the
+texture has finished loading. The function could, for example,
+set <i>scene.background</i> equal to <i>cubeTexture</i> and re-render
+the scene with the new background.  The last parameter <i>onError</i>
+is a function that will be called if the texture cannot be loaded.
+Only the first parameter is required.</np>
 
-}
-
-cube = new THREE.Mesh( new THREE.CubeGeometry(100,100,100),
-                       materials );</pre>
-
-
-<np>(This code does not include a way to get the scene redrawn after
-the textures have finished loading.  That's fine if an animation is running.
-If not, you have to use a callback function in the texture loader to do the
-redrawing.)</np>
-
-<p>However, WebGL has built-in support for using cubemap textures directly.  It's possible
-to load the six images of a cube map into a single object representing the
-cubemap texture as a whole.  To map such a cubemap texture onto a skybox, <i>three.js</i>
-requires a new kind of material called <classname>THREE.ShaderMaterial</classname>.
-A shader material uses custom vertex and fragment shaders to render the image.
-(<word term="vertex shader">Vertex shaders</word> and <word term="fragment shader">fragment shaders</word>
-are programs that run on the <word>GPU</word>.  The are required for rendering images 
-in WebGL, and we will start working with them directly in the <localref href="webgl">next chapter</localref>.) 
-The shaders that are required in this case are defined in a <i>three.js</i> shader library.
-Here's an example of making a skybox using a cubemap texture.  This code is copied
-from examples in the <i>three.js</i> download.  It uses the same <i>textureUrls</i> array
-as the previous example:</p>
-
-<pre>var texture = new THREE.CubeTextureLoader().load( textureURLs );
-
-var shader = THREE.ShaderLib[ "cube" ]; // contains the required shaders
-shader.uniforms[ "tCube" ].value = texture; // data for the shaders
-var material = new THREE.ShaderMaterial( {
-        // A ShaderMaterial uses custom vertex and fragment shaders.
-    fragmentShader: shader.fragmentShader,
-    vertexShader: shader.vertexShader,
-    uniforms: shader.uniforms, 
-    depthWrite: false,
-    side: THREE.BackSide
-} );
-
-cube = new THREE.Mesh( new THREE.CubeGeometry( 100, 100, 100 ), material );</pre>
 
 <p>The sample program <sourceref href="threejs/skybox.html"/>
-shows two WebGL scenes that use cube maps.  In the first, the texture is applied using
-an array of six materials, and the cube is viewed from the
-outside.   In the second, the texture is a applied to a skybox cube as a cubemap texture, 
-and the cube is viewed from the inside.</p>
+shows two WebGL scenes.  The first scene shows a cube with the six
+images from a cube map applied as normal textures to the six faces of
+a cube.  The second scene uses the same cube map as a skybox.  If you rotate
+the view of the second scene, you can look at all parts of the skybox and
+see how it forms a seamless environment that completely encloses the scene.
+</p>
 
 
 </subsection>
@@ -541,22 +540,23 @@ the only other object in the scene,  then it will look like
 the surface is a mirror that perfectly reflects its environment.</p>
 
 <p>This type of reflection is very easy to do in <i>three.js</i>.  You only need to
-make a <classname>MeshBasicMaterial</classname> and set its
+make a mesh material and set its
 <i>envMap</i> property equal to the cubemap texture object.  For example,
-if <i>texture</i> is the texture object obtained using
+if <i>cubeTexture</i> is the texture object obtained using
 a <classname>THREE.CubeTextureLoader</classname>, as in the skybox example above, we can make a sphere that
 perfectly reflects the texture by saying:</p>
 
-<pre>var geometry = new THREE.SphereGeometry(1,32,16);
-var material = new THREE.MeshBasicMaterial( { 
+<pre>let geometry = new THREE.SphereGeometry(1,32,16);
+let material = new THREE.MeshBasicMaterial( { 
         color: "white",  // Color will be multiplied by the environment map. 
-        envMap: texture  // Cubemap texture to be used as an environment map.
+        envMap: cubeTexture  // CubeTexture to be used as an environment map.
     } );
-var mirrorSphere = new THREE.Mesh( geometry, material );</pre>
+let mirrorSphere = new THREE.Mesh( geometry, material );</pre>
 
 <np>For the effect to look good, you would want to use the
-same texture on a skybox.  Note that no lighting is necessary in the scene, since
-both the skybox and the sphere use a <classname>MeshBasicMaterial</classname>.
+same texture as the <i>scene</i> background.  Note that no lighting would be 
+necessary in the scene, since
+the sphere uses a <classname>MeshBasicMaterial</classname>.
 The colors seen on the sphere come entirely from the environment map and
 the basic color of the sphere material.  The environment map color is multiplied
 by the basic color.  In this example, the basic <i>color</i> of the
@@ -587,7 +587,8 @@ bent as it passes between the inside of the object and the outside.  The amount
 of bending depends on the so-called "indices of refraction" of the material outside
 and the material inside the object.  More exactly, it depends on the ratio between
 the two indices.  Even a perfectly transparent object will be visible because of
-the distortion induced by this bending.</p>
+the distortion induced by this bending (unless the ratio is 1, meaning that there
+is no bending of light at all).</p>
 
 <p>In <i>three.js</i>, refraction is implemented using environment maps.  As with reflection,
 a refracting object does not show its actual environment; it refracts the cubemap texture
@@ -599,8 +600,8 @@ texture being used for refraction, it should be set to <i>THREE.CubeRefractionMa
 appropriate for reflection rather than refraction.)  Here is an example of
 loading a cubemap texture and setting its mapping property for use with refraction:</p>
 
-<pre>texture = new THREE.CubeTextureLoader().load( textureURLs );
-texture.mapping = THREE.CubeRefractionMapping;</pre>
+<pre>cubeTexture = new THREE.CubeTextureLoader().load( textureURLs );
+cubeTexture.mapping = THREE.CubeRefractionMapping;</pre>
 
 <np>In addition to this, the <i>refractionRatio</i> property of the material
 that is applied to the refracting object should be set.  The value is a number
@@ -608,9 +609,9 @@ between 0 and&nbsp;1; the closer to 1, the less bending of light.  The default v
 is so close to 1 that the object will be almost invisible. This example uses
 a value of 0.6:</np>
 
-<pre>var material = new THREE.MeshBasicMaterial( { 
+<pre>let material = new THREE.MeshBasicMaterial( { 
         color: "white",
-        envMap: texture,
+        envMap: cubeTexture,
         refractionRatio: 0.6
     } );</pre>
 
@@ -625,7 +626,9 @@ look like they are made out of "cloudy" glass that blocks some of the light.</np
 <p>The sample program <sourceref href="threejs/refraction.html"/>
 is a copy of <i>reflection.html</i> that has been modified to
 do refraction instead of reflection.  The objects look like they are made of glass instead
-of mirrors.  An option has been added to make the glass look cloudy.  The following images are
+of mirrors.  The program has a checkbox that makes the glass look cloudy and one
+that increases the <i>refractionRatio</i> from 0.6 to&nbsp;0.9.
+The following images are
 from that program.  A perfectly transmissive arrowhead is shown in the first image, and a cloudy
 sphere in the second.  Notice how the sphere shows an inverted image of the objects
 behind it:</p>

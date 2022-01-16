@@ -9,8 +9,8 @@ language for the web.  I won't cover the JavaScript language in this section.  T
 material presented here, you don't need to know much about it.  Even if you
 know nothing about it at all, you can learn something about its 2D graphics API and
 see how it is similar to, and how it differs from, the Java API presented in the
-<localref href="graphics2d.5">previous section</localref>.  (For a short review
-of JavaScript, see <localref href="proglang.3"/> in <localref href="proglang"/>.)</p1>
+<localref href="graphics2d.5">previous section</localref>.  (For a short introduction
+to JavaScript, see <localref href="proglang.3"/> in <localref href="proglang"/>.)</p1>
 
 <subsection title="The 2D Graphics Context" id="graphics2d.6.1">
 
@@ -54,7 +54,7 @@ call will carry over to subsequent function calls, unless you do something to li
 their effect.  This can actually lead to a fairly common type of bug: For example, 
 if you apply a 30-degree rotation in a function, those rotations will <b>accumulate</b>
 each time the function is called, unless you do something to undo the previous rotation
-before applying the next rotation.</p>
+before the function is called again.</p>
 
 <p>The rest of this section will be mostly concerned with describing what you can do with
 a canvas graphics context.  But here, for the record, is the complete source code for
@@ -66,8 +66,8 @@ a very minimal web page that uses canvas graphics:
 &lt;head&gt;
 &lt;title&gt;Canvas Graphics&lt;/title&gt;
 &lt;script&gt;
-    var canvas;    // DOM object corresponding to the canvas
-    var graphics;  // 2D graphics context for drawing on the canvas
+    let canvas;    // DOM object corresponding to the canvas
+    let graphics;  // 2D graphics context for drawing on the canvas
     
     function draw() {
            // draw on the canvas, using the graphics context
@@ -79,14 +79,17 @@ a very minimal web page that uses canvas graphics:
         graphics = canvas.getContext("2d");
         draw();  // draw something on the canvas
     }
+    
+    window.onload = init;
+    
 &lt;/script&gt;
 &lt;/head&gt;
-&lt;body onload="init()"&gt;
+&lt;body&gt;
     &lt;canvas id="theCanvas" width="640" height="480"&gt;&lt;/canvas&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 
-<np>For a more complete, though still minimal, example, look at the sample page
+<np>For a more complete, though still minimal, example, you can look at the sample page
 <sourceref href="canvas2d/GraphicsStarter.html"/>.  (You should look at the page
 in a browser, but you should also read the source code.)  This example shows
 how to draw some basic shapes using canvas graphics, and you can use it as
@@ -107,7 +110,7 @@ and mouse events.</np>
 <p>The default coordinate system on a canvas is the usual: The unit of measure is one pixel;
 (0,0) is at the upper left corner; the <i>x</i>-coordinate increases to the right;
 and the <i>y</i>-coordinate increases downward.   The range of <i>x</i> and <i>y</i>
-values are given by the <i>width</i> and <i>height</i> properties of the <tag>canvas</tag>
+values is given by the <i>width</i> and <i>height</i> properties of the <tag>canvas</tag>
 element.  The term "pixel" here for the unit of measure is not really correct.  
 Probably, I should say something like "one nominal pixel."
 The unit of measure is one pixel at typical desktop resolution with no magnification.
@@ -206,10 +209,10 @@ regular octagon centered at (200,400) and with radius 100:</np>
 
 <pre>graphics.beginPath();
 graphics.moveTo(300,400);
-for (var i = 1; i &lt; 8; i++) {
-    var angle = (2*Math.PI)/8 * i;
-    var x = 200 + 100*Math.cos(angle);
-    var y = 400 + 100*Math.sin(angle);
+for (let i = 1; i &lt; 8; i++) {
+    let angle = (2*Math.PI)/8 * i;
+    let x = 200 + 100*Math.cos(angle);
+    let y = 400 + 100*Math.sin(angle);
     graphics.lineTo(x,y);
 }
 graphics.closePath();
@@ -300,7 +303,7 @@ than a simple solid color:  <word term="gradient">Gradients</word> and
 <word term="pattern fill">patterns</word> are also supported.  As an 
 example, a gradient can be created with a series of steps such as</np>
 
-<pre>var lineargradient = graphics.createLinearGradient(420,420,550,200);
+<pre>let lineargradient = graphics.createLinearGradient(420,420,550,200);
 lineargradient.addColorStop(0,"red");
 lineargradient.addColorStop(0.5,"yellow");
 lineargradient.addColorStop(1,"green");
@@ -353,7 +356,7 @@ and <i>sy</i> in the <i>y</i>-direction.</li>
 origin.  A positive rotation is clockwise in the default coordinate system.</li>
 <li><codedef>graphics.translate(tx,ty)</codedef> &mdash; translate by <i>tx</i> in the <i>x</i>-direction
 and <i>ty</i> in the <i>y</i>-direction.</li>
-<li><codedef>graphics.transform(a,b,c,d,e,f)</codedef> &mdash; apply the transformation
+<li><codedef>graphics.transform(a,b,c,d,e,f)</codedef> &mdash; apply the <word>affine transform</word>
 <code>x1 = a*x + c*y + e</code>, and <code>y1 = b*x + d*y + f</code>.</li>
 <li><codedef>graphics.setTransform(a,b,c,d,e,f)</codedef> &mdash; discard the current transformation,
 and set the current transformation to be <code>x1 = a*x + c*y + e</code>, and
@@ -389,7 +392,7 @@ transform becomes:</p>
 <pre>graphics.save();          // save a copy of the current state
 graphics.translate(a,b);  // apply modeling transformations
 graphics.rotate(r);     
-graphics.scale(s,s);
+graphics.scale(sx,sy);
    .
    .  // Draw the object!
    .
@@ -405,8 +408,8 @@ procedurally or as a data structure.  It's pretty much the same as in Java.
 In fact, you should see that the basic concepts that you learned about
 transformations and modeling carry over to the canvas graphics API.  Those
 concepts apply very widely and even carry over to 3D graphics APIs, with
-just a little added complexity.  The demo program
-<demoref href="c2/cart-and-windmills.html"/> from <localref href="graphics2d.4"/>
+just a little added complexity.  The sample web page
+<sourceref href="canvas2d/HierarchicalModel2D.html"/>
 implements hierarchical modeling using the 2D canvas API.</p>
 
 <break/>
@@ -557,7 +560,7 @@ rows and columns of pixels in the returned data.  (According to the documentatio
 screen, they might not be the same as the width and height in the function call.  The data can be 
 for real, physical pixels on the display device, not the "nominal" pixels that are used in the pixel 
 coordinate system on the canvas. There might be several device pixels for each nominal pixel.
-I'm not sure whether this can really happen.)</np>
+I'm not sure whether this can really happen in practice.)</np>
 
 <p>The value of <i>colors.data</i> is an array, with four array elements for each pixel.  The four
 elements contain the red, blue, green, and alpha color components of the pixel, given as integers
@@ -589,13 +592,13 @@ one of type <i>Float32Array</i>, which can hold 32-bit floating point numbers.
 Here is the function that I call to do this:</p>
 
 <pre>function grabSmudgeData(x, y) {  // (x,y) gives mouse location
-    var colors = OSG.getImageData(x-5,y-5,9,9);
+    let colors = OSG.getImageData(x-5,y-5,9,9);
     if (smudgeColorArray == null) {
           // Make image data &amp; array the first time this function is called.
         smudgeImageData = OSG.createImageData(9,9);
         smudgeColorArray = new Float32Array(colors.data.length);
      }
-     for (var i = 0; i &lt; colors.data.length; i++) {
+     for (let i = 0; i &lt; colors.data.length; i++) {
            // Copy the color component data into the Float32Array.
         smudgeColorArray[i] = colors.data[i];
     }
@@ -604,19 +607,21 @@ Here is the function that I call to do this:</p>
 <np>The floating point array, <i>smudgeColorArray</i>, will be used for computing new
 color values for the image as the mouse moves.  The color values
 from this array will be copied into the image data object, <i>smudgeImageData</i>, 
-which will them be used to put the color values into the image.  This is done in
+which will then be used to put the color values into the image.  This is done in
 another function, which is called for each point that is visited as the user
 drags the Smudge tool over the canvas:</np>
 
 <pre>function swapSmudgeData(x, y) { // (x,y) is new mouse location
-    var colors = OSG.getImageData(x-5,y-5,9,9);  // get color data form image
-    for (var i = 0; i &lt; smudgeColorArray.length; i += 4) {
+    let colors = OSG.getImageData(x-5,y-5,9,9);  // get color data from image
+    for (let i = 0; i &lt; smudgeColorArray.length; i += 4) {
         // The color data for one pixel is in the next four array locations.
         if (smudgeColorArray[i+3] &amp;&amp; colors.data[i+3]) {
-              // alpha-components are non-zero; both pixels are in the canvas
-            for (var j = i; j &lt; i+3; j++) { // compute new RGB values
-                var newSmudge = smudgeColorArray[j]*0.8 + colors.data[j]*0.2;
-                var newImage  = smudgeColorArray[j]*0.2 + colors.data[j]*0.8;
+              // alpha-components are non-zero; both pixels are in the canvas;
+              // (getImageData() gets 0 for the alpha value at pixel coordinates
+              // that are not actually part of the canvas).
+            for (let j = i; j &lt; i+3; j++) { // compute new RGB values
+                let newSmudge = smudgeColorArray[j]*0.8 + colors.data[j]*0.2;
+                let newImage  = smudgeColorArray[j]*0.2 + colors.data[j]*0.8;
                 smudgeImageData.data[j] = newImage;
                 smudgeColorArray[j] = newSmudge;
             }
@@ -626,7 +631,7 @@ drags the Smudge tool over the canvas:</np>
               // one of the alpha components is zero; set the output
               // color to all zeros, "transparent black", which will have
               // no effect on the color of the pixel in the canvas.
-            for (var j = i; j &lt;= i+3; j++) {
+            for (let j = i; j &lt;= i+3; j++) {
                 smudgeImageData.data[j] = 0; 
             }
         }
@@ -728,7 +733,7 @@ JavaScript function for loading an image from a specified URL and drawing it on 
 after it has loaded:</np>
 
 <pre>function loadAndDraw( imageURL, x, y ) {
-    var image = document.createElement("img");
+    let image = document.createElement("img");
     image.onload = doneLoading;
     image.src = imageURL;
     function doneLoading() {

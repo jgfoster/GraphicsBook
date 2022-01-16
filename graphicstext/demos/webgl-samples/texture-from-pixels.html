@@ -14,17 +14,18 @@
 
 "use strict";
 
-var vertexShaderSource =
+const vertexShaderSource =
        "attribute vec2 a_coords;\n" +
        "attribute vec2 a_texCoords;\n" +
        "varying vec2 v_texCoords;\n" +
        "void main() {\n" +
        "   v_texCoords = a_texCoords;\n" +
        "   gl_Position = vec4( 0.4*a_coords.x - 1.0, 2.0*a_coords.y - 1.0, 0.0, 1.0);\n" +
-                               // use object coordinates with x ranging from 0 to 5 and y from 0 to i
+                               // The object coordinates have x ranging from 0 to 5 and y from 0 to 1;
+                               // this converts those ranges to the clip coordinate range, -1 to 1.
        "}\n";
 
-var fragmentShaderSource =
+const fragmentShaderSource =
        "precision mediump float;\n" +
        "uniform sampler2D u_texture;\n" +  // A sampler variable to represent the texture.
        "varying vec2 v_texCoords;\n" +   // The texture coordinates for this pixel.
@@ -33,16 +34,16 @@ var fragmentShaderSource =
        "   gl_FragColor = color;\n" +   // Just use the color from the texture as the pixel color.
        "}\n";
 
-var gl;  // The WebGL graphics context.
+let  gl;  // The WebGL graphics context.
 
-var a_coords_location;      // location of the "a_coords" attribute variable
-var a_coords_buffer;        // a VBO to hold the vertex coordinates
-var a_texCoords_location;   // location of the "a_texCoords" attribute variable
-var a_texCoords_buffer;     // a VBO to hold the texture coordinates
+let  a_coords_location;      // location of the "a_coords" attribute variable
+let  a_coords_buffer;        // a VBO to hold the vertex coordinates
+let  a_texCoords_location;   // location of the "a_texCoords" attribute variable
+let  a_texCoords_buffer;     // a VBO to hold the texture coordinates
 
-var u_texture_location;     // the location of the "u_texture" uniform variable
+let  u_texture_location;     // the location of the "u_texture" uniform variable
 
-var textureObject;          // A texture object to hold the texture image.
+let  textureObject;          // A texture object to hold the texture image.
 
 
 function draw() {
@@ -50,7 +51,7 @@ function draw() {
     gl.clearColor(0.4,0.4,0.4,1);  // glClear will fill the canvas with gray
     gl.clear(gl.COLOR_BUFFER_BIT);  // clear the canvas
 
-    var pixels;  // This will be used for a Uint8Array that holds pixel data
+    let  pixels;  // This will be used for a Uint8Array that holds pixel data
                  // for the textures that will be used on the squares.
                  
     /* Set the texture to use gl.LINEAR as the minification filter.  It won't be
@@ -72,17 +73,17 @@ function draw() {
     
     pixels = new Uint8Array( 16*16*4 );  // Space for RGBA colors for a texture that is 16-by-16 pixels.
     
-    for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
-            var offset = 64*i + 4*j ;  // starting point of data for this pixel in the array
+    for (let  i = 0; i < 16; i++) {
+        for (let  j = 0; j < 16; j++) {
+            let  offset = 64*i + 4*j ;  // starting point of data for this pixel in the array
             pixels[offset + 3] = 255;    // alpha value for the pixel
-            if ( i < 8 && j < 8) {
+            if ( i < 8 && j < 8) {  // lower left corner of texture
                 pixels[ offset ] = 255;  // set red component of pixel to maximum, blue and green are 0
             }
-            else if ( i >= 8 && j >= 8 ) {
+            else if ( i >= 8 && j >= 8 ) {  // upper right corner of texture
                 pixels[offset + 2] = 255; // set blue component of pixel to maximum, red and green are 0
             }
-            else {
+            else {  // upper left or lower right corner of the texture
                 pixels[offset] = 255;     // set red, blue, and green components to maxium; color is white
                 pixels[offset + 1] = 255;
                 pixels[offset + 2] = 255;
@@ -133,7 +134,7 @@ function draw() {
        The texture coordinates map it just once to the square. */
        
     pixels = new Uint8Array(256);
-    for (i = 0; i < 256; i++) {
+    for (let i = 0; i < 256; i++) {
         pixels[i] = i;
     }
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, 256, 1, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, pixels);
@@ -158,24 +159,24 @@ function draw() {
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
-   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   let  vsh = gl.createShader( gl.VERTEX_SHADER );
    gl.shaderSource( vsh, vertexShaderSource );
    gl.compileShader( vsh );
    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+      throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
    }
-   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
    gl.shaderSource( fsh, fragmentShaderSource );
    gl.compileShader( fsh );
    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+      throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
    }
-   var prog = gl.createProgram();
+   let  prog = gl.createProgram();
    gl.attachShader( prog, vsh );
    gl.attachShader( prog, fsh );
    gl.linkProgram( prog );
    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+      throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
    }
    return prog;
 }
@@ -184,7 +185,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
  * Initialize the WebGL graphics context
  */
 function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
+    const prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     
     /* Get the locations for the attribute and uniform variables in the shader,
@@ -224,13 +225,11 @@ function initGL() {
  */
 function init() {
     try {
-        var canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program
-            alpha: false,
+        let  canvas = document.getElementById("webglcanvas");
+        let  options = {  // no need for depth buffer in this 2D program
             depth: false
         };
-        gl = canvas.getContext("webgl", options) || 
-                         canvas.getContext("experimental-webgl", options);
+        gl = canvas.getContext("webgl", options);
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -245,15 +244,17 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e + "</p>";
         return;
     }
     draw();
 }
 
+window.onload = init;  // Arrange for init() to be called after page has loaded.
+
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <h2 id="headline">WebGL Textures from Pixel Data</h2>
 
@@ -281,7 +282,7 @@ There is blending even along the outer edges of the square because the texture r
 This eliminates the blending.</p>
 
 <p>The third and fourth squares use a tiny 2-by-2 texture with the <i>gl.LUMINANCE</i> format, which requires
-only one bit per pixel.  The texture is repeated ten times horizontally and ten times vertically
+only one byte per pixel.  The texture is repeated ten times horizontally and ten times vertically
 on the square.  The third square uses <i>gl.LINEAR</i> as the magnification filter.  The fourth
 uses <i>gl.NEAREST</i>.</p>
 

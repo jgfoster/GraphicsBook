@@ -15,13 +15,13 @@
  *    rotator.setViewDistance(viewDistance) sets the distance of the viewer from the origin without
  *         changing the direction of view. The parameter must be a positive number.
  *    rotator.getViewDistance() returns the current value.
- *    rotation.setRotationCenter( vector ) -- Sets the center of rotation.
+ *    rotator.setRotationCenter( vector ) -- Sets the center of rotation.
  *       The parameter must be an array of (at least) three numbers.  The
  *       view is rotated about this point.  Usually, you want the rotation
  *       center to be the point that appears at the middle of the canvas,
  *       but that is not a requirement.  The initial value is effectively
  *       equal to [0,0,0].
- *    rotation.getRotationCenter() -- returns the current value.
+ *    rotator.getRotationCenter() -- returns the current value.
  *
  * @param canvas the HTML canvas element used for WebGL drawing.  The user will rotate the
  *    scene by dragging the mouse on this canvas.  This parameter is required.
@@ -55,7 +55,7 @@ function TrackballRotator(canvas, callback, viewDistance, viewpointDirection, vi
         subtract(unity,viewUp,unity);
         normalize(unity,unity);
         cross(unitx,unity,unitz);
-    }
+    };
     this.getViewMatrix = function() {
         var mat = [ unitx[0], unity[0], unitz[0], 0,
                 unitx[1], unity[1], unitz[1], 0, 
@@ -73,19 +73,19 @@ function TrackballRotator(canvas, callback, viewDistance, viewpointDirection, vi
             mat[14] -= viewZ;
         }
         return mat;
-    }
+    };
     this.getViewDistance = function() {
         return viewZ;
-    }
+    };
     this.setViewDistance = function(viewDistance) {
         viewZ = viewDistance;
-    }
+    };
     this.getRotationCenter = function() {
         return (center === undefined) ? [0,0,0] : center;
-    }
+    };
     this.setRotationCenter = function(rotationCenter) {
         center = rotationCenter;
-    }
+    };
     this.setView(viewDistance, viewpointDirection, viewUp);
     canvas.addEventListener("mousedown", doMouseDown, false);
     canvas.addEventListener("touchstart", doTouchStart, false);
@@ -111,7 +111,6 @@ function TrackballRotator(canvas, callback, viewDistance, viewpointDirection, vi
     }
     var centerX, centerY, radius2;
     var prevx,prevy;
-    var prevRay = [0,0,0];
     var dragging = false;
     function doMouseDown(evt) {
         if (dragging)

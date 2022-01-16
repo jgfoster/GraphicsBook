@@ -57,7 +57,8 @@ determine whether the surface point lies in the shadow of another object.</p>
 
 <p>With all this information, we can color point B in the image
 using the same lighting equation that is used in OpenGL (<localref href="gl1light.1.4"/>).
-And, as a bonus, we get shadows, which are hard to do in OpenGL!</p>
+Ray casting solves the <word>hidden surface problem</word> with no need for
+a <word>depth buffer</word>.  And, as a bonus, we get shadows, which are hard to do in OpenGL!</p>
 
 <p>(If the ray from the
 viewpoint through B doesn't hit any objects in the scene, then B would be assigned
@@ -164,7 +165,7 @@ for a point on an image.  We cast a ray from the viewpoint through the image and
 and determine the first intersection point of the ray with an object.  The color of that point
 is computed by adding up the contributions from different sources.</p>
 
-<p>First, there are diffuse, specular, and possibly ambient reflection of light from various light sources.  These
+<p>First, there is diffuse, specular, and possibly ambient reflection of light from various light sources.  These
 contributions are based on the diffuse, specular, and ambient colors of the object, on the normal vector
 to the object, and on the properties of the light sources.  Note that some color properties of the object,
 usually the ambient and diffuse colors, might come from a texture.  The specular contribution can produce
@@ -256,10 +257,13 @@ directions, and count how many of those rays are blocked by geometry in the scen
 reach the sky. The more rays that are blocked, the greater the degree of ambient occlusion
 at that point.</p>
 
-<p>Approximate methods such as these can be added on to ray tracing to increase its
+<p>Algorithms that attempt to take into account all of the interactions of light with
+objects in a scene are said to use <newword>global illumination</newword>.
+Approximate methods such as those mentioned above can be added on to ray tracing to increase its
 realism, at the cost of significantly increased complexity and a potentially large 
 amount of extra computing.  We begin to see why very realistic images can take so
-long to compute!</p>
+long to compute!  In the <localref href="advanced.2">next section</localref> we will look at
+a method that attempts to handle global illumination exactly.</p>
 
 </subsection>
 

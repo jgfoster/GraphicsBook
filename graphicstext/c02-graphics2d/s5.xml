@@ -17,6 +17,13 @@ you should be able to follow most of the discussion of the
 graphics API itself.  (See <localref href="proglang.1"/> in <localref href="proglang"/> for a very basic
 introduction to Java.)</p>
 
+<p>The graphics <word>API</word> that is discussed here is part of Swing, an API for
+graphical user interface programming that is included as part of the standard distribution
+of Java.  Many Java programs are now written using an alternative API called JavaFX,
+which is not part of the standard distribution.  JavaFX is not discussed in this
+textbook.  Its graphics API is, in fact, quite similar to the API for 
+HTML canvas graphics, which is discussed in <localref href="graphics2d.6"/>.</p>
+
 <p>The original version of Java had a much smaller graphics API.  It was
 tightly focused on pixels, and it used only integer coordinates.  The API
 had subroutines for stroking and filling a variety of basic shapes,
@@ -55,7 +62,7 @@ more advanced API that we will look at here.</p>
 <p>Java is an object-oriented language.  Its API is defined as a large set
 of classes,   The actual drawing operations in the original graphics API
 were mostly contained in the class named <classname>Graphics</classname>.  
-In the newer API, drawing operations are methods in a class named <classname>Graphics2D</classname>,
+In the newer Swing API, drawing operations are methods in a class named <classname>Graphics2D</classname>,
 which is a subclass of <classname>Graphics</classname>, so that all the original drawing operations
 are still available.  (A class in Java is contained in a collection of classes known as a "package."
 <classname>Graphics</classname> and <classname>Graphics2D</classname>, for example, are in the
@@ -250,7 +257,7 @@ It requires only a single control point:</np>
 the <word>winding number</word>, as discussed in <localref href="graphics2d.2.2"/>.
 There are two possible rules for determining whether a point is interior:
 asking whether the winding number of the curve about that point is non-zero, 
-or asking whether it is even.  You can set the winding rule used by a <classname>Path2D</classname>
+or asking whether it is odd.  You can set the winding rule used by a <classname>Path2D</classname>
 <i>p</i> with</p>
 
 <pre>p.setWindingRule( Path2D.WIND_NON_ZERO );
@@ -363,7 +370,7 @@ colors, such as <i>Color.WHITE</i>, <i>Color.RED</i>, and <i>Color.YELLOW</i>.
 For example, here is how I might draw a square with a black outline and a light
 blue interior:</np>
 
-<pre>Rectangle2D square = new Rectangle2D.double(-2,-2,4,4);
+<pre>Rectangle2D square = new Rectangle2D.Double(-2,-2,4,4);
 g2.setPaint( new Color(200,200,255) );
 g2.fill( square );
 g2.setStroke( new BasicStroke(0.1F) );
@@ -555,7 +562,7 @@ then copied to the screen.  One reason to do this is that you can then draw extr
 top of the screen image without changing the official copy.  For example, you might draw
 a box around a selected region in the on-screen image.  You can do this without damaging the
 official copy in the off-screen canvas.  To remove the box from the screen, you just have
-to copy the canvas image onto the screen.</p>
+to copy the off-screen canvas image onto the screen.</p>
 
 <p>In Java, an off-screen image can be implemented as an object of type <classname>BufferedImage</classname>.
 A <classname>BufferedImage</classname> represents a region in memory where you can draw, in exactly the
@@ -632,10 +639,11 @@ region of pixels.</np>
 "Smudge" tool.  When the user drags with this tool, it's like smearing wet paint.  When
 the user first clicks the mouse, the color components from a small square of pixels surrounding
 the mouse position are copied into arrays.  As the user moves the mouse, color from the
-arrays is blended with the color of the pixels near the mouse position.  Here is a
+arrays is blended into the color of the pixels near the mouse position, while those colors
+are blended into the colors in the arrays.  Here is a
 small rectangle that has been "smudged":</p>
 
-<img src="smudge.png" width="" height="" tex="smudge.eps" texscale="0.8" bordered="true"/>
+<img src="smudge.png" width="94" height="44" tex="smudge.eps" texscale="0.8" bordered="true"/>
 
 <p>The second use of pixel manipulation is in implementing "filters."  A filter, in this
 program, is an operation that modifies an image by replacing the color of each 

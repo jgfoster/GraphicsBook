@@ -29,9 +29,12 @@ OpenGL 1.1 until the <localref href="gl1light.2">next section</localref>.</p>
 <p>When light strikes a surface, some of it will be reflected.  Exactly
 how it reflects depends in a complicated way on the nature of the
 surface, what I am calling the material properties of the surface.
-In OpenGL (and in many other computer graphics systems), the complexity
-is approximated by two general types of reflection, 
-<newword>specular reflection</newword> and <newword>diffuse reflection</newword>.</p>
+In OpenGL&nbsp;1.1, the complexity
+is approximated&mdash;very crudely&mdash;by two general types of reflection, 
+<newword>specular reflection</newword> and <newword>diffuse reflection</newword>.
+These two types of reflection are important in other 3D graphics systems as well.
+(But see <localref href="advanced.2"/> for a more modern view of materials.)
+</p>
 
 <img src="diffuse-vs-specular.png" width="538" height="247" tex="diffuse-vs-specular.eps" texscale="0.6"/>
 
@@ -72,7 +75,7 @@ that evenly illuminate the surface, then the surface would appear to the viewer
 to be evenly illuminated.  (If different rays strike the surface at different angles, as they
 would if they come from a nearby lamp or if the surface is curved, then the amount 
 of illumination at a point depends on the angle at which the ray hits the surface
-at that point.)</p>
+at that point, but not on the angle of the line from that point to the user.)</p>
 
 <p>When light strikes a surface, some of the light can be
 absorbed, some can be reflected diffusely, and some can be reflected
@@ -192,7 +195,7 @@ to be turned on. </p>
 
 <p>I should emphasize again that this is all just an approximation, and in this
 case not one that has a basis in the physics of the real world.  Real light sources
-do not have separate ambient, diffuse, and specular colors, and some computer
+do not have separate ambient, diffuse, and specular colors, and many computer
 graphics systems model light sources using just one color.</p>
 
 </subsection>
@@ -256,6 +259,7 @@ normal vectors that were used for the two pictures:</np>
 
 <np>The thick blue lines represent the rectangles, as seen edge-on from above.
 The arrows represent the normal vectors.  Each rectangle has two normals, one at each endpoint.
+Each vertex is part of two rectangles, and so two normal vectors are specified at each vertex.
 </np>
 
 <p>In the bottom half of the illustration, two rectangles that meet at a point have different
@@ -271,7 +275,8 @@ they also share the same normal at that vertex.  Visually, this eliminates the a
 change in shading, resulting in something that looks more like a smoothly curving surface.</p>
 
 <demo src="c4/smooth-vs-flat.html" width="630" height="380"><p>The two ways of assigning normal
-vectors are called "flat shading" and "smooth shading".  Flat shading makes a surface look
+vectors are called <newword>flat shading</newword> and <newword>smooth shading</newword>.
+Flat shading makes a surface look
 like it is made of flat sides or facets.  Smooth shading makes it look more like a smooth
 surface.  <web>This demo will help you to understand these concepts.</web><tex>The
 on-line demo <demoref href="c4/smooth-vs-flat.html"/> can help you to understand the difference.</tex>
@@ -309,7 +314,7 @@ for example, for the solid shapes drawn by the <word>GLUT</word> library.</p>
 
 
 
-<subsection title="The OpenGL Lighting Equation" id="gl1light.1.4">
+<subsection title="The OpenGL 1.1 Lighting Equation" id="gl1light.1.4">
 
 <p>What does it actually mean to say that OpenGL performs "lighting
 calculations"?  The goal of the calculation is to produce a color,
@@ -335,7 +340,7 @@ With this setup, the red component of the vertex color will be:</p>
 
 <pre>r = me<sub>r</sub> + ga<sub>r</sub>*ma<sub>r</sub> + I<sub>0,r</sub> + I<sub>1,r</sub> + I<sub>2,r</sub> + ...</pre>
 
-<np>where <i>I<sub>0,r</sub></i> is the contribution to the color that comes from light number 0;
+<np>where <i>I<sub>0,r</sub></i> is the red component of the contribution to the color that comes from light number 0;
 <i>I<sub>1,r</sub></i> is the contribution from light number 1; and so on.
 A similar equation holds for the green and blue components of the color.
 This equation says that the emission color, <i>me<sub>r</sub></i>, is simply added to any other contributions
@@ -345,7 +350,7 @@ This is the mathematical
 way of saying that the material ambient color is the fraction of the ambient light
 that is reflected by the surface.</np>
 
-<p>The terms I<sub>0,r</sub>,  I<sub>1,r</sub>, and so on, represent the contribution to the final color from
+<p>The terms I<sub>0,r</sub>,  I<sub>1,r</sub>, and so on, represent contributions to the final color from
 the various light sources in the environment.
 The contributions from the light sources are complicated.  Consider just one of the
 light sources.
@@ -415,7 +420,7 @@ the specular contribution to the color is given by
 <i>ls<sub>r</sub>*ms<sub>r</sub>*max(0,V&middot;R)<sup>mh</sup></i>.
 Taking the maximum of 0 and <i>V&middot;R</i> ensures that the specular contribution is
 zero if the angle between <i>V</i> and <i>R</i> is greater than 90 degrees.  Assuming that
-is not the case, <i>max(0,V&middot;R)</i> is equal to the <i>V&middot;R</i>.
+is not the case, <i>max(0,V&middot;R)</i> is equal to <i>V&middot;R</i>.
 Note that this dot product is raised to the exponent <i>mh</i>, which is
 the material's shininess property.
 When <i>mh</i> is 0, <i>(V&middot;R)<sup>mh</sup></i> is 1, and there is no dependence on the angle; 
@@ -443,7 +448,7 @@ over-exposure.</p>
 The equation as presented doesn't take into account
 the fact that the effect of a point light can depend on the distance to the light,
 and it doesn't take into account spotlights, which emit just a cone of light.  Both of these
-can configured in OpenGL, but I won't discuss them in this book.  There are also many
+can configured in OpenGL&nbsp;1.1, but this book does not cover how to do that.  There are also many
 aspects of light that are not captured by the simple model used in OpenGL.  One of the
 most obvious omissions is shadows: Objects don't block light! Light shines right through them.
 We will encounter some extensions to the model in later chapters when we discuss other graphics

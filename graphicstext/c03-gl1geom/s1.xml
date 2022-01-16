@@ -9,7 +9,8 @@ to 2D.  For now, all you need to
 know about 3D is that it adds a third direction to the
 <i>x</i> and <i>y</i> directions that are used in 2D.
 By convention, the third direction is called&nbsp;<i>z</i>.
-In the default coordinate system, the positive direction of
+In the default coordinate system, the <i>x</i> and <i>y</i> axes lie in
+the plane of the image, and the positive direction of
 the <i>z</i>-axis points in a direction perpendicular to
 the image.</p1>
 
@@ -22,7 +23,8 @@ we will just use coordinates that lie between -1 and&nbsp;1.</p>
 
 <p>A note about programming: OpenGL can be implemented in many different programming
 languages, but the API specification more or less assumes that
-the language is&nbsp;C.  For the most part, the C specification
+the language is&nbsp;C.  (See <localref href="proglang.2"/> for a short introduction to&nbsp;C.)
+For the most part, the C specification
 translates directly into other languages.  The main differences
 are due to the special characteristics of arrays in the C language.
 My examples will follow the C syntax, with a few notes about how
@@ -33,8 +35,8 @@ explains in detail how to write OpenGL programs in C and in Java.
 You will need to consult that section before you can do any
 actual programming.  The live OpenGL 1.1 demos for
 this book are written using a <word>JavaScript</word> simulator that implements
-a subset of OpenGL 1.1.  That simulator is also discussed in
-<localref href="gl1geom.6"/>.</p>
+a subset of OpenGL 1.1.  That simulator is discussed in
+<localref href="gl1geom.6.3"/>.</p>
 
 <subsection title="OpenGL Primitives" id="gl1geom.1.1">
 
@@ -57,9 +59,14 @@ glEnd();</pre>
 <i>glVertex2f</i>.  Vertices must be specified between calls to <i>glBegin</i>
 and <i>glEnd</i>.  The parameter to <i>glBegin</i> tells which type of primitive
 is being drawn.  The <i>GL_TRIANGLES</i> primitive allows you to draw more than
-one triangle: Just specify three vertices for each triangle that you want to draw.</np>
+one triangle: Just specify three vertices for each triangle that you want to draw.
+Note that using <i>glBegin/glEnd</i> is not the preferred way to specify primitives,
+even in OpenGL&nbsp;1.1.  However, the alternative, which is covered in
+<localref href="gl1geom.4.2"/>, is more complicated to use.  You should consider
+<i>glBegin/glEnd</i> to be a convenient way to learn about vertices and their properties,
+but not the way that you will actually do things in modern graphics APIs.</np>
 
-<p>(I should note that these functions actually just send commands to the <word>GPU</word>. OpenGL
+<p>(I should note that OpenGL functions actually just send commands to the <word>GPU</word>. OpenGL
 can save up batches of commands to transmit together, and the drawing won't actually
 be done until the commands are transmitted.  To ensure that that happens, the
 function <i>glFlush</i>() must be called.  In some cases, this function might be
@@ -363,7 +370,7 @@ different from arrays in C, and arrays in JavaScript are different from both.
 Let's look at the situation in C first, since that's the language of the
 original OpenGL <word>API</word>.</p>
 
-<p>In C, arrays variables are a sort of variation on pointer variables, and
+<p>In C, array variables are a sort of variation on pointer variables, and
 arrays and pointers can be used interchangeably in many circumstances.
 In fact, in the C API, array parameters are actually specified as pointers.
 For example, the parameter for <i>glVertex3fv</i> is of type "pointer to float."

@@ -178,6 +178,7 @@
 <!ENTITY blender_s1 SYSTEM "a2-blender/s1.xml">
 <!ENTITY blender_s2 SYSTEM "a2-blender/s2.xml">
 <!ENTITY blender_s3 SYSTEM "a2-blender/s3.xml">
+<!ENTITY blender_s4 SYSTEM "a2-blender/s4.xml">
 
 <!ENTITY gimp_intro SYSTEM "a3-gimp-inkscape/intro.xml">
 <!ENTITY gimp_s1 SYSTEM "a3-gimp-inkscape/s1.xml">

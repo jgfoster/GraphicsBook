@@ -158,7 +158,7 @@ and the South Pole.  The axis stays fixed as the Earth rotates around it,
 and points that are not on the
 axis move in circles about the axis.  Any line can be an axis of rotation, but
 we generally use an axis that passes through the origin.  The most
-common choices for axis or rotation are the coordinates axes, that is,
+common choices for axis of rotation are the coordinates axes, that is,
 the <i>x</i>-axis, the <i>y</i>-axis, or the <i>z</i>-axis.  Sometimes,
 however, it's convenient to be able to use a different line
 as the axis.</p>
@@ -173,12 +173,12 @@ you have to specify an axis and the angle of rotation about that axis.</p>
 
 <p>We still have to account for the difference between positive and negative
 angles.  We can't just say clockwise or counterclockwise.  If you look down on
-the rotating Earth from above the North pole, you see a clockwise rotation; if you
-look down on it from above the South pole, you see a counterclockwise rotation.
+the rotating Earth from above the North pole, you see a counterclockwise rotation; if you
+look down on it from above the South pole, you see a clockwise rotation.
 So, the difference between the two is not well-defined.  To define the
 direction of rotation in 3D, we use the <newword>right-hand rule</newword>, which
 says:  Point the thumb of your right hand in the direction of the
-axis, from the point (0,0,0) to the point (<i>ax,ay,az</i>) that determines the
+axis &mdash; from the point (0,0,0) towards the point (<i>ax,ay,az</i>) that determines the
 axis. Then the direction of rotation for positive angles is given by the
 direction in which your fingers curl. I should emphasize that the right-hand rule
 only works if you are working in a right-handed coordinate system.  If you have
@@ -286,7 +286,7 @@ In OpenGL, the functions for operating on the stack are named <i>glPushMatrix</i
 <p>These functions do not take parameters or return a value.  OpenGL keeps track of
 a current matrix, which is the composition of all transforms that have been applied.
 Calling a function such as <i>glScalef</i> simply modifies the current matrix.  When
-an object is drawn, using the <i>glVertex*</i> functions, the coordinates that are specified
+an object is drawn, using the <i>glVertex*</i> functions, the coordinates that were specified
 for the object are transformed by the current matrix.  There is another function
 that affects the current matrix:  <i>glLoadIdentity</i>().  Calling
 <i>glLoadIdentity</i> sets the current matrix to be the <word>identity transform</word>,
@@ -311,12 +311,12 @@ a function that draws a square in the position of the front face of the cube.
 For a cube of size 1, the front face would sit one-half unit in front of the screen,
 in the plane <i>z</i>&nbsp;=&nbsp;0.5, and it would have vertices at
 (-0.5,&nbsp;-0.5,&nbsp;0.5), (0.5,&nbsp;-0.5,&nbsp;0.5), (0.5,&nbsp;0.5,&nbsp;0.5), and (-0.5,&nbsp;0.5,&nbsp;0.5).
-Here is a function that draws the square.  The parameters are floating 
+Here is a function that draws the square.  The function's parameters are floating 
 point numbers in the range 0.0 to 1.0
-that give the RGB color of the square:</p>
+that give the <word>RGB color</word> of the square:</p>
 
 <pre>void square( float r, float g, float b ) {
-    glColor3f(r,g,b);
+    glColor3f(r,g,b);  // Set the color for the square.
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(-0.5, -0.5, 0.5);
     glVertex3f(0.5, -0.5, 0.5);
@@ -329,7 +329,7 @@ that give the RGB color of the square:</p>
 Now, consider the right face, which is perpendicular to the <i>x</i>-axis, in the plane
 <i>x</i>&nbsp;=&nbsp;0.5.  To make a right face, we can start with a front face and rotate
 it 90 degrees about the <i>y</i>-axis.  Think about rotating the front face (red) to the position
-of the right face (green) in this illustration by rotating the front face about the <i>y-axis</i>:</np>
+of the right face (green) in this illustration by rotating the red square about the <i>y-axis</i>:</np>
 
 <img src="rotate-cube-side.png" width="188" height="178" bordered="true" tex="rotate-cube-side.eps" texscale="0.8"/>
 
@@ -347,10 +347,10 @@ coordinate axes.  You should try to visualize the rotation that you need in each
 We can combine it all into a function that draws a cube.  To make it more interesting,
 the size of the cube is a parameter:</np>
 
-<pre>void cube(float size) {  // draws a cube with side length = size
+<pre>void cube(float size) {  // Draws a cube with side length = size.
 
     glPushMatrix();  // Save a copy of the current matrix.
-    glScalef(size,size,size); // scale unit cube to desired size
+    glScalef(size,size,size); // Scale unit cube to desired size.
     
     square(1, 0, 0); // red front face
     
@@ -400,6 +400,14 @@ The three versions of the example are:
 <sourceref href="jogl/CartAndWindmillJogl2D.java"/>, and
 <sourceref href="glsim/opengl-cart-and-windmill.html"/>.
 This program is an example of hierarchical 2D graphics in OpenGL.</p>
+
+<break/>
+
+<p>Keep in mind that transformation and matrix functions such as <i>glRotated</i>() and
+<i>glPushMatrix</i>() are old-fashioned OpenGL.  In WebGL and other modern graphics APIs,
+you will be responsible for managing transforms and matrices on your own.  You are quite
+likely to do that using a software library that provides functions very similar to those
+that are built into OpenGL&nbsp;1.1.</p>
 
 </subsection>
 

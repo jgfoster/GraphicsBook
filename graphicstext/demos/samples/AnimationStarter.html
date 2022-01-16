@@ -30,25 +30,24 @@
 
     "use strict";  // gives improved error-checking in scripts.
 
-    var canvas;    // The canvas element on which we will draw.
-    var graphics;  // A 2D graphics context for drawing on the canvas.
-    var pixelSize; // The size of a pixel in the coordinate system; set up by
+    let canvas;    // The canvas element on which we will draw.
+    let graphics;  // A 2D graphics context for drawing on the canvas.
+    let pixelSize; // The size of a pixel in the coordinate system; set up by
                    //    applyWindowToViewportTransform function when it is called.
-    var startTime; // Records time when animation started.
+    let startTime; // Records time when animation started.
     
-    var frameNumber;  // This will be number of times draw() has been called,
+    let frameNumber;  // This will be number of times draw() has been called,
                       // starting from 0 in the first frame.
     
-    var elapsedTimeMillis;  // This will be the time since the animation started;
+    let elapsedTimeMillis;  // This will be the time since the animation started;
                             // will be zero in the first frame.
     
     /**
-     *  The draw() function is called by init() after the page loads,
-     *  to draw the content of the canvas.  At the start, clear the canvas
-     *  and save a copy of the state; restore the state at the end.  This
-     *  method will be called once for each frame of the animation.  It can
-     *  use the global variables frameNumber and elapsedTimeMillis to draw
-     *  a different image each time it is drawn.  it will be called about
+     *  The draw() function is called for each frame of the animation.
+     *  At the start, clear the canvas and save a copy of the state;
+     *  restore the state at the end.  This function can use the
+     *  global variables frameNumber and elapsedTimeMillis to draw
+     *  a different image each time it is drawn.  It should be called about
      *  60 times per second.
      */
     function draw() {
@@ -75,17 +74,16 @@
             // (NOTE:  In canvas graphics, for a transformation to affect a path, the
             // transform must be in effect before the path is created.  The transform is
             // applied to points as they are added to the path.)
-         
-        var i, angle; 
+
         graphics.beginPath() ; // Will the outline of a hexagon, with spokes from center to vetices.
         graphics.moveTo(3,0);
-        for (i = 1; i < 6; i++) {
-            angle = (2*Math.PI/6) * i;
+        for (let i = 1; i < 6; i++) {
+            let angle = (2*Math.PI/6) * i;
             graphics.lineTo( 3*Math.cos(angle), 3*Math.sin(angle) );
         }
         graphics.closePath();
-        for (i = 0; i < 6; i++) {
-            angle = (2*Math.PI/6) * i;
+        for (let i = 0; i < 6; i++) {
+            let angle = (2*Math.PI/6) * i;
             graphics.moveTo(0,0);
             graphics.lineTo( 3*Math.cos(angle), 3*Math.sin(angle) );
         }
@@ -99,9 +97,9 @@
         graphics.strokeStyle = "red";
         graphics.fillStyle = "red";
         graphics.lineWidth = 2*pixelSize;
-        for (i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             graphics.save();  // save state, so transform only affects this one square.
-            angle = (2*Math.PI/6) * i;
+            let angle = (2*Math.PI/6) * i;
                // (NOTE: Remember that transforms are applied in the reverse of their order in the code!)
             graphics.rotate(angle);  // rotate the translated square onto the i-th vertex of the hexagon.
             graphics.translate(3,0); // translate the quickly rotating square to (3,0)
@@ -129,27 +127,27 @@
      * true, pixelSize is the maximum of its horizontal and vertical sizes.)
      */
     function applyWindowToViewportTransformation(left,right,bottom,top,preserveAspect) {
-        var displayAspect, windowAspect;
-        var excess;
-        var pixelwidth, pixelheight;
+        let displayAspect, windowAspect;
+        let excess;
+        let pixelwidth, pixelheight;
         if (preserveAspect) {
             // Adjust the limits to match the aspect ratio of the drawing area.
             displayAspect = Math.abs(canvas.height / canvas.width);
             windowAspect = Math.abs(( top-bottom ) / ( right-left ));
             if (displayAspect > windowAspect) {
                 // Expand the viewport vertically.
-                excess = (top-bottom) * (displayAspect/windowAspect - 1)
-                top = top + excess/2
-                bottom = bottom - excess/2
+                excess = (top-bottom) * (displayAspect/windowAspect - 1);
+                top = top + excess/2;
+                bottom = bottom - excess/2;
             }
             else if (displayAspect < windowAspect) {
                 // Expand the viewport vertically.
-                excess = (right-left) * (windowAspect/displayAspect - 1)
-                right = right + excess/2
-                left = left - excess/2	
+                excess = (right-left) * (windowAspect/displayAspect - 1);
+                right = right + excess/2;
+                left = left - excess/2;
             }
         }
-        graphics.scale( canvas.width / (right-left), canvas.height / (bottom-top) )
+        graphics.scale( canvas.width / (right-left), canvas.height / (bottom-top) );
         graphics.translate( -left, -top );
         pixelwidth =  Math.abs(( right - left ) / canvas.width);
         pixelheight = Math.abs(( bottom - top ) / canvas.height);
@@ -183,39 +181,39 @@
            this.moveTo(x1,y1);
            this.lineTo(x2,y2);
            this.stroke();
-        }
+        };
         graphics.fillCircle = function(x,y,r) {
            this.beginPath();
            this.arc(x,y,r,0,2*Math.PI,false);
            this.fill();
-        }
+        };
         graphics.strokeCircle = function(x,y,radius) {
            this.beginPath();
            this.arc(x,y,radius,0,2*Math.PI,false);
            this.stroke();
-        }
+        };
         graphics.fillPoly = function() { 
             if (arguments.length < 6)
                return;
             this.beginPath();
             this.moveTo(arguments[0],arguments[1]);
-            for (var i = 2; i+1 < arguments.length; i = i + 2) { 
+            for (let i = 2; i+1 < arguments.length; i = i + 2) { 
                this.lineTo(arguments[i],arguments[i+1]);
             }
             this.closePath();
             this.fill();
-        }
+        };
         graphics.strokePoly = function() { 
             if (arguments.length < 4)
                return;
             this.beginPath();
             this.moveTo(arguments[0],arguments[1]);
-            for (var i = 2; i+1 < arguments.length; i = i + 2) { 
+            for (let i = 2; i+1 < arguments.length; i = i + 2) { 
                this.lineTo(arguments[i],arguments[i+1]);
             }
             this.closePath();
             this.stroke();
-        }
+        };
         graphics.fillOval = function(x,y,horizontalRadius,verticalRadius) {
            this.save();
            this.translate(x,y);
@@ -224,7 +222,7 @@
            this.arc(0,0,1,0,2*Math.PI,false);
            this.restore();
            this.fill();
-        }
+        };
         graphics.strokeOval = function(x,y,horizontalRadius,verticalRadius) {
            this.save();
            this.translate(x,y);
@@ -233,11 +231,11 @@
            this.arc(0,0,1,0,2*Math.PI,false);
            this.restore();
            this.stroke();
-        }
+        };
         graphics.getRGB = function(x,y) {
-            var color = this.getImageData(x,y,1,1);
+            let color = this.getImageData(x,y,1,1);
             return color.data;
-        }
+        };
     }    // end of addGraphicsContextExtras()
 
     /**
@@ -268,23 +266,21 @@
             document.getElementById("canvasholder").innerHTML =
                "Canvas graphics is not supported.<br>" +
                "An error occurred while initializing graphics.";
+            return;
         }
         addGraphicsContextExtras(graphics);
         frameNumber = 0;
         elapsedTimeMillis = 0;
         startTime = Date.now();  // current time, in milliseconds.
         draw();  // Call draw() to draw on the canvas.
-        if (!window.requestAnimationFrame) { // This is for Internet Explorer 9
-            window.requestAnimationFrame = function(callback) {
-                setTimeout(callback, 1000/60);    
-            }
-        }
-        requestAnimationFrame(doFrame);
+        requestAnimationFrame(doFrame);  // Start the animation 
     }
+    
+    window.onload = init;  // function init() will be called when the page has loaded.
     
 </script>
 </head>
-<body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+<body>
 
 <h2>Canvas Animation Starter</h2>
 

@@ -30,7 +30,14 @@
      pointed in directions that seem to work.)
  -->
 
-<script type="x-shader/x-vertex" id="vshader-source">
+<script src="gl-matrix-min.js"></script>
+<script src="trackball-rotator.js"></script>
+
+<script>
+
+"use strict";
+ 
+const vertexShaderSource = `
     attribute vec3 a_coords;
     attribute vec3 a_normal;
     attribute vec3 a_tangent;
@@ -49,10 +56,9 @@
         v_tangent = normalize(a_tangent);
         v_eyeCoords = eyeCoords.xyz/eyeCoords.w;
         v_texCoords = a_texCoords;
-    }
-</script>
+    }`;
 
-<script type="x-shader/x-fragment" id="fshader-source">
+const fragmentShaderSource = `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
        precision highp float;
     #else
@@ -127,54 +133,47 @@
             }
         }
         gl_FragColor = vec4(color,1.0);
-    }
-</script>
+    }`;
 
+    
+let gl;      // The webgl context.
+let canvas;  // Canvas on which gl draws.
 
-<script src="gl-matrix-min.js"></script>
-<script src="trackball-rotator.js"></script>
-<script>
+let a_coords_loc;       // Location of attributes
+let a_normal_loc;
+let a_tangent_loc;
+let a_texCoords_loc;
 
-"use strict";
+let u_modelview;       // Locations for uniform matrices
+let u_projection;
+let u_normalMatrix;
 
-var gl;      // The webgl context.
-var canvas;  // Canvas on which gl draws.
+let u_material;  // Holds uniform locations for front material.
+let u_lights;    // Holds uniform locations for light properties.
 
-var a_coords_loc;       // Location of attributes
-var a_normal_loc;
-var a_tangent_loc;
-var a_texCoords_loc;
+let u_texture;   // An image texture
+let u_useTexture;// Tells whether to use texture for diffuseColor
 
-var u_modelview;       // Locations for uniform matrices
-var u_projection;
-var u_normalMatrix;
+let u_bumpmap;         // A bumpmap texture (grayscale)
+let u_bumpmapSize;     // A vec2 giving bumpmap texture size
+let u_bumpmapStrength; // A float telling how strong the bump effect is (can be negative)
 
-var u_material;  // Holds uniform locations for front material.
-var u_lights;    // Holds uniform locations for light properties.
+const projection = mat4.create();    // projection matrix
+let modelview;                       // modelview matrix; value comes from rotator
+const normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
 
-var u_texture;   // An image texture
-var u_useTexture;// Tells whether to use texture for diffuseColor
+let rotator;  // A TrackballRotator to implement rotation by mouse.
 
-var u_bumpmap;         // A bumpmap texture (grayscale)
-var u_bumpmapSize;     // A vec2 giving bumpmap texture size
-var u_bumpmapStrength; // A float telling how strong the bump effect is (can be negative)
-
-var projection = mat4.create();    // projection matrix
-var modelview;                     // modelview matrix; value comes from rotator
-var normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
-
-var rotator;  // A TrackballRotator to implement rotation by mouse.
-
-var objects;  // array of objects, containing models created using createModel()
-              // Contains:  Cube, Sphere, Cylinder, Cone, Torus, Teapot
+const objects = [];  // array of objects, containing models created using createModel();
+                     // will contain a cube, a cylinder and a torus.
               
-var texture;  // The image texture.
-var bumpmap;  // The bumpmap texture.
+let texture;  // The image texture.
+let bumpmap;  // The bumpmap texture.
 
-var textureLoading = false;
-var bumpmapLoading = false;
+let textureLoading = false;
+let bumpmapLoading = false;
 
-var colors = [
+const colors = [
      [ 1, 1, 1 ],
      [ 1, 0.5, 0.5 ],
      [ 1, 1, 0.5 ],
@@ -182,7 +181,7 @@ var colors = [
      [ 0.5, 0.5, 1 ],
 ];
 
-var bumpmapURLs = [
+const bumpmapURLs = [
         "textures/dimples-height-map.png",
         "textures/marble-height-map.png",
         "textures/brick-height-map.jpg",
@@ -200,15 +199,15 @@ var bumpmapURLs = [
   * @side the length of a side of the cube.  If not given, the value will be 1.
   */
 function cube(side) {
-   var s = (side || 1)/2;
-   var coords = [];
-   var normals = [];
-   var tangents = []
-   var texCoords = [];
-   var indices = [];
+   let s = (side || 1)/2;
+   let coords = [];
+   let normals = [];
+   let tangents = [];
+   let texCoords = [];
+   let indices = [];
    function face(xyz, nrm, tang) {
-      var start = coords.length/3;
-      var i;
+      let start = coords.length/3;
+      let i;
       for (i = 0; i < 12; i++) {
          coords.push(xyz[i]);
       }
@@ -233,7 +232,7 @@ function cube(side) {
       vertexTextureCoords: new Float32Array(texCoords),
       vertexTangents: new Float32Array(tangents),
       indices: new Uint16Array(indices)
-   }
+   };
 }
 
 /**
@@ -252,19 +251,19 @@ function uvTorus(outerRadius, innerRadius, slices, stacks) {
    innerRadius = innerRadius || outerRadius/3;
    slices = slices || 32;
    stacks = stacks || 16;
-   var vertexCount = (slices+1)*(stacks+1);
-   var vertices = new Float32Array( 3*vertexCount );
-   var normals = new Float32Array( 3* vertexCount );
-   var tangents = new Float32Array( 3* vertexCount );
-   var texCoords = new Float32Array( 2*vertexCount );
-   var indices = new Uint16Array( 2*slices*stacks*3 );
-   var du = 2*Math.PI/slices;
-   var dv = 2*Math.PI/stacks;
-   var centerRadius = (innerRadius+outerRadius)/2;
-   var tubeRadius = outerRadius - centerRadius;
-   var i,j,u,v,cx,cy,sin,cos,x,y,z;
-   var indexV = 0;
-   var indexT = 0;
+   let vertexCount = (slices+1)*(stacks+1);
+   let vertices = new Float32Array( 3*vertexCount );
+   let normals = new Float32Array( 3* vertexCount );
+   let tangents = new Float32Array( 3* vertexCount );
+   let texCoords = new Float32Array( 2*vertexCount );
+   let indices = new Uint16Array( 2*slices*stacks*3 );
+   let du = 2*Math.PI/slices;
+   let dv = 2*Math.PI/stacks;
+   let centerRadius = (innerRadius+outerRadius)/2;
+   let tubeRadius = outerRadius - centerRadius;
+   let i,j,u,v,cx,cy,sin,cos,x,y,z;
+   let indexV = 0;
+   let indexT = 0;
    for (j = 0; j <= stacks; j++) {
       v = -Math.PI + j*dv;
       cos = Math.cos(v);
@@ -289,10 +288,10 @@ function uvTorus(outerRadius, innerRadius, slices, stacks) {
          texCoords[indexT++] = j/stacks;
       } 
    }
-   var k = 0;
+   let k = 0;
    for (j = 0; j < stacks; j++) {
-      var row1 = j*(slices+1);
-      var row2 = (j+1)*(slices+1);
+      let row1 = j*(slices+1);
+      let row2 = (j+1)*(slices+1);
       for (i = 0; i < slices; i++) {
           indices[k++] = row1 + i;
           indices[k++] = row2 + i + 1;
@@ -327,30 +326,30 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
    radius = radius || 0.5;
    height = height || 2*radius;
    slices = slices || 32;
-   var vertexCount = 2*(slices+1);
+   let vertexCount = 2*(slices+1);
    if (!noTop)
       vertexCount += slices + 2;
    if (!noBottom)
       vertexCount += slices + 2;
-   var triangleCount = 2*slices;
+   let triangleCount = 2*slices;
    if (!noTop)
       triangleCount += slices;
    if (!noBottom)
       triangleCount += slices; 
-   var vertices = new Float32Array(vertexCount*3);
-   var normals = new Float32Array(vertexCount*3);
-   var tangents = new Float32Array(vertexCount*3);
-   var texCoords = new Float32Array(vertexCount*2);
-   var indices = new Uint16Array(triangleCount*3);
-   var du = 2*Math.PI / slices;
-   var kv = 0;
-   var kt = 0;
-   var k = 0;
-   var i,u;
+   let vertices = new Float32Array(vertexCount*3);
+   let normals = new Float32Array(vertexCount*3);
+   let tangents = new Float32Array(vertexCount*3);
+   let texCoords = new Float32Array(vertexCount*2);
+   let indices = new Uint16Array(triangleCount*3);
+   let du = 2*Math.PI / slices;
+   let kv = 0;
+   let kt = 0;
+   let k = 0;
+   let i,u;
    for (i = 0; i <= slices; i++) {
       u = i*du;
-      var c = Math.cos(u);
-      var s = Math.sin(u);
+      let c = Math.cos(u);
+      let s = Math.sin(u);
       vertices[kv] = c*radius;
       tangents[kv] = -s;
       normals[kv++] = c;
@@ -382,7 +381,7 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
           indices[k++] = 2*i+2;
           indices[k++] = 2*i+3;
    }
-   var startIndex = kv/3;
+   let startIndex = kv/3;
    if (!noBottom) {
       vertices[kv] = 0;
       tangents[kv] = -1;
@@ -397,8 +396,8 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
       texCoords[kt++] = 0.5; 
       for (i = 0; i <= slices; i++) {
          u = 2*Math.PI - i*du;
-         var c = Math.cos(u);
-         var s = Math.sin(u);
+         let c = Math.cos(u);
+         let s = Math.sin(u);
          vertices[kv] = c*radius;
          tangents[kv] = -1;
          normals[kv++] = 0;
@@ -417,7 +416,7 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
          indices[k++] = startIndex + i + 2;
       }
    }
-   var startIndex = kv/3;
+   startIndex = kv/3;
    if (!noTop) {
       vertices[kv] = 0;
       tangents[kv] = 1;
@@ -432,8 +431,8 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
       texCoords[kt++] = 0.5; 
       for (i = 0; i <= slices; i++) {
          u = i*du;
-         var c = Math.cos(u);
-         var s = Math.sin(u);
+         let c = Math.cos(u);
+         let s = Math.sin(u);
          vertices[kv] = c*radius;
          tangents[kv] = 1;
          normals[kv++] = 0;
@@ -473,13 +472,12 @@ function draw() {
         return;
     }
     
-    var strength = Number(document.getElementById("strength").value);
+    let strength = Number(document.getElementById("strength").value);
     gl.uniform1f(u_bumpmapStrength, strength);
     
     modelview = rotator.getViewMatrix();
-    var objectNum = Number(document.getElementById("object").value);
+    let objectNum = Number(document.getElementById("object").value);
     objects[objectNum].render();
-
 
 } // end draw()
 
@@ -495,7 +493,7 @@ function draw() {
  *  is returned as the value of the function.  
  */
 function createModel(modelData) {
-    var model = {};
+    let model = {};
     model.coordsBuffer = gl.createBuffer();
     model.normalBuffer = gl.createBuffer();
     model.tangentBuffer = gl.createBuffer();
@@ -531,16 +529,16 @@ function createModel(modelData) {
         gl.uniformMatrix3fv(u_normalMatrix, false, normalMatrix);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);  
         gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
-    }
+    };
     return model;
 }
 
 function loadBumpmap() {
     document.getElementById("message").innerHTML = "LOADING BUMPMAP TEXTURE";
-    var bumpmapNum = Number(document.getElementById("bumpmap").value);
+    let bumpmapNum = Number(document.getElementById("bumpmap").value);
     bumpmapLoading = true;
     draw();
-    var img = new Image();
+    let img = new Image();
     img.onload = function() {
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D,bumpmap);
@@ -566,7 +564,7 @@ function loadBumpmap() {
 
 
 function setDiffuse() {
-    var colorNum = Number(document.getElementById("color").value);
+    let colorNum = Number(document.getElementById("color").value);
     gl.uniform1i( u_useTexture, 0);
     gl.uniform3fv( u_material.diffuseColor, colors[colorNum] );  console.log(colorNum)
     draw();
@@ -575,7 +573,7 @@ function setDiffuse() {
 
 /* Initialize the WebGL context.  Called from init() */
 function initGL() {
-    var prog = createProgram(gl,"vshader-source","fshader-source");
+    let prog = createProgram(gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     gl.enable(gl.DEPTH_TEST);
     
@@ -611,7 +609,7 @@ function initGL() {
         specularExponent: gl.getUniformLocation(prog, "material.specularExponent")
     };
     u_lights = new Array(3);
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         u_lights[i] = {
             enabled: gl.getUniformLocation(prog, "lights[" + i + "].enabled"),
             position: gl.getUniformLocation(prog, "lights[" + i + "].position"),
@@ -624,7 +622,7 @@ function initGL() {
     gl.uniform3f( u_material.diffuseColor, 1, 1, 1 );
     gl.uniform3f( u_material.specularColor, 0.2, 0.2, 0.2 );
     gl.uniform1f( u_material.specularExponent, 32 );
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         gl.uniform1i( u_lights[i].enabled, 0 );
     }
     gl.uniform1i( u_lights[0].enabled, 1 );           // in the end, I decided to use only the viewpoint light
@@ -638,7 +636,6 @@ function initGL() {
     mat4.perspective(projection, Math.PI/10, 1, 1, 10);
     gl.uniformMatrix4fv(u_projection, false, projection);
     
-    objects = new Array(6);
     objects[0] = createModel( cube() );
     objects[1] = createModel( uvCylinder() );
     objects[2] = createModel( uvTorus(0.65,0.2,64,24) );
@@ -650,57 +647,34 @@ function initGL() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
+ * linking the program, an exception of type Error is thrown.  The error
  * string contains the compilation or linking error.  If no error occurs,
  * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elementst that contain the source code for the vertex and fragment
- * shaders.
+ *    The second and third parameters are strings that contain the
+ * source code for the vertex shader and for the fragment shader.
  */
-function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
-        while (node) {
-            if (node.nodeType == 3) // this is a text node
-                str += node.textContent;
-            node = node.nextSibling;
-        }
-        return str;
-    }
-    try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
-        throw "Error: Could not get shader source code from script elements.";
-    }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+function createProgram(gl, vShader, fShader) {
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource(vsh,vShader);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-        throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+        throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
      }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
-    gl.shaderSource(fsh, fragmentShaderSource);
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource(fsh, fShader);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
-
 
 
 /**
@@ -709,8 +683,7 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 function init() {
     try {
         canvas = document.getElementById("webglcanvas");
-        gl = canvas.getContext("webgl") || 
-                         canvas.getContext("experimental-webgl");
+        gl = canvas.getContext("webgl");
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -725,7 +698,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("message").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
     }
     document.getElementById("reset").onclick = function() {

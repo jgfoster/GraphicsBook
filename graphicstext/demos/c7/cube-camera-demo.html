@@ -7,8 +7,10 @@
 
 
 <!--
-     (This is a COPY of the sample program cube-camera.html,
-     with a few changes made to turn it into a demo.)
+     (This page was created as a COPY of the sample program cube-camera.html,
+     with a few changes made to turn it into a demo.  But the original,
+     cube-map.html has been updated to use more modern JavaScript, while
+     this copy, like all of my demos, has not.)
      
      This page is an example of reflection mapping, using a
      dynamic cubemap texture that is redrawn in each frame
@@ -75,7 +77,7 @@
      }
 </script>
 
-<!-- shader program with lighting -->
+<!-- shader program with lighting, for rendering the cubes -->
 
 <script type="x-shader/x-vertex" id="vshaderLIT">
     attribute vec3 a_coords;
@@ -215,7 +217,7 @@ function draw() {
     
     gl.useProgram(dataSB.prog);
     
-    mat4.perspective(projection, Math.PI/4, 1, 1, 100);  // renderSkyboxAndCubes() assumes projection and modelview matrix are already set
+    mat4.perspective(projection, Math.PI/5, canvas.width/canvas.height, 1, 100);  // renderSkyboxAndCubes() assumes projection and modelview matrix are already set
     modelview = rotator.getViewMatrix();
     
     renderSkyboxAndCubes();  // Draws everything except the central reflective object.
@@ -239,7 +241,7 @@ function draw() {
 
     gl.useProgram(dataENV.prog);
     
-    mat4.perspective(projection, Math.PI/6, canvas.width/canvas.height, 1, 10);
+    mat4.perspective(projection, Math.PI/5, canvas.width/canvas.height, 1, 10);
     gl.uniformMatrix4fv(dataENV.u_projection, false, projection);
     mat3.normalFromMat4(normalMatrix, modelview);
 
@@ -633,25 +635,25 @@ function initGL() {
     gl.uniform1i(dataSB.u_skybox, 0);
     
     dataENV = {};  // get the data for the envrionment map program
-    dataENV.prog = createProgram(gl, "vshaderENV", "fshaderENV"),
-    dataENV.a_coords_loc =  gl.getAttribLocation(dataENV.prog, "a_coords"),
-    dataENV.a_normal_loc =  gl.getAttribLocation(dataENV.prog, "a_normal"),
-    dataENV.u_modelview = gl.getUniformLocation(dataENV.prog, "modelview"),
-    dataENV.u_projection = gl.getUniformLocation(dataENV.prog, "projection"),
-    dataENV.u_normalMatrix = gl.getUniformLocation(dataENV.prog, "normalMatrix"),
-    dataENV.u_inverseViewTransform = gl.getUniformLocation(dataENV.prog, "inverseViewTransform")
+    dataENV.prog = createProgram(gl, "vshaderENV", "fshaderENV");
+    dataENV.a_coords_loc =  gl.getAttribLocation(dataENV.prog, "a_coords");
+    dataENV.a_normal_loc =  gl.getAttribLocation(dataENV.prog, "a_normal");
+    dataENV.u_modelview = gl.getUniformLocation(dataENV.prog, "modelview");
+    dataENV.u_projection = gl.getUniformLocation(dataENV.prog, "projection");
+    dataENV.u_normalMatrix = gl.getUniformLocation(dataENV.prog, "normalMatrix");
+    dataENV.u_inverseViewTransform = gl.getUniformLocation(dataENV.prog, "inverseViewTransform");
     dataENV.u_skybox = gl.getUniformLocation(dataENV.prog, "skybox");
     gl.useProgram(dataENV.prog);
     gl.uniform1i(dataENV.u_skybox, 0);
 
     dataLIT = {};  // get the data for the program with lighting, used for the moving cubes
-    dataLIT.prog = createProgram(gl, "vshaderLIT", "fshaderLIT"),
+    dataLIT.prog = createProgram(gl, "vshaderLIT", "fshaderLIT");
     gl.useProgram(dataLIT.prog);  // (so we can set some values for uniforms in that program)
-    dataLIT.a_coords_loc =  gl.getAttribLocation(dataLIT.prog, "a_coords"),
-    dataLIT.a_normal_loc =  gl.getAttribLocation(dataLIT.prog, "a_normal"),
-    dataLIT.u_modelview = gl.getUniformLocation(dataLIT.prog, "modelview"),
-    dataLIT.u_projection = gl.getUniformLocation(dataLIT.prog, "projection"),
-    dataLIT.u_normalMatrix =  gl.getUniformLocation(dataLIT.prog, "normalMatrix")
+    dataLIT.a_coords_loc =  gl.getAttribLocation(dataLIT.prog, "a_coords");
+    dataLIT.a_normal_loc =  gl.getAttribLocation(dataLIT.prog, "a_normal");
+    dataLIT.u_modelview = gl.getUniformLocation(dataLIT.prog, "modelview");
+    dataLIT.u_projection = gl.getUniformLocation(dataLIT.prog, "projection");
+    dataLIT.u_normalMatrix =  gl.getUniformLocation(dataLIT.prog, "normalMatrix");
     dataLIT.u_material = {
         diffuseColor: gl.getUniformLocation(dataLIT.prog, "material.diffuseColor"),
         specularColor: gl.getUniformLocation(dataLIT.prog, "material.specularColor"),
@@ -697,8 +699,9 @@ function initGL() {
             //With null as the last parameter, the previous method allocates memory for the texture and fills it with zeros.
     }
     //gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-         // The previous line would sets the minification filter to gl.LINEAR so we wouldn't neet mipmaps,
-         // but the quality of the reflections was significantly improved by using mipmpaps.
+         // The previous line would have set the minification filter to gl.LINEAR so we wouldn't
+         // need mipmaps for the environment map texture, but in fact, mipmaps are used.
+         // The quality of the reflections was significantly improved by using mipmpaps.
          // Even though the mipmaps have to be computed in every frame, it seems worth it.
     
     framebuffer = gl.createFramebuffer();  // crate the framebuffer that will draw to the reflection map
@@ -720,21 +723,37 @@ function initGL() {
 
 //--------------------------------- animation framework ------------------------------
 
+let prevTime = null;  // time since previous call to frame()
+// Note: To avoid having the animation play too fast on computers
+// where requestAnimationFrame is called more than 60 times per
+// second, the frame number has been converted into an elapsed
+// time measured in sixtieths of a second.
 
-function frame() {
-    if (animating) { 
-        frameNumber++;
-        draw();
-        requestAnimationFrame(frame);
+function frame(time) {
+    if (!animating) {
+        return;  // stops the animation
     }
+    if (prevTime == null) { // Just save the start time.
+        prevTime = time;
+    }
+    else {
+        let elapsedTimeInSecs = (time - prevTime)/1000;
+        prevTime = time;
+        let delta = elapsedTimeInSecs * 60;  // time change in units of 1/60 second.
+        frameNumber += delta;
+        draw();
+    }
+    requestAnimationFrame(frame);
 }
 
 function doAnimationCheckbox() {
-    var run = document.getElementById("animCheckbox").checked;
-    if (run != animating) {
+    let run = document.getElementById("animCheckbox").checked;
+    if (run !== animating) {
         animating = run;
-        if (animating)
+        if (animating) {
+            prevTime = null;
             requestAnimationFrame(frame);
+        }
     }
 }
 
@@ -773,7 +792,7 @@ function init() {
     document.getElementById("object").onchange = function() {
         draw();
         document.getElementById("reset").focus();  // to make sure arrow key input is not sent to popup menu
-    }
+    };
     document.addEventListener("keydown", doKey, false);
     document.getElementById("reset").onclick = function() {
         rotX = rotY = 0;
@@ -812,7 +831,7 @@ function init() {
 </p>
 
 <div id="canvas-holder">
-<canvas id="webglcanvas" width="400" height="300"></canvas>
+<canvas id="webglcanvas" width="500" height="450"></canvas>
 </div>
 
 </div>
@@ -833,7 +852,7 @@ animation.</p>
 <p>You can drag on the image to rotate the entire scene.  (You might
 be able to rotate the reflective object with the left and right
 arrow keys, if keyboard input can be directed to the demo.)</p>
-<p>This demo is essentially a copy of the sample WebGL program cube-camera.html.</p>
+<p>This demo has the same functionality as the sample WebGL program cube-camera.html.</p>
 </div>
 
 

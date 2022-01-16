@@ -15,7 +15,7 @@
 
 "use strict";
 
-var vertexShaderSource =
+const vertexShaderSource =
        "attribute vec2 a_coords;\n" +
        "attribute vec2 a_texCoords;\n" +
        "varying vec2 v_texCoords;\n" +
@@ -24,7 +24,7 @@ var vertexShaderSource =
        "   gl_Position = vec4(a_coords, 0.0, 1.0);\n" +
        "}\n";
 
-var fragmentShaderSource =
+const fragmentShaderSource =
        "precision mediump float;\n" +
        "uniform sampler2D u_texture;\n" +  // A sampler variable to represent the texture.
        "varying vec2 v_texCoords;\n" +   // The texture coordinates for this pixel.
@@ -33,20 +33,21 @@ var fragmentShaderSource =
        "   gl_FragColor = color;\n" +   // Just use the color from the texture as the pixel color.
        "}\n";
 
-var gl;  // The WebGL graphics context.
+let  gl;  // The WebGL graphics context.
 
-var a_coords_location;      // location of the "a_coords" attribute variable
-var a_coords_buffer;        // a VBO to hold the vertex coordinates
-var a_texCoords_location;   // location of the "a_texCoords" attribute variable
-var a_texCoords_buffer;     // a VBO to hold the texture coordinates
+let  a_coords_location;      // location of the "a_coords" attribute variable
+let  a_coords_buffer;        // a VBO to hold the vertex coordinates
+let  a_texCoords_location;   // location of the "a_texCoords" attribute variable
+let  a_texCoords_buffer;     // a VBO to hold the texture coordinates
 
-var u_texture_location;     // the location of the "u_texture" uniform variable
+let  u_texture_location;     // the location of the "u_texture" uniform variable
 
-var textureObject;          // A texture object to hold the texture image.
+let  textureObject;          // A texture object to hold the texture image.
 
 /**
  *  Draws the content of the canvas.  This will only be called after the
- *  texture has finished loading.  In this function, draw() is only called once.
+ *  texture has finished loading.  In this program, draw() is only called once,
+ *  so some of the one-time WebGL initialization can be done here.
  */
 function draw() {
 
@@ -55,7 +56,7 @@ function draw() {
     
     /* Set up values for the "a_coords" attribute */
 
-    var coords = new Float32Array( [ -0.9,-0.8, 0.9,-0.8, 0,0.9 ] );
+    const  coords = new Float32Array( [ -0.9,-0.8, 0.9,-0.8, 0,0.9 ] );
    
     gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STREAM_DRAW);
@@ -64,7 +65,7 @@ function draw() {
    
     /* Set up values for the "a_texCoords" attribute */
    
-    var texCoords = new Float32Array( [ 0,0, 4,0, 2,4 ] );
+    const  texCoords = new Float32Array( [ 0,0, 4,0, 2,4 ] );
 
     gl.bindBuffer(gl.ARRAY_BUFFER, a_texCoords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STREAM_DRAW);
@@ -96,30 +97,30 @@ function draw() {
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
-   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   let  vsh = gl.createShader( gl.VERTEX_SHADER );
    gl.shaderSource( vsh, vertexShaderSource );
    gl.compileShader( vsh );
    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+      throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
    }
-   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
    gl.shaderSource( fsh, fragmentShaderSource );
    gl.compileShader( fsh );
    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+      throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
    }
-   var prog = gl.createProgram();
+   let  prog = gl.createProgram();
    gl.attachShader( prog, vsh );
    gl.attachShader( prog, fsh );
    gl.linkProgram( prog );
    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+      throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
    }
    return prog;
 }
 
 /**
- *  Loads a texture image asynchronously.  The first paramter is the url
+ *  Loads a texture image asynchronously.  The first parameter is the url
  *  from which the image is to be loaded.  The second parameter is the
  *  texture object into which the image is to be loaded.  When the image
  *  has finished loading, the draw() function will be called to draw the
@@ -128,23 +129,31 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
  *  draw the triangle without the texture.)
  */
 function loadTexture( url, textureObject ) {
-    var img = new Image();  //  A DOM image element to represent the image.
+    const  img = new Image();  //  A DOM image element to represent the image.
     img.onload = function() { 
         // This function will be called after the image loads successfully.
         // We have to bind the texture object to the TEXTURE_2D target before
         // loading the image into the texture object. 
         gl.bindTexture(gl.TEXTURE_2D, textureObject);
-        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
-        gl.generateMipmap(gl.TEXTURE_2D);  // Create mipmaps; you must either
+        try {
+           gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+           gl.generateMipmap(gl.TEXTURE_2D);  // Create mipmaps; you must either
                               // do this or change the minification filter.
-        draw();  // Draw the canvas, with the texture.  
-    }
-    img.onerror = function(e,f) { 
+        }
+        catch (e) { // Probably a security exception, because this page has been
+                    // loaded through a file:// URL.
+            document.getElementById("headline").innerHTML =
+              "Sorry, couldn't load texture.<br>" +
+              "Some web browsers won't use images from a local disk";
+        }
+        draw();  // Draw the canvas, with or without the texture.  
+    };
+    img.onerror = function() { 
         // This function will be called if an error occurs while loading.
         document.getElementById("headline").innerHTML =
                         "<p>Sorry, texture image could not be loaded.</p>";
         draw();  // Draw without the texture; triangle will be black.
-    }
+    };
     img.src = url;  // Start loading of the image.
                     // This must be done after setting onload and onerror.
 }
@@ -153,7 +162,7 @@ function loadTexture( url, textureObject ) {
  * Initialize the WebGL graphics context
  */
 function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
+    let  prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     
     /* Get the locations for the attribute and uniform variables in the shader,
@@ -179,8 +188,8 @@ function initGL() {
  */
 function init() {
     try {
-        var canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program
+        let  canvas = document.getElementById("webglcanvas");
+        let  options = {  // no need for alpha channel or depth buffer in this program
             alpha: false,
             depth: false
         };
@@ -205,9 +214,11 @@ function init() {
     }
 }
 
+window.onload = init;  // Arrange for init() to be called after page has loaded.
+
 </script>
 </head>
-<body onload="init()" style="background-color: lightGray">
+<body style="background-color: lightGray">
 
 <h2 id="headline">A Minimal WebGL Texture Example</h2>
 

@@ -28,8 +28,8 @@
 
     "use strict";  // gives improved error-checking in scripts.
 
-    var canvas;    // The canvas element on which we will draw.
-    var graphics;  // A 2D graphics context for drawing on the canvas.
+    let canvas;    // The canvas element on which we will draw.
+    let graphics;  // A 2D graphics context for drawing on the canvas.
     
     /**
      *  The draw() function is called by init() after the page loads,
@@ -78,14 +78,14 @@
         
         graphics.beginPath();
         graphics.moveTo(550,300);
-        for (var i = 1; i <= 8; i++) {
-            var angle = (2*Math.PI)/8 * i;
-            var x = 450 + 100*Math.cos(angle);
-            var y = 300 + 100*Math.sin(angle);
+        for (let i = 1; i <= 8; i++) {
+            let angle = (2*Math.PI)/8 * i;
+            let x = 450 + 100*Math.cos(angle);
+            let y = 300 + 100*Math.sin(angle);
             graphics.lineTo( x, y );
         }
         graphics.closePath();
-        var gradient = graphics.createLinearGradient(420,420,550,200);
+        let gradient = graphics.createLinearGradient(420,420,550,200);
         gradient.addColorStop(0,"red");
         gradient.addColorStop(0.5,"yellow");
         gradient.addColorStop(1,"green");
@@ -111,13 +111,16 @@
             document.getElementById("canvasholder").innerHTML =
                "<p>Canvas graphics is not supported.<br>" +
                "An error occurred while initializing graphics.</p>";
+            return;
         }
         draw();  // Call draw() to draw on the canvas.
     }
     
+    window.onload = init; // arranges for function init to be called when page is loaded
+    
 </script>
 </head>
-<body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+<body> 
 
 <h2>Canvas Graphics Starter</h2>
 

@@ -17,7 +17,15 @@
     specular color and a single white light.
 -->
 
-<script type="x-shader/x-vertex" id="vshader-source">
+
+<script src="gl-matrix-min.js"></script>
+<script src="trackball-rotator.js"></script>
+<script src="basic-object-models-IFS.js"></script>
+<script>
+
+"use strict";
+
+const vertexShaderSource = `
     attribute vec3 a_coords;
     attribute vec3 a_normal;
     uniform mat4 modelview;
@@ -52,10 +60,9 @@
             }
             v_color = vec4(color, diffuseColor.a);
         }
-    }
-</script>
+    }`;
 
-<script type="x-shader/x-fragment" id="fshader-source">
+const fragmentShaderSource = `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
        precision highp float;
     #else
@@ -64,48 +71,40 @@
     varying vec4 v_color;
     void main() {
         gl_FragColor = v_color;
-    }
-</script>
+    }`;
 
 
-<script src="gl-matrix-min.js"></script>
-<script src="trackball-rotator.js"></script>
-<script src="basic-object-models-IFS.js"></script>
-<script>
+let gl;   // The webgl context.
 
-"use strict";
+let a_coords_loc;       // Location of the a_coords attribute variable in the shader program.
+let a_coords_buffer;    // Buffer to hold the values for a_coords.
+let a_normal_loc;       // Location of a_normal attribute.
+let a_normal_buffer;    // Buffer for a_normal.
+let index_buffer;       // Buffer to hold vetex indices from model.
 
-var gl;   // The webgl context.
+let u_diffuseColor;     // Locations of uniform variables in the shader program
+let u_specularColor;
+let u_specularExponent;
+let u_lightPosition;
+let u_modelview;
+let u_projection;
+let u_normalMatrix;    
 
-var a_coords_loc;       // Location of the a_coords attribute variable in the shader program.
-var a_coords_buffer;    // Buffer to hold the values for a_coords.
-var a_normal_loc;       // Location of a_normal attribute.
-var a_normal_buffer;    // Buffer for a_normal.
-var index_buffer;       // Buffer to hold vetex indices from model.
+const projection = mat4.create();    // projection matrix
+let modelview;                       // modelview matrix; value comes from rotator
+const normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
 
-var u_diffuseColor;     // Locations of uniform variables in the shader program
-var u_specularColor;
-var u_specularExponent;
-var u_lightPosition;
-var u_modelview;
-var u_projection;
-var u_normalMatrix;    
+let rotator;  // A TrackballRotator to implement rotation by mouse.
 
-var projection = mat4.create();    // projection matrix
-var modelview;                     // modelview matrix; value comes from rotator
-var normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
-
-var rotator;  // A TrackballRotator to implement rotation by mouse.
-
-var colors = [  // RGB color arrays for diffuse and specular color values, selected by popup menu
+const colors = [  // RGB color arrays for diffuse and specular color values, selected by popup menu
     [1,1,1], [1,0,0], [0,1,0], [0,0,1], [0,1,1], [1,0,1], [1,1,0], [0,0,0], [0.5,0.5,0.5]
 ];
 
-var lightPositions = [  // values for light position, selected by popup menu
+const lightPositions = [  // values for light position, selected by popup menu
     [0,0,0,1], [0,0,1,0], [0,1,0,0], [0,0,-10,1], [2,3,5,0]
 ];
 
-var objects = [  // Objects for display, selected by popup menu
+const objects = [  // Objects for display, selected by popup menu
     cube(5),
     uvTorus(3,1,64,32),
     uvCylinder(1.5,5.5),
@@ -114,8 +113,7 @@ var objects = [  // Objects for display, selected by popup menu
     uvSphere(3,12,6)
 ];
 
-var currentModelNumber;  // contains data for the current object
-
+let currentModelNumber;  // contains data for the current object
 
 
 function draw() { 
@@ -167,7 +165,7 @@ function installModel(modelData) {
 
 /* Initialize the WebGL context.  Called from init() */
 function initGL() {
-    var prog = createProgram(gl,"vshader-source","fshader-source");
+    let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     a_coords_loc =  gl.getAttribLocation(prog, "a_coords");
     a_normal_loc =  gl.getAttribLocation(prog, "a_normal");
@@ -190,66 +188,43 @@ function initGL() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
+ * linking the program, an exception of type Error is thrown.  The error
  * string contains the compilation or linking error.  If no error occurs,
  * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elementst that contain the source code for the vertex and fragment
- * shaders.
+ *    The second and third parameters are strings that contain the
+ * source code for the vertex shader and for the fragment shader.
  */
-function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
-        while (node) {
-            if (node.nodeType == 3) // this is a text node
-                str += node.textContent;
-            node = node.nextSibling;
-        }
-        return str;
-    }
-    try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
-        throw "Error: Could not get shader source code from script elements.";
-    }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+function createProgram(gl, vShader, fShader) {
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource(vsh,vShader);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-        throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+        throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
      }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
-    gl.shaderSource(fsh, fragmentShaderSource);
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource(fsh, fShader);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
-
 
 /**
  * initialization function that will be called when the page has loaded
  */
 function init() {
+    let canvas;
     try {
-        var canvas = document.getElementById("webglcanvas");
-        gl = canvas.getContext("webgl") || 
-                         canvas.getContext("experimental-webgl");
+        canvas = document.getElementById("webglcanvas");
+        gl = canvas.getContext("webgl");
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -264,7 +239,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
     }
     document.getElementById("object").value = "1";
@@ -273,31 +248,31 @@ function init() {
     document.getElementById("specular").value = "8";
     document.getElementById("exponent").value = "10";
     document.getElementById("object").onchange = function() {
-        var val = Number(this.value);
+        let val = Number(this.value);
         currentModelNumber = val;
         installModel(objects[val]); 
         draw();
     };
     document.getElementById("light").onchange = function() {
-        var val = Number(this.value);
+        let val = Number(this.value);
         gl.uniform4fv(u_lightPosition, lightPositions[val]);
         draw();
     };
     document.getElementById("diffuse").onchange = function() {
-        var val = Number(this.value);
-        var c = colors[val];
+        let val = Number(this.value);
+        let c = colors[val];
         gl.uniform4f(u_diffuseColor, c[0], c[1], c[2], 1);
         draw();
         console.log("Diffuse: " + c);
     };
     document.getElementById("specular").onchange = function() {
-        var val = Number(this.value);
+        let val = Number(this.value);
         gl.uniform3fv(u_specularColor, colors[val]);
         draw();
         console.log("Specular: " + colors[val]);
     };
     document.getElementById("exponent").onchange = function() {
-        var val = Number(this.value);
+        let val = Number(this.value);
         gl.uniform1f(u_specularExponent, val);
         draw();
     };
@@ -311,13 +286,16 @@ function init() {
     draw();
 }
 
+
+window.onload = init;
+
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <h2>Basic Diffuse and Specular Lighting</h2>
 
-<p id=message>Drag your mouse on the object to rotate it.
+<p id=message>Drag your mouse, or finger on touchscreen, on the object to rotate it.
   <button id="reset">Reset Rotation</button></p>
 
 <p style="width:600px; text-align: center;">

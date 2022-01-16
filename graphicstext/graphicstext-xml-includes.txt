@@ -61,7 +61,7 @@
    &webgl3d_s5;
 </chapter>
 
-<chapter title="Beyond Realtime Graphics" id="advanced">
+<chapter title="Beyond Basic 3D Graphics" id="advanced">
    &advanced_intro;
    &advanced_s1;
    &advanced_s2;
@@ -79,6 +79,7 @@
 	&blender_s1;
 	&blender_s2;
 	&blender_s3;
+	&blender_s4;
 </appendix>
 
 <appendix title="Gimp and Inkscape for 2D Graphics" shorttitle="Gimp and Inkscape" id="gimp">

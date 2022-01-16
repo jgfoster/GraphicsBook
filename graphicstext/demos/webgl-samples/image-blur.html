@@ -15,7 +15,12 @@
 <meta charset="UTF-8">
 <title>Image Filtering in WebGL</title>
 
-<script type="x-shader/x-vertex" id="vshader-source">
+
+<script>
+
+"use strict";
+
+const vertexShaderSource = `
     attribute vec2 a_coords;
     uniform vec2 offset;
     varying vec2 v_coords;
@@ -24,10 +29,9 @@
         coords = vec2( (a_coords.x + 1.0)*0.5, (a_coords.y + 1.0)* 0.5 );
         v_coords = coords + offset;
         gl_Position = vec4(a_coords,0.0,1.0);
-    }
-</script>
+    }`;
 
-<script type="x-shader/x-fragment" id="fshader-source">
+const fragmentShaderSource = `
     precision mediump float;
     uniform sampler2D image;
     uniform float multiplier;
@@ -35,27 +39,22 @@
     void main() {
         vec4 color = texture2D( image, v_coords );
         gl_FragColor = vec4( multiplier*color.rgb, 1.0 );
-    }
-</script>
+    }`;
 
 
-<script>
+let gl;  // The WebGL graphics context.
 
-"use strict";
+let a_coords_location;      // location of the "a_coords" attribute variable in the shader program
+let a_coords_buffer;        // a VBO to hold the vertex coordinates
 
-var gl;  // The WebGL graphics context.
+let u_image ;               // Locations of uniform variables in the shader program
+let u_offset;
+let u_multiplier;
 
-var a_coords_location;      // location of the "a_coords" attribute variable in the shader program
-var a_coords_buffer;        // a VBO to hold the vertex coordinates
+let textureObject;          // A texture object to hold the texture image.
+let textureLoaded;          // Set to true when a texture has been successfully loaded.
 
-var u_image ;               // Locations of uniform variables in the shader program
-var u_offset;
-var u_multiplier;
-
-var textureObject;          // A texture object to hold the texture image.
-var textureLoaded;          // Set to true when a texture has been successfully loaded.
-
-var imageURLs = [
+const imageURLs = [
     "images-for-blur/house.jpg",
     "images-for-blur/space-station.jpg",
     "images-for-blur/bluejay.jpg",
@@ -101,8 +100,8 @@ function blur() {
     gl.enable(gl.BLEND);  // turn on blending
     gl.blendFunc(gl.ONE, gl.ONE);  // just add the source and destination values, with no dependence on alpha
     gl.uniform1f(u_multiplier, 1/9);  // (the only value we need in this program; could be different for other blur functions)
-    var dx = 1/512;  // width of one pixel in the texture image, which is 512x256
-    var dy = 1/256;  // height of one pixel in the texture image
+    let dx = 1/512;  // width of one pixel in the texture image, which is 512x256
+    let dy = 1/256;  // height of one pixel in the texture image
     drawWithOffset(-dx,-dy);  // Draw the texture 9 times, with different offsets
     drawWithOffset(-dx,0);
     drawWithOffset(-dx,dy);
@@ -119,53 +118,31 @@ function blur() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
+ * linking the program, an exception of type Error is thrown.  The error
  * string contains the compilation or linking error.  If no error occurs,
  * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elementst that contain the source code for the vertex and fragment
- * shaders.
+ *    The second and third parameters are strings that contain the
+ * source code for the vertex shader and for the fragment shader.
  */
-function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
-        while (node) {
-            if (node.nodeType == 3) // this is a text node
-                str += node.textContent;
-            node = node.nextSibling;
-        }
-        return str;
-    }
-    try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
-        throw "Error: Could not get shader source code from script elements.";
-    }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+function createProgram(gl, vShader, fShader) {
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource(vsh,vShader);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-        throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
-     }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
-    gl.shaderSource(fsh, fragmentShaderSource);
+        throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
+    }
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource(fsh, fShader);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
@@ -180,10 +157,10 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
  * on the page.
  */
 function loadTexture( ) {
-    var imageNum = Number( document.getElementById("image").value );
+    let imageNum = Number( document.getElementById("image").value );
     textureLoaded = false;  // signal to draw() that there is currently no texture
     draw();  // will draw a black rectangle, while texture is loading
-    var img = new Image(); 
+    let img = new Image(); 
     img.onload = function() { 
         gl.bindTexture(gl.TEXTURE_2D, textureObject);
         try {
@@ -199,12 +176,12 @@ function loadTexture( ) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
         textureLoaded = true;
         draw();  // Draw the canvas, with the texture.  
-    }
+    };
     img.onerror = function(e,f) { 
         document.getElementById("headline").innerHTML =
                         "<p>Sorry, texture image could not be loaded.</p>";
         draw(); 
-    }
+    };
     img.src = imageURLs[imageNum];  // Start loading of the image.
 }
 
@@ -212,14 +189,14 @@ function loadTexture( ) {
  * Initialize the WebGL graphics context
  */
 function initGL() {
-    var prog = createProgram( gl, "vshader-source", "fshader-source" );
+    let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, 1 );    
     
     a_coords_location = gl.getAttribLocation(prog, "a_coords");
     a_coords_buffer = gl.createBuffer();
     
-    var coords = new Float32Array( [ -1,-1, 1,-1, 1,1, -1,1 ] );
+    let coords = new Float32Array( [ -1,-1, 1,-1, 1,1, -1,1 ] );
    
     gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STATIC_DRAW);
@@ -238,10 +215,10 @@ function initGL() {
  * Initialize the program.  This function is called after the page has been loaded.
  */
 function init() {
+    let canvas;
     try {
-        var canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program
-            alpha: false,
+        canvas = document.getElementById("webglcanvas");
+        let options = {  // no need for depth buffer in this program
             depth: false
         };
         gl = canvas.getContext("webgl", options) || 
@@ -260,18 +237,21 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
     }
     document.getElementById("image").value = "0";
     document.getElementById("image").onchange = loadTexture;
     document.getElementById("apply").onclick = blur;
     loadTexture();
-};
+}
+
+window.onload = init;
 
 </script>
 </head>
-<body onload="init()" style="background-color: lightGray">
+
+<body style="background-color: lightGray">
 
 <h2 id="headline">Image Bluring with WebGL</h2>
 

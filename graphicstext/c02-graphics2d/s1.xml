@@ -63,7 +63,7 @@ the color of a partially covered pixel would be gray, with the shade of gray dep
 on the fraction of the pixel that is covered by the line.  (In practice, calculating this
 area exactly for each pixel would be too difficult, so some approximate method is used.)
 Here, for example, is a geometric line, shown on the left, along with two approximations
-of that line made by coloring pixels.  The lines are greately magnified so that you can see the
+of that line made by coloring pixels.  The lines are greatly magnified so that you can see the
 individual pixels.  The line on the right is drawn using antialiasing, while the one in the 
 middle is not:</p>
 
@@ -178,7 +178,7 @@ which the vertical coordinate increases from bottom to top instead
 of from top to bottom.  In that case, <i>top</i> will correspond to
 the maximum <i>y</i>-value instead of the minimum value.</p>
 
-<p>To allow programmers to specify the coordinates system that
+<p>To allow programmers to specify the coordinate system that
 they would like to use, it would be good to have a subroutine such as</p>
 
 <pre>setCoordinateSystem(left,right,bottom,top)</pre>
@@ -348,7 +348,7 @@ to avoid visual effects that might occur due to rounding errors in the computati
 Such applications might use a 16-bit integer or even a 32-bit floating point value for
 each color component.  On the other hand, sometimes fewer bits are used.  For example, one
 common color scheme uses 5 bits for the red and blue components and 6 bits for the green
-component, for a total of 16 bits for a color.  (Green gets an addition bit because
+component, for a total of 16 bits for a color.  (Green gets an extra bit because
 the eye is more sensitive to green light than to red or blue.)  This "16-bit color" saves memory
 compared to 24-bit color and was more common when memory was more expensive.</p>
 

@@ -4,7 +4,6 @@
    This page is a simple paint program that lets the user draw on a
    canvas.  It demonstrates using an "off-screen canvas."  The "smudge
    tool" demonstrates pixel manipulation in HTML canvas graphics.
-   (Note: on my old desktop, drawing ovals crashes Firefox!)
    (I'm not sure that the off-screen canvas technique will work everywhere.)
 -->
 <head>
@@ -15,8 +14,7 @@
         background-color: #DDDDDD;
         -webkit-user-select: none; /* turn off text selection  / Webkit */
         -moz-user-select: none;    /* Firefox */
-        -ms-user-select: none;     /* IE 10  */
-        -o-user-select: none;      /* Opera */
+        -ms-user-select: none;     /* IE */
         user-select: none;
     }
     canvas {
@@ -47,29 +45,29 @@
 
     "use strict";
 
-    var canvas;    // The canvas element on which the user will draw.
-    var graphics;  // A 2D graphics context for drawing on the canvas.
+    let canvas;    // The canvas element on which the user will draw.
+    let graphics;  // A 2D graphics context for drawing on the canvas.
     
-    var OSC;  // A canvas element that is not a visible part of the document.
+    let OSC;  // A canvas element that is not a visible part of the document.
               // It is created programmatically and serves as an off-screen canvas.
               // The off-screen canvas holds the "official" copy of the picture
               // that the user has drawn.
-    var OSG;  // A 2D graphics context for drawing on the off-screen canvas.
+    let OSG;  // A 2D graphics context for drawing on the off-screen canvas.
     
-    var tool = "Sketch";  // The current drawing tool.
+    let tool = "Sketch";  // The current drawing tool.
     
-    var color = "black";  // The color that is currently being used for drawing
-    var lineWidth = 5;    // The line width that is currently being used for strokes 
+    let color = "black";  // The color that is currently being used for drawing
+    let lineWidth = 5;    // The line width that is currently being used for strokes 
     
-    var dragShape = null;   // When non-null, the user is dragging with
+    let dragShape = null;   // When non-null, the user is dragging with
                             // the Oval, Rectangle, or Line tool.  The
                             // current shape is drawn in the repaint() function
                             // over the BufferedImage.  The shape is only added
                             // to the off-screen image when the drag action ends.
-    var dragStartX, dragStartY;     // Start point of drag for use with dragShape.
-    var dragCurrentX, dragCurrentY; // Current mouse position for use with dragShape.
+    let dragStartX, dragStartY;     // Start point of drag for use with dragShape.
+    let dragCurrentX, dragCurrentY; // Current mouse position for use with dragShape.
 
-    var smudgeColorArray = null, smudgeImageData; // Data used by "Smudge" tool.
+    let smudgeColorArray = null, smudgeImageData; // Data used by "Smudge" tool.
     
     /**
      *  The main function for drawing the contents of the on-screen canvas.  it simply
@@ -91,10 +89,10 @@
      *  by the points (x1,y1) and (x2,y2).  The second parameter is a string nameing the shape.
      */
     function putShape(g, shape, x1, y1, x2, y2) { 
-        var x = Math.min(x1,x2); // upper left corner, used for ovals and rectangles.
-        var y = Math.min(y1,y2);
-        var w = Math.abs(x1-x2); // size of rectangle
-        var h = Math.abs(y1-y2);
+        let x = Math.min(x1,x2); // upper left corner, used for ovals and rectangles.
+        let y = Math.min(y1,y2);
+        let w = Math.abs(x1-x2); // size of rectangle
+        let h = Math.abs(y1-y2);
         switch (shape) {
         case "Line":  // stroke a line from (x1,y1) to (x2,y2);
             g.beginPath();
@@ -130,12 +128,12 @@
      *  image, in the swapSmudgeData function.
      */
     function grabSmudgeData(x, y) {
-        var colors = OSG.getImageData(x-5,y-5,9,9);
+        let colors = OSG.getImageData(x-5,y-5,9,9);
         if (smudgeColorArray == null) {
             smudgeImageData = OSG.createImageData(9,9);
             smudgeColorArray = new Float32Array(colors.data.length);
         }
-        for (var i = 0; i < colors.data.length; i++) {
+        for (let i = 0; i < colors.data.length; i++) {
             smudgeColorArray[i] = colors.data[i];
         }
     }
@@ -151,8 +149,8 @@
      *  new color from those points.)
      */
     function swapSmudgeData(x, y) {
-        var colors = OSG.getImageData(x-5,y-5,9,9);  // get color data form image
-        for (var i = 0; i < smudgeColorArray.length; i += 4) {
+        let colors = OSG.getImageData(x-5,y-5,9,9);  // get color data form image
+        for (let i = 0; i < smudgeColorArray.length; i += 4) {
                 // The color arrays contain four numbers for each pixel, giving red, blue,
                 // green, and alpha color components.  An alpha value of 0 means that the
                 // pixel was outside the image; such pixels are ignored.  Otherwise,
@@ -161,16 +159,16 @@
                 // of the existing values.  The alpha component is simply set to 255 (fully
                 // opaque), which is actually what it should already be.
             if (smudgeColorArray[i+3] && colors.data[i+3]) {
-                for (var j = i; j < i+3; j++) {
-                    var newSmudge = smudgeColorArray[j]*0.8 + colors.data[j]*0.2;
-                    var newImage  = smudgeColorArray[j]*0.2 + colors.data[j]*0.8;
+                for (let j = i; j < i+3; j++) {
+                    let newSmudge = smudgeColorArray[j]*0.8 + colors.data[j]*0.2;
+                    let newImage  = smudgeColorArray[j]*0.2 + colors.data[j]*0.8;
                     smudgeImageData.data[j] = newImage;
                     smudgeColorArray[j] = newSmudge;
                 }
                 smudgeImageData.data[i+3] = 255;
             }
             else {
-                for (var j = i; j <= i+3; j++) {
+                for (let j = i; j <= i+3; j++) {
                     smudgeImageData.data[j] = 0; // "transparent black"; will have no effect on the image
                 }
             }
@@ -202,7 +200,7 @@
      *  apply the tools at every point along the path for the tool to work properly.
      */
     function applyToolAlongLine(tool, x1, y1, x2, y2) {
-        var x, y, slope;
+        let x, y, slope;
         if (Math.abs(x1-x2) >= Math.abs(y1-y2)) {
                // Horizontal distance is greater than vertical distance.  Apply the
                // tool once for each x-value between x1 and x2, computing the
@@ -247,16 +245,16 @@
      * This is called in init() to set up the respons to mouse actions on the canvas.
      */
     function setUpMouseHander() {
-        var dragging = false;
-        var startX, startY;
-        var prevX, prevY;
+        let dragging = false;
+        let startX, startY;
+        let prevX, prevY;
         function doMouseDown(evt) {  // responds when the user presses a mouse button on the canvas.
             if (dragging || evt.button != 0) {
                 return;
             }
-            var r = canvas.getBoundingClientRect();
-            var x = Math.round(evt.clientX - r.left);  // Firefox, at least, can give non-integer values
-            var y = Math.round(evt.clientY - r.top);
+            let r = canvas.getBoundingClientRect();
+            let x = Math.round(evt.clientX - r.left);  // Firefox, at least, can give non-integer values
+            let y = Math.round(evt.clientY - r.top);
             prevX = startX = x;
             prevY = startY = y;
             dragging = true;
@@ -280,9 +278,9 @@
         }
         function doMouseMove(evt) {  // Called when mouse moves during a drag operation.
             if (dragging) { // (actually, the test should not be necessary)
-                var r = canvas.getBoundingClientRect();
-                var x = Math.round(evt.clientX - r.left);
-                var y = Math.round(evt.clientY - r.top);
+                let r = canvas.getBoundingClientRect();
+                let x = Math.round(evt.clientX - r.left);
+                let y = Math.round(evt.clientY - r.top);
                 if (tool == "Line" || tool == "Oval" || tool == "Rectangle") {
                     dragCurrentX = x;
                     dragCurrentY = y;
@@ -336,6 +334,7 @@
             document.getElementById("canvasholder").innerHTML =
                "Canvas graphics is not supported?<br>" +
                "An error occurred while initializing graphics.";
+            return;
         }
         repaint();  // Just copies the blank white off-screen canvas to the screen.
         setUpMouseHander();
@@ -358,9 +357,11 @@
         };
     }
     
+    window.onload = init; // arranges for function init to be called when page is loaded
+    
 </script>
 </head>
-<body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+<body>
 
 <h2>A Simple Paint Program</h2>
 

@@ -18,6 +18,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>   // Consider using freeglut.h instead, if available.
 #include <stdio.h>     // (Used only for some information messages to standard out.)
+#include <stdlib.h>    // (Used only for exit() function.)
 
 // --------------------------------- global variables --------------------------------
 

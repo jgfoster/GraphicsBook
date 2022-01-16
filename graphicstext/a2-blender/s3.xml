@@ -3,9 +3,9 @@
 
 <section title="Blender Animation" id="blender.3">
 
-<p1>We finish our brief introduction to Blender by looking at <word>animation</word>.
-We will look at basic keyframe animation as well as several more advanced kinds of 
-animations that can't be done with simple keyframes.  At the end of the section,
+<p1>Blender can be used to create <word term="animation">animations</word> and videos.
+We will look at basic keyframe animation in Blender as well as a couple kinds of 
+animation that can't be done with simple keyframes.  At the end of the section,
 I will explain how to render an animation in Blender.</p1>
 
 
@@ -18,142 +18,140 @@ interpolating between the values for the key frames.  Exactly
 how the interpolation is done is determined by a set of "F-curves," which you can
 edit to completely control the interpolation (and extrapolation beyond the key frames).</p>
 
-<p>There is Timeline frame at the bottom of the default Blender window that contains
+<p>There is Timeline area at the bottom of the default Blender window that contains
 some information about animations and lets you control them:</p>
 
-<img src="blender-timeline.png" width="603" height="116" tex="blender-timeline.eps" texscale="0.6"/>
+<img src="blender-timeline.png" width="736" height="81" tex="blender-timeline.eps" texscale="0.5"/>
 
-<np>On the bottom of the timeline panel, you see the starting frame, the end frame, and the current
-frame of the animation (1, 250, and 20 in the picture).  The current frame number specifies the frame
+<np>The timeline shows the starting frame number, the end frame, and the current
+frame of the animation (1, 250, and 12 in the picture).  The current frame number specifies the frame
 that is displayed in the 3D View.  These are numerical input
-buttons that you can edit.  To the right of the frame number buttons is a set of playback controls,
-which run the animation in the 3D View window.  The start and end frames are used when you use
-the playback buttons.  They also determine what frames will be included when you
-render an animation.  Note that 250 frames make a rather short animation when viewed at
-a typical 30 or 60 frames per second.</np>
+buttons that you can edit. 
+To the left of the frame number inputs is a set of playback controls,
+which run the animation in the 3D View window.  You can also start and stop playing the animation
+by pressing the spacebar.  The start and end frames determine
+the range of frames that are displayed when the animation is played.  
+They also determine what frames will be included when you
+render an animation.  Note that the default 250 frames make a rather short animation when viewed at
+a typical frame rate of about 30 frames per second.</np>
 
-<p>Above the frame numbers and playback controls is the timeline itself, with the frame number
-running along an axis from left to right.  The thicker, green line marks
-the current frame on the timeline.  Yellow lines mark frames that have been set as key frames
-for the selected object.
-You can click on the timeline to set the current frame.  You can even drag the green line to 
-change the frame number, and the 3D View will change as you drag it.</p>
+<p>Below the frame number inputs and playback controls is the timeline itself, with the frame number
+running along an axis from left to right.  The blue tab marks
+the current frame on the timeline. You can drag the blue tab or click on the timeline to set the current frame.
+The orange and white diamond shapes mark frames that have been set as key frames
+for the object that is currently selected in the 3D&nbsp;View (if any).
+You can drag a diamond to move the key to a different frame, and you can select
+groups of diamonds. (The orange ones are the ones that are selected).  If you right-click the timeline,
+you get a popup menu; the "Interpolation Mode" submenu can be used to set how interpolation
+between the selected (orange) keys is computed.  (Try the "Elastic" Dynamic Effect.)</p>
 
 <p>To animate an object, you need to enter values for one or more of its properties for
 at least two key frames.  Select the frame number for which you want to enter a key value,
-by clicking in the timeline or editing the current frame number in the input below the timeline.
-Select the object and hit the I&nbsp;key to insert a key frame value for that
-object. (The mouse cursor must be in the 3D View for this work.)
-The value for a property is taken from the value of that property in the current frame.
+by clicking in the timeline or entering the value in the current frame input.
+Select the object and hit the "I"&nbsp;key to insert a key value for that
+object in the current frame. (The mouse cursor must be in the 3D View for this to work.)
 A popup menu will allow you to select the property or properties for which you want to insert key values.
-Note that "LocRot" means to insert values for both Location and Rotation,
-and "LocRotScale" means to insert values for all three properties.</p>
+For example, to store values for both the current location and the current rotation of the
+object, select "Location Rotation" from the menu.</p>
 
 <p>After inserting one key frame, change the current frame number,
 move or rotate or scale the object to the values that you want for the new keyframe,
-and use the I&nbsp;key again.  Then, when you drag the green line in the timeline back and forth, 
+and use the I&nbsp;key again.  Then, when you drag the blue tab in the timeline back and forth, 
 you can see how the  object animates.</p>
 
-<p>To delete a keyframe from an object, go to the frame from which you want to delete
+<p>To delete a key from an object, go to the frame from which you want to delete
 the value, select the object, and hit ALT-I.  You will asked to confirm that you
-want to delete the keyframe.</p>
+want to delete the key.</p>
 
-<p>You can also animate many of the properties in the Properties Editor panel.  For example,
-to animate the diffuse material color, set the frame number, point the mouse at the diffuse color in the
-Material properties panel, and hit the I&nbsp;key.  Change the current frame number and repeat, and so on.
+<p>You can also animate many properties in the Properties Editor panel.  For example,
+to animate the color of the object, set the frame number, point the mouse at the Base Color in the
+Material Properties, and hit the I&nbsp;key.  Change the current frame number and repeat, and so on.
 You can also insert a key frame by right-clicking a property in the Properties Editor and selecting
 "Insert Keyframe" from the popup; if a key frame already exists, the popup has an entry
-for deleting it.  Try animating the alpha value of a translucent object.  You can make it fade 
-away!</p>
+for deleting it.</p>
 
 <break/>
 
 <p>As you get into keyframe animation, you might find that you need more control.
-The interpolation between keyframes is controlled by functions called
-F-curves.  You can see the F-curves and edit them in the Graph Editor
-frame, which is not part of the Default screen.  It is, however, part of
-the Animation screen.  To get to that screen, choose "Animation" from
-the Screen menu at the top of the Blender window.  (Click the icon
-next to the word "Default" to get a submenu listing the available screens.)
-The Graph Editor will be in the lower left of the Animation screen.
-In my opinion, it's much too small to be useful; increase its size by dragging the borders
-of the Graph Editor frame.  Another way to get a Graph Editor is to split the
-3D View frame in the default screen, and change the type of one of the resulting
-frames to be a Graph Editor.  (The popup menu for selecting the frame type is
-the icon at the lower left of the frame.)  The Graph editor shows F-curves
+You get some control using the Timeline popup menu.
+But interpolation between keyframes is ultimately controlled by functions called
+F-curves.  You can see the F-curves and edit them in the Graph Editor,
+which is not shown by default.  One way to use it is in the animation screen 
+that you get by clicking the "Animation" button at the top of the Blender window.
+The bottom of that screen has a "Dope Sheet" that shows keyframe markers for all
+animated properties.  In the Dope Sheet "View" menu, there
+is a "Toggle Graph Editor" command that will replace the Dope Sheet with a
+Graph Editor.  Alternatively, you can change the editor in any area of
+the window to a Graph Editor by selecting it from the popup menu in the top-left
+corner of the area.</p>
+
+<p>The Graph Editor shows F-curves
 for the object that is selected in the 3D View.
 Here is the Graph editor showing some F-curves for an animated object
-that has key frame values for the location, rotation, and scale properties:
+that has key frame values for the location and rotation:
 </p>
 
-<img src="blender-graph-editor.png" width="654" height="420" tex="blender-graph-editor.eps" texscale="0.6"/>
+<img src="blender-graph-editor.png" width="566" height="339" tex="blender-graph-editor.eps" texscale="0.7"/>
 
-<np>Each curve controls one component of the animation.  
-The curves are  Bezier curves.  In Edit Mode, they have handles that you 
-can select and edit in the usual way to modify the curves.  You can enter
-and exit from Edit Mode in the usual way, using the TAB key.  It can be
-confusing to see a large number of curves at once.  You can select/deselect
-curves by clicking and shift-clicking the names, such as "X&nbsp;Location",
-in the list at the left. Selected curves are shown in white in the list,
-and their graphs are shown in color.  The white squares on the curves 
-mark key frame values.  In Edit Mode, you can select and move them  (using the G&nbsp;Key); 
-hold down the control key to constrain the square to stay in the same frame.
-Any changes that you make will immediately affect the 3D View.</np>
+<np>Each curve controls one animated property, plotting the value of the property on the
+vertical axis against the frame number on the horizontal axis.
+The curves are  Bezier curves by default.
+In the picture, the Rotation curves have been hidden (by clicking the "eyes" next to the
+curve names), and the three visible curves and all their Bezier handles have been
+selected (by hitting the "A" key while the mouse is over the graphs).
 
-<p>You can change the scale on the graphs by dragging on the graph area with the middle mouse button
-while holding down the Control key.  Drag up and down to change the vertical scale,
-left and right to change the horizontal scale.  Without the Control key, dragging
-the middle mouse button will translate the graphs.</p>
+The dots on the curves mark key frame values.  You can select and move them using the "G"&nbsp;Key; 
+hit the "Y"&nbsp;key after the "G" key to force the dot to stay in the same frame.
+Any changes that you make will immediately affect the 3D View.  You can select and
+move the control points on the Bezier curve handles to change the shape of the curve.</np>
 
-<p>The little "+" sign near
-the upper right of the graph area can be clicked to reveal another panel of controls,
-including modifiers that can be applied to the curves.  I won't 
-say too much about this, but I will walk you through one example.</p>
+<p>You can change the scale on the graphs using the
+scroll wheel on the mouse.  Or you can control-middle-mouse drag on the graphs;  drag vertically to change the vertical scale,
+horizontally to change the horizontal scale.  Without the Control key, dragging
+the middle mouse button will translate the graphs.  An easy way to nicely fit the scale
+to the graphs is to hit the "Home" key, with the mouse over the graphs.</p>
+
 
 <break/>
 
 <p>Let's say that you want an object to rotate through one complete 360-degree rotation about the
 <i>y</i>-axis as the frame number goes from 1 to 60.  You can start with an unrotated object
-in frame 1 and insert a Rotation keyframe using the I&nbsp;Key.  Then move to frame 60.  You want the rotation in frame 60 to
+in frame 1 and insert a Rotation keyframe using the I&nbsp;Key.  Then move to frame 60.  
+You want the rotation in frame 60 to
 be 360 degrees about the <i>y</i>-axis, but that means that object will look exactly the
 same as it did at the beginning!  How do you set the value for the rotation keyframe at
-frame 60?  Click the little "+" in the upper right of the 3D View frame to reveal a new
-set of controls, including numerical inputs for the Location, Rotation, and Scale
+frame 60? Hit the "N" key with the mouse in the 3D&nbsp;View to reveal the Transform
+controls, including numerical inputs for the Location, Rotation, and Scale
 that are applied to the object.  You can use those inputs to set the value numerically.
-After changing the rotation values to 0,&nbsp;360,&nbsp;0, use the I&nbsp;Key
-again to insert the keyframe. </p>
+Change the Y-rotation value to 360, and then use the I&nbsp;Key to insert the keyframe. </p>
 
 <p>Now, as the frame changes from 1 to 60, you should see the object go through a complete rotation.
 If you click the playback button starting in frame&nbsp;0, you will notice that the
-rotation starts out slow, speeds up, then slows down again at the end.  This is reasonable
+rotation starts out slow, speeds up, then slows down again at the end.  This might be reasonable
 for an object that starts out at rest, then goes through one rotation, and stops at the
-end.  But suppose you really want a constant speed of rotation?  The question is,
-how does the computer interpolate between the keyframes?
-The interpolation is controlled by the F-curves.</p>
+end.  But suppose you really want a constant speed of rotation?  This is a question
+of interpolation between keyframes.  There is also the issue of what happens before the
+first keyframe and after the last keyframe.  That is a question of extrapolation.</p>
 
-<p>Go to the F-Curve Graph Editor, with the rotating object still selected in the 3D View.  
-Adjust the F-curve window so that you can see the F-curve for the y-rotation.  You will need to
-change the scale on the graph, so that you can see a vertical range of values that includes
-0 through 360.  You want to select just the y-rotation curve
-for editing; click "Y&nbsp;Euler Rotation" in the list on the left.  If the curve is not
-already in Edit Mode, hit the TAB key to put it into Edit Mode.</p>
+<p>To get a constant speed of rotation, you want linear interpolation.  To get that,
+you can select the start and end keys &mdash; either on an F-curve, in the Dope Sheet, or
+in a Timeline &mdash; and then choose "Linear" Interpolation Mode, which you can find
+in the "Key" menu or in the popup menu that you get by right-clicking.</p>
 
-<p>Finally, you want to reveal the extra control
-panel by clicking the small "+"" sign on the upper right border of
-the F-curve window.  The curve must be selected and in Edit Mode to see any 
-controls in that panel.</p>
+<p>To control extrapolation of the selected properties in the Dope Sheet or Graph Editor, 
+you can use the "Extrapolation Mode" submenu of the "Channel" menu.
+"Constant" extrapolation, which is the default, means that the property does not change
+after the last keyframe. "Linear" extrapolation means that the property continues to 
+change after the last keyframe with the same rate of change. "Make Cyclic" means that
+the entire animation will loop forever after the last keyframe.</p>
 
-<p>All that was just to get you to the point where you can change some
-settings!  To get constant speed of rotation, just change the "Interpolation"
-from "Bezier" to "Linear" in the popup menu near the center-right in the picture.
-Next, suppose that you want the object to keep rotating at a constant speed
-forever.  To do that, go to the section labeled
-"Modifiers" at the bottom of the control panel.  Click "Add Modifier" and select "Cycles"
-from the popup menu.  Here's what it looks like in the end:</p>
+<p>For our rotation example, "Make Cyclic" extrapolation will make the full 360-degree
+rotation repeat forever.  Here's what the F-curve for the y-rotation looks like with
+"Linear"" interpolation and "Make Cyclic" extrapolation:</p>
 
-<img src="blender-cyclic-f-curve.png" width="712" height="416" tex="blender-cyclic-f-curve.eps" texscale="0.6"/>
+<img src="blender-cyclic-f-curve.png" width="464" height="318" tex="blender-cyclic-f-curve.eps" texscale="0.6"/>
 
-<np>And that's it!  You should have perpetual rotation at a constant speed.
+<np>You should have perpetual rotation at a constant speed.
 Admittedly, this is more complicated than it should be.  But hopefully if you work
 through this exercise, it will give you some idea of how F-curves can be used.</np>
 
@@ -164,34 +162,38 @@ through this exercise, it will give you some idea of how F-curves can be used.</
 <subsection title="Tracking" id="blender.3.3">
 
 <p>Recall that you can "parent" one object to another (<localref href="blender.1.6"/>).
-"Tracking"" is similar to parenting.  When one object tracks another, the
+"Tracking"" is a kind of parenting.  When one object tracks another, the
 rotation of the first object is always set so that it faces the object that
-it is tracking.  To set up a tracking relation, shift-click the object that
-you want to do the tracking, then right-shift-click the object that you
-want it to track.  Hit CONTROL-T.  You will have a choice of three
-different types of tracking.  The first, "Damped Track Constraint" seems
+it is tracking.  To set up a tracking relation, click the object that
+you want to do the tracking, then shift-click the object that you
+want it to track.  Go to the "Track" submenu of the "Object" menu in the 3D&nbsp;View,
+and select "Damped Track Constraint" or "Track To Constraint."
+ The first, "Damped Track Constraint" seems
 to work well in general, but "Track To Constraint" seems to work better
-when it's a camera that's doing the tracking.  (You can clear tracking with ALT-T.)</p>
+when it's a camera that's doing the tracking.  (You can clear tracking by selecting
+the object that is doing the tracking and using the "Clear Track" command in
+the same menu.)</p>
 
-<p>Tracking is in fact a constraint,
-and after you set it up you will find it listed in the Constraint controls
-for the tracking object.  (The icon for the Constraint controls in the Properties Editor frame
-looks like two links of a chain).  In the Constraint controls, you can set which axis of the
+<p>Tracking is in fact a "constraint",
+and after you set it up you will find it listed in the "Constraint Properties" in the
+Properties Editor when the tracking object is selected.    In the Constraint Properties, 
+you can set which axis of the
 tracking object points towards the object that is being tracked.
 (Tracking is only one kind of "constraint."
 You can use the Constraint controls in the properties editor panel
 to set and clear various constraints in addition to tracking. "Stretch To" is
-interesting.)</p>
+interesting, and we will look at "Follow Path" later in this section.)</p>
 
 <p>Tracking works especially well for cameras and spotlights.  You can make
 them track moving objects, so that the camera or light is always pointed
-at the object.  This is another place where
-using an "Empty" object can make sense; you can point the camera or spotlight at
+at the object.  This is a place where
+using an "Empty" object can make sense: You can point the camera or spotlight at
 a location without having an actual object there, by making it track an
 Empty.  You can move the Empty to direct
 the spotlight, and by animating the Empty, you
-can make the camera or spotlight pan across the scene.  If the camera or light
-is animated, tracking can keep it pointed at the same location as it moves.</p>
+can make the camera or spotlight pan across the scene.  Or if the camera or light
+is animated, you can set it to track a stationary Empty
+to keep it pointed at the same location even as it moves around.</p>
 
 
 </subsection>
@@ -200,131 +202,94 @@ is animated, tracking can keep it pointed at the same location as it moves.</p>
 
 <subsection title="Path Animation" id="blender.3.4">
 
-<p>Path animation can be used to move an object along a path.  A path in
-Blender is a kind of curve (actually just a NURBS curve with certain
-properties).  To add a path to a scene, use Add / Curve / Path.
-If you want the motion to be restricted to two dimensions, set the
-path to be 2D (<localref href="blender.2.2"/>).
+<p>Path animation can be used to move an object along a curve.  Any Bezier or NURBS
+curve will work.  For example, you can get circular motion by moving an object
+along a Bezier circle.  For path animation, if you want the motion to be restricted to two dimensions, 
+remember to set the curve to be 2D (<localref href="blender.2.2"/>).</p>
+
+<p>Curves of type "Path" are often used for path animation.
+A "Path" in Blender is a kind of NURBS curve for which the endpoints of the
+curve are constrained to lie at the first and last control point of the curve,
+which makes it easier to control where the curve begins and ends.
+To add a path to a scene, use Add / Curve / Path.  (The path might be
+almost invisible, since it is a straight line.  I suggest going immediately
+into Edit Mode by hitting the Tab key, so that you can see it better.
+You will probably want to be in Edit Mode in any case.)
 Initially, the path is a straight line with four control points.
 Recall that you can extend a non-closed path by going into Edit Mode, selecting one
-of the endpoints, and using control-left-click to add points.  You can also add
-points in the middle by selecting a pair of consecutive control points
-and hitting "Subdivide" in the Tools panel to the left of the 3D&nbsp;View.
+of the endpoints, and using control-right-click to add points.  You can also add
+points in the middle of the curve by selecting a pair of consecutive control points
+and hitting "Subdivide" in the 3D&nbsp;View popup menu.
 You can close the path by hitting ALT-C key while in Edit Mode.  And, of course,
 you can select control points and move, scale, or rotate them.</p>
 
-<p>To make an object follow the path, select the object by right-clicking it,
-then shift-right-click the path to add it to the selection.  Hit Control-P, and choose "Follow Path" from
-the popup menu.  The object will be joined to the path by a dotted line, and it will move as
-the current frame number is changed.  Note that
-the object doesn't automatically jump to the path; it sort of moves in parallel to the path.
-However, you might want to move the object onto the path.  
-(Suggestion:  Before parenting the object to the curve, 
-go to frame&nbsp;1; select the path; go into Edit Mode and select
-the starting vertex of the path; use Shift-S / Cursor-to-Selection
-to move the cursor to the start of the path; leave Edit Mode;
-select the object; and use Shift-S / Selection-to-Cursor.
-This will position the object exactly on the path at its initial endpoint. Make sure that
-you are in frame number 1 when you do this.)</p>
+<p>There are two ways to make an object follow a curve.  The easiest way
+treats path animation as a kind of parenting: Click the object, shift-click the curve,
+hit Control-P, and select "Follow Path" from the popup menu. You will notice that the
+object does not actually jump onto the curve.  To make it do that, select the object
+that is following the path, go to the
+"Clear" submenu in the "Object" menu, and select the "Clear Origin" command.
+You should now have a path animation in which the object moves along the
+path between frame number&nbsp;0 and frame number&nbsp;100, with linear extrapolation
+after frame&nbsp;100.  To change the number of frames, go to the Object Properties
+for the curve, in the Properties Editor, and change the value of "Frames" under
+"Path Animation." Remember that 100 frames is only about 4 seconds!
+Also, make sure Path Animation is checked there, or you won't
+see any animation.  Checking the "Clamp" checkbox will change the extrapolation mode
+to constant, so that the object will stop at the end of the path.  
+The "Follow" checkbox makes the object rotate to keep a constant heading
+as it moves along the curve.</p>
 
-<p>By default, the object&mdash;actually, the point at which the object is
-attached to the path&mdash;moves along the path from beginning to end between
-frame 1 and frame 100. 
-You can change the length of the animation in the path's Object Data control panel, under
-"Path Animation," as shown in the picture below.
-Generally, you will want to increase the number of
-frames significantly.  Remember that 100 frames is only about 4 seconds!</p>
+<img src="blender-path-anim-easy.png" width="227" height="142" tex="blender-path-anim-easy.eps" texscale="0.7"/>
 
-<img src="blender-path-anim.png" width="240" height="290" tex="blender-path-anim.eps" texscale="0.7"/>
+
+<p>In many cases, this is as much control as you need.
+But for more control, you can do path animation by using a "Follow Path"
+constraint.  To do that, make sure that you know the name of the curve that
+you want to use.  Select the object that you want to move along the curve,
+and go to the Constraint Properties in the Properties Editor.
+Click the "Add Object Constraint" button and select "Follow Path" under the "Relationship"
+section of the popup menu. This will add the constraint and give you a set of
+controls for configuring it:</p>
+
+
+<img src="blender-path-anim.png" width="224" height="268" tex="blender-path-anim.eps" texscale="0.7"/>
+
+<np>You will need to use the "Target" menu to select the name of the curve that you want the
+object to follow.  To get the object to actually jump onto the curve, you will need to
+clear it's Location, not its Origin. (Select the object and use ALT-G, or use the
+"Location" command in the "Clear" submenu of the "Object" menu.)</np>
+
+<p>Use the "Forward&nbsp;Axis" setting in the constraint controls to say which axis of the object
+points along the curve. You need to check the "Follow Curve" checkbox for that
+to actually happen.  Make sure "Up Axis" is different from "Forward Axis,"
+or you will get strange behavior. Now, if you leave "Fixed Position" unchecked and click "Animate Path,"
+you will get exactly the same kind of path animation that was discussed previously.  If instead,
+however, you check "Fixed Position," you will be able to completely control the animation
+by animating the "Offset Factor" control, and maybe editing the F-curve for the Offset Factor.
+A value of the Offset factor between 0.0 and 1.0
+specifies distance traveled along the curve as a fraction of the length of the curve.
+Values less than 0.0 or greater than 1.0 correspond to extrapolated positions beyond the curve
+or further along the curve if the curve is closed.</p>
+
+<p>For example, insert a keyframe for Offset Factor with value 0.0 at frame&nbsp;0, and 
+a keyframe value 2.0 at frame 100.  The object will traverse the entire curve for the first
+50 frames, but then continue moving for the next 50, with values for "Offset Factor" that
+are greater than&nbsp;1.0.</p>
+
+<p>The nice thing is that you can start and end the animation at any time.
+You can choose the interpolation and extrapolation modes.  And you can edit the F-curve
+for full control of the animation along the path.  For example, you can vary its speed and even
+make it move backwards</p>
 
 <p>Note that path animation is not just for visible objects!  You can move a Camera
-or Lamp along a path.  You can combine path animation with tracking in 
-several ways.  For example, set up a Camera to track an Empty and move
-the Empty along a path to tell the Camera where to point.  Or do the
-same thing with a spotlight.   Or have a
-Camera track some object, and set the Camera to follow a path at the same
-time; this will make the Camera move around while looking all the time at the
-same object.</p>
+or Light along a path.  You can combine path animation with tracking.
+For example, set up a spotlight to track an Empty and move
+the Empty along a path to tell the spotlight where to point.  Or do the
+same thing with a camera.</p>
 
 </subsection>
 
-
-
-<subsection title="Particle Systems" id="blender.3.5">
-
-<p>A particle system is a bunch of free-floating vertices that move under the
-influence of forces or other controls.  Particle systems can represent
-everything from a cloud of smoke to a flock of birds.  So-called
-"Hair" particle systems, in which the entire path of each particle
-is rendered at once, can be used to simulate things like hair and grass.
-Blender particle systems are very complicated, and I will only
-mention a few of the options here.</p>
-
-<p>In Blender, particles must be emitted by a mesh object.  To turn a mesh 
-object into a particle-emitter, select the object, and click the Particle System 
-button&mdash;shown in the following image&mdash;at the top of
-the Properties Editor frame.  You should see a "+" button in the control area, next
-to an empty rectangle.  Click the "+" button and a large number 
-of new controls will appear.  These are the controls that you use to configure
-the particle system.  Here is a guide to some of them:</p>
-
-<img src="blender-particle-settings.png" width="615" height="710" tex="blender-particle-settings.eps" texscale="0.75"/>
-
-<p>Particles are shown in the 3D window as dots by default (this can be changed
-in the particle system settings).  The calculations that are required
-to implement the particle system are computed frame-by-frame and cached.  Drag
-the green line in the timeline to sweep through the frames and see how the
-particles move.  To make sure that they reflect all the changes that
-you make to the settings, you might have to start back in frame number&nbsp;1.
-</p>
-
-<p>By default, the initial velocity of the particles is 1 and is in the
-direction of the normal vector at the point that emits them.  They
-are subject to a gravitational force that makes them accelerate in
-the negative y-direction.  There are controls to change the initial velocity
-and to turn off gravity.  If you turn off initial velocity and gravity,
-the particle stays at the point where it is created&mdash;which might be
-OK if the emitter is moving.</p>
-
-<p>Particles can also be affected by forces that you add to the scene,
-using the "Force Field" sub-menu of the add menu.</p>
-
-<break/>
-
-<p>When you render a particle system, with the default render settings, 
-you should see a whitish ball of light at
-each particle.  The ball of light is
-a "halo".  Note that the scene doesn't have to be lit to see the halos; they
-emit color even in the absence of light.
-To change the appearance of the halo, go to the Material controls
-while the emitter object is selected.  Add a material if you have not
-done so already, and change the material type from "Surface" to "Halo".
-You will see a new set of halo property controls.
-You can actually render any mesh object, not just a
-particle system, with a Halo material.  You will get a halo at each vertex of
-the object.  This picture shows a Mesh Circle rendered with
-a Halo material:</p>
-
-<img src="blender-halo-material.jpg" width="" height="" tex="blender-halo-material.eps" texscale="0.6"/>
-
-<p>You can turn the ball of light that represents the halo into a star by
-turning on the "Star Tips" option in the Halo Material controls.  You can set the
-number of points of the stars&mdash;to 5, for example&mdash;by changing the
-number in the "Star Tips" box.
-Similarly, the "Rings" and "Lines" options add features to the
-Halo, and the "Rings" and "Lines" inputs determine how many of that feature
-are added. The color of the lines and rings can be set by clicking the
-color patch just below the corresponding checkbox.
-You might also want to change the "Size" property of the halo material.</p>
-
-<p>As an alternative to halo rendering of the particle system, you can place a copy of any given
-object at each particle.  In the Particle controls, set the "Rendering" to "Object", and
-select a "Dupli Object".  Set the size as well, since the default size is probably
-much too small.  Adding rotation to the particle system might be a good idea if
-you are duplicating an object and want the duplicates to spin.</p>
-
-
-</subsection>
 
 
 <subsection title="Rendering an Animation" id="blender.3.6">
@@ -332,17 +297,17 @@ you are duplicating an object and want the duplicates to spin.</p>
 <p>There is a command for rendering an animation in Blender's "Render" menu,
 but you shouldn't simply jump into using it&mdash;if you do, it will dump several
 hundred individual image files with names like 0001.png, 0002.png, &dots;, somewhere
-on your hard drive. To render an animation, you should use the Render panel in the Properties
-Editor frame.  Click the little icon in the header that looks like a camera to get to
-the controls</p>
+on your hard drive. Before rendering an animation, you should use the Output Properties
+in the Property Editor to set up the image size, file format, and output location of the rendered animation.
+Note that's it's not possible to render an animation without saving the result, but you
+don't get any kind of dialog box when you use the Render Animation command &mdash; it just
+automatically uses the settings in the Output Properties.  Here are the relevant properties:
+</p>
 
-<img src="blender-render-buttons.png" width="283" height="314" tex="blender-render-buttons.eps" texscale="0.6"/>
+<img src="blender-render-output.png" width="653" height="376" tex="blender-render-output.eps" texscale="0.85"/>
 
-<np>The Render panel controls rendering of individual images as well as animations.
-At the top of the Render control panel are "Render" and "Animation" 
-buttons that can be used to render an
-individual image or an animation.  (These buttons duplicate the F12 key and
-the render commands in the menu bar.)  The "Resolution" section controls the
+<np>The Output Properties control rendering of individual images as well as animations.
+The "Resolution" section controls the
 size of the image that will be produced.  You can specify the
 X and Y dimensions, in pixels, and also a percentage; the stated dimensions are
 multiplied by the percentage to get the actual image size (presumably
@@ -352,111 +317,75 @@ Note that the "Frame Step" lets you render just a subset of the
 frames.  For example, set it to 2 to render every other frame; again,
 this can be used to speed things up for test runs.</np>
 
-<p>You can also turn off certain features during rendering if you want to
-speed things up.  <word term="antialiasing">Antialiasing</word>, for example, 
-is something that should always be on to produce a good quality image, but it does take extra
-time to compute.  There is an "Anti-aliasing" checkbox that controls whether
-antialiasing is done. Below that checkbox are buttons labeled "3", "5", "8",
-and "16" that can be used to select the amount of antialiasing that is applied. 
-Similarly, there is a "Shading" section in the Render controls with checkboxes that
-you can use to turn off shadows, textures, etc., in the rendered image.</p>
-
-<p>Most important is a section labeled "Output" near the bottom of the 
-Render control panel.  This section is for controlling the output of animations.
-(It also sets the default file format for single images, but you can select the 
-file type when you save the rendered image.)  When you render an animation, you will see each frame being rendered
+<p>Also important is a section labeled "Output" near the bottom of the 
+Output Properties, shown on the right in the above image. 
+This section is for controlling the output destination and file format of animations.
+(It also sets the default file format for single images, but you can also select the 
+file type when you save the rendered image.)  When you render an animation, 
+you will see each frame being rendered
 on the screen.  As each frame is rendered, it is saved to disk.
-You have to set the output destination and format <b>before</b> rendering
-the animation, and you do that in the "Output" section of the Render
-control panel:</p>
-
-<img src="blender-render-output.png" width="283" height="260" tex="blender-render-output.eps" texscale="0.6"/>
+You have to set the output destination and format <b>before</b>
+rendering the animation.</p>
 
 <p>To set the output destination, 
-enter a directory name in the box just below the word "Output".
-You can add a file name to the output destination; 
-Blender will add frame numbers and a file extension to
-the name.  If the destination is a directory name, ending in a slash, Blender will make up the
-file name.
-Click the folder icon at the right end of the input box to select
-the destination using a file browser window.  Note that the default output destination
-is shown as the <i>/tmp</i> directory, and you will probably want to change that.
-(You can change the default directory for render output, and lots of other settings,
-using "User Preferences", in the "File" menu.)</p>
+enter a file path in the box just below the word "Output".
+If the destination is a directory name ending in a slash, blender will make up the
+file name, using frame numbers and an appropriate file extension.
+If there is no slash at the end, then the part after the last slash is 
+the file name, possibly with an added file extension if needed.</p>
 
-<p>You will also want to change the format of the animation output,
-shown as H.264 in the above image.  The default is PNG.  Note that if
-an image format, such as PNG, is selected for rendering an
-animation, then each frame of the animation will be 
-rendered as a separate image file.  This is something that
-is often done to allow further processing, but you probably
-want to use a video file format such as  AVI&nbsp;JPEG or H.264.  (I have found that
-an AVI JPEG file can be run by double-clicking it on most computers.)  For the
-H.264 format, you also have to set an encoding format, shown as MPEG-4 in
-the above image.</p>
+<p>The default format for the output is PNG, which is good for single images
+and could also be used for animations.  When you 
+use a single-image format for an animation, Blender will save each frame
+in a separate file.  The file names will include the frame numbers.
+This is something that is often done to allow further processing, but you probably
+want to use a video file format such as  AVI&nbsp;JPEG or H.264.
+I suggest using "H.264&nbsp;in&nbsp;MP4,"
+since it is widely supported and can be used on web pages in almost
+all web browsers.  For that, you have to set the file format to 
+FFMpeg&nbsp;Video.  This will add an "Encoding" section to the output properties,
+and you can select "H.264&nbsp;in&nbsp;MP4" from the menu.
+If you write your own web pages, here is an example of the HTML code that you
+can include to embed your animation on a web page:</p>
 
-<p>When you have everything set up, render the animation by clicking the "Animation"
-button at the top of the panel or using the "Render Animation" command in the 
-"Render" menu.  It can take some time to render an animation, since each frame
-must be rendered as a separate image.  You will see the frames being rendered in the
-3D View window.  You can abort the rendering with the Escape key.</p>
-
-<p>Note, by the way, that if you want to use
-your animation on a web page with the HTML5 <tag>video</tag> tag,
-you will currently need two animations to support all major browsers:
-Ogg&nbsp;Theora and H.264 with the "Format" in the "Encoding" section set to
-MPEG-4.  Here is some sample <word>HTML</word> code that you can use on
-the web page, substituting your own image size and animation file names: </p>
-
-<pre>&lt;video width="320" height="240" controls&gt;
-        &lt;source src="myAnimation.mp4" type="video/mp4"&gt;
-        &lt;source src="myAnimation.ogg" type="video/ogg"&gt;
+<pre>&lt;video width="640" height="480" controls&gt;
+      &lt;source src="myAnimation.mp4" type="video/mp4"&gt;
       &lt;b style="color:red"&gt;Sorry, but your browser can't show this video.&lt;/b&gt;
 &lt;/video&gt;</pre>
 
-<p>You should be careful when
-rendering animations, since you can quickly fill up lots of disk
-space, especially if you are saving uncompressed images.  In particular, you should know where
-the animation is being saved!</p>
+
+<p>It can take some time to render an animation, since each frame
+must be rendered as a separate image. For experimentation, I suggest
+using a short animation, a small image size, and the Eevee renderer.  The
+Cycles renderer will generally take much longer.  
+You will see each frame as it is being rendered.  
+You can abort the rendering with the Escape key.</p>
+
 
 <break/>
 
-<p>There are a few more control panels that affect rendering.  
-In the <b>Scene</b> controls (the third icon in the
-Properties Editor frame header), you can select the camera that
-is used render an image.  You can add extra cameras to a scene using the
-"Add" menu.  When you render an image, the scene is rendered from
-the point of view of the camera that is currently selected in the Scene controls.  
+<p>There are a few more controls that affect rendering.  
+You can use the "Add" menu to add extra cameras to a scene,
+just like you add other objects.
+In the Scene Properties, you can select the camera that
+is used for rendering images.  When you render an image, the scene is rendered from
+the point of view of the camera that is currently selected in the Scene Properties.  
 This is useful for making
 images and animations that show the same scene from several different points of view.
 You can also change the rendering camera by selecting the camera in
-the 3D&nbsp;View and hitting CONTROL-NUMPAD-0.</p>
+the 3D&nbsp;View and hitting Control-Numpad-0.</p>
 
-<p>In the <b>World</b> controls (next over in the header), near the top,
-there are controls for setting the background of the
-rendered image.  Check the "Blend&nbsp;Sky" box and set the "Horizon Color" and
-"Zenith Color" to get a color gradient from the bottom to the top of the
-image; without "Blend&nbsp;Sky", the "Horizon Color" is used as a uniform
-background color.  Also, you can add a texture to the sky.  Click from the
-World controls to the Texture controls; make sure that you are editing
-the world texture.  Add a texture and configure it.  To see
-an effect, make sure that "Horizon" is checked in "Influence" section of the texture controls.
-I got a nice cloud background using a Clouds texture, with the texture color changed from the
-default magenta to white, and with the "Horizon" color set to blue.  
-You can also turn on and configure
-Mist and Stars, using controls near the bottom of the World control panel.</p>
 
-<p>Finally, I'll note that the <b>Camera</b> Object control panel, which
-is available when a camera is the selected object in the 3D&nbsp;View,
-contains the "Clipping" setting for the camera, in the "Lens" section of the panel.  
-Clipping determines the range of distances from the camera that is visible in the scene.
+<p>Finally, I'll note that you can set the clip range, projection type, and other
+properties of a camera in the Object Data Properties for the camera.
+Like OpenGL, Blender will only render objects that are within a certain
+range of distances from the camera.  The limits are given by "Clip Start" and "End"
+in the camera properties, with defaults of 0.1 and 1000.
 If an object is farther from the camera than the camera's
 "End" clipping value, or closer than the "Start" clipping value,
 then the object is not seen by the camera.
 If you have a problem with faraway objects disappearing,
-check the camera clipping range.  Note that you can also set the
-Camera to use an orthographic rather than the default perspective
-projection.</p>
+check the camera clipping range.</p>
 
 </subsection>
 

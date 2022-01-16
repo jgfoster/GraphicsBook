@@ -95,48 +95,48 @@
 
 "use strict";
 
-var gl;   // The webgl context.
-var canvas;
+let gl;   // The webgl context.
+let canvas;
 
-var prog; // The main shader program, for the 3D on-screen image
-var prog_texture;  // The shader program for the 2D image that is rendered to a texture
+let prog; // The main shader program, for the 3D on-screen image
+let prog_texture;  // The shader program for the 2D image that is rendered to a texture
 
-var a_coords_loc;          // Locations of attributes in the main shader program
-var a_normal_loc; 
-var a_texCoords_loc; 
+let a_coords_loc;          // Locations of attributes in the main shader program
+let a_normal_loc; 
+let a_texCoords_loc; 
 
-var u_projection;          // Locations of uniforms in the main shader program
-var u_modelview;
-var u_texture;
-var u_normalMatrix;
-var u_textureScale;
+let u_projection;          // Locations of uniforms in the main shader program
+let u_modelview;
+let u_texture;
+let u_normalMatrix;
+let u_textureScale;
 
-var projection = mat4.create();        // projection matrix (for main shader program)
-var modelview;                         // will come from rotator
-var normalMatrix = mat3.create();      // normal transform matrix
-var textureTransform = mat3.create();  // texture transform matrix
+const projection = mat4.create();        // projection matrix (for main shader program)
+const normalMatrix = mat3.create();      // normal transform matrix
+const textureTransform = mat3.create();  // texture transform matrix
+let modelview;                         // will come from rotator
 
-var framebuffer;  // The framebuffer object that is used to draw to the texture
-var texture;      // The texture object where the 2D image is drawn
+let framebuffer;  // The framebuffer object that is used to draw to the texture
+let texture;      // The texture object where the 2D image is drawn
 
-var a_coords_loc_texture;  // Location of the a_coords attribute in prog_texture
-var buffer_texture;        // A buffer to hold the coordinates for a_coords_loc_texture
-var u_color_texture;       // Location of the color uniform in prog_texture.
-var u_translation_texture; // Location of the translation uniform in proh_texture
+let a_coords_loc_texture;  // Location of the a_coords attribute in prog_texture
+let buffer_texture;        // A buffer to hold the coordinates for a_coords_loc_texture
+let u_color_texture;       // Location of the color uniform in prog_texture.
+let u_translation_texture; // Location of the translation uniform in proh_texture
 
-var DISK_COUNT = 30;  // The scene in the texture shows moving disks.  This is the number of disks.
-var DISK_DIAMETER = 0.6;  // This is the size of the disks.
-var diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
-var diskColors;  // An array giving the colors of the disks.
-var diskVelocities;  // For animating the disk positions.
+const DISK_COUNT = 30;  // The scene in the texture shows moving disks.  This is the number of disks.
+const DISK_DIAMETER = 0.6;  // This is the size of the disks.
+let diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
+let diskColors;  // An array giving the colors of the disks.
+let diskVelocities;  // For animating the disk positions.
 
-var rotator;  // A TrackballRotator object that lets the user rotate the view by mouse.
+let rotator;  // A TrackballRotator object that lets the user rotate the view by mouse.
 
-var objects;  // array of objects, containing models created using createModel()
-              // Contains:  Cube, Sphere, Cylinder, Cone, Torus, Teapot
+const objects = [];  // array of objects, containing models created using createModel()
+                     // Contains:  Cube, Sphere, Cylinder, Cone, Torus, Teapot
 
-var frameNumber = 0;  // frame number for texture animation
-var animating = true;
+let frameNumber = 0;  // frame number for texture animation
+let animating = true;
 
 
 /* Draw the scene */
@@ -181,7 +181,7 @@ function draw() {
     gl.enableVertexAttribArray(a_texCoords_loc);
     gl.bindTexture(gl.TEXTURE_2D, texture);
     
-    var objectNum = Number(document.getElementById("object").value);
+    let objectNum = Number(document.getElementById("object").value);
     modelview = rotator.getViewMatrix();
     objects[objectNum].render(); // sets up modelview and normal matrices 
     gl.disableVertexAttribArray(a_coords_loc);
@@ -200,12 +200,12 @@ function drawDisks() {
     function disk(i, extraTranslateX, extraTranslateY) {
         gl.uniform4fv(u_color_texture, diskColors[i]);
         gl.uniform2f(u_translation_texture, diskCenters[i][0] + extraTranslateX, diskCenters[i][1] + extraTranslateY);
-        gl.drawArrays(gl.TRIANGLE_FAN, 0, 32);
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, 64);
         gl.uniform4f(u_color_texture, 0, 0, 0, 1);
-        gl.drawArrays(gl.LINE_LOOP, 0, 32);
+        gl.drawArrays(gl.LINE_LOOP, 0, 64);
     }
-    var r = DISK_DIAMETER/2;  // disk radius
-    for (var i = 0; i < DISK_COUNT; i++) {
+    let r = DISK_DIAMETER/2;  // disk radius
+    for (let i = 0; i < DISK_COUNT; i++) {
         disk(i,0,0);  // draw the disk with no extra translation (in its usual position)
         if (diskCenters[i][0] < -1 + r) { // disk hangs off left edge, draw it again on the right side
             disk(i,2,0);
@@ -237,7 +237,7 @@ function drawDisks() {
  *  is returned as the value of the function.  
  */
 function createModel(modelData) {
-    var model = {};
+    let model = {};
     model.coordsBuffer = gl.createBuffer();
     model.normalBuffer = gl.createBuffer();
     model.texCoordsBuffer = gl.createBuffer();
@@ -268,7 +268,7 @@ function createModel(modelData) {
         gl.uniformMatrix3fv(u_normalMatrix, false, normalMatrix);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);  
         gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
-    }
+    };
     return model;
 }
 
@@ -287,9 +287,9 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
             // This nested function retrieves the text content of an
             // element on the web page.  It is used here to get the shader
             // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
+        let element = document.getElementById(elementID);
+        let node = element.firstChild;
+        let str = "";
         while (node) {
             if (node.nodeType == 3) // this is a text node
                 str += node.textContent;
@@ -297,26 +297,27 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
         }
         return str;
     }
+    let vertexShaderSource, fragmentShaderSource;
     try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
+        vertexShaderSource = getTextContent( vertexShaderID );
+        fragmentShaderSource = getTextContent( fragmentShaderID );
     }
     catch (e) {
         throw "Error: Could not get shader source code from script elements.";
     }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
     gl.shaderSource(vsh,vertexShaderSource);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
         throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
      }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
     gl.shaderSource(fsh, fragmentShaderSource);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
        throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
@@ -338,9 +339,9 @@ function initGL() {
     a_coords_loc_texture =  gl.getAttribLocation(prog_texture, "a_coords");
     u_translation_texture = gl.getUniformLocation(prog_texture, "translation");
     u_color_texture = gl.getUniformLocation(prog_texture, "color");
-    var diskCoords = new Float32Array(2*32);
-    for (var i = 0; i < 32; i++) {
-        var angle = i/32 * 2*Math.PI;
+    let diskCoords = new Float32Array(2*64);
+    for (let i = 0; i < 64; i++) {
+        let angle = i/64 * 2*Math.PI;
         diskCoords[2*i] = DISK_DIAMETER/2 * Math.cos(angle);
         diskCoords[2*i+1] = DISK_DIAMETER/2 * Math.sin(angle);
     }
@@ -368,13 +369,12 @@ function initGL() {
     mat4.perspective(projection, Math.PI/10, canvas.width/canvas.height, 1, 10);
     gl.uniformMatrix4fv(u_projection, false, projection);
     
-    objects = new Array(6);              
     objects[0] = createModel( cube() );
     objects[1] = createModel( uvSphere(0.7,64,32) );
     objects[2] = createModel( uvCylinder() );
     objects[3] = createModel( uvCone() );
     objects[4] = createModel( uvTorus(0.65,0.2,64,24) );
-    for (var i = 0; i < teapotModel.vertexPositions.length; i++) {
+    for (let i = 0; i < teapotModel.vertexPositions.length; i++) {
         teapotModel.vertexPositions[i] *= 0.05; // scale teapot model to a size that matches other objects
     }
     objects[5] = createModel( teapotModel );
@@ -406,11 +406,11 @@ function createDiskData() {
     diskCenters = new Array(DISK_COUNT);
     diskColors = new Array(DISK_COUNT);
     diskVelocities = new Array(DISK_COUNT);
-    for (var i = 0; i < DISK_COUNT; i++) {
+    for (let i = 0; i < DISK_COUNT; i++) {
         diskColors[i] = [ Math.random(), Math.random(), Math.random(), 0.5 ];
         diskCenters[i] = [ 2*Math.random() - 1, 2*Math.random() - 1 ];
-        var angle = Math.random()*2*Math.PI;
-        var speed = 0.003 + 0.01*Math.random();
+        let angle = Math.random()*2*Math.PI;
+        let speed = 0.003 + 0.01*Math.random();
         diskVelocities[i] = [ speed*Math.cos(angle), speed*Math.sin(angle) ];
     }
 }
@@ -419,7 +419,7 @@ function createDiskData() {
  * outside the coordinate range from 0 to 1.  Change to a new random velocity occasionally
  */
 function updateDiskPositions() {
-    for (var i = 0; i < DISK_COUNT; i++) {
+    for (let i = 0; i < DISK_COUNT; i++) {
         diskCenters[i][0] += diskVelocities[i][0];
         if (diskCenters[i][0] < -1) {
             diskCenters[i][0] += 2;
@@ -435,8 +435,8 @@ function updateDiskPositions() {
             diskCenters[i][1] -=2;
         }
         if (Math.random() < 0.02) {
-            var angle = Math.random()*2*Math.PI;
-            var speed = 0.003 + 0.01*Math.random();
+            let angle = Math.random()*2*Math.PI;
+            let speed = 0.003 + 0.01*Math.random();
             diskVelocities[i] = [ speed*Math.cos(angle), speed*Math.sin(angle) ];
         }
     }
@@ -455,7 +455,7 @@ function frame() {
 }
 
 function doAnimationCheckbox() {
-    var run = document.getElementById("animCheckbox").checked;
+    let run = document.getElementById("animCheckbox").checked;
     if (run != animating) {
         animating = run;
         if (animating)
@@ -511,9 +511,12 @@ function init() {
     frame();
 }
 
+window.onload = init;
+
 </script>
 </head>
-<body onload="init()">
+
+<body>
 
 <h2>Rendering Directly to a Texture</h2>
 

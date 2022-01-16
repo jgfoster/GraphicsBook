@@ -17,7 +17,6 @@
         -webkit-user-select: none; /* turn off text selection  / Webkit */
         -moz-user-select: none;    /* Firefox */
         -ms-user-select: none;     /* IE 10  */
-        -o-user-select: none;      /* Opera */
         user-select: none;
     }
     canvas {
@@ -33,8 +32,8 @@
 
     "use strict";  // gives improved error-checking in scripts.
 
-    var canvas;    // The canvas element on which we will draw.
-    var graphics;  // A 2D graphics context for drawing on the canvas.
+    let canvas;    // The canvas element on which we will draw.
+    let graphics;  // A 2D graphics context for drawing on the canvas.
     
     /**
      *  The draw() method is not currently used in this example.
@@ -56,9 +55,9 @@
      */
     function installMouseHandler() {
 
-        var dragging = false;  // set to true when a drag action is in progress.
-        var startX, startY;    // coordinates of mouse at start of drag.
-        var prevX, prevY;      // previous mouse position during a drag.
+        let dragging = false;  // set to true when a drag action is in progress.
+        let startX, startY;    // coordinates of mouse at start of drag.
+        let prevX, prevY;      // previous mouse position during a drag.
         
         function doMouseDown(evt) {
                 // This function is called when the user presses a button on the mouse.
@@ -69,10 +68,9 @@
             if (evt.button != 0) {
                 return;  // don't respond unless the button is the main (left) mouse button.
             }
-            var x,y;  // mouse position in canvas coordinates
-            var r = canvas.getBoundingClientRect();
-            x = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
-            y = Math.round(evt.clientY - r.top);   // round to integer values; some browsers would give non-integers.
+            const r = canvas.getBoundingClientRect();
+            const x = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+            const y = Math.round(evt.clientY - r.top);   // round to integer values; some browsers would give non-integers.
             dragging = true;  // (this won't be the case for all mousedowns in all programs)
             if (dragging) {
                 startX = prevX = x;
@@ -87,10 +85,9 @@
             if (!dragging) {
                 return;  // (shouldn't be possible)
             }
-            var x,y;  // mouse position in canvas coordinates
-            var r = canvas.getBoundingClientRect();
-            x = Math.round(evt.clientX - r.left);  
-            y = Math.round(evt.clientY - r.top);
+            const r = canvas.getBoundingClientRect();
+            const x = Math.round(evt.clientX - r.left);   // (x,y) mouse position in canvas coordinates
+            const y = Math.round(evt.clientY - r.top);
             
             // As an example, if the shift key is down, then a black line is drawn from the
             // previous mouse position to the current position.  Otherwise, a randomly colored
@@ -105,9 +102,9 @@
                 graphics.stroke();
             }
             else {
-                var r = Math.floor(Math.random()*256);
-                var g = Math.floor(Math.random()*256);
-                var b = Math.floor(Math.random()*256);
+                const r = Math.floor(Math.random()*256);
+                const g = Math.floor(Math.random()*256);
+                const b = Math.floor(Math.random()*256);
                 graphics.fillStyle = "rgb(" + r + "," + g +"," + b + ")";
                 graphics.fillRect(x-15,y-15,30,30);
             }
@@ -131,17 +128,17 @@
    } // end installMouseHandler
 
 
-    var sqLoc = { x: 380, y: 280 }; // Data for this example, location of red square.
+    let sqLoc = { x: 380, y: 280 }; // Data for this example, location of red square.
     
     /**
      *  Respond when the user presses a key.  The keyCode in the event
      *  tells what key was pressed.  Several keyCodes are shown here as
      *  examples, with simple responses: The space bar clears the canvas;
      *  the arrow keys draw a red square at a changing position.  (The square
-     *  is not drawn at all until an arrow key is pressed.)
+     *  is not drawn at all until the first time an arrow key is pressed.)
      */
     function doKeyDown(evt) {
-        var code = evt.keyCode;  // Numerical code for key that was pressed.
+        let code = evt.keyCode;  // Numerical code for key that was pressed.
         switch (code) {
         case 37:  // left arrow key
             sqLoc.x -= 40;
@@ -189,14 +186,17 @@
             document.getElementById("canvasholder").innerHTML =
                "<p>Canvas graphics is not supported.<br>" +
                "An error occurred while initializing graphics.</p>";
+            return;
         }
         installMouseHandler();
         document.addEventListener("keydown", doKeyDown, false);
     }
     
+    window.onload = init; // arranges for function init to be called when page is loaded
+
 </script>
 </head>
-<body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
+<body>
 
 <h2>Canvas Graphics Starter with Events</h2>
 

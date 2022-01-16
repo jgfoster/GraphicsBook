@@ -21,7 +21,7 @@ In the web site download, they can be found in the folder named <i>demos</i>.
 
 <p>(Note: Examples and demos for <word>HTML canvas</word> graphics, <word>three.js</word>, and <word>WebGL</word>
 are html files, which can be opened in a web browser.  Many of the html programs use images.
-In certain browers, the html programs that use images will not work when the html files
+In certain browsers, the three.js and WebGL programs that use images will not work when the html files
 are loaded from a local hard drive.  That is, they will fail in some web browsers when run
 from the <i>source</i> or <i>demo</i> folder in the web site download of this book.
 The programs should work OK when loaded from a web server.)</p>
@@ -29,7 +29,7 @@ The programs should work OK when loaded from a web server.)</p>
 <subsection title="Java Graphics2D Examples" id="source.1">
 
 <p>There are a few examples in <localref href="graphics2d.4"/> and 
-<localref href="graphics2d.5"/> that use Java's 2D graphics API.
+<localref href="graphics2d.5"/> that uses the 2D graphics API that is part of Java's Swing GUI toolkit.
 In the web site download, the source code for these examples can be found
 in the folder named <i>java2d</i> inside the <i>source</i> folder.  Each example
 is a single file that can be compiled to produce an application; no
@@ -105,9 +105,7 @@ for 2D <word>vector graphics</word>.  Several examples were discussed in that se
 examples can be opened in a web browser to see the images they produce.  View the source code
 for the web page to see the program that produces the image.  You can also open the files
 in a text editor to read the source.  Some of the examples produce
-animated images.  Old browsers can't show SVG images, but any browser that works with the rest
-of this textbook should be able to view them.  (Note that Internet Explorer, at least through 
-version 11, will not show SVG animation; it will show a static image instead.)
+animated images.  SVG images should work in almost all modern web browsers.
 These examples can be found in the <i>svg</i> folder inside the <i>source</i> folder.</p>
 
 <ul>
@@ -150,10 +148,11 @@ programs use a "<word>camera</word>" API defined in <sourceref href="jogl/Camera
 for Java and in <sourceref href="glut/camera.c"/> and <sourceref href="glut/camera.h"/> 
 for&nbsp;C.)</p>
 <p>The OpenGL demos in the book are written using <i>glsim.js</i>, a <word>JavaScript</word>
-library that implements a small subset of the C API for OpenGL 1.1.  Information about
+library that implements a small subset of the C API for OpenGL&nbsp;1.1 
+on top of WebGL&nbsp;1.0.  Information about
 glsim can be found in <sourceref href="glsim/glsim-doc.html"/>.  Some of 
 the program examples are available in <word>HTML</word> versions that use the <i>glsim</i>
-library.  They can be found in the <i>glsim</i> directory inside <i>source</i>.</p>
+library.  They can be found in the <i>glsim</i> directory inside the <i>source</i> directory.</p>
 
 <ul>
 <li><sourceref href="glut/first-triangle.c"/>, <sourceref href="jogl/FirstTriangle.java"/>
@@ -234,9 +233,11 @@ the <word>HTML canvas</word>.  It is discussed in <localref href="threejs"/>.  T
 can be found in the folder named <sourceref href="threejs"/>, inside the <i>source</i> folder
 of the web site download.  All of the examples use the JavaScript file
 <sourceref href="threejs/three.min.js"/>, which is a "minified" version of the library, not
-meant for human readers.  The original version, <sourceref href="threejs/three.js"/> is
-also available.  The version is <i>three.js</i> Release 89.  <i>Three.js</i> is an
-open-source project.  It can be downloaded from <a href="http://threejs.org">threejs.org</a>.</p>
+meant for human readers.  A&nbsp;human-readable version, <sourceref href="threejs/three.js"/> is
+also available.  The version is <i>three.js</i> Release 129.  Note that although <i>three.js</i>
+is written using JavaScript modules, the examples in this book only use the non-modular form
+of the library.  <i>Three.js</i> is an open-source project.  It can be downloaded from 
+<a href="http://threejs.org">threejs.org</a>.</p>
 
 <ul>
 <li><sourceref href="threejs/full-window.html"/> &mdash; <i>Three.js</i> is typically used to
@@ -251,22 +252,25 @@ model using the keyboard.  It includes a simple example. From <localref href="th
 <li><sourceref href="threejs/diskworld-1.html"/> &mdash; Shows an animated model of a simple "car" driving around
 the edge of a disk, with "trees" made from a cylinder and a cone.  Based on the previous sample program.
 From <localref href="threejs.1"/></li>
-<li><sourceref href="threejs/MeshFaceMaterial.html"/> &mdash; Shows how to use a
-<classname>MeshFaceMaterial</classname> on a cube and on a pyramid whose geometry is constructed
-by hand as an <word>indexed face set</word>.
+<li><sourceref href="threejs/vertex-groups.html"/> &mdash; Shows how to use an
+array of materials on a cube and on a pyramid whose geometry is constructed
+by hand.  This uses the "vertex group" feature of <classname>THREE.BufferedGeometry</classname>.
+This is also a version <sourceref href="threejs/vertex-groups-indexed.html"/> that
+represents the pyramid using the <word>indexed face set</word> pattern.
 From <localref href="threejs.2"/></li>
 <li><sourceref href="threejs/textured-pyramid.html"/> &mdash; Shows the same pyramid as the previous
 example, with a texture.  Shows how to define texture coordinates for a <i>three.js</i> geometry.
 From <localref href="threejs.2"/></li>
 <li><sourceref href="threejs/curves-and-surfaces.html"/> &mdash; Creates several surfaces using a parametric
 surface, tube geometry, <word>lathing</word>, and <word>extrusion</word>. From <localref href="threejs.2"/></li>
-<li><sourceref href="threejs/json-model-viewer.html"/> &mdash; Displays models that are loaded
-from files in the JSON format used by <i>three.js</i>.  I exported one of the models from Blender.
-The others are from the <i>three.js</i> download. (See the demo <demoref href="c5/mesh-animation.html"/>
+<li><sourceref href="threejs/model-viewer.html"/> &mdash; Displays models that are loaded
+from files various formats, using <i>three.js</i> loaders. 
+Models are from the <i>three.js</i> download. (See the demo <demoref href="c5/mesh-animation.html"/>
 to see animated versions of two of the models.) From <localref href="threejs.2"/></li>
-<li><sourceref href="threejs/anaglyph.html"/> &mdash; Uses an <classname>AnaglyphEffect</classname>
-to show a scene meant to be viewed with red/cyan 3D glasses.  Aside from the <word term="anaglyph stereo">anaglyph</word> effect,
-the program is a copy of <sourceref href="threejs/full-window.html"/>. From <localref href="threejs.3"/></li>
+<li><sourceref href="threejs/instanced-mesh.html"/> &mdash; A small example of using a
+<i>THREE.InstancedMesh</i> object, which makes it possible to draw a large numbers of
+instances of the same basic geometry, with different transformations and, optionally, different
+colors for each copy.  From <localref href="threejs.3"/></li>
 <li><sourceref href="threejs/skybox.html"/> &mdash; Demonstrates using a cubemap texture to make
 a <word>skybox</word>. From <localref href="threejs.3"/></li>
 <li><sourceref href="threejs/reflection.html"/> &mdash; A demonstration of using an 
@@ -289,9 +293,16 @@ source code in a text editor or using a "View Source" command in a web browser. 
 a WebGL program is written in <word>JavaScript</word>.  The other part consists of a
 <word>vertex shader</word> and a <word>fragment shader</word> written in <word>GLSL</word>.
 Many of these examples rely on scripts that are in the same <sourceref href="webgl"/> directory.
-In particular, the 3D examples use the <i><word>glMatrix</word></i> library (<localref href="webgl3d.1.1"/>).</p>
+In particular, the 3D examples use the <i><word>glMatrix</word></i> library (<localref href="webgl3d.1.1"/>).
+Most of these programs work with WebGL 1.0, but a few require WebGL 2.0, as noted.</p>
 
 <ul>
+<li><sourceref href="webgl/VAO-test-webgl2.html"/> &mdash; Demonstrates the use of Vertex Array Objects.
+Mentioned in <localref href="webgl.1.7"/>, but it uses many techniques that will be covered later in the
+textbook.  This program requires WebGL&nbsp;2.0.</li>
+<li><sourceref href="webgl/instancing-test-webgl2.html"/> &mdash; Demonstrates the use of instanced
+drawing with <i>gl.drawArraysInstanced</i>().  Mentioned in <localref href="webgl.1.8"/>, but it uses
+techniques that will be covered later in the textbook.  This program requires WebGL&nbsp;2.0</li>
 <li><sourceref href="webgl/webgl-rgb-triangle.html"/> &mdash; The standard OpenGL example rendered using WebGL:
 a triangle whose vertices are red, green, and blue, where the colors of interior pixels are computed
 by interpolating colors from the vertices.  Demonstrates the use of attributes and varying variables.  
@@ -313,6 +324,13 @@ From <localref href="webgl.4"/>.</li>
 but uses it in a 2D context to imitate a picture taken with a fisheye lens.  2D&nbsp;texture
 coordinates are first mapped onto a sphere to get the direction vector that is used to
 sample the cubemap. From <localref href="webgl.4"/>.</li>
+<li><sourceref href="webgl/webgl-game-of-life.html"/> &mdash;
+An implementation of John H. Conway's "Game of Live" in WebGL, as a basic example of how GPUs can be used
+to perform computational tasks. From <localref href="webgl.4"/>.</li>
+<li><sourceref href="webgl/texelFetch-MonaLisa-webgl2.html"/> &mdash; 
+A rather silly demo program that uses the GLSL ES 3.00 function <i>texelFetch</i>() to
+get colors from a texture image.  This program requires WebGL&nbsp;2.0.
+From <localref href="webgl.4"/>.</li>
 <li><sourceref href="webgl/simple-hierarchy2D.html"/> &mdash; Demonstrates using 2D modeling transformations 
 in WebGL and GLSL, with some simple animated hierarchical objects.  Transforms are implemented in
 JavaScript as objects of type <classname>AffineTransform2D</classname>, defined in the
@@ -334,7 +352,10 @@ From <localref href="webgl3d.2"/>.</li>
 <li><sourceref href="webgl/basic-specular-lighting-Phong.html"/> &mdash; A second implementation of specular reflection,
 using <word>Phong shading</word> (with the lighting calculations in the fragment shader).  Aside from moving
 the calculation to the fragment shader, this example is identical to the previous example.
-From <localref href="webgl3d.2"/>.</li>
+From <localref href="webgl3d.2"/>.  There is also a version that has been ported to
+WebGL&nbsp;2.0 and GLSL&nbsp;ES&nbsp;3.00:
+<sourceref href="webgl/basic-specular-lighting-Phong-webgl2.html"/>.  The
+required changes are minimal.</li>
 <li><sourceref href="webgl/parametric-function-grapher.html"/> &mdash;  Lets
 the user graph a parametric surface, given by equations x(u,v), y(u,v), and z(u,v) entered by
 the user. A relatively complex program, it illustrates GLSL data structures, two-sided lighting, 
@@ -355,7 +376,9 @@ a skybox and as an environment map.  From <localref href="webgl3d.3"/>.</li>
 demo of using blending for something other than transparency.  Also a very simple example of a 
 multi-pass algorithm.  From <localref href="webgl3d.4"/>.</li>
 <li><sourceref href="webgl/render-to-texture.html"/> &mdash; Uses a WebGL <word>framebuffer</word>
-to draw an image directly into a texture. From <localref href="webgl3d.4"/>.</li>
+to draw an image directly into a texture. From <localref href="webgl3d.4"/>.
+There is also a port to WebGL&nbsp;2.0, which uses vertex array objects and <i>gl.texStorage2D</i>():
+<sourceref href="webgl/render-to-texture-webgl2.html"/>.</li>
 <li><sourceref href="webgl/cube-camera.html"/> &mdash; Shows a <word>skybox</word> and moving cubes reflected on
 the surface of an object.  Uses a dynamic <word>cubemap texture</word> as an 
 <word term="environment mapping">environment map</word> on the reflective object.  
@@ -364,10 +387,17 @@ From <localref href="webgl3d.4"/>.</li>
 <li><sourceref href="webgl/anisotropic-filtering.html"/> &mdash;  Demonstrates the use of the WebGL
 <word>anisotropic filtering</word> extension.  Shows a large textured rectangle extending into the distance and
 lets the user turn anisotropic filtering on and off.  From <localref href="webgl3d.5"/>.</li>
-<li><sourceref href="webgl/image-evolver.html"/> &mdash; demonstrates use of the WEBGL_color_buffer_float
+<li><sourceref href="webgl/image-evolver.html"/> &mdash; Demonstrates use of the WEBGL_color_buffer_float
 <word>WebGL extension</word>.  The application is a simple genetic algorithm that tries to approximate a given
-image.  The floating point color buffer is used for finding the average of the color values in
-an image.  From <localref href="webgl3d.5"/>.</li>
+image.  The floating point color buffer is used for two computations: finding the average of the color values in
+an image and computing an image that represents the difference between two images.  From <localref href="webgl3d.5"/>.</li>
+<li><sourceref href="webgl/instancing-test-webgl1.html"/> &mdash; Demonstrates the use of an extension
+to do instanced drawing in WebGL 1.0.  This is a copy of <sourceref href="webgl/instancing-test-webgl2.html"/>,
+modified to work with WebGL 1.0.   From <localref href="webgl3d.5"/>.</li>
+<li><sourceref href="webgl/multiple-draw-buffers-webgl2.html"/> &mdash; Demonstrates drawing to multiple
+textures attached as draw buffers to the same framebuffer.  Requires WebGL&nbsp;2.0 (but something
+similar could be done in WebGL 1.0 with an extension.)
+From <localref href="webgl3d.5"/>.</li>
 </ul>
 </subsection>
 
@@ -376,7 +406,7 @@ an image.  From <localref href="webgl3d.5"/>.</li>
 <subsection title="Live Demos" id="source.7">
 
 <p><web>This book</web><tex>The web site version of this book</tex> 
-includes "live" or "interactive" demos.  The
+includes "live" or "interactive" demos that are embedded in the web pages.  The
 demos are small programs written as web pages using JavaScript and either
 <word>HTML canvas</word> graphics or <word>WebGL</word>.  Although they are designed
 to be run as small applications inside other web pages, they can also be run
@@ -388,11 +418,12 @@ if you copy a demo to a different location, be sure to also copy all the
 files on which it depends.</p>
 
 <p>The demos from <localref href="graphics2d"/> use the 2D canvas graphics API,
-which will work in almost all modern web browsers, including Internet Explorer 9 or
-later.  Demos from the remaining chapters use WebGL, which will work with most
-modern desktop browsers, including Internet Explorer 11 or later, and many browsers
-on mobile devices.  (However, WebGL might have
-problems in some of these browsers on some machines.)</p>
+which will work in almost all modern web browsers, 
+Demos from the remaining chapters use WebGL, which will also work with almost all
+modern desktop browsers, and many browsers
+on mobile devices.  (However, WebGL might still have
+problems in some of these browsers on some machines.)  All demo programs that use
+WebGL will work with WebGL&nbsp;1.0.</p>
 
 <p>The demos in <localref href="gl1geom"/> and <localref href="gl1light"/>
 use <sourceref href="glsim/glsim.js">glsim.js</sourceref>, a JavaScript library that I wrote
@@ -400,7 +431,9 @@ to simulate a subset of OpenGL 1.1.  Information about
 glsim can be found in <sourceref href="glsim/glsim-doc.html"/>.</p>
 
 <p>For many of the demos, the reader is not expected to understand the program code for
-the demo at the point where the demo occurs in the book.</p>
+the demo at the point where the demo occurs in the book.  Note that the JavaScipt code in the
+demos has <b>not</b> been updated to use the more modern version of JavaSctipt that is covered
+in <localref href="proglang.3"/>.</p>
 
 <ul>
 <li><demoref href="c2/pixel-magnifier.html"/> &mdash; from <localref href="graphics2d.1"/>.

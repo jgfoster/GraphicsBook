@@ -55,7 +55,7 @@ but you don't need to understand that to get the general idea.  For us,
 it's enough to understand that the function says how light coming in from a
 given direction is distributed among possible outgoing directions.)
 Note that a BSDF is also a function of the point that you are talking about,
-and it can be a function of the wavelength of the light as well.</p>
+and it is generally a function of the wavelength of the light as well.</p>
 
 <p>Any point in space can be assigned a BSDF.  For empty space, the BSDF is trivial:
 It simply says that light arriving at a point has a 100% probability of continuing
@@ -129,7 +129,8 @@ with an emission color actually emits light that can illuminate other objects.  
 area light is just an extended object that emits light from every point, and it is common
 to illuminate scenes with large light-emitting objects.  (In fact, in
 a typical path tracing setup, point lights and directional lights have to be assigned
-some area to make them work correctly in the algorithm.)</p>
+some area to make them work correctly in the algorithm, or some forward path tracing
+has to be used.)</p>
 
 <p>As for scattered light, the BSDF at a point determines how light arriving at that point is scattered.
 Light can, in general, arrive from any direction
@@ -198,12 +199,11 @@ for a dense medium like milk, it would be quite short.</p>
 <p>A great deal of computation is required to trace enough light paths to get
 a high-quality image.  Although path tracing was invented in the 1980s, it
 is only recently that it has become practical for general use, and it can still
-take many hours to get acceptable quality.  In fact, you can do path tracing
+take many hours to get high quality rendering.  In fact, you can do path tracing
 on your desktop computer using the 3D modeling program Blender, which is discussed
-in <localref href="blender"/>.  Blender has an alternative rendering engine,
-called the Cycles renderer, that uses path tracing.  Cycles is not discussed in the
-appendix, but you can look up some tutorials on it, if you are interested in
-seeing what path tracing can do.</p>
+in <localref href="blender"/>.  Blender has a rendering engine
+called Cycles that uses path tracing. See the appendix for more information
+about Blender.</p>
 
 </subsection>
 

@@ -22,20 +22,20 @@
 
 "use strict";
 
-var scene, camera, renderer;  // Three.js rendering basics.
+let scene, camera, renderer;  // Three.js rendering basics.
 
-var canvas;  // The canvas on which the image is rendered.
+let canvas;  // The canvas on which the image is rendered.
 
 
-var model;   // Contains the visible objects in the scene, but
+let model;   // Contains the visible objects in the scene, but
              // not the lights or camera.  The model can be
 			 // rotated using the keyboard. 
 
 // Nodes in the scene graphs that are modified as part of the animation:
-var sphereRotator;  // The sphere is a child of this object; rotating
+let sphereRotator;  // The sphere is a child of this object; rotating
                     // this object about the y-axis rotates the sphere.
 
-var animating = false;  // This is set to true when an animation is running.
+let animating = false;  // This is set to true when an animation is running.
 
 
 /*  Create the scene graph.  This function is called once, as soon as the page loads.
@@ -51,7 +51,7 @@ function createWorld() {
 	
     // create some lights and add them to the scene.
 	scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
-	var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
+	let viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
 	viewpointLight.position.set(0,0,1);  // shines down the z-axis
 	scene.add(viewpointLight);
 	
@@ -65,7 +65,7 @@ function createWorld() {
         new THREE.CylinderGeometry(0.3,0.3,8),
 		new THREE.MeshLambertMaterial({ color: 0x0000AA })
 	));
-	var sphere = new THREE.Mesh(
+	let sphere = new THREE.Mesh(
 	    new THREE.SphereGeometry(1,32,16),
 		new THREE.MeshPhongMaterial({
 		    color: "green",
@@ -120,7 +120,7 @@ function doFrame() {
  * function will start or stop the animation, depending on its setting.
  */
 function doAnimateCheckbox() {
-    var anim = document.getElementById("animate").checked;
+    let anim = document.getElementById("animate").checked;
 	if (anim != animating) {
 		animating = anim;
 		if (animating) {
@@ -133,11 +133,11 @@ function doAnimateCheckbox() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the model.
+/*  Responds to user's key press.  Here, it is used to rotate the entire model.
  */
 function doKey(event) {
-	var code = event.keyCode;
-	var rotated = true;
+	let code = event.keyCode;
+	let rotated = true;
 	switch( code ) {
 	    case 37: model.rotation.y -= 0.03;  break;    // left arrow
 	    case 39: model.rotation.y +=  0.03; break;    // right arrow
@@ -183,9 +183,12 @@ function init() {
 	render();
 }
 
+
+window.onload = init;  // Arrange for init function to be called after the page is loaded.
+
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <h2>Three.js Animated Model</h2>
 

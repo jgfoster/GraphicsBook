@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/freeglut.h>
+#include <GL/glut.h>
 #include <math.h>
 
 // NOTE: the "static" modifier means that the variable or function is private to this file.

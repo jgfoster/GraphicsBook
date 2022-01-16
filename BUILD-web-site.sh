@@ -82,17 +82,7 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
    
    echo
    echo Fixing html DOCTYPES...
-   sed -i '.bak' '1 s/<html>/<!DOCTYPE html>\
-<html>/' `find . -name "*.html"`
-
-   if [ $? -eq 0 ]
-   then
-      echo "Successful DOCTYPE fixup"
-      rm *html.bak */*html.bak */*/*html.bak */*/*/*html.bak 
-   else
-      echo "DOCTYPE fixup error" >&2
-      exit 1
-   fi
+   sed -i -e '1 s/<html>/<!DOCTYPE html>\n<html>/' `find . -name "*.html"`
    
    if ! mv web $BUILD_OUTPUT_DIR/web-site ; then
       echo
@@ -103,7 +93,7 @@ if  $XALAN_COMMAND -xsl convert-web.xsl -in graphicstext.xml ; then
 
    echo
    echo "BUILD-web-site.sh completed."
-   echo "Created Graphics Book web site in $BUILD_OUTPUT_DIR/web-site."
+   echo "Created Javanotes web site in $BUILD_OUTPUT_DIR/web-site."
    echo
    exit 0
    

@@ -19,7 +19,7 @@
    Emissive color is used to make the lights seem to glow yellow when
    they are turned on.
    
-   There is also a very dim viewpoint light, so nother is ever absolutely
+   There is also a very dim viewpoint light, so nothing is ever absolutely
    dark.
 -->
 <head>
@@ -35,7 +35,17 @@
 </style>
 
 
-<script type="x-shader/x-vertex" id="vshader-source">
+
+<script src="gl-matrix-min.js"></script>
+<script src="trackball-rotator.js"></script>
+<script src="basic-object-models-IFS.js"></script>
+
+<script>
+
+"use strict";
+
+
+const vertexShaderSource = `
     attribute vec3 a_coords;
     attribute vec3 a_normal;
     uniform mat4 modelview;
@@ -48,10 +58,9 @@
         gl_Position = projection * eyeCoords;
         v_normal = normalize(a_normal);
         v_eyeCoords = eyeCoords.xyz/eyeCoords.w;
-    }
-</script>
+    }`;
 
-<script type="x-shader/x-fragment" id="fshader-source">
+const fragmentShaderSource = `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
        precision highp float;
     #else
@@ -131,47 +140,39 @@
             }
         }
         gl_FragColor = vec4(color,material.diffuseColor.a);
-    }
-</script>
+    }`;
 
+    
+let gl;   // The webgl context.
 
-<script src="gl-matrix-min.js"></script>
-<script src="trackball-rotator.js"></script>
-<script src="basic-object-models-IFS.js"></script>
-<script>
+let a_coords_loc;         // Location of the a_coords attribute variable in the shader program.
+let a_normal_loc;         // Location of a_normal attribute 
 
-"use strict";
+let u_modelview;       // Locations for uniform matrices
+let u_projection;
+let u_normalMatrix;
 
-var gl;   // The webgl context.
+let u_material;     // An object tolds uniform locations for the material.
+let u_lights;       // An array of objects that holds uniform locations for light properties.
 
-var a_coords_loc;         // Location of the a_coords attribute variable in the shader program.
-var a_normal_loc;         // Location of a_normal attribute 
+const projection = mat4.create();    // projection matrix
+let modelview;                     // modelview matrix; value comes from rotator
+const normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
 
-var u_modelview;       // Locations for uniform matrices
-var u_projection;
-var u_normalMatrix;
+let rotator;  // A TrackballRotator to implement rotation by mouse.
 
-var u_material;     // An object tolds uniform locations for the material.
-var u_lights;       // An array of objects that holds uniform locations for light properties.
+let frameNumber = 0;  // Originally a frame number, but modified to represent elapsed time in units of 1/60 second.
 
-var projection = mat4.create();    // projection matrix
-var modelview;                     // modelview matrix; value comes from rotator
-var normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for transforming normal vectors
+let torus, sphere, cone, cylinder, disk, ringM, cubeM;  // basic objects, created using function createModel
 
-var rotator;  // A TrackballRotator to implement rotation by mouse.
+const matrixStack = [];           // A stack of matrices for implementing hierarchical graphics.
 
-var frameNumber = 0;  // frame number during animation (actually only goes up by 0.5 per frame)
-
-var torus, sphere, cone, cylinder, disk, ring, cube;  // basic objects, created using function createModel
-
-var matrixStack = [];           // A stack of matrices for implementing hierarchical graphics.
-
-var currentColor = [1,1,1,1];   // The current diffuseColor; render() functions in the basic objects set
+let currentColor = [1,1,1,1];   // The current diffuseColor; render() functions in the basic objects set
                                 // the diffuse color to currentColor when it is called before drawing the object.
                                 // Other color properties, which don't change often are handled elsewhere.
 
-var sunAngle = Math.PI/2; // rotation of the sun about the z-axis.
-var daytime = true;
+let sunAngle = Math.PI/2; // rotation of the sun about the z-axis.
+let daytime = true;
 
 /**
  * Draws the image, which consists of either the "world" or a closeup of the "car".
@@ -198,7 +199,7 @@ function draw() {
  */
 function setSpotlightDirection( u_direction_loc, modelview, lightDirection ) {
     mat3.normalFromMat4(normalMatrix,modelview);
-    var transformedDirection = new Float32Array(3);
+    let transformedDirection = new Float32Array(3);
     vec3.transformMat3(transformedDirection, lightDirection, normalMatrix);
     gl.uniform3fv(u_direction_loc, transformedDirection);
 }
@@ -209,7 +210,7 @@ function setSpotlightDirection( u_direction_loc, modelview, lightDirection ) {
  * @param lightPosition the location of the light, in object coordinates (a vec4)
  */
 function setLightPosition( u_position_loc, modelview, lightPosition ) {
-    var transformedPosition = new Float32Array(4);
+    let transformedPosition = new Float32Array(4);
     vec4.transformMat4(transformedPosition, lightPosition, modelview);
     gl.uniform4fv(u_position_loc, transformedPosition);
 }
@@ -228,7 +229,7 @@ function lights() {
     
     currentColor = [ 0.3, 0.3, 0.3, 1 ];
     
-    pushMatrix();  // draw the sun, with yellow emissive color during the day, dim whita at night; NB: sun won't be illuminated by other lights
+    pushMatrix();  // draw the sun, with yellow emissive color during the day, dim white at night; NB: sun won't be illuminated by other lights
     mat4.rotateZ(modelview,modelview,sunAngle);
     mat4.translate(modelview,modelview,[6.5,0,0]);
     mat4.scale(modelview,modelview,[0.4,0.4,0.4]);
@@ -302,7 +303,7 @@ function world() {
 	pushMatrix();
 	currentColor = [0.7,0.7,0.8,1];
 	mat4.rotate(modelview,modelview,(90)/180*Math.PI,[-1,0,0]);
-	ring.render();
+	ringM.render();
 	popMatrix();
 	pushMatrix();
 	mat4.rotate(modelview,modelview,(-frameNumber)/180*Math.PI,[ 0, 1, 0]);
@@ -403,12 +404,12 @@ function car() {
 	pushMatrix();
 	mat4.translate(modelview,modelview,[0,0.6,0]);
 	mat4.scale(modelview,modelview,[6,1.2,3]);
-	cube.render();
+	cubeM.render();
 	popMatrix();
 	pushMatrix();
 	mat4.translate(modelview,modelview,[0.5,1.4,0]);
 	mat4.scale(modelview,modelview,[3,1,2.8]);
-	cube.render();
+	cubeM.render();
 	popMatrix();
 	currentColor = [1,1,0.3,1];
     if (!daytime) {
@@ -502,7 +503,7 @@ function popMatrix() {
  *  an IFS using the structure from basic-objects-IFS.js.  This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
  *  from the IFS, and it loads the data into those buffers.  The function
- *  creates a new object whose properties are the identifies of the
+ *  creates a new object whose properties are the identities of the
  *  VBOs.  The new object also has a function, render(), that can be called to
  *  render the object, using all the data from the buffers.  That object
  *  is returned as the value of the function.  (The second parameter,
@@ -514,7 +515,7 @@ function popMatrix() {
  *  into the position expected by the code that was ported from Java.)
  */
 function createModel(modelData, xtraTranslate) {
-    var model = {};
+    let model = {};
     model.coordsBuffer = gl.createBuffer();
     model.normalBuffer = gl.createBuffer();
     model.indexBuffer = gl.createBuffer();
@@ -552,69 +553,46 @@ function createModel(modelData, xtraTranslate) {
         if (this.xtraTranslate) {
             popMatrix();
         }
-    }
+    };
     return model;
 }
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
+ * linking the program, an exception of type Error is thrown.  The error
  * string contains the compilation or linking error.  If no error occurs,
  * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elementst that contain the source code for the vertex and fragment
- * shaders.
+ *    The second and third parameters are strings that contain the
+ * source code for the vertex shader and for the fragment shader.
  */
-function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
-        while (node) {
-            if (node.nodeType == 3) // this is a text node
-                str += node.textContent;
-            node = node.nextSibling;
-        }
-        return str;
-    }
-    try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
-        throw "Error: Could not get shader source code from script elements.";
-    }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+function createProgram(gl, vShader, fShader) {
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource(vsh,vShader);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-        throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+        throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
      }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
-    gl.shaderSource(fsh, fragmentShaderSource);
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource(fsh, fShader);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
 
 
-
 /* Initialize the WebGL context.  Called from init() */
 function initGL() {
-    var prog = createProgram(gl,"vshader-source","fshader-source");
+    let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     gl.enable(gl.DEPTH_TEST);
     
@@ -635,7 +613,7 @@ function initGL() {
         specularExponent: gl.getUniformLocation(prog, "material.specularExponent")
     };
     u_lights = new Array(4);
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         u_lights[i] = {
             enabled: gl.getUniformLocation(prog, "lights[" + i + "].enabled"),
             position: gl.getUniformLocation(prog, "lights[" + i + "].position"),
@@ -652,7 +630,7 @@ function initGL() {
     gl.uniform3f( u_material.emissiveColor, 0, 0, 0);  // default, will be changed temporarily for some objects
     
 
-    for (var i = 1; i < 4; i++) { // set defaults for lights
+    for (let i = 1; i < 4; i++) { // set defaults for lights
         gl.uniform1i( u_lights[i].enabled, 0 ); 
         gl.uniform4f( u_lights[i].position, 0, 0, 1, 0 );
         gl.uniform1f( u_lights[i].spotCosineCutoff, 0); // not a spotlight
@@ -681,27 +659,42 @@ function initGL() {
 
 //--------------------------------- animation framework ------------------------------
 
-    
-var animating = false;
+let animating = false;
+let prevTime;  // time since previous call to frame()
+// Note: To avoid having the animation play too fast on computers
+// where requestAnimationFrame is called more than 60 times per
+// second, the frame number has been converted into an elapsed
+// time measured in sixtieths of a second.
 
-function frame() {
-    if (animating) {
-        frameNumber += 1;
-        sunAngle += Math.PI/360;
+function frame(time) {
+    if (!animating) {
+        return;  // stops the animation
+    }
+    if (prevTime == null) { // Just save the start time.
+        prevTime = time;
+    }
+    else {
+        let elapsedTimeInSecs = (time - prevTime)/1000;
+        prevTime = time;
+        let delta = elapsedTimeInSecs * 60;  // time change in units of 1/60 second.
+        frameNumber += delta;
+        sunAngle += delta * Math.PI/360;
         if (sunAngle > 2*Math.PI) {
             sunAngle -= 2*Math.PI;
         }
         daytime = sunAngle < Math.PI;
         draw();
-        requestAnimationFrame(frame);
     }
+    requestAnimationFrame(frame);
 }
 
 function setAnimating(run) {
     if (run != animating) {
         animating = run;
-        if (animating)
+        if (animating) {
+            prevTime = null;
             requestAnimationFrame(frame);
+        }
     }
 }
 
@@ -712,10 +705,10 @@ function setAnimating(run) {
  * initialization function that will be called when the page has loaded
  */
 function init() {
+    let canvas;
     try {
-        var canvas = document.getElementById("webglcanvas");
-        gl = canvas.getContext("webgl") || 
-                         canvas.getContext("experimental-webgl");
+        canvas = document.getElementById("webglcanvas");
+        gl = canvas.getContext("webgl");
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -730,7 +723,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("message").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
     }
     document.getElementById("animCheck").checked = false;
@@ -742,15 +735,15 @@ function init() {
        animating = false;
        document.getElementById("animCheck").checked = false;
        draw();
-    }
+    };
     
     torus = createModel(uvTorus(0.5,1,16,8));   // Create all the basic objects.
     sphere = createModel(uvSphere(1));
     cone = createModel(uvCone(),[0,0,.5]);
     cylinder = createModel(uvCylinder(),[0,0,.5]);
     disk = createModel(uvCylinder(5.5,0.5,64),[0,0,.25]);
-    ring = createModel(ring(3.3,4.8,40));
-    cube = createModel(cube());
+    ringM = createModel(ring(3.3,4.8,40));
+    cubeM = createModel(cube());
  
     rotator = new TrackballRotator(canvas,function() {
         if (!animating)
@@ -759,16 +752,19 @@ function init() {
     draw();
 }
 
+window.onload = init;
+
 </script>
+
 </head>
-<body onload="init()">
+<body>
 
 <h2>DiskWorld 2: WebGL Lighting and Hierarchical Modeling</h2>
 
 
 <noscript><hr><h3>This page requires Javascript and a web browser that supports WebGL</h3><hr></noscript>
 
-<p id="message" style="font-weight:bold">Drag your mouse on the model to rotate it.<br>
+<p id="message" style="font-weight:bold">Drag your mouse (or finger on a touchscreen) on the model to rotate it.<br>
 Make sure to try the animation, and let it run long enough to see the nighttime view!</p>
 
 <p>

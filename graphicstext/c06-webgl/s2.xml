@@ -22,11 +22,11 @@ of the options.  The parameter is a JavaScript object whose properties
 are the names of the options.  Here is an example of context creation
 with options:</p>
 
-<pre>var options = {
+<pre>let options = {
     alpha: false,
     depth: false
 };
-gl = canvas.getContext( "webgl", options );</pre>
+gl = canvas.getContext( "webgl", options );  // (or "webgl2")</pre>
               
 <np>All of the options are boolean-valued.  I will discuss the most useful
 ones here:</np>
@@ -39,7 +39,12 @@ translucent, letting the background (on the web page behind the canvas) show
 through.  The default value is <i>true</i>.  It is safe to set the value to <i>false</i>,
 if you want the canvas to be fully opaque.  Setting it to false does not stop
 you from doing <word>alpha blending</word> of the drawing color with the image
-color; the RGB color components can still be computed by blending.</p>
+color; the RGB color components can still be computed by blending.
+However, setting the value to false is only necessary if your program outputs
+pixels with alpha component less than 1.0, and you don't want your image
+to blend with the background of the canvas.  (Note however that a graphics context
+with an alpha component might be handled more efficiently, because web pages
+use RGBA colors for their display.)</p>
 
 <p><b>depth</b> &mdash; determines whether a <word>depth buffer</word>
 is allocated.  The default value is <i>true</i>.
@@ -73,7 +78,8 @@ you can add to it incrementally over time.</p>
 
 <p>The <localref href="webgl.3">next section</localref> will cover GLSL more thoroughly.
 But you will need to know something about the language to understand the examples
-in this section.</p>
+in this section.  This section discusses GLSL ES 1.00 only, but remember that
+that language can be used with both WebGL&nbsp;1.0 and WebGL&nbsp;2.0.</p>
 
 <p>A <word term="vertex shader">vertex</word> or <word>fragment shader</word> 
 can contain global variable declarations, type definitions,
@@ -90,7 +96,7 @@ and does not return a value, so it takes the form</p>
 
 <np>(Alternatively, it can be declared as <i>void main</i>(<i>void</i>).)</np>
 
-<p>Control structures in GLSL are limited.  <i>If</i> statements take
+<p>Control structures are limited.  <i>If</i> statements take
 the same form as in C or Java.  But some limitations are placed on the <i>for</i> loop syntax,
 and <i>while</i> and <i>do&dots;while</i> loops are not allowed.  Data structures include
 arrays and <i>structs</i>, again with some limitations.  We will cover all this in some
@@ -111,7 +117,7 @@ varying vec4 v_color;</pre>
 <np><i>Attribute</i>, <i>uniform</i>, and <i>varying</i> variables were discussed in
 <localref href="webgl.1"/>.  They are used for communication between JavaScript and
 the shader program and between the vertex shader and the fragment shader.
-In the above examples, I used the prefixes "a_", "u_", and "v_" in the names of the
+In the above examples, I&nbsp;used the prefixes "a_", "u_", and "v_" in the names of the
 variables, but that is not required.</np>
 
 <p>It is common to construct a value for a vector from individual numbers or
@@ -134,7 +140,7 @@ giving the four <word>RGBA color</word> components for the pixel.</np>
 
 <p>A vertex shader needs, at a minimum, an attribute to give the coordinates
 of the vertex.  For 2D drawing, it's natural for that attribute to be of
-type <i>vec2</i>.  If we assume that the values of the attributes are already
+type <i>vec2</i>.  If we assume that the values for the attribute are already
 expressed in clip coordinates, then the complete source code for the vertex
 shader could be as simple as:</p>
 
@@ -171,7 +177,7 @@ usual RGB color triangle, as shown here:</p>
 The code includes the usual <i>init</i>() and <i>createProgram</i>() functions
 as discussed in <localref href="webgl.1.1"/> and <localref href="webgl.1.2"/>,
 except that I have turned off the "alpha" and "depth" options in the WebGL
-context.  I won't discuss them further.</np>
+context.  I won't discuss those two functions further.</np>
 
 <p>The example uses an attribute of type <i>vec2</i> to specify the coordinates
 of the vertices of the triangle.  Coordinates range from &minus;1 to 1 in the
@@ -221,7 +227,7 @@ constant strings representing the individual lines of code.  For example, the
 fragment shader source code is included in the JavaScript script as the
 global variable</p>
 
-<pre>var fragmentShaderSource =
+<pre>const fragmentShaderSource =
             "precision mediump float;\n" +
             "varying vec3 v_color;\n" +
             "void main() {\n" +
@@ -239,21 +245,21 @@ The rather complicated process was discussed in
 location of each attribute in the shader program, and to represent the <word term="VBO">VBOs</word>
 that will hold the attribute values.  I use the variables</p>
 
-<pre>var gl;  // The WebGL graphics context.
+<pre>let gl;  // The WebGL graphics context.
 
-var attributeCoords;  // Location of the attribute named "coords".
-var bufferCoords;     // A vertex buffer object to hold the values for coords.
+let attributeCoords;  // Location of the attribute named "a_coords".
+let bufferCoords;     // A vertex buffer object to hold the values for a_coords.
 
-var attributeColor;   // Location of the attribute named "color".
-var bufferColor;      // A vertex buffer object to hold the values for color.</pre>
+let attributeColor;   // Location of the attribute named "a_color".
+let bufferColor;      // A vertex buffer object to hold the values for a_color.</pre>
 
 <np>The graphics context is created in the <i>init</i>() function. The other variables
-are initialized in the function <i>initGL</i>() that is called from <i>init</i>().  That
+are initialized in a function <i>initGL</i>() that is called from <i>init</i>().  That
 function also creates the shader program, using the <i>createProgram</i>() function
 from <localref href="webgl.1.2"/>:</np>
 
 <pre>function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
+    let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
 
     attributeCoords = gl.getAttribLocation(prog, "a_coords");
@@ -270,7 +276,7 @@ each attribute, so I put them in my initialization routine.  The other four comm
 are in <i>draw</i>(), the function that draws the image.  In this program, <i>draw</i>() 
 is called just once, so the division of the code into two functions is not really necessary,
 but in general, a draw function is meant to be called many times. (It would be a particularly
-bad idea to create a new VBO every time <i>draw</i>() is called.)</p>
+bad idea to create a new VBO every time <i>draw</i>() is called!)</p>
 
 <p>Before drawing the triangle, the <i>draw</i>() function fills the
 canvas with a black background.  This is done using the WebGL functions <i>gl.clearColor</i>
@@ -284,7 +290,7 @@ functions <i>glClearColor</i> and <i>glClear</i>.  Here is the code:</p>
 
     /* Set up values for the "a_coords" attribute */
 
-    var coords = new Float32Array( [ -0.9,-0.8, 0.9,-0.8, 0,0.9 ] );
+    let coords = new Float32Array( [ -0.9,-0.8, 0.9,-0.8, 0,0.9 ] );
    
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferCoords);
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STREAM_DRAW);
@@ -293,7 +299,7 @@ functions <i>glClearColor</i> and <i>glClear</i>.  Here is the code:</p>
    
     /* Set up values for the "a_color" attribute */
    
-    var color = new Float32Array( [ 0,0,1, 0,1,0, 1,0,0 ] );
+    let color = new Float32Array( [ 0,0,1, 0,1,0, 1,0,0 ] );
 
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferColor);
     gl.bufferData(gl.ARRAY_BUFFER, color, gl.STREAM_DRAW);
@@ -309,7 +315,11 @@ functions <i>glClearColor</i> and <i>glClear</i>.  Here is the code:</p>
 <p>In this function, the variable <i>coords</i> contains values for the attribute
 named "a_coords" in the vertex shader. That attribute represents the <i>x</i> and <i>y</i> coordinates 
 of the vertex. Since the attribute is of type <i>vec2</i>, two numbers are required for
-each vertex.  Similarly, the variable <i>color</i> contains values for the "a_color" attribute
+each vertex.  The value for <i>coords</i> is created here with a
+<classname>Float32Array</classname> constructor that takes an ordinary JavaScript
+array as its parameter; the values from the JavaScript array are copied into the
+newly created typed array.
+Similarly, the variable <i>color</i> contains values for the "a_color" attribute
 in the vertex shader, with three numbers per vertex.</p>
 
 <p>We have now accounted for all the pieces of the RGB triangle program.  Read the
@@ -367,8 +377,8 @@ the color and alpha that are to be used for drawing
 a primitive.  When a shape is drawn, the values from the menus
 determine the values of the uniforms:</np>
 
-<pre>var colorNumber = Number(document.getElementById("colorChoice").value);
-var alpha = Number(document.getElementById("opacityChoice").value);
+<pre>let colorNumber = Number(document.getElementById("colorChoice").value);
+let alpha = Number(document.getElementById("opacityChoice").value);
 
 gl.uniform3fv( uniformColor, colorList[colorNumber] );
 gl.uniform1f( uniformAlpha, alpha );</pre>
@@ -413,7 +423,7 @@ been erased.</p>
 context must be set to <i>true</i>.  The <i>shape-stamper</i> program creates the
 context with</p>
 
-<pre>var options = {  // No need for alpha channel or depth buffer, but we
+<pre>let options = {  // No need for alpha channel or depth buffer, but we
                  // need to preserve the image in the drawing buffer.
             alpha: false,
             depth: false,
@@ -448,7 +458,7 @@ y2 = 1 - 2*( y1 / canvas.height );</pre>
 <np>In WebGL, the coordinate transformation is usually applied in the vertex shader.
 In this case, to implement the transformation, the vertex shader just needs to know the
 width and height of the canvas.  The program provides the width and height to the
-vertex shader as uniform variables.  The original, pixel coordinates of the vertex
+vertex shader as uniform variables.  The original pixel coordinates of the vertex
 are input to the vertex shader as an attribute.  The shader applies the coordinate
 transformation to compute the value of <i>gl_Position</i>, which must be expressed
 in the default coordinate system.  Here is the vertex shader source code:</np>
@@ -479,8 +489,8 @@ clicked:</p>
 
 <pre>coords = new Float32Array(64);
 k = 0;
-for (var i = 0; i &lt; 32; i++) {
-    var angle = i/32 * 2*Math.PI;
+for (let i = 0; i &lt; 32; i++) {
+    let angle = i/32 * 2*Math.PI;
     coords[k++] = x + 50*Math.cos(angle);  // x-coord of vertex i
     coords[k++] = y + 50*Math.sin(angle);  // y-coord of vertex i
 }</pre>
@@ -500,8 +510,8 @@ gl.drawArrays(gl.TRIANGLE_FAN, 0, coords.length/2);</pre>
 <np>In the last line, <i>coords.length</i>/2 is the number of vertices in the shape,
 since the array holds two numbers per vertex.
 Note also that the last parameter to <i>gl.bufferData</i> is <i>gl.STREAM_DRAW</i>,
-which is appropriate when the data in the VBO will only be used once and then
-discarded.</np>
+which is appropriate when the data in the VBO will only be used once or a few times
+before being discarded.</np>
 
 <break/>
 
@@ -521,9 +531,9 @@ be created once and for all as part of program initialization.  For example,
 the VBO for the circle is created with</p>
 
 <pre>coords = new Float32Array(64); 
-var k = 0;  // index into the coords array
-for (var i = 0; i &lt; 32; i++) {
-    var angle = i/32 * 2*Math.PI;
+let k = 0;  // index into the coords array
+for (let i = 0; i &lt; 32; i++) {
+    let angle = i/32 * 2*Math.PI;
     coords[k++] = 50*Math.cos(angle);  // x-coord of vertex
     coords[k++] = 50*Math.sin(angle);  // y-coord of vertex
 }
@@ -587,7 +597,8 @@ edge of the square and 1 at the right.  The second component, <i>gl_PointCoord.y
 is 0 at the top of the square and 1 at the bottom.  So, for example, the value
 is (0,0) at the top-left corner, (1,0) at the top-right corner, and
 (0.5,0.5) at the center of the square.  (That, at least, is what the specification
-says, but some implementations incorrectly put (0,0) at the bottom left corner.)</p>
+says, but I have encountered implementations that incorrectly 
+put (0,0) at the bottom left corner.  Hopefully that is fixed in modern web browsers.)</p>
 
 <p>If the fragment shader uses <i>gl_PointCoord</i>
 in its computation, the color of the square can vary from pixel to pixel.  As a simple
@@ -638,7 +649,7 @@ each vertex.  The values are loaded into a VBO, and the values for the color
 attribute are taken from the VBO.  But what happens when all the disks are
 red?  Do we have to fill an array with multiple copies of "1,&nbsp;0,&nbsp;0" and
 use that data for the attribute?  In fact, we don't.  If we disable the
-VertexAtrribArray for the color attribute, then that attribute will have
+VertexAttribArray for the color attribute, then that attribute will have
 the same value for every vertex.  The value is specified by the <i>gl.vertexAttrib*</i>
 family of functions.  So, in the sample program, the code for providing 
 values for the color attribute is</p>
@@ -702,9 +713,11 @@ Any non-zero value means that an error occurred at some point before the call
 to <i>gl.getError</i>.  By moving the output statements around in the code, I
 can narrow in on the statement that actually produced the error.</np>
 
-<p>Note that some browsers might automatically output certain information about 
-incorrect use of WebGL to their console.  It's always a good idea to check the
-browser console when running a WebGL program that is under development!</p>
+<p>Note that some browsers automatically output certain information about 
+incorrect use of WebGL to their JavaScript console, which is part of the
+development tools built into many browsers.  That console is also the destination
+for messages written using <i>console.log</i>(). It's always a good idea to check the
+console when running a WebGL program that is under development!</p>
 
 
 </subsection>

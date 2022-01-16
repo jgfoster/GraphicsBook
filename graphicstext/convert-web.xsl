@@ -15,7 +15,8 @@
         <div class="content">
         <hr/>
         <h2 class="chapter_title">Introduction to Computer Graphics</h2>
-        <h3 class="chapter_title">Version 1.2, January 2018</h3>
+        <h3 class="chapter_title">Version 1.3, August 2021</h3>
+        <p style="text-align:center; text-indent:0pt">(<i>Version 1.3.1, December 2021</i>)</p>
         <h4 align="center">Author:&#160; <a href="http://math.hws.edu/eck/">David J. Eck</a>&#160;
                  (<a href="mailto:eck@hws.edu">eck@hws.edu</a>)</h4>        
         <hr/>
@@ -26,13 +27,13 @@
          a free, on-line textbook covering the fundamentals of computer graphics and
          computer graphics programming.  This book is meant for use as a textbook in
          a one-semester course that would typically be taken by undergraduate computer science majors
-         in their third or fourth year of college.  Version 1.2 contains minor corrections and updates
-         from Version 1.1 of January 2016, including an update of the three.js material to release number
-         89. See the <a href="preface.html">preface</a> for more information.
+         in their third or fourth year of college.  Version 1.3 contains significant updates
+         from Version 1.2 of January 2018, including an update of the <i>three.js</i> material to release number
+         129, the addition of some material on WebGL&#160;2.0, and an update of Appendix&#160;B to Blender&#160;2.93.
+         See the <a href="preface.html">preface</a> for more information.
         </p>
         <p>The web pages for this book include live, interactive demos that require a modern
-        web browser such as recent versions of Chrome, Firefox, Safari, Internet Explorer, or Edge.
-        (For Internet Explorer, you need Version 11 or later for most of the demos.)  You might
+        web browser such as recent versions of Chrome, Firefox, Safari, or Edge.  You might
         have to experiment to find a browser in which the demos will work well.  While the
         book is mainly designed for reading on a desktop computer, most of the demos should also work
         on recent mobile devices, using a touchscreen instead of a mouse.</p>
@@ -41,7 +42,6 @@
         word to see a definition.</p>
          <p>You can download this web site for use on your own computer. 
          PDF versions of the textbook are also available.
-         The PDF that includes links might be the best way to read it on your computer.
          Links to the downloads can be found at the bottom of this page.
          </p>
         <h3>Short Table of Contents:</h3>
@@ -67,7 +67,7 @@
         </td></tr></table>
         <hr/>
         <div style="margin-left: 40px; margin-right:40px">
-         <i>&#169;2015&#8211;2018, David J. Eck.<br/>
+         <i>&#169;2015&#8211;2021, David J. Eck.<br/>
             <small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-Noncommercial-ShareAlike 4.0 License</a>.
             (This license allows you to redistribute this book in unmodified form for non-commercial purposes.  It allows you
             to make and distribute modified versions for non-commercial purposes, as long as you include an attribution to the
@@ -86,9 +86,9 @@
           <b>Full Web Site Download:</b>
           <ul>
           <li><b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip">http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip</a></b> &#8212;
-          This "zip" archive contains a complete copy of the web site.  It should be usable on almost
-          any computer. 
-          Size:&#160;17&#160;Megabytes.
+          This "zip" archive contains a complete copy of the web site for this textbook.  You can publish a copy of the web site on
+          your own web server, or you can use it locally on your own computer.  
+          Size:&#160;24&#160;Megabytes.
           </li>
           </ul>
         </li>
@@ -99,13 +99,13 @@
           <b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook-linked.pdf">http://math.hws.edu/eck/cs424/downloads/graphicsbook-linked.pdf</a></b> &#8212;
           a PDF version with internal links for navigation and external links to source code
           files and other resources that are not included in the PDF.
-          Recommended for on-screen reading.
-          Size:&#160;5.1&#160;Megabytes.
+          Recommended for on-screen reading. 456&#160;pages.
+          Size:&#160;5.3&#160;Megabytes.
           </li>
           <li>
           <b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook.pdf">http://math.hws.edu/eck/cs424/downloads/graphicsbook.pdf</a></b> &#8212;
-          a PDF version without links, more suitable for printing.
-          Size:&#160;4.8&#160;Megabytes.
+          a PDF version without links, more suitable for printing. 463&#160;pages.
+          Size:&#160;5.0&#160;Megabytes.
           </li>
           </ul>
         </li>
@@ -120,7 +120,9 @@
         <hr/>
         <div align="right"><small><i>1 August 2015, Version 1.0 released<br/>
         28 January 2016, Version 1.1 released<br/>
-        6 January 2018, Version 1.2 released</i></small></div>
+        6 January 2018, Version 1.2 released<br/>
+        1 August 2021, Version 1.3 released</i><br/>
+        20 December 2021, Version 1.3.1 released</small></div>
         </div>
         </div></body>
         </html>
@@ -150,7 +152,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, Version 1.3</h3>
         <h2 align="center">Table of Contents</h2>
         <hr/>
         <p align="center" class="firstpar">This is the Table of Contents for the free on-line
@@ -229,7 +231,7 @@
         <p><b>Appendix E: </b> <a href="glossary.html">Glossary</a></p>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, August 2021</small></div>
      </div>
      </div></body>
      </html>
@@ -324,6 +326,7 @@
         <hr/>
         <div align="right"><xsl:call-template name="appendix-navbar"/></div>
         </div></body>
+        <xsl:if test="intro/descendant::word or intro/descendant::newword"><script src="../resource/glossary.js"></script></xsl:if>
         </html>
    </redirect:write>
    <xsl:apply-templates select="section">
@@ -353,7 +356,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2<br/></h3>
+        <h3 align="center">Introduction to Computer Graphics, Version 1.3.1<br/></h3>
         <h2 align="center">Preface</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
@@ -374,13 +377,13 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, Version 1.3</h3>
         <h2 align="center">Source Code and Demos</h2>
         <hr class="break"/>
         <xsl:apply-templates/>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, August 2021</small></div>
      </div></body>
      <script src="../resource/glossary.js"></script>
      </html>
@@ -398,7 +401,7 @@
      </head>
      <body><div class="page">
      <div class="content">
-        <h3 align="center">Introduction to Computer Graphics, Version 1.2</h3>
+        <h3 align="center">Introduction to Computer Graphics, Version 1.3</h3>
         <h2 align="center">Glossary</h2>
         <hr class="break"/>
         <xsl:for-each select="//gitem">
@@ -408,7 +411,7 @@
         </xsl:for-each>
      </div>
      <hr/>
-     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, January 2016</small></div>
+     <div align="right"><small><a href="http://math.hws.edu/eck/index.html">David Eck</a>, August 2021</small></div>
      </div></body>
      </html>
     </redirect:write>

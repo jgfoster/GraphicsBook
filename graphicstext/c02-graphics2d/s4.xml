@@ -77,7 +77,7 @@ proper place in the scene.  Then on top of that, a coordinate transform that is 
 would carry the object along with it.</p>
 
 <p>Now let's extend this idea.  Suppose that the object that we want to draw is itself a complex 
-picture, made up of a number of smaller objects.  Think, for example, of a potted flower made up of
+entity, made up of a number of smaller objects.  Think, for example, of a potted flower made up of
 pot, stem, leaves, and bloom.  We would like to be able to draw the smaller component objects in their
 own natural coordinate systems, just as we do the main object.  For example, we would like to specify
 the bloom in a coordinate system in which the center of the bloom is at (0,0).
@@ -211,7 +211,10 @@ is applied to the windmill object to place it in the scene.
 <p>The file <sourceref href="java2d/HierarchicalModeling2D.java"/> contains
 the complete source code for a Java version of this example.  The <localref href="graphics2d.5">next section</localref>
 of this book covers graphics programming in Java.  Once you are familiar with that, you should take
-a look at the source code, especially the <i>paintComponent</i>() method, which draws the entire scene.</p>
+a look at the source code, especially the <i>paintComponent</i>() method, which draws the entire scene.
+The same example, using the same scene graph API, is implemented in JavaScript in
+<sourceref href="canvas2d/HierarchicalModel2D.html"/>.
+</p>
 
 
 </subsection>
@@ -275,7 +278,7 @@ For a simple example implemented in Java, you can take a look at
 the same animated scene as the previous example, but it represents the scene with
 an object-oriented data structure rather than procedurally.   The same scene graph API
 is implemented in <word>JavaScript</word> in the live demo <tex><i>c2/cart-and-windmills.html</i></tex><web>shown
-earlier on this page</web>, and you might take a look at that after you read about
+earlier on this page</web>, and you might take a look at its source code after you read about
 <word>HTML canvas</word> graphics in <localref href="graphics2d.6"/>.</p>
 
 <p>In the example
@@ -300,7 +303,7 @@ that are instance variables in the object.  It is worth noting that these are al
 in the order scale, then rotate, then translate, no matter what order the instance variables
 are set in the code. If you want to do a translation followed by a rotation, you will need
 two <classname>TransformedObjects</classname> to implement it, since a translation plus a rotation
-in the same <classname>TransformedObjec</classname> would be applied in the order rotate-then-translate.
+in the same <classname>TransformedObject</classname> would be applied in the order rotate-then-translate.
 It is also worth noting that the setter methods for the scaling,
 rotation, and translation have a return value that is equal to the object.  This makes it possible
 to chain calls to the methods into a single statement such as</p>
@@ -365,7 +368,7 @@ stack as needed.</p>
 <p>Some graphics APIs come with transform stacks already defined.
 For example, the original OpenGL API includes the functions
 <i>glPushMatrix</i>() and <i>glPopMatrix</i>() for using a stack of transformation matrices
-that is built into OpenGL.  The Java 2D graphics API does not include a built-in
+that is built into OpenGL.  The Java Graphics2D API does not include a built-in
 stack of transforms, but it does have methods for getting and setting the current
 transform, and the get and set methods can be used with an explicit stack data structure
 to implement the necessary operations.

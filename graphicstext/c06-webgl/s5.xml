@@ -39,7 +39,7 @@ on the JavaScript side, but GLSL can do it more efficiently, since it can work o
 vertices in parallel, and it is likely that the GPU has efficient hardware support for
 matrix math.  (It is, by the way, a property of affine transformations that it suffices
 to apply them at the vertices of a primitive. Interpolation of the transformed vertex coordinates
-to the interior pixels of the primitive will given the correct result; that is, it gives the same
+to the interior pixels of the primitive will give the correct result; that is, it gives the same
 answer as interpolating the original vertex coordinates and then applying the transformation
 in the fragment shader.)</p>
 
@@ -54,8 +54,9 @@ as an <word term="attribute variable">attribute</word> of type <i>vec2</i>.
 We need to make the attribute value into a 
 <i>vec3</i> by adding 1.0 as the <i>z</i>-coordinate.  The transformation matrix
 is likely to be a <word>uniform variable</word>, to allow the JavaScript side
-to specify the transformation.  This leads to the following minimal vertex shader
-for working with 2D transforms:</np>
+to specify the transformation.  This leads to the following minimal GLSL&nbsp;ES&nbsp;1.00 vertex shader
+for working with 2D transforms. (For a GLSL&nbsp;ES&nbsp;3.00 version, the "attribute" qualifier
+is replaced by "in", and a first line "#version&nbsp;300&nbsp;es" is added.)</np>
 
 <pre>attribute vec2 a_coords;
 uniform mat3 u_transform;
@@ -64,13 +65,16 @@ void main() {
    gl_Position = vec4(transformedCoords.xy, 0.0, 1.0);
 }</pre>
 
-<np>In the last line, the value for <i>gl_Position</i> must be a <i>vec4</i>.  For a 2D point,  the
+<np>The input coordinates are given as a <ptype>vec2</ptype>, (<i>x,y</i>), but we need a
+<ptype>vec3</ptype>, (<i>x,y,1</i>), to multiply by the matrix, so the first line of
+<i>main</i>() adds 1.0 as the <i>z</i>-coordinate. 
+In the next line, the value for <i>gl_Position</i> must be a <i>vec4</i>.  For a 2D point,  the
 <i>z</i>-coordinate should be 0.0, not 1.0, so we use only the <i>x</i>- and <i>y</i>-coordinates
 from <i>transformedCoords</i>.</np>
 
 <p>On the JavaScript side, the function <i>gl.uniformMatrix3fv</i> is used to specify a
 value for a uniform of type <i>mat3</i> (<localref href="webgl.3.3"/>).
-To use it, the nine elements of the matrix must be
+To use it, the nine elements of the matrix should be
 stored in an array in <word>column-major order</word>.  For loading an affine transformation matrix into
 a <i>mat3</i>, the command would be something like this:</p>
 
@@ -128,10 +132,7 @@ transformation as a matrix.  Instead, it stores the coefficients <i>a</i>, <i>b<
 the <i>scale</i> method in the <classname>AffineTransform2D</classname> class can defined as
 follows:</p>
 
-<pre>AffineTransform2D.prototype.scale = function(sx,sy) {
-    if (sy === undefined) { // If sy is not specified, do uniform scaling.
-        sy = sx;
-    }
+<pre>scale(sx, sy = sx) { // Default value for sy is the value of sx.
     this.a *= sx;
     this.b *= sx;
     this.c *= sy;
@@ -145,8 +146,8 @@ the code in order to use the API.</np>
 
 <break/>
 
-<p>Before a primitive is drawn, the current transform must sent as a <i>mat3</i> into the
-vertex shader, where the <i>mat3</i> is needed to transform 
+<p>Before a primitive is drawn, the current transform must be sent as a <i>mat3</i> into the
+vertex shader, where the <i>mat3</i> will be used to transform 
 the vertices of the primitive.  The method <i>transform.getMat3</i>() returns the 
 transform as an array that can be passed to <i>gl.uniformMatrix3fv</i>, which sends
 it to the shader program.</p>
@@ -159,9 +160,9 @@ we can define functions <i>pushTransform</i>() and <i>popTransform</i>()
 to manipulate the stack.  Here, the current transform is stored in a global
 variable named <i>transform</i>:</p>
 
-<pre>var transform = new AffineTransform2D();  // Initially the identity.
+<pre>let transform = new AffineTransform2D();  // Initially the identity.
 
-var transformStack = [];  // An array to serve as the transform stack.
+const transformStack = [];  // An array to serve as the transform stack.
 
 /**
  *  Push a copy of the current transform onto the transform stack.
@@ -199,7 +200,7 @@ drawn by that program:</p>
 function nestedSquares() {
     gl.uniform3f( u_color_loc, 0, 0, 1); // Set color to blue.
     square();
-    for (var i = 1; i &lt; 16; i++) {
+    for (let i = 1; i &lt; 16; i++) {
         gl.uniform3f( u_color_loc, i/16, 0, 1 - i/16); // Red/Blue mixture.
         transform.scale(0.8);
         transform.rotate(framenumber / 200);

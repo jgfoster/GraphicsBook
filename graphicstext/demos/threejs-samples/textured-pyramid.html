@@ -12,14 +12,14 @@
 
 "use strict";
 
-var scene, camera, renderer;  // Three.js rendering basics.
+let scene, camera, renderer;  // Three.js rendering basics.
 
-var canvas;  // The canvas on which the image is rendered.
+let canvas;  // The canvas on which the image is rendered.
 
-var pyramid;  // The pyramid object.
-var material; // The material for the pyramid.
+let pyramid;  // The pyramid object.
+let material; // The material for the pyramid.
 
-var texture = null;  // The THREE.Texture object representing the texture image.
+let texture = null;  // The THREE.Texture object representing the texture image.
                      // This will be set in the applyTexture() function.
 
 
@@ -36,56 +36,53 @@ function createWorld() {
     
     // create some lights and add them to the scene.
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
-    var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
+    let viewpointLight = new THREE.DirectionalLight( 0xffffff, 1 );  // a light to shine in the direction the camera faces
     viewpointLight.position.set(0,0,1);  // shines down the z-axis
     scene.add(viewpointLight);
 
-	var pyramidGeometry = new THREE.Geometry();
+   /* Create the pyramid, starting with the geometry. */
     
-    pyramidGeometry.vertices = [  // array of Vector3 giving vertex coordinates
-            new THREE.Vector3( 1, 0, 1 ),    // vertex number 0
-            new THREE.Vector3( 1, 0, -1 ),   // vertex number 1
-            new THREE.Vector3( -1, 0, -1 ),  // vertex number 2
-            new THREE.Vector3( -1, 0, 1 ),   // vertex number 3
-            new THREE.Vector3( 0, 1, 0 )     // vertex number 4
-        ];
-        
-    pyramidGeometry.faces = [  // array of Face3 giving the triangular faces
-            new THREE.Face3( 3, 2, 1),  // one half of the bottom face
-            new THREE.Face3( 3, 1, 0),  // second half of the bottom face
-            new THREE.Face3( 3, 0, 4),  // remaining faces are the four sides
-            new THREE.Face3( 0, 1, 4),
-            new THREE.Face3( 1, 2, 4),
-            new THREE.Face3( 2, 3, 4)
-        ];
-    
-    pyramidGeometry.computeFaceNormals();
+   let pyramidVertices = new Float32Array([
+               // Data for the pyramidGeom position attribute.
+               // Contains the x,y,z coordinates for the vertices.
+               // Each group of three numbers is a vertex;
+               // each group of three vertices is one face.
+            -1,0,1,  -1,0,-1,  1,0,-1, // First triangle in the base.
+            -1,0,1,   1,0,-1,  1,0,1,  // Second triangle in the base.
+            -1,0,1,   1,0,1,   0,1,0,  
+             1,0,1,   1,0,-1,  0,1,0,
+             1,0,-1, -1,0,-1,  0,1,0,
+            -1,0,-1, -1,0,1,   0,1,0
+        ]);
+   let pyramidGeom = new THREE.BufferGeometry();
+   pyramidGeom.setAttribute("position",
+                new THREE.BufferAttribute(pyramidVertices,3) );
+   
+   pyramidGeom.computeVertexNormals(); // Normals are needed for Lambert materials.
 	
-    /* Add the UV Texture Coordinates for each face.  They must be stored in pyramidGeom.faceVertexUvs[0].*/
+    /* Add the UV Texture Coordinates to the pyramid geometry.*/
 
-	pyramidGeometry.faceVertexUvs = [[
-	    [ new THREE.Vector2(0,0), new THREE.Vector2(0,1), new THREE.Vector2(1,1) ],
-	    [ new THREE.Vector2(0,0), new THREE.Vector2(1,1), new THREE.Vector2(1,0) ],
-	    [ new THREE.Vector2(0,0), new THREE.Vector2(1,0), new THREE.Vector2(0.5,1) ],
-	    [ new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(0.5,1) ],
-	    [ new THREE.Vector2(0,0), new THREE.Vector2(1,0), new THREE.Vector2(0.5,1) ],
-	    [ new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(0.5,1) ],
-	]];
-	
+	let pyramidUVs = new Float32Array([
+	     0,0,  0,1,  1,1,
+	     0,0,  1,1,  1,0,
+	     0,0,  1,0,  0.5,1,
+	     1,0,  0,0,  0.5,1,
+	     0,0,  1,0,  0.5,1,
+	     1,0,  0,0,  0.5,1
+	]);
+	pyramidGeom.setAttribute("uv",
+                            new THREE.BufferAttribute(pyramidUVs,2) );
  
- 	material = new THREE.MeshLambertMaterial({
-	    color: "white",
-		flatShading: true  // (This is essential, since we don't provide vertex normals.)
-	});
+ 	material = new THREE.MeshLambertMaterial({ color: "white" });
 	
-	pyramid = new THREE.Mesh( pyramidGeometry, material );
-    pyramid.rotation.set(0.2,-0.4,0);
-    scene.add(pyramid);
+	pyramid = new THREE.Mesh( pyramidGeom, material );
+   pyramid.rotation.set(0.2,-0.4,0);  // Rotate object for a better view.
+   scene.add(pyramid);
     
 }
 
 
-/*  Render the scene.  This is called for each frame of the animation.
+/*  Render the scene. 
  */
 function render() {
     renderer.render(scene, camera);
@@ -114,10 +111,10 @@ function doChangeMaterial() {
  */
 function doChangeScale() {
 	if (document.getElementById("scaled").checked) {
-		texture.repeat = new THREE.Vector2(2,2);
+		texture.repeat.set(2,2);
 	}
 	else {
-		texture.repeat = new THREE.Vector2(1,1);
+		texture.repeat.set(1,1);
 	}
 	render();
 }
@@ -130,22 +127,22 @@ function doChangeScale() {
  *  after the load has finished.
  */
 function applyTexture(textureURL, material) {
-   var callback = function() {
-         // Function to be called after the texture is loaded, to show the new texture.
-		try {
-			render();
-		} catch(e) {
-		    // Some browsers, Chrome at least, can load the image but get a security error when
-			// they try to use an image that was loaded from the local file system.
-			document.getElementById("message").innerHTML =
-			   "<b>Failed to load texture!</b><br>Note that some browsers can't use textures from a local disk.";
-		}
-   };
-   var loader = new THREE.TextureLoader();
-   texture = loader.load(textureURL, callback);
-   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;  // (Not actually needed in this example.)
+
+   const callback = render;  // Function to be called after texture has been loaded.
+                             // In this case, just call render() to redraw the picture.
+   const error = function() { // Function to be called if there is an error loading texture
+         document.getElementById("message").innerHTML =
+         "<b>Error!  Failed to load texture!</b>";
+      };
+   
+   let loader = new THREE.TextureLoader();
+   texture = loader.load(textureURL, callback, undefined, error);
+   
+   texture.wrapS = THREE.RepeatWrapping;
+   texture.wrapT = THREE.RepeatWrapping;
+   
    if (document.getElementById("scaled").checked) {
-       texture.repeat = new THREE.Vector2(2,2);
+       texture.repeat.set(2,2);
    }
    material.map = texture; // Applies this texture to the material and hence to the object.
    material.needsUpdate = true;  // Essential to tell three.js that material properties have changed!!
@@ -157,8 +154,8 @@ function applyTexture(textureURL, material) {
 /*  Responds to user's key press.  Here, it is used to rotate the pyramid.
  */
 function doKey(event) {
-    var code = event.keyCode;
-    var rotated = true;
+    let code = event.keyCode;
+    let rotated = true;
     switch( code ) {
         case 37: pyramid.rotation.y -= 0.03; break;  // left arrow
         case 39: pyramid.rotation.y += 0.03; break;  // right arrow

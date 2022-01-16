@@ -9,6 +9,12 @@
    
    glsim.js is not well-tested and is not meant in any way as a serious implementation
    of OpenGL 1.1.
+   
+   In October 2021, several modifications were made to glsim.js to fix errors and
+   make it more compatible with OpenGL 1.1.  It was used in a number of OpenGL
+   assignments in a course based on the textbook.  Labs from that course can be
+   found at http://math.hws.edu/eck/cs424/index_f21.html with labs 4, 5, 5, and 7
+   using glsim.
 */
 
 /*-----------------------------------------------------------------------------
@@ -663,13 +669,13 @@ function GLSim(canvas, webglOptions) {
     gl.shaderSource(vsh,GLSim.vertexShaderSource());
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-       GLSim.error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
+       GLSim.error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh)); return;
     }
     var fsh = gl.createShader( gl.FRAGMENT_SHADER );
     gl.shaderSource(fsh, GLSim.fragmentShaderSource());
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       GLSim.error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
+       GLSim.error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh)); return;
     }
     var prog = gl.createProgram();
     gl.attachShader(prog,vsh);
@@ -677,7 +683,7 @@ function GLSim(canvas, webglOptions) {
     gl.bindAttribLocation(prog,0,"coords");
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       GLSim.error("Link error in program:  " + gl.getProgramInfoLog(prog));
+       GLSim.error("Link error in program:  " + gl.getProgramInfoLog(prog)); return;
     }
     gl.useProgram(prog);
     this.glprogram = prog;
@@ -741,7 +747,7 @@ function GLSim(canvas, webglOptions) {
     gl.activeTexture(gl.TEXTURE0);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
     this.defaultTextureID = gl.createTexture();
-    this.currentTextureID = null;
+    //  this.currentTextureID = null;  // Removed in October 2021 since now a texture is always bound, in compliance with OpenGL 1.1.
     this.canvas = thecanvas;
     thecanvas._glsimContext = this;
     GLSim.currentContext = this;
@@ -821,6 +827,7 @@ function GLSim(canvas, webglOptions) {
     this.textureMatrix = mat4.create();
     this.projectionStack = [];
     this.modelviewStack = [];
+    this.textureStack = [];  //*** Added in October 2021 for glPushMatrix, glPopMatrix for texture transform, which was not previously implemented.
     this.matrixMode = GL_MODELVIEW;
     this.currentMatrix = function() {
         switch (this.matrixMode) {
@@ -830,6 +837,10 @@ function GLSim(canvas, webglOptions) {
         }
         return null;
     };
+    //*** The next three lines were added in October 2021, when texture IDs were changed to integer type and there is always a bound texture.
+    this.textureObjects = [];  // For implementing glBindTexure, glGenTextures using integer ID as in OpenGL
+    this.textureObjects.push(gl.createTexture());
+    gl.bindTexture(gl.TEXTURE_2D, this.textureObjects[0]); // Texture object 0 is the default.
 }
 GLSim.prototype._applyContextToShaderProgram = function(primitiveType) {
     var gl = this.gl;
@@ -893,7 +904,7 @@ GLSim.prototype._applyContextToShaderProgram = function(primitiveType) {
     }
     gl.lineWidth(this.lineWidth);
     gl.uniform1f(this.location.pointSize, this.pointSize);
-}
+};
 GLSim.prototype._applyColorMaterialToShaderProgram = function(colorArray) {
     var context = this;
     var gl = this.gl;
@@ -972,7 +983,7 @@ GLSim.prototype._applyColorMaterialToShaderProgram = function(colorArray) {
             }
         }
     }
-}
+};
 GLSim.prototype._convertPrimitiveType = function(myPrimitive) {
     var kind;
     var gl = this.gl;
@@ -1011,7 +1022,7 @@ GLSim.prototype._convertPrimitiveType = function(myPrimitive) {
             kind = -1;
     }
     return kind;
-}
+};
 GLSim.prototype._fixArrayForGL_QUADS = function(array, itemSize) {
     var quadCount = Math.floor(array.length/(itemSize*4));
     var vertexCount = quadCount*6;
@@ -1029,7 +1040,7 @@ GLSim.prototype._fixArrayForGL_QUADS = function(array, itemSize) {
         }
     }
     return newarray;
-}
+};
 GLSim.lightCount = 4; // Can be changed BEFORE creating a GLSim object.
 GLSim.currentContext = null;
 GLSim.error = function(message) {
@@ -1041,7 +1052,7 @@ GLSim.error = function(message) {
         console.log("");
     }
     throw message;
-},
+};
 GLSim.vertexShaderSource = function() {  // This is a function so it can incorporate the number of lights.
           // NOTE:  I originally used type bool for shader variables that are logically boolean,
           // but the resulting code didn't work in some WebGL implementations.  So, I am using type int
@@ -1149,7 +1160,7 @@ GLSim.vertexShaderSource = function() {  // This is a function so it can incorpo
         "     material = materialProperties(front_ambient, front_diffuse, front_specular, front_emission, front_shininess);\n" +
         "     frontColor = lighting(eyeCoords.xyz/eyeCoords.w, pointsToViewer, tnormal);\n" +
         "}\n";
-    }
+    };
 GLSim.fragmentShaderSource = function() {
   return "precision mediump float;\n" +
         "uniform int lit;\n" +
@@ -1181,7 +1192,7 @@ GLSim.fragmentShaderSource = function() {
         "     }\n" +
         "     gl_FragColor = clr;\n" +
         "}\n";
-    }
+    };
 
 var  // enable/disable constants (used as indices into an array)
     GL_DEPTH_TEST = 0,
@@ -1284,7 +1295,7 @@ function glEnable(what) {
     if (GLSim.currentContext.primitiveData) { GLSim.error("glEnable cannot be called between glBegin and glEnd"); return; }
     what = Number(what);
     if (isNaN(what)) {
-        GLSim.error("Illegal non-numeric argument for glEnable")
+        GLSim.error("Illegal non-numeric argument for glEnable"); return;
     }
     what = Math.round(what);
     if (what < 0 || what > _GL_ENABLE_MAX) {
@@ -1300,7 +1311,7 @@ function glDisable(what) {
     if (GLSim.currentContext.primitiveData) { GLSim.error("glDisable cannot be called between glBegin and glEnd"); return; }
     what = Number(what);
     if (isNaN(what)) {
-        GLSim.error("Illegal non-numeric argument for glEnable")
+        GLSim.error("Illegal non-numeric argument for glEnable"); return;
     }
     what = Math.round(what);
     if (what < 0 || what > _GL_ENABLE_MAX) {
@@ -1325,7 +1336,7 @@ function glEnableClientState(what) {
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     what = Number(what);
     if (isNaN(what)) {
-        GLSim.error("Illegal non-numeric argument for glEnableClientState")
+        GLSim.error("Illegal non-numeric argument for glEnableClientState"); return;
     }
     what = Math.round(what);
     if (what < 0 || what > _GL_ENABLE_CLIENT_STATE_MAX) {
@@ -1340,7 +1351,7 @@ function glDisableClientState(what) {
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     what = Number(what);
     if (isNaN(what)) {
-        GLSim.error("Illegal non-numeric argument for glDisableClientState")
+        GLSim.error("Illegal non-numeric argument for glDisableClientState"); return;
     }
     what = Math.round(what);
     if (what < 0 || what > _GL_ENABLE_CLIENT_STATE_MAX) {
@@ -1473,7 +1484,7 @@ function glGetIntegerv(item,array) {
         array[0] = GLSim.currentContext.lightModelTwoSide;
     }
     else {
-        GLSim.error("First parameter to glGetIntegerv must be GL_VIEWPORT, GL_LIGHT_MODEL_LOCAL_VIEWER, or GL_LIGHT_MODEL_TWO_SIDE")
+        GLSim.error("First parameter to glGetIntegerv must be GL_VIEWPORT, GL_LIGHT_MODEL_LOCAL_VIEWER, or GL_LIGHT_MODEL_TWO_SIDE");
     }
 }
 
@@ -1541,7 +1552,7 @@ function glGetMaterialfv(face, property, array) {
         array[0] = mat.shininess;
     }
     else {
-        if (array.length < 4) { GLSim.error("Array length must be at least 4 for a color property."); return; };
+        if (array.length < 4) { GLSim.error("Array length must be at least 4 for a color property."); return; }
         var v;
         switch (property) {
         case GL_AMBIENT: v = mat.ambient; break;
@@ -1568,7 +1579,7 @@ function glGetLightfv(light, property, array) {
         GLSim.error("The third parameter to glGetLightfv must be an array."); return;
     }
     var lt = GLSim.currentContext.light[light - GL_LIGHT0];
-    if (array.length < 4) { GLSim.error("Array length must be at least 4 for a light property."); return; };
+    if (array.length < 4) { GLSim.error("Array length must be at least 4 for a light property."); return; }
     var v;
     switch (property) {
     case GL_AMBIENT: v = lt.ambient; break;
@@ -1846,7 +1857,7 @@ function glMaterialfv(side,property,value) {
         GLSim.error("Unknown value for first argument to glMaterialfv"); return;
     }
     if (property == GL_SHININESS) {
-        GLSim.error("Can't set GL_SHININESS with glMaterialfv")
+        GLSim.error("Can't set GL_SHININESS with glMaterialfv"); return;
     }
     if (property != GL_AMBIENT && property != GL_DIFFUSE &&
         property != GL_SPECULAR && property != GL_EMISSION && property != GL_AMBIENT_AND_DIFFUSE) {
@@ -1894,11 +1905,11 @@ function glMateriali(side,property,value) {
         GLSim.error("Unknown value for first argument to glMateriali"); return;
     }
     if (property != GL_SHININESS) {
-        GLSim.error("Second argument to glMateriali must be GL_SHININESS")
+        GLSim.error("Second argument to glMateriali must be GL_SHININESS"); return;
     }
     var v = Number(value);
     if (isNaN(v)) {
-        GLSim.error("Third parameter to glMateriali must be numeric")
+        GLSim.error("Third parameter to glMateriali must be numeric"); return;
     }
     if (side == GL_FRONT || side == GL_FRONT_AND_BACK) {
         GLSim.currentContext.frontMaterial.shininess = v;
@@ -1919,7 +1930,7 @@ function glColorMaterial(face, property) {
         GLSim.error("Unknown value for first argument to glColorMaterial"); return;
     }
     if (property == GL_SHININESS) {
-        GLSim.error("Can't set GL_SHININESS with glColorMaterial")
+        GLSim.error("Can't set GL_SHININESS with glColorMaterial"); return;
     }
     if (property != GL_AMBIENT && property != GL_DIFFUSE &&
         property != GL_SPECULAR && property != GL_EMISSION && property != GL_AMBIENT_AND_DIFFUSE) {
@@ -1987,32 +1998,43 @@ var glLightModelf = glLightModeli;
 function glGenTextures(count, array) {
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     count = Math.round(Number(count));
-    if (isNan(count) || count <= 0) {
+    if (isNaN(count) || count <= 0) {
         GLSim.error("The first parameter of glGenTextures must be a positive integer."); return;
     }
-    if (!array || !array.length) {
+    if (!array || typeof array !== "object" || array.length == undefined) { //*** modified in Oct 2021 to handle zero-length arrays
         GLSim.error("The second parameter of glGenTextures must be an array."); return;
     }
     for (var i = 0; i < count; i++) {
-        array[i] = GLSim.currentContext.gl.createTexture();
+           //*** Modified in October 2021 to make glGenTextures, glBindTexture work with integer parameters.
+           //*** Previously, texture IDs were WebGL textures rather than integers as in proper OpenGL
+        array[i] = GLSim.currentContext.textureObjects.length;
+        GLSim.currentContext.textureObjects.push(GLSim.currentContext.gl.createTexture());
     }
 }
 function glCreateTexture() {  // not part of OpenGL!
+        //***** Modified to return an integer texture ID instead of a WebGL texture.
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return null; }
-    return GLSim.currentContext.gl.createTexture();
+    var A = [];
+    glGenTexures(1,A);
+    return A[0];
 }
 function glBindTexture(mode, texID) {
+           //*** Modified in October 2021 to make glGenTextures, glBindTexture work with integer parameters.
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     if (mode != GL_TEXTURE_2D) {
         GLSim.error("The first parameter of glBindTexture must be GL_TEXTURE_2D"); return;
     }
     if (!texID) {
-        GLSim.currentContext.gl.bingTexture(GLSim.currentContext.gl.TEXTURE_2D, null);
-        GLSim.currentContext.currentTextureID = null;
+        texID = 0;
     }
-    else {
-        GLSim.currentContext.gl.bindTexture(GLSim.currentContext.gl.TEXTURE_2D, texID);
-        GLSim.currentContext.currentTextureID = texID;
+    texID = Math.round(Number(texID));
+    if (texID === NaN || texID < 0) {
+        GLSim.error("The second parameter of glBindTexture should be a non-negative integer."); return;
+    }
+    var texObjs = GLSim.currentContext.textureObjects;
+    if (texID < texObjs.length) { // out of range values are ignored
+        GLSim.currentContext.gl.bindTexture(GLSim.currentContext.gl.TEXTURE_2D, texObjs[texID]);
+        //  GLSim.currentContext.currentTextureID = texID;  // Removed since now a texture is always bound
     }
 }
 function glTexParameteri(mode, name, value) {
@@ -2058,12 +2080,14 @@ function glTexImage2D(mode, level, internalFormat, width, height, border, format
     if (type != GL_UNSIGNED_BYTE) {
         GLSim.error("Only GL_UNSIGNED_BYTE is supported as a datatype in glTexImage2D"); return;
     }
-    if (! image instanceof Image && ! image instanceof HTMLImageElement) {
-        GLSim.error("The last parameter to glTexImage2D must be an Image"); return;
+    if (! (image instanceof Image) && ! (image instanceof HTMLImageElement)
+             && !(image instanceof HTMLCanvasElement) ) {
+                 //*** The option to use a canvas for the image source was added in October 2021
+        GLSim.error("The last parameter to glTexImage2D must be an Image or Canvas"); return;
     }
-    if (!GLSim.currentContext.currentTextureID){
-        glBindTexture(GL_TEXTURE_2D, GLSim.currentContext.defaultTextureID);
-    }
+//    if (!GLSim.currentContext.currentTextureID){  // Removed in October 2021 since now a texture is always bound
+//        glBindTexture(GL_TEXTURE_2D, GLSim.currentContext.defaultTextureID);
+//    }
     var gl = GLSim.currentContext.gl;
     gl.texImage2D(gl.TEXTURE_2D, level, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, image);
 }
@@ -2089,27 +2113,40 @@ function glCopyTexImage2D(mode, level, internalFormat, x, y, width, height, bord
     if (border && border != 0) {
         GLSim.error("border must be 0 for glCopyTexImage2D"); return;
     }
-    if (!GLSim.currentContext.currentTextureID){
-        glBindTexture(GL_TEXTURE_2D,GLSim.currentContext.defaultTextureID);
-    }
+//    if (!GLSim.currentContext.currentTextureID){ //Removed in October 2021 since now a texture is always bound
+//        glBindTexture(GL_TEXTURE_2D,GLSim.currentContext.defaultTextureID);
+//    }
     var gl = GLSim.currentContext.gl;
     gl.copyTexImage2D(gl.TEXTURE_2D,level,GL_RGBA,x,y,width,height,0);
 }
 
 function glPushMatrix() {
+       //*** Modified in October 2021 to add support for texture transforms
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     if (GLSim.currentContext.matrixMode == GL_MODELVIEW) {
         GLSim.currentContext.modelviewStack.push( mat4.clone(GLSim.currentContext.modelviewMatrix) );
+    }
+    else if (GLSim.currentContext.matrixMode == GL_TEXTURE) {
+        GLSim.currentContext.textureStack.push( mat4.clone(GLSim.currentContext.textureMatrix) );
     }
     else {
         GLSim.currentContext.projectionStack.push( mat4.clone(GLSim.currentContext.projectionMatrix) );
     }
 }
 function glPopMatrix() {
+       //*** Modified in October 2021 to add support for texture transforms
     if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
     if (GLSim.currentContext.matrixMode == GL_MODELVIEW) {
         if (GLSim.currentContext.modelviewStack.length > 0) {
            GLSim.currentContext.modelviewMatrix = GLSim.currentContext.modelviewStack.pop();
+        }
+        else {
+            GLSim.error("Attempt to pop from an empty modelview matrix stack"); return;
+        }
+    }
+    else if (GLSim.currentContext.matrixMode == GL_TEXTURE) {
+        if (GLSim.currentContext.textureStack.length > 0) {
+           GLSim.currentContext.textureMatrix = GLSim.currentContext.textureStack.pop();
         }
         else {
             GLSim.error("Attempt to pop from an empty modelview matrix stack"); return;
@@ -2276,7 +2313,7 @@ function glBegin(kind) {
         vertexColors: [],
         texCoords: [],
         vertexMaterials: []
-    }
+    };
     if (context.enabled[GL_LIGHTING]) {
         context.primitiveData.materialChanged = false;
         context.primitiveData.frontMaterial = {
@@ -2378,7 +2415,7 @@ function glEnd() {
             diffuse: new Float32Array(d.diffuse),
             specular: new Float32Array(d.specular),
             emission: new Float32Array(d.emission)
-        }
+        };
         gl.bindBuffer(gl.ARRAY_BUFFER, context.buffer.front_shininess);
         gl.bufferData(gl.ARRAY_BUFFER, arrays.shininess, gl.STREAM_DRAW);
         gl.vertexAttribPointer(context.location.front_shininess, 1, gl.FLOAT, false, 0, 0);
@@ -2417,7 +2454,7 @@ function glEnd() {
                 diffuse: new Float32Array(d.diffuse),
                 specular: new Float32Array(d.specular),
                 emission: new Float32Array(d.emission)
-            }
+            };
             gl.bindBuffer(gl.ARRAY_BUFFER, context.buffer.back_shininess);
             gl.bufferData(gl.ARRAY_BUFFER, arrays.shininess, gl.STREAM_DRAW);
             gl.vertexAttribPointer(context.location.back_shininess, 1, gl.FLOAT, false, 0, 0);
@@ -2512,7 +2549,7 @@ function glColorPointer(componentsPerColor, dataType, stride, colorArray) {
         GLSim.error("The fourth argument to glColorPointer must be an array of numbers or a typed array"); return;
     }
     if (dataType == GL_UNSIGNED_BYTE) {  // scale 0 to 255 to the range 0.0 to 1.0
-        var newcolors = new Float32Array(colorArray.length);
+        var newColors = new Float32Array(colorArray.length);
         for (var k = 0; k < colorArray.length; k++) {
             newColors[k] = colorArray[k]/255;
         }
@@ -2795,13 +2832,10 @@ function glsimDrawModel(ifsModel) {  // ifsModel must have structure of objects 
     glVertexPointer(3,GL_FLOAT,0,ifsModel.vertexPositions);
     glEnableClientState(GL_NORMAL_ARRAY);
     glNormalPointer(GL_FLOAT, 0, ifsModel.vertexNormals);
-    glDrawElements(GL_TRIANGLES, ifsModel.indices.length, GL_UNSIGNED_BYTE, ifsModel.indices);
-    if (!GLSim.currentContext.enabledClientState[GL_VERTEX_ARRAY]) {
-        glDisableClientState(GL_VERTEX_ARRAY);
-    }
-    if (!GLSim.currentContext.enabledClientState[GL_NORMAL_ARRAY]) {
-       glDisableClientState(GL_NORMAL_ARRAY);
-    }
+    glDrawElements(GL_TRIANGLES, ifsModel.indices.length, GL_UNSIGNED_SHORT, ifsModel.indices); 
+       // October 2021: the type GL_UNSIGNED_SHORT in the previous line replaced an incorrect GL_UNSIGNED_BYTE
+    GLSim.currentContext.enabledClientState[GL_VERTEX_ARRAY] = saveV;
+    GLSim.currentContext.enabledClientState[GL_NORMAL_ARRAY] = saveN;
 }
 
 function glsimProject(worldCoords) {  // Returns array of 3 clip coords
@@ -3178,7 +3212,6 @@ Camera.prototype.installTrackball = function(displayCallback) {
         me.upz = upLength * yDirection[2];
     }
     var dragging = false;
-    var dragButton;
     var prevRay = new Array(3);
     var viewport;
     var touchStarted = false;

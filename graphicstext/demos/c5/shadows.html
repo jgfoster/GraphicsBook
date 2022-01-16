@@ -214,41 +214,11 @@ function doAnimationCheckbox() {
     	pauseAnimation();
 }
 
-//----------------------------------------------------------------------------------
-
-
-/*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
- *  the view.  OrbitControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
- *  the rotation to work without animation, I add another mouse listener to the
- *  canvas, just to call the render() function when the user drags the mouse.
- *  The same thing holds for touch events -- I call render for any mouse move
- *  event with one touch.
- */
 function installOrbitControls() {
     var controls = new THREE.OrbitControls(camera,canvas);
     controls.enablePan = false;
     controls.enableZoom = false;
-    function move() {
-        controls.update();
-		if (!animating) {
-			render();
-		}
-    }
-    function down() {
-        document.addEventListener("mousemove", move, false);
-    }
-    function up() {
-        document.removeEventListener("mousemove", move, false);
-    }
-    function touch(event) {
-        if (event.touches.length == 1) {
-            move();
-        }
-    }
-    canvas.addEventListener("mousedown", down, false);
-    canvas.addEventListener("touchmove", touch, false);
+    controls.addEventListener("change",render);
 }
 
 function init() {
@@ -301,11 +271,11 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>A demostration of support for shadows in <i>three.js</i>. 
+<p>A demonstration of support for shadows in <i>three.js</i>. 
 <p>Shadows require a lot of configuration and tuning to get right, and they are still not
 perfect. For example, a spotlight generates shadows outside its cone of illumination,
 and the shadow doesn't seem to take the color of the light into account.  However,
-the demo shows that resonable looking shadows are possible.</p>
+the demo shows that reasonable looking shadows are possible.</p>
 <p>The "Animate" checkbox makes the lights move and one of the objects rotate in place, so
 you can see how the shadows depend on the light positions as well as the objects.</p>
 <p>The scene can be rotated using the mouse.</p>

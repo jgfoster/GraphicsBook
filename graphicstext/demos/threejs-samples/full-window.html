@@ -5,7 +5,7 @@
 <style>
     html, body {
         margin: 0;  /* Make sure that there is no margin around the canvas */
-		overflow: hidden;  /* Make sure we don't get scroll bars. */
+		      overflow: hidden;  /* Make sure we don't get scroll bars. */
     }
     canvas {
         display: block; /* The default display, inline, would add small margin below the canvas */
@@ -29,20 +29,17 @@
 
 "use strict";
 
-var scene, camera, renderer;  // Three.js rendering basics.
+let scene, camera, renderer;  // Three.js rendering basics.
 
-var canvas;  // The canvas on which the renderer will draw.
+let canvas;  // The canvas on which the renderer will draw.
              // This will be created by the renderer, and it will
              // be added to the body of the page.
              
-var controls;  // an object of type TrackballControls, the handles roatation using the mouse.
+let controls;  // an object of type TrackballControls, the handles roatation using the mouse.
 
-var cameraAndLight;  // Object holding both camera and light.  The
-                     // light shines from the direction of the camera.
+let balls = [];   // An array of objects, each object has data for one bouncing ball.
 
-var balls = [];   // An array of objects, each object has data for one bouncing ball.
-
-var BALL_COUNT = 50;  // Number of balls to be created.
+const BALL_COUNT = 50;  // Number of balls to be created.
 
 /**
  *  Creates the bouncing balls and the translucent cube in which the balls bounce,
@@ -56,15 +53,15 @@ function createWorld() {
     camera = new THREE.PerspectiveCamera(28, window.innerWidth/window.innerHeight, 0.1, 100);
 
     /* Add the camera and a light to the scene, linked into one object. */
-    var light = new THREE.DirectionalLight();
+    let light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
     camera.position.set(25,40,50);
     camera.lookAt(scene.position);
-	camera.add(light);
+	   camera.add(light);
     scene.add(camera);
 
     /* Create and add the transparent cube to the scene */
-    var cube = new THREE.Mesh(
+    let cube = new THREE.Mesh(
         new THREE.BoxGeometry(20,20,20),
         new THREE.MeshPhongMaterial( {
             polygonOffset: true,  // will make sure the edges are visible.
@@ -76,16 +73,16 @@ function createWorld() {
             opacity: 0.3
         } )
     );
-	scene.add(cube);
+	   scene.add(cube);
     
     /* Create and add a wireframe cube to the scene, to show the edges of the cube. */
-	var edgeGeometry = new THREE.EdgesGeometry(cube.geometry);  // contains edges of cube without diagonal edges
-	cube.add(new THREE.LineSegments(edgeGeometry, new THREE.LineBasicMaterial({color:0xffffff})));
+	   let edgeGeometry = new THREE.EdgesGeometry(cube.geometry);  // contains edges of cube without diagonal edges
+	   cube.add(new THREE.LineSegments(edgeGeometry, new THREE.LineBasicMaterial({color:0xffffff})));
     
     /* Create some balls and add them to the scene */
-    var geom = new THREE.SphereGeometry(1,20,12);  // Geometry will be reused for all the balls.
-    for (var i = 0; i < BALL_COUNT; i++) {
-        var ball = {};  // object will contain a sphere plus its position and velocity info
+    let geom = new THREE.SphereGeometry(1,20,12);  // Geometry will be reused for all the balls.
+    for (let i = 0; i < BALL_COUNT; i++) {
+        let ball = {};  // object will contain a sphere plus its position and velocity info
         balls.push(ball);
         
         ball.obj = new THREE.Mesh( 
@@ -110,7 +107,7 @@ function createWorld() {
         if (Math.random() < 0.5)
             ball.dz = -ball.dz;
 
-        ball.obj.position.set( ball.x, ball.y, ball.z);
+        ball.obj.position.set( ball.x, ball.y, ball.z );
         scene.add(ball.obj);
     }
 }
@@ -131,9 +128,8 @@ function render() {
  *  
  */
 function updateForFrame() { 
-   var dt = clock.getDelta();  // time since last update
-   for (var i = 0; i < balls.length; i++) {
-       var ball = balls[i];
+   let dt = clock.getDelta();  // time since last update
+   for (let ball of balls) {
        
        /* update ball position based on ball velocity and elapsed time */
        ball.x += ball.dx * dt;
@@ -173,7 +169,7 @@ function updateForFrame() {
 
 //--------------------------- animation support -----------------------------------
 
-var clock;  // Keeps track of elapsed time of animation.
+let clock;  // Keeps track of elapsed time of animation.
 
 function doFrame() {
     updateForFrame();
@@ -203,33 +199,35 @@ function doFrame() {
 function init() {
     try {
         try {
-			renderer = new THREE.WebGLRenderer( { 
-			   antialias: true
-			} );
-        }
-        catch (e) { 
-            document.body.innerHTML="<h3><b>Sorry, WebGL is required but is not available.</b><h3>";
-            return;
-        }
-        canvas = renderer.domElement;  // The canvas was created by the renderer.
-        renderer.setSize(window.innerWidth, window.innerHeight);  // match size of canvas to window
-        window.addEventListener("resize", doResize, false);  // Set up handler for resize event
-        document.body.appendChild(canvas);  // The canvas must be added to the body of the page.
-        clock = new THREE.Clock(); // For keeping time during the animation.
-        createWorld();
-        controls = new THREE.TrackballControls(camera, canvas);  // note: TrackballControls require animation.
-		controls.noPan = true;   // Don't do panning with the right mosue button.
-		controls.noZoom = true;  // Don't do zooming with middle mouse button.
-        requestAnimationFrame(doFrame);  // Start the animation.
+            renderer = new THREE.WebGLRenderer( { 
+               antialias: true
+            } );
+         }
+         catch (e) { 
+             document.body.innerHTML="<h3><b>Sorry, WebGL is required but is not available.</b><h3>";
+             return;
+         }
+         canvas = renderer.domElement;  // The canvas was created by the renderer.
+         renderer.setSize(window.innerWidth, window.innerHeight);  // match size of canvas to window
+         window.addEventListener("resize", doResize, false);  // Set up handler for resize event
+         document.body.appendChild(canvas);  // The canvas must be added to the body of the page.
+         clock = new THREE.Clock(); // For keeping time during the animation.
+         createWorld();
+         controls = new THREE.TrackballControls(camera, canvas);  // note: TrackballControls require animation.
+         controls.noPan = true;   // Don't do panning with the right mouse button.
+         controls.noZoom = true;  // Don't do zooming with middle mouse button.
+         requestAnimationFrame(doFrame);  // Start the animation.
     }
     catch (e) {
         document.body.innerHTML = "<h3><b>Sorry, an error occurred:<br>" + e + "</b></h3>";
-	}
+	   }
 }
+
+window.onload = init;  // Arrange for init() function to be called when page is loaded.
 
 </script>
 </head>
-<body onload="init()">
+<body>
 
 </body>
 </html>

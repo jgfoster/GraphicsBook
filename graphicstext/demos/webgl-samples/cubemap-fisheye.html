@@ -22,7 +22,7 @@
 
 "use strict";
 
-var vertexShaderSource =
+const vertexShaderSource =
        "attribute vec2 a_coords;\n" +
        "attribute vec2 a_texCoords;\n" +
        "varying vec2 v_texCoords;\n" +
@@ -31,7 +31,7 @@ var vertexShaderSource =
        "   gl_Position = vec4(a_coords, 0.0, 1.0);\n" +
        "}\n";
 
-var fragmentShaderSource =
+const fragmentShaderSource =
        "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" +
        "    precision highp float;\n" +
        "#else\n" +
@@ -55,17 +55,17 @@ var fragmentShaderSource =
        "    }\n" + 
        "}\n";
 
-var gl;  // The WebGL graphics context.
+let  gl;  // The WebGL graphics context.
 
-var a_coords_location;      // location of the "a_coords" attribute variable
-var a_coords_buffer;        // a VBO to hold the vertex coordinates
-var a_texCoords_location;   // location of the "a_texCoords" attribute variable
-var a_texCoords_buffer;     // a VBO to hold the texture coordinates
+let  a_coords_location;      // location of the "a_coords" attribute variable
+let  a_coords_buffer;        // a VBO to hold the vertex coordinates
+let  a_texCoords_location;   // location of the "a_texCoords" attribute variable
+let  a_texCoords_buffer;     // a VBO to hold the texture coordinates
 
-var u_angle_location;     // the location of the "u_angle" uniform variable
-var u_texture_location;     // the location of the "u_texture" uniform variable
+let  u_angle_location;     // the location of the "u_angle" uniform variable
+let  u_texture_location;     // the location of the "u_texture" uniform variable
 
-var textureObject = null;   // A texture object to hold the texture image.
+let  textureObject = null;   // A texture object to hold the texture image.
                             // Will be created after images have been loaded.
 
 
@@ -88,7 +88,7 @@ function draw() {
     
      /* Set up values for the "a_texCoords" attribute, for both squares */
    
-    var texCoords = new Float32Array( [ 0,0, 1,0, 1,1, 0,1 ] );
+    let  texCoords = new Float32Array( [ 0,0, 1,0, 1,1, 0,1 ] );
 
     gl.bindBuffer(gl.ARRAY_BUFFER, a_texCoords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STREAM_DRAW);
@@ -97,7 +97,7 @@ function draw() {
 
     /* Set up values for the "a_coords" attribute  to draw a square covering the left half of the viewport */
 
-    var coords = new Float32Array( [ -1,-1, 0,-1, 0,1, -1,1 ] );
+    let  coords = new Float32Array( [ -1,-1, 0,-1, 0,1, -1,1 ] );
    
     gl.bindBuffer(gl.ARRAY_BUFFER, a_coords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STREAM_DRAW);
@@ -111,7 +111,7 @@ function draw() {
     
     /* Set up values for the "a_coords" attribute  to draw a square covering the right half of the viewport*/
 
-    var coords = new Float32Array( [ 0,-1, 1,-1, 1,1, 0,1 ] );
+    coords = new Float32Array( [ 0,-1, 1,-1, 1,1, 0,1 ] );
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STREAM_DRAW);
     
     /* Draw the second square */    
@@ -130,24 +130,24 @@ function draw() {
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
-   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   let  vsh = gl.createShader( gl.VERTEX_SHADER );
    gl.shaderSource( vsh, vertexShaderSource );
    gl.compileShader( vsh );
    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+      throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
    }
-   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
    gl.shaderSource( fsh, fragmentShaderSource );
    gl.compileShader( fsh );
    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+      throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
    }
-   var prog = gl.createProgram();
+   let  prog = gl.createProgram();
    gl.attachShader( prog, vsh );
    gl.attachShader( prog, fsh );
    gl.linkProgram( prog );
    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+      throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
    }
    return prog;
 }
@@ -157,8 +157,8 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
  * have finished loading, the image is drawn using the texture.
  */
 function loadCubemapTexture() {
-    var tex = gl.createTexture();
-    var imageCt = 0;
+    const  tex = gl.createTexture();
+    let  imageCt = 0;
     load( "cubemap-textures/park/negx.jpg", gl.TEXTURE_CUBE_MAP_NEGATIVE_X );
     load( "cubemap-textures/park/posx.jpg", gl.TEXTURE_CUBE_MAP_POSITIVE_X );
     load( "cubemap-textures/park/negy.jpg", gl.TEXTURE_CUBE_MAP_NEGATIVE_Y );
@@ -166,7 +166,7 @@ function loadCubemapTexture() {
     load( "cubemap-textures/park/negz.jpg", gl.TEXTURE_CUBE_MAP_NEGATIVE_Z );
     load( "cubemap-textures/park/posz.jpg", gl.TEXTURE_CUBE_MAP_POSITIVE_Z );
     function load(url, target) {
-        var img = new Image();
+        let  img = new Image();
         img.onload = function() {
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, tex);
             try {
@@ -174,22 +174,23 @@ function loadCubemapTexture() {
             }
             catch (e) {
                 document.getElementById("headline").innerHTML =
-                   "Can't access texture.  Note that some browsers can't use  a texture from a local file.";
+                   "Can't access texture.  Note that some browsers" +
+                   " can't use  a texture from a local file.";
                 return;
             }
             imageCt++;
-            if (imageCt == 6) {  // all 6 images have been loaded
+            if (imageCt === 6) {  // all 6 images have been loaded
                 gl.generateMipmap( gl.TEXTURE_CUBE_MAP );
                 document.getElementById("headline").innerHTML = 
                                       "Funny Cubemap (Fisheye Camera Effect)";
                 textureObject = tex;
                 draw();
             }
-        }
+        };
         img.onerror = function() {
             document.getElementById("headline").innerHTML = 
                                               "SORRY, COULDN'T LOAD TEXTURES";
-        }
+        };
         img.src = url;
     }
 }
@@ -198,7 +199,7 @@ function loadCubemapTexture() {
  * Initialize the WebGL graphics context
  */
 function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource ); 
+    let  prog = createProgram( gl, vertexShaderSource, fragmentShaderSource ); 
     gl.useProgram(prog);
     
     a_coords_location = gl.getAttribLocation(prog, "a_coords");
@@ -220,13 +221,11 @@ function initGL() {
  */
 function init() {
     try {
-        var canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program
-            alpha: false,
+        let  canvas = document.getElementById("webglcanvas");
+        let  options = {  // no need for depth buffer in this program
             depth: false
         };
-        gl = canvas.getContext("webgl", options) || 
-                         canvas.getContext("experimental-webgl", options);
+        gl = canvas.getContext("webgl", options);
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -241,14 +240,17 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context:"  + e + "</p>";
         return;
     }
 }
 
+window.onload = init;  // Arrange for init() to be called after page has loaded.
+
+
 </script>
 </head>
-<body onload="init()" style="background-color: lightGray">
+<body style="background-color: lightGray">
 
 <h2 id="headline">Funny Cubemap -- LOADING TEXTURE</h2>
 

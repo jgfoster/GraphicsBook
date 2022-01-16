@@ -35,7 +35,7 @@ at a point <i>P</i>, then we can, to a certain extent, identify <i>V</i>
 with <i>P</i>&mdash;at least as long as we remember that an arrow starting
 at any other point could also be used to represent <i>V</i>.
 If <i>P</i> has coordinates (<i>a,b,c</i>), we can use the same coordinates
-for <i>V</i>.  When we think of (<i>a,b,c</i>) as a vector, <i>a</i> represents
+for <i>V</i>.  When we think of (<i>a,b,c</i>) as a vector, the value of <i>a</i> represents
 the <b>change</b> in the <i>x</i>-coordinate between the starting point of the arrow and
 its ending point, <i>b</i> is the change in the <i>y</i>-coordinate, and <i>c</i> is
 the change in the <i>z</i>-coordinate.  For
@@ -142,7 +142,8 @@ is zero if and only if <i>v1</i> and <i>v2</i> point in the same direction or in
 exactly opposite directions.  Assuming <i>v1</i>&times;<i>v2</i> is non-zero, then
 it is perpendicular both to <i>v1</i> and to <i>v2</i>; furthermore, 
 the vectors <i>v1</i>, <i>v2</i>, <i>v1</i>&times;<i>v2</i> follow the
-<word>right-hand rule</word>; that is, if you curl the fingers of your right hand from 
+<word>right-hand rule</word> (in a right-handed coordinate system); 
+that is, if you curl the fingers of your right hand from 
 <i>v1</i> to <i>v2</i>, then your thumb points in the direction of <i>v1</i>&times;<i>v2</i>. If
 <i>v1</i> and <i>v2</i> are perpendicular unit vectors, then the cross product
 <i>v1</i>&times;<i>v2</i> is also a unit vector, which is perpendicular both
@@ -190,7 +191,7 @@ In particular, two <i>n</i>-by-<i>n</i> matrices can be multiplied to give anoth
 <p>An <i>n</i>-dimensional vector can be thought of an <i>n</i>-by-<i>1</i> matrix.  If
 <i>A</i> is an <i>n</i>-by-<i>n</i> matrix and <i>v</i> is a vector in <i>n</i> dimensions,
 thought of as an <i>n</i>-by-<i>1</i> matrix, then the product <i>Av</i> is again an
-<i>n</i>-dimensional vector (though in this case thought of as a <i>1</i>-by-<i>n</i> matrix).
+<i>n</i>-dimensional vector.
 The product of a 3-by-3 matrix <i>A</i> and a 3D vector <i>v</i> = (<i>x,y,z</i>)
 is often displayed like this:</p>
 
@@ -297,15 +298,14 @@ distance in a perspective projection.
 <p>Surprisingly, we can still represent a perspective projection as a 4-by-4 matrix, provided
 we are willing to stretch our use of coordinates even further than we have already.  We
 have already represented 3D vectors by 4D vectors in which the fourth coordinate is 1.
-We now allow the fourth coordinate to be anything at all.  When the fourth coordinate, <i>w</i>,
+We now allow the fourth coordinate to be anything at all, except for requiring that
+at least one of the four coordinates is non-zero.  When the fourth coordinate, <i>w</i>,
 is non-zero, we consider the coordinates (<i>x,y,z,w</i>) to
 represent the three-dimensional vector (<i>x/w,y/w,z/w</i>).  Note that this
 is consistent with our previous usage, since it considers (<i>x,y,z,1</i>)
 to represent (<i>x,y,z</i>), as before.   When the fourth coordinate is zero,
 there is no corresponding 3D vector, but it is possible to think of (<i>x,y,z</i>,0)
-as representing a 3D "point at infinity" in the direction of (<i>x,y,z</i>),
-as long as at least one of <i>x</i>, <i>y</i>, and <i>z</i> is non-zero. 
-</p>
+as representing a 3D "point at infinity" in the direction of (<i>x,y,z</i>).</p>
 
 <p>Coordinates (<i>x,y,z,w</i>) used in this way are referred to
 as <newword>homogeneous coordinates</newword>.  If we use homogeneous coordinates, then any

@@ -33,7 +33,18 @@
     Uses glMatrix to do texture transformations.
 -->
 
-<script type="x-shader/x-vertex" id="vshader-source">
+
+<script src="trackball-rotator.js"></script>
+<script src="gl-matrix-min.js"></script>
+<script src="basic-object-models-IFS.js"></script>
+<script src="teapot-model-IFS.js"></script>
+
+<script>
+
+"use strict";
+
+
+const vertexShaderSource = `
     attribute vec3 a_coords;
     attribute vec3 a_normal;
     attribute vec2 a_texCoords;
@@ -51,10 +62,9 @@
         v_eyeCoords = eyeCoords.xyz/eyeCoords.w;
         vec3 texcoords = textureTransform * vec3(a_texCoords,1.0);
         v_texCoords = texcoords.xy;
-    }
-</script>
+    }`;
 
-<script type="x-shader/x-fragment" id="fshader-source">
+const fragmentShaderSource = `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
        precision highp float;
     #else
@@ -71,42 +81,34 @@
         float diffuseFactor = dot(N,L);
         vec4 color = texture2D(texture, v_texCoords);
         gl_FragColor = vec4( diffuseFactor*color.rgb, 1.0);
-    }
-</script>
+    }`;
 
-<script src="trackball-rotator.js"></script>
-<script src="gl-matrix-min.js"></script>
-<script src="basic-object-models-IFS.js"></script>
-<script src="teapot-model-IFS.js"></script>
-<script>
 
-"use strict";
+let gl;   // The webgl context.
 
-var gl;   // The webgl context.
+let a_coords_loc;          // Locations of attributes in the shader program
+let a_normal_loc; 
+let a_texCoords_loc; 
 
-var a_coords_loc;          // Locations of attributes in the shader program
-var a_normal_loc; 
-var a_texCoords_loc; 
+let u_projection;          // Locations of uniforms in the shader program
+let u_modelview;
+let u_textureTransform;
+let u_texture;
+let u_normalMatrix;
 
-var u_projection;          // Locations of uniforms in the shader program
-var u_modelview;
-var u_textureTransform;
-var u_texture;
-var u_normalMatrix;
+const projection = mat4.create();        // projection matrix
+let modelview;                           // will come from rotator
+const normalMatrix = mat3.create();      // normal transform matrix
+const textureTransform = mat3.create();  // texture transform matrix
 
-var projection = mat4.create();        // projection matrix
-var modelview;                         // will come from rotator
-var normalMatrix = mat3.create();      // normal transform matrix
-var textureTransform = mat3.create();  // texture transform matrix
+let rotator;  // A TrackballRotator object that lets the user rotate the view by mouse.
 
-var rotator;  // A TrackballRotator object that lets the user rotate the view by mouse.
+let textureLoaded;  // True when a texture has been successfully loaded.
 
-var textureLoaded;  // True when a texture has been successfully loaded.
-
-var objects;  // array of objects, containing models created using createModel()
+let objects;  // array of objects, containing models created using createModel()
               // Contains:  Cube, Sphere, Cylinder, Cone, Torus, Teapot
 
-var textureURLs = [
+const textureURLs = [
         "textures/brick001.jpg",
         "textures/Earth-1024x512.jpg",
         "textures/NightEarth-512x256.jpg",
@@ -115,10 +117,10 @@ var textureURLs = [
         "textures/mandelbrot.jpeg"
 ];
 
-var texture;
+let texture;
 
-var frameNumber = 0;  // frame number for texture animation
-var animating = false;
+let frameNumber = 0;  // frame number for texture animation
+let animating = false;
 
 
 /* Draws a colored cube, along with a set of coordinate axes.
@@ -131,11 +133,11 @@ function draw() {
     if (!textureLoaded) {
         return;
     }
-    var objectNum = Number(document.getElementById("object").value);
-    var transformNum = Number(document.getElementById("transform").value);
+    let objectNum = Number(document.getElementById("object").value);
+    let transformNum = Number(document.getElementById("transform").value);
     modelview = rotator.getViewMatrix();
     mat3.identity(textureTransform);
-    var scale = frameNumber % 300;
+    let scale = frameNumber % 300;
     if (scale > 150) {
         scale = 300-scale;
     }
@@ -184,7 +186,7 @@ function draw() {
  *  is returned as the value of the function.  
  */
 function createModel(modelData) {
-    var model = {};
+    let model = {};
     model.coordsBuffer = gl.createBuffer();
     model.normalBuffer = gl.createBuffer();
     model.texCoordsBuffer = gl.createBuffer();
@@ -227,9 +229,9 @@ function loadTexture() {
     textureLoaded = false;
     animating = false;
     draw();
-    var textureNum = Number(document.getElementById("texture").value);
+    let textureNum = Number(document.getElementById("texture").value);
     document.getElementById("message").innerHTML = "<b>LOADING TEXTURE</b>";
-    var img = new Image();
+    let img = new Image();
     img.onload = function() { 
         try {
            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -255,62 +257,39 @@ function loadTexture() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
+ * linking the program, an exception of type Error is thrown.  The error
  * string contains the compilation or linking error.  If no error occurs,
  * the program identifier is the return value of the function.
- *    The second and third parameters are the id attributes for <script>
- * elementst that contain the source code for the vertex and fragment
- * shaders.
+ *    The second and third parameters are strings that contain the
+ * source code for the vertex shader and for the fragment shader.
  */
-function createProgram(gl, vertexShaderID, fragmentShaderID) {
-    function getTextContent( elementID ) {
-            // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
-            // source code from the script elements that contain it.
-        var element = document.getElementById(elementID);
-        var node = element.firstChild;
-        var str = "";
-        while (node) {
-            if (node.nodeType == 3) // this is a text node
-                str += node.textContent;
-            node = node.nextSibling;
-        }
-        return str;
-    }
-    try {
-        var vertexShaderSource = getTextContent( vertexShaderID );
-        var fragmentShaderSource = getTextContent( fragmentShaderID );
-    }
-    catch (e) {
-        throw "Error: Could not get shader source code from script elements.";
-    }
-    var vsh = gl.createShader( gl.VERTEX_SHADER );
-    gl.shaderSource(vsh,vertexShaderSource);
+function createProgram(gl, vShader, fShader) {
+    let vsh = gl.createShader( gl.VERTEX_SHADER );
+    gl.shaderSource(vsh,vShader);
     gl.compileShader(vsh);
     if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-        throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+        throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
      }
-    var fsh = gl.createShader( gl.FRAGMENT_SHADER );
-    gl.shaderSource(fsh, fragmentShaderSource);
+    let fsh = gl.createShader( gl.FRAGMENT_SHADER );
+    gl.shaderSource(fsh, fShader);
     gl.compileShader(fsh);
     if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-       throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+       throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
     }
-    var prog = gl.createProgram();
+    let prog = gl.createProgram();
     gl.attachShader(prog,vsh);
     gl.attachShader(prog, fsh);
     gl.linkProgram(prog);
     if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-       throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+       throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
     }
     return prog;
 }
 
 
-
 /* Initialize the WebGL context.  Called from init() */
 function initGL() {
-    var prog = createProgram(gl,"vshader-source","fshader-source");
+    let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     gl.enable(gl.DEPTH_TEST);
     gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, 1 );    
@@ -341,7 +320,7 @@ function initGL() {
     objects[2] = createModel( uvCylinder() );
     objects[3] = createModel( uvCone() );
     objects[4] = createModel( uvTorus(0.65,0.2,64,24) );
-    for (var i = 0; i < teapotModel.vertexPositions.length; i++) {
+    for (let i = 0; i < teapotModel.vertexPositions.length; i++) {
         teapotModel.vertexPositions[i] *= 0.05; // scale teapot model to a size that matches other objects
     }
     objects[5] = createModel( teapotModel );
@@ -352,20 +331,37 @@ function initGL() {
 //--------------------------------- animation framework ------------------------------
 
 
-function frame() {
-    if (animating) { 
-        frameNumber += 1;
-        draw();
-        requestAnimationFrame(frame);
+let prevTime = null;  // time since previous call to frame()
+// Note: To avoid having the animation play too fast on computers
+// where requestAnimationFrame is called more than 60 times per
+// second, the frame number has been converted into an elapsed
+// time measured in sixtieths of a second.
+
+function frame(time) {
+    if (!animating) {
+        return;  // stops the animation
     }
+    if (prevTime == null) { // Just save the start time.
+        prevTime = time;
+    }
+    else {
+        let elapsedTimeInSecs = (time - prevTime)/1000;
+        prevTime = time;
+        let delta = elapsedTimeInSecs * 60;  // time change in units of 1/60 second.
+        frameNumber += delta;
+        draw();
+    }
+    requestAnimationFrame(frame);
 }
 
 function doAnimationCheckbox() {
-    var run = document.getElementById("animCheckbox").checked;
-    if (run != animating) {
+    let run = document.getElementById("animCheckbox").checked;
+    if (run !== animating) {
         animating = run;
-        if (animating)
+        if (animating) {
+            prevTime = null;
             requestAnimationFrame(frame);
+        }
     }
 }
 
@@ -377,11 +373,10 @@ function doAnimationCheckbox() {
  * initialization function that will be called when the page has loaded
  */
 function init() {
-    var canvas;
+    let canvas;
     try {
         canvas = document.getElementById("webglcanvas");
-        gl = canvas.getContext("webgl") || 
-                         canvas.getContext("experimental-webgl");
+        gl = canvas.getContext("webgl");
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -399,7 +394,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e.message + "</p>";
         return;
     }
     document.getElementById("animCheckbox").checked = true;
@@ -418,17 +413,19 @@ function init() {
         if (!animating) {
             draw();
         }
-    }
+    };
     rotator = new TrackballRotator(canvas, draw, 5, [2,2,3]);
 }
 
+window.onload = init;
+
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <h2>Animating a Texture with Texture Transformation in WebGL</h2>
 
-<p id=message>Drag your mouse on the object to rotate it.</p>
+<p id=message>Drag your mouse (or finger on a touchscreen) on the object to rotate it.</p>
 
 
 <noscript><hr><h3>This page requires Javascript and a web browser that supports WebGL</h3><hr></noscript>

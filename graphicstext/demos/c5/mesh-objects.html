@@ -10,7 +10,7 @@
 </style>
 <script src="../script/demo-core.js"></script>
 <script src="../script/three.min.js"></script>
-<script src="../script/threejs/TrackballControls.js"></script>
+<script src="../script/threejs/OrbitControls.js"></script>
 <script>
 
 var canvas, scene, renderer, camera;
@@ -20,10 +20,10 @@ var currentObject;  // Currently installed object;
 var materialSelect, objectSelect, detailSelect;  // Controls
 var smoothShadingRadio, flatShadingRadio;
 
-var currentMaterialNum = 5, currentObjectNum = 0, currentDetailNum = 0;  // Values of controls
+var currentMaterialNum = 5, currentObjectNum = 2, currentDetailNum = 0;  // Values of controls
 var smoothShading = true;
 
-function render() {  
+function render() {
     renderer.render(scene,camera);
 }
 
@@ -135,7 +135,6 @@ function getCurrentObject() {
                 mat
             );
             break;
-            obj.rotation.x = -Math.PI;
         case 8:
             obj = new THREE.Mesh(
                 new THREE.TetrahedronGeometry(4,currentDetailNum),
@@ -169,10 +168,7 @@ function getCurrentObject() {
                 wireframe: true
             })
         );
-        var c = new THREE.Object3D();
-        c.add(obj);
-        c.add(w);
-        obj = c;
+        obj.add(w);  // Wireframe will rotate with the solid.
     }
     return obj;
 }
@@ -184,6 +180,12 @@ function changeMaterial() {
         scene.remove(currentObject);
         currentObject = getCurrentObject();
         scene.add(currentObject);
+        if (currentMaterialNum > 4) {
+            document.getElementById("shadingPar").style.display = "block";
+        }
+        else {
+            document.getElementById("shadingPar").style.display = "none";
+        }
         render();
     }
 }
@@ -237,37 +239,13 @@ function changeShading() {
     }
 }
 
-/*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
- *  the view.  TrackballControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
- *  the rotation to work without animation, I add another mouse listener to the
- *  canvas, just to call the render() function when the user drags the mouse.
- *  The same thing holds for touch events -- I call render for any mouse move
- *  event with one touch.
- */
-function installTrackballControls() {
-    var controls = new THREE.TrackballControls(camera,canvas);
-    controls.noPan = true;
-    controls.noZoom = true;
-    controls.staticMoving = true;
-    function move() {
-        controls.update();
-    	render();
-    }
-    function down() {
-        document.addEventListener("mousemove", move, false);
-    }
-    function up() {
-        document.removeEventListener("mousemove", move, false);
-    }
-    function touch(event) {
-        if (event.touches.length == 1) {
-            move();
-        }
-    }
-    canvas.addEventListener("mousedown", down, false);
-    canvas.addEventListener("touchmove", touch, false);
+ function installOrbitControls() {
+       //(I would prefer to use TrackballControls, but there seems to be
+       // no way to get TrackballControls to work without an animation.)
+    var controls = new THREE.OrbitControls(camera,canvas);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.addEventListener("change", render);
 }
 
 function init() {
@@ -299,7 +277,7 @@ function init() {
     flatShadingRadio.addEventListener("change", changeShading, false);
     createWorld();
     render();
-    installTrackballControls();
+    installOrbitControls();
 }
 
 </script>
@@ -342,7 +320,7 @@ function init() {
     <option value="11">Icosacahedron</option>
     </select>
 </p>
-<p><b>Shading:</b><br>
+<p id="shadingPar"><b>Shading:</b><br>
     <label><input type="radio" name="shading" id="shadingFlat">Flat</label>
     <label><input type="radio" name="shading" id="shadingSmooth">Smooth</label>
 </p>
@@ -377,10 +355,9 @@ with a surface, there are actually two objects, one to represent the wireframe
 and one to represent the surface.  The two objects use the same geometry
 but different material.</p>
 <p>The shading radio buttons, which can be set to Flat or to Smooth, control a
-property of Lambert and Phong materials. 
-Unfortunately, this property seems to be ignored for some materials on some objects,
-and it has no effect for Basic materials.
-For Flat shading, when it is working correctly, a normal vector is computed for each triangular face and is
+property of Phong materials.  This option appears only when a Phong material
+is selected.
+For Flat shading, a normal vector is computed for each triangular face and is
 used for all vertices of that face.  This makes the face appear flat.  For
 Smooth shading, a normal vector is computed for each vertex of the solid,
 using an average of the face normals for faces that share that vertex.  The

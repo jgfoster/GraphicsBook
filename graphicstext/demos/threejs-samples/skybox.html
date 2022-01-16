@@ -13,12 +13,14 @@
  * instead, the six skybox images are mapped to the faces
  * of the cube using an array of materials.)  The second scene
  * shows what the skybox looks like form the inside of
- * the cube.  A cubemap texture is used for the second scene.
+ * the cube.  In fact, the cubemap texture is simply set
+ * to be the background of the scene object, and no objects
+ * or lights at all are added to the scene.
  */
 
 "use strict";
 
-var textureURLs = [  // URLs of the six faces of the cube map 
+let textureURLs = [  // URLs of the six faces of the cube map 
         "cubemap-textures/park/posx.jpg",   // Note:  The order in which
         "cubemap-textures/park/negx.jpg",   //   the images are listed is
         "cubemap-textures/park/posy.jpg",   //   important!
@@ -30,16 +32,14 @@ var textureURLs = [  // URLs of the six faces of the cube map
 /**
  *  Loads a list of textures.  If a callback function is provided, it is
  *  called once after all textures are loaded.  This is used to load a
- *  set of six textures to use on the six faces of the cube.  Used for
- *  the first scene.
+ *  set of six textures to use on the six faces of the cube in the first
+ *  scene.
  */
 function loadTextures(textureURLs, callback) {
-    var loaded = 0;
+    let loaded = 0;
     function loadedOne() {
         loaded++;
         if (callback && loaded == textureURLs.length) { // all tectures have been loaded
-            for (var i = 0; i < textureURLs; i++)
-                textures[i].needsUpdate = true;
             callback();
         }
     }
@@ -47,61 +47,38 @@ function loadTextures(textureURLs, callback) {
     function textureError() {
         document.getElementById("message").innerHTML = "Error: Failed to load texture.";
     }
-    var textures = new Array( textureURLs.length );
-    for (var i = 0; i < textureURLs.length; i++) {
-       var tex = new THREE.TextureLoader().load( textureURLs[i], loadedOne, undefined, textureError );
+    let textures = new Array( textureURLs.length );
+    for (let i = 0; i < textureURLs.length; i++) {
+       let tex = new THREE.TextureLoader().load( textureURLs[i], loadedOne, undefined, textureError );
        textures[i] = tex;
     }
     return textures;
 }
 
 /**
- *  Loads a set of six textures as a single cubemap texture.  Used for the second scene
+ *  Loads a set of six textures as a single cubemap texture.  Used for the second scene.
  */
 function loadCubemapTexture(textureURLs, callback) {
     /* A funtion that will be called if the attempt to load the texture fails. */
     function textureError() {
-        document.getElementById("message").innerHTML = "Error: Failed to load texture.";
+        document.getElementById("message").innerHTML = "Error: Failed to load cubemap texture.";
     }
-    var tex = new THREE.CubeTextureLoader().load( textureURLs, callback, undefined, textureError );
-    return tex;
+    return new THREE.CubeTextureLoader().load( textureURLs, callback, undefined, textureError );
 }
 
 
 /*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
- *  the view.  OrbitControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
- *  the rotation to work without animation, I add another mouse listener to the
- *  canvas, just to call the render() function when the user drags the mouse.
- *  The same thing holds for touch events -- I call render for any mouse move
- *  event with one touch.
+ *  either view. 
  *     The first parameter is the camera that will be rotated by the controls.
  *  The second is the canvas where the scene is rendered.  The second
  *  is the callback function that should be called when the controls change; it
  *  should be the function that renders the scene.
  */
 function installOrbitControls(camera, canvas, callback) {
-    var controls = new THREE.OrbitControls(camera,canvas);
+    let controls = new THREE.OrbitControls(camera,canvas);
     controls.enablePan = false;
     controls.enableZoom = false;
-    function move() {
-        controls.update();
-		callback();
-    }
-    function down() {
-        document.addEventListener("mousemove", move, false);
-    }
-    function up() {
-        document.removeEventListener("mousemove", move, false);
-    }
-    function touch(event) {
-        if (event.touches.length == 1) {
-            move();
-        }
-    }
-    canvas.addEventListener("mousedown", down, false);
-    canvas.addEventListener("touchmove", touch, false);
+    controls.addEventListener("change", callback);
 }
 
 
@@ -121,9 +98,9 @@ function installOrbitControls(camera, canvas, callback) {
  */
 function world1() {
 
-    var canvas, scene, camera, renderer;  // Three.js rendering basics.
+    let canvas, scene, camera, renderer;  // Three.js rendering basics.
 
-    var cube; // The cube -- the only object in the scene.
+    let cube; // The cube -- the only object in the scene.
 
     function render() {
         renderer.render(scene, camera);
@@ -145,7 +122,7 @@ function world1() {
        so that it always shines in the direction the camera is facing. */
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 100);
-    var light = new THREE.DirectionalLight();
+    let light = new THREE.DirectionalLight();
     light.position.set(0,0,1); // Shine along the z-axis in object coordinates, same direction camera faces.
     camera.add(light);
     scene.add(camera);
@@ -153,9 +130,9 @@ function world1() {
     scene.add( new THREE.AmbientLight(0x222222));
     
     /* Load the six image textures and create the six face materials. */
-    var textures = loadTextures(textureURLs, render);
-    var materials = [];
-    for (var i = 0; i < 6; i++) {
+    let textures = loadTextures(textureURLs, render);
+    let materials = [];
+    for (let i = 0; i < 6; i++) {
         materials.push( new THREE.MeshPhongMaterial( {
             color: "white",
             map: textures[i]
@@ -166,8 +143,7 @@ function world1() {
     cube = new THREE.Mesh( new THREE.BoxGeometry(20,20,20), materials );
     scene.add(cube);
     
-    /* Add controls so the user can rotate the view with the mouse.
-       Add another mouse listener to call render when the mouse is dragged. */
+    /* Add controls so the user can rotate the view with the mouse. */
     installOrbitControls(camera, canvas, render);
 
     render();
@@ -179,17 +155,15 @@ function world1() {
 
 /**
  *  Sets up the second scene.  The cube map is loaded as a single texture that
- *  is applied to the cube as a whole.  This requires that the texture be used
- *  as an OpenGL cubemap texture, and for that a new kind of material is used.
- *  The camera is inside the cube, so that the cube acts as a "skybox".  Usually,
- *  there would be other geometry inside the box, with the box acting as the
- *  environment.  Note that no lighting is used in this scene.
+ *  is set as the background for the scene.  No objects or lights are added
+ *  to the scene.  When the background of the scene is a cubemap texture, it
+ *  is automatically used a skybox for the scene.
+ *      Note that this function returns true or false to indicate
+ *  whether it was possible to set up WebGL.
  */
 function world2() {
 
-    var canvas, scene, camera, renderer;
-
-    var cube;  // The cube that acts as a skybox.
+    let canvas, scene, camera, renderer;
 
     function render() {
         renderer.render(scene, camera);
@@ -208,30 +182,17 @@ function world2() {
     }
 
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 300);
-    scene.add(camera);
-    camera.position.z = 3;  // camera must be moved away from the origin so that it can be rotated.
-    var texture = loadCubemapTexture(textureURLs, render);
     
-    /* Set up a material that uses a cubemap texture.  This material uses
-       custom vertex and fragment shaders that are defined in three.js as
-       part of its shader library.  This code is copied from examples in
-       the three.js download. */
-    var shader = THREE.ShaderLib[ "cube" ];
-	shader.uniforms[ "tCube" ].value = texture;
-	var material = new THREE.ShaderMaterial( { // A ShaderMaterial uses custom vertex and fragment shaders.
-		fragmentShader: shader.fragmentShader,
-		vertexShader: shader.vertexShader,
-		uniforms: shader.uniforms,
-		depthWrite: false,
-		side: THREE.BackSide
-	} );
+    camera = new THREE.PerspectiveCamera(50, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 3;
+    scene.add(camera);
+    
+    let texture = loadCubemapTexture(textureURLs, render);
 
-    cube = new THREE.Mesh( new THREE.BoxGeometry( 200, 200, 200 ), material );
-
-    scene.add(cube);
+    scene.background = texture;
+    
     installOrbitControls(camera, canvas, render);
-    render();
+    // scene will be rendered after texture has loaded.
     
     return true;
     
@@ -253,9 +214,11 @@ function init() {
     }
 }
 
+window.onload = init; // Arranges for init to be called when page has loaded.
+
 </script>
 </head>
-<body onload="init()" style="background-color: #EEEEEE">
+<body style="background-color: #EEEEEE">
 
 <h2>Three.js Skybox Demo</h2>
 
@@ -279,9 +242,9 @@ but with resolution reduced to 512-by-512.</p>
 </td>
 <td>
     <h3>2. Skybox with Cubemap Texture</h3>
-    <p style="max-width: 420px">Similar to the second example, but it textures the skybox with a single
-    cubemap texture instead of with six separate single-face textures.  This uses a
-    ShaderMaterial to implement the cubemap texture.</p>
+    <p style="max-width: 420px">For this scene, the images are loaded as a single cubemap texture.
+    That texture is set as the background of the scene, which automatically uses it as a
+    skybox.  No objects or lights are added to the scene.</p>
 </td>
 </tr>
 <tr>

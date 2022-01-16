@@ -6,35 +6,33 @@
 <link rel="stylesheet" href="../demo.css">
 <script src="../script/demo-core.js"></script>
 <script src="../script/three.min.js"></script>
-<script src="../script/threejs/TrackballControls.js"></script>
+<script src="../script/threejs/GLTFLoader.js"></script>
+<script src="../script/threejs/OrbitControls.js"></script>
 <script>
 
 /* Can show animated models of a horse and of a stork.
    The basic outline is the same as my sample program
-   json-model-viewer.html, but the animation technique
-   was lifted from the example canvas_morphtargets_horse.html
-   that is part of the three.js download. */
+   model-viewer.html, but the animation technique
+   was lifted from an example in the three.js download.
+ */
 
 var canvas, scene, renderer, camera;
-
-var currentObject;  // Currently installed object;
 
 var animating = false;
 
 var mixer = null;  // The object that animates the model, of type THREE.AnimationMixer
 var prevMixerTime; // Used to record time of last update of mixer
 
-var controls;  // A TrackballControls object that is used to implement
+var controls;  // An OrbitControls object that is used to implement
                // rotation of the scene using the mouse.  (It actually rotates
                // the camera around the scene.)
 
 var model = null; // The three.js object that represents the current model.
 
-var modelDirectory = "models-json/"; // Folder containing model files, relative to this HTML file.
 
-var modelFileNames = [  // names of the model files
-    "horse.js",
-    "stork.js",
+var modelURLs = [  // paths to the model files
+    "models/Horse.glb",
+    "models/Stork.glb",
 ];
 
 var modelRotations = [ // rotations to be applied to models.
@@ -56,6 +54,7 @@ function render() {
  *  after the model has been loaded.
  */
 function createWorld() {
+    renderer.setClearColor(0xE8E8E8);
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(35, canvas.width/canvas.height, 0.1, 100);
     camera.position.z = 30;
@@ -64,11 +63,12 @@ function createWorld() {
     light.position.set(0,0,1);
     camera.add(light);
     scene.add(camera);
+    scene.add(new THREE.AmbientLight(0x404040));
 }
 
 
 /**
- * This function will be called when the JSONLoader has
+ * This function will be called when the GLTFLoader has
  * finished loading a model.  This function creates a three.js
  * Mesh object to hold the model.  It translates the object so that
  * its center is at the origin.  It wraps the object in another object
@@ -78,40 +78,44 @@ function createWorld() {
  * which is used to set up an appropriate orientation for viewing
  * the model. 
  */ 
-function modelLoaded(geometry, rotation) {
+function modelLoaded(dataFromModel, rotation) {
 
-    /* create the object from the geometry was loaded, with a white material. */
-       
-    var material = new THREE.MeshLambertMaterial( {
-        vertexColors: THREE.FaceColors,  // use colors from the geometry
-        morphTargets: true
-    });
-    var object = new THREE.Mesh(geometry, material);
+    document.getElementById("headline").innerHTML = "Three.js Mesh Animation";
+    var object = dataFromModel.scene.children[0];
 
     /* Determine the ranges of x, y, and z in the vertices of the geometry. */
 
+    var geometry = object.geometry;
+    vertices = geometry.getAttribute("position");
     var xmin = Infinity;
     var xmax = -Infinity;
     var ymin = Infinity;
     var ymax = -Infinity;
     var zmin = Infinity;
     var zmax = -Infinity;
-    for (var i = 0; i < geometry.vertices.length; i++) {
-        var v = geometry.vertices[i];
-        if (v.x < xmin)
-            xmin = v.x;
-        else if (v.x > xmax)
-            xmax = v.x;
-        if (v.y < ymin)
-            ymin = v.y;
-        else if (v.y > ymax)
-            ymax = v.y;
-        if (v.z < zmin)
-            zmin = v.z;
-        else if (v.z > zmax)
-            zmax = v.z;
+    for (var i = 0; i < vertices.count; i++) {
+        var x = vertices.getX(i); // get vertex coords from the geometry "position" attribute.
+        var y = vertices.getY(i);
+        var z = vertices.getZ(i);
+        if (x < xmin)
+            xmin = x;
+        else if (x > xmax)
+            xmax = x;
+        if (y < ymin)
+            ymin = y;
+        else if (y > ymax)
+            ymax = y;
+        if (z < zmin)
+            zmin = z;
+        else if (z > zmax)
+            zmax = z;
     }
     
+    /* Remove any transformation that has been applied to the object. */
+    object.scale.set(1,1,1);
+    object.position.set(0,0,0);
+    object.rotation.set(0,0,0);
+     
     /* translate the center of the object to the origin */
     var centerX = (xmin+xmax)/2;
     var centerY = (ymin+ymax)/2; 
@@ -121,10 +125,6 @@ function modelLoaded(geometry, rotation) {
     max = Math.max(max, Math.max(centerZ - zmin, zmax - centerZ) );
     var scale = 10/max;
     object.position.set( -centerX, -centerY, -centerZ );
-    if (window.console) {
-       console.log("Loading finished, scaling object by " + scale);
-       console.log("Center at ( " + centerX + ", " + centerY + ", " + centerZ + " )");
-    }
     
     /* Create the wrapper, model, to scale and rotate the object. */
     
@@ -134,7 +134,7 @@ function modelLoaded(geometry, rotation) {
     model.rotation.set(rotation[0],rotation[1],rotation[2]);
     scene.add(model);
     mixer = new THREE.AnimationMixer( object );
-	var clip = THREE.AnimationClip.CreateFromMorphTargetSequence( 'motion', geometry.morphTargets, 30 );
+    var clip = dataFromModel.animations[0];
     var animationAction = mixer.clipAction(clip);
     animationAction.setDuration(1);
     animationAction.play();  // Note that it is the mixer.update() in doFrame() that actually drives the animation.
@@ -149,9 +149,7 @@ function modelLoaded(geometry, rotation) {
  * has been loaded, the function modelLoaded() will be called.
  */
 function installModel(modelNumber) {
-    function callback(geometry,material) {  // callback function to be executed when loading finishes.
-        modelLoaded(geometry, modelRotations[modelNumber]);
-    }
+    document.getElementById("headline").innerHTML = "Loading Model";
     if (model) {
         scene.remove(model);
     }
@@ -163,53 +161,15 @@ function installModel(modelNumber) {
        doAnimationCheckbox();
     }
     document.getElementById("animate").disabled = true;
-    var loader = new THREE.JSONLoader();
-    try {
-        loader.load(modelDirectory + modelFileNames[modelNumber], callback);
+    var loader = new THREE.GLTFLoader();
+    loader.load(modelURLs[modelNumber], callback, undefined, error);
+    function callback(data) {  // callback function to be executed when loading finishes.
+        modelLoaded(data, modelRotations[modelNumber]);
     }
-    catch (e) {
-        // Note: Will give an error if loading from the local file system
-        // on some browsers (Chrome, at least). 
+    function error() {
         document.getElementById("headline").innerHTML =
             "Could not load model! Note that some browsers<br>can't load models from a local disk.";
     }
-}
-
-
-
-/*  This page uses THREE.TrackballControls to let the user use the mouse to rotate
- *  the view.  TrackballControls are designed to be used during an animation, where
- *  the rotation is updated as part of preparing for the next frame.  The scene
- *  is not automatically updated just because the user drags the mouse.  To get
- *  the rotation to work without animation, I add another mouse listener to the
- *  canvas, just to call the render() function when the user drags the mouse.
- *  The same thing holds for touch events -- I call render for any mouse move
- *  event with one touch.
- */
-function installTrackballControls() {
-    controls = new THREE.TrackballControls(camera,canvas);
-    controls.noPan = true;
-    controls.noZoom = true;
-    controls.staticMoving = true;
-    function move() {
-        controls.update();
-		if (!animating) {
-			render();
-		}
-    }
-    function down() {
-        document.addEventListener("mousemove", move, false);
-    }
-    function up() {
-        document.removeEventListener("mousemove", move, false);
-    }
-    function touch(event) {
-        if (event.touches.length == 1) {
-            move();
-        }
-    }
-    canvas.addEventListener("mousedown", down, false);
-    canvas.addEventListener("touchmove", touch, false);
 }
 
 
@@ -223,21 +183,18 @@ function resetControls() {
 
 //--------------------------- animation support -----------------------------------
 
-var prevTime;  // For keeping track of time between calls to morphAnimator.update.
-
 function doFrame() { 
-	if (animating && mixer) {
+   if (animating && mixer) {
         var time = Date.now();
         mixer.update( ( time - prevMixerTime ) * 0.001 );
         prevMixerTime = time;
 	    render();
-		requestAnimationFrame(doFrame); 
+	    requestAnimationFrame(doFrame); 
 	}
 }
 
 function startAnimation() {
     if (!animating) {
-       prevTime = Date.now();
 	   animating = true;
        prevMixerTime = Date.now();
 	   requestAnimationFrame(doFrame);
@@ -245,20 +202,20 @@ function startAnimation() {
 }
 
 function pauseAnimation() {
-	if (animating) {
+   if (animating) {
 	    animating = false;
 	}
 }
 
 function doAnimationCheckbox() {
-    var anim = document.getElementById("animate").checked
+    var anim = document.getElementById("animate").checked;
     if ( anim == animating ) { // should not happen
       return;
     }
     if ( anim )
-    	startAnimation();
+       startAnimation();
     else
-    	pauseAnimation();
+       pauseAnimation();
 }
 
 //----------------------------------------------------------------------------------
@@ -279,11 +236,14 @@ function init() {
     document.getElementById("animate").checked = false;
     document.getElementById("horse").checked = true;
     document.getElementById("animate").onchange = doAnimationCheckbox;
-    document.getElementById("horse").onchange = function() { installModel(0) };
-    document.getElementById("stork").onchange = function() { installModel(1) };
+    document.getElementById("horse").onchange = function() { installModel(0); };
+    document.getElementById("stork").onchange = function() { installModel(1); };
     renderer.setClearColor(0xAAAAAA);
     createWorld();
-    installTrackballControls();
+    controls = new THREE.OrbitControls(camera,canvas);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.addEventListener("change", render);
     installModel(0);
 }
 
@@ -317,21 +277,22 @@ function init() {
 animate models of a running horse and a flying stork.</p>
 
 <p>The models are in
-the JSON format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 89).
-Each of the two model files includes a set of "morph targets." A morph target is
-an alternate set of vertices for the mesh geomety of the model.  The morph targets
-describe the geometry of the model at different points in time.  Those points in time
-are "key frames" for the animation; that is, the geometry for points between the
-key frames is obtained by interpolating the vertex positions from their values
-at the key frames.  A <i>THREE.AnimationMixer</i> is used to apply the interpolation to
-the mesh object.  (This "mixer" works with a <i>THREE.AnimationClip</i> and
-a <i>THREE.AniamtionAction</i> in a rather complex animation system.  See the
-source code.)  The colors for the horse and for the stork are part of the models.</p>
-<p>The techniques for this demo are based on the sample program
-canvas_morphtargets_horse.html, which is part of the download of <i>three.js</i>
-from its web site, threejs.org.  You can look at the source code of this
-demo or of that sample program to see how the animation is programmed.</p>
-<p>You can use your mouse to rotate the model, even when it is animating.</p>
+the GLTF format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 129).
+A GLTF file contains an entire scene and can include animations, as well as objects.
+In this case, the files that are used contain one object (a horse or stork) and an
+animation that animates that object.  The horse and stork objects come with their
+colors already defined.
+If <i>dataFromFile</i> is the data loaded from
+the file, then the object is <i>dataFromFile.scene.children</i>[0], and
+the animation is <i>dataFromFile.animations</i>[0].
+You can look at the source code of this
+demo to see how the animation is programmed.</p>
+<p>You can use your mouse (or finger) to rotate the model, even when it is animating.</p>
+<p>(Note that this demo won't work if you are trying to load it from your local computer instead
+of from a web server.  This is because of web browser security policies that prevent the
+program from loading the models locally.
+See the documentation about
+<a href="https://threejs.org/docs/index.html#manual/en/introduction/How-to-run-things-locally">running three.js examples locally</a>.)</p>
 </div>
 
 

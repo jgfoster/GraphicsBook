@@ -84,7 +84,7 @@ color as well as other properties such as shininess, roughness, and transparency
 <p>One of the most useful kinds of material property is a <newword>texture</newword>.
 In most general terms, a texture is a way of varying material properties from point-to-point
 on a surface.  The most common use of texture is to allow different colors for different
-points.  This is done by using a 2D image as a texture, which can be applied to a surface
+points.  This is often done by using a 2D image as a texture.  The image can be applied to a surface
 so that the image looks like it is "painted" onto the surface.
 However, texture can also refer to changing values for things like transparency or
 "bumpiness."  Textures allow us to add detail to a scene without using a huge number of

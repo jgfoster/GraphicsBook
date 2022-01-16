@@ -16,26 +16,28 @@
  *       matrix is in column-matrix order (ready for use with glMatrix or
  *       gl.uniformMatrix4fv).  The view matrix takes into account the
  *       view distance and the center of view.
- *    rotator.setXLimit( d ) -- sets the range of possible rotations
- *       about the x-axis.  The paramter must be a non-negative number,
+ *    rotator.setXLimit( d ) -- sets the range of possible rotations.
+ *       about the x-axis.  The parameter must be a non-negative number,
  *       and the value is clamped to the range 0 to 85.  The allowed range
  *       of rotation angles is from -d to d degrees.  If the value is zero
  *       only rotation about the y-axis is allowed.  Initial value is 85.
- *    rotation.getXLimit() -- returns the current limit
- *    rotation.setRotationCenter( vector ) -- Sets the center of rotation.
+ *    rotator.getXLimit() -- returns the current limit.
+ *    rotator.setRotationCenter( vector ) -- Sets the center of rotation.
  *       The parameter must be an array of (at least) three numbers.  The
  *       view is rotated about this point.  Usually, you want the rotation
  *       center to be the point that appears at the middle of the canvas,
  *       but that is not a requirement.  The initial value is effectively
  *       equal to [0,0,0].
- *    rotation.getRotationCenter() -- returns the current value.
- *    rotation.setAngles( rotateY, rotateX ) -- sets the angles of rotation
+ *    rotator.getRotationCenter() -- returns the current value.
+ *    rotator.setAngles( rotateY, rotateX ) -- sets the angles of rotation
  *       about the y- and x- axes.  The values must be numbers and are
  *       given in degrees.  The limit on the range of x rotations is enforced.
  *       If the callback function is defined, it is called.
- *    rotation.setViewDistance(dist) -- Sets the view distance to dist, which
+ *    rotator.getAngles() -- returns the current x and y rotations angles,
+ *       as an array of two numbers.
+ *    rotator.setViewDistance(dist) -- Sets the view distance to dist, which
  *       must be a number.
- *    rotation.getViewDistance() -- returns the current value.
+ *    rotator.getViewDistance() -- returns the current value.
  *
  * @param canvas must be a DOM element for a canvas.  A mouse
  *     listener and a touch listener are installed on the canvas.
@@ -65,35 +67,38 @@ function SimpleRotator(canvas, callback, viewDistance, rotY, rotX) {
     var degreesPerPixelY = 180/canvas.width; 
     this.getXLimit = function() {
         return xLimit;
-    }
+    };
     this.setXLimit = function(limitInDegrees) {
         xLimit = Math.min(85,Math.max(0,limitInDegrees));
-    }
+    };
     this.getRotationCenter = function() {
         return (center === undefined) ? [0,0,0] : center;
-    }
+    };
     this.setRotationCenter = function(rotationCenter) {
         center = rotationCenter;
-    }
+    };
     this.setAngles = function( rotY, rotX ) {
         rotateX = Math.max(-xLimit, Math.min(xLimit,rotX));
         rotateY = rotY;
         if (callback) {
             callback();
         }
-    }
+    };
+    this.getAngles = function() {
+        return [rotateX,rotateY];
+    };
     this.setViewDistance = function( dist ) {
         viewDistance = dist;
-    }
+    };
     this.getViewDistance = function() {
         return (viewDistance === undefined)? 0 : viewDistance;
-    }
+    };
     this.getViewMatrix = function() {
         var cosX = Math.cos(rotateX/180*Math.PI);
         var sinX = Math.sin(rotateX/180*Math.PI);
         var cosY = Math.cos(rotateY/180*Math.PI);
         var sinY = Math.sin(rotateY/180*Math.PI);
-        var mat = [  // The product of rotation by rotationX about x-axis and by rotationY about y-axis.
+        var mat = [  // The product of rotation by rotateX about x-axis and by rotateY about y-axis.
             cosY, sinX*sinY, -cosX*sinY, 0,
             0, cosX, sinX, 0,
             sinY, -sinX*cosY, cosX*cosY, 0,
@@ -111,7 +116,7 @@ function SimpleRotator(canvas, callback, viewDistance, rotY, rotX) {
             mat[14] -= viewDistance;
         }
         return mat;
-    }
+    };
     var prevX, prevY;  // previous position, while dragging
     var dragging = false;
     var touchStarted = false;
