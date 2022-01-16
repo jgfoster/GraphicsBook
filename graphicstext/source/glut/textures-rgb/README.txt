@@ -1,12 +1,12 @@
 
 The image files in this folder are in "Silicon Graphics RGB"
-format.  They were originally downloaded in other formats
+format. They were originally downloaded in other formats
 and were converted to .rgb files using the Gimp image
 manipulation program.
 
-.rgb is a simple file format.  The images can be loaded
+.rgb is a simple file format. The images can be loaded
 into GL_RGBA format textures using the readrgb.c file
-that can be found in this folder.  It was downloaded 
+that can be found in this folder. It was downloaded 
 from http://paulbourke.net/dataformats/sgirgb/ 
 in June 2021.
 

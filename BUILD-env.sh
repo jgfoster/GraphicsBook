@@ -6,7 +6,7 @@
 
 
 # TOP_DIR is the default directory; other directories are defined
-# in this script relative to TOP_DIR.  By default, it is the
+# in this script relative to TOP_DIR. By default, it is the
 # directory in which the script is run.
 
 TOP_DIR=`pwd`
@@ -29,11 +29,11 @@ fi
 
 
 # XALAN_DIR is a directory that contains all the jar files that
-# are needed to run the xalan XSLT processor.  A standard xalan2 download
-# should work.  The jar files are: xalan.jar, serializer.jar, 
-# xercesImpl.jar, and xml-apis.jar.  (To use the default setup, the
+# are needed to run the xalan XSLT processor. A standard xalan2 download
+# should work. The jar files are: xalan.jar, serializer.jar, 
+# xercesImpl.jar, and xml-apis.jar. (To use the default setup, the
 # TOP_DIR should contain a directory named xalan that contains 
-# these jar files.  A link to a xalan download directory would work.)
+# these jar files. A link to a xalan download directory would work.)
 
 if [ -z "$XALAN_DIR" ] ; then
    XALAN_DIR="$TOP_DIR/xalan"
@@ -48,10 +48,10 @@ fi
 
 
 # LATEX_COMMAND is the command that runs latex, part of the TeX typesetting
-# system.  LaTeX is an intermediate step in the production of the PDF files.
+# system. LaTeX is an intermediate step in the production of the PDF files.
 # The default command includes the option "--interaction=batchmode", which
 # prevents latex from printing error messages and from stopping for user 
-# input when an error occurs.  (This surpresses a lot of output from latex!)
+# input when an error occurs. (This surpresses a lot of output from latex!)
 
 if [ -z "$LATEX_COMMAND" ] ; then
    LATEX_COMMAND="latex --interaction=batchmode"
@@ -59,7 +59,7 @@ fi
 
 
 # DVIPDF_COMMAND is the command that runs dvipdf, part of the TeX typesetting
-# system.  This is a step in the production of the PDF files.
+# system. This is a step in the production of the PDF files.
 
 if [ -z "$DVIPDF_COMMMAND" ] ; then
    DVIPDF_COMMAND="dvipdf"
@@ -67,7 +67,7 @@ fi
 
 
 # If KEEP_LATEX is "no", then the LaTeX files, which are created during the
-# production of the PDF files, are discarded.  Changing the values to anything
+# production of the PDF files, are discarded. Changing the values to anything
 # else will cause the LaTeX files to be saved in BUILD_OUTPUT_DIR.
 
 if [ -z "$KEEP_LATEX" ] ; then

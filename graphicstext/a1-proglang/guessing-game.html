@@ -19,7 +19,7 @@
             document.getElementById("question").innerHTML =
                 "You got it in " + guessCount + " guesses. " +
                 userNumber + " is correct.<br>" + 
-                "I have picked another number.  Make a guess!";
+                "I have picked another number. Make a guess!";
             number = Math.floor( 1 + 100*Math.random() );
             guessCount = 0;
             guessMessage = "Your guesses so far: ";
@@ -44,7 +44,7 @@
 </head>
 <body>
     <p id="question">I will pick a number between 1 and 100<br>
-     Try to guess it.  What is your first guess?</p>
+     Try to guess it. What is your first guess?</p>
     <p><input type="text" id="guess">
        <button onclick="guess()">Make Guess</button></p>
     <p id="message"></p>

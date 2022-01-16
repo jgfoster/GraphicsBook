@@ -3,8 +3,8 @@
 <!--
      Uses WebGL to apply bluring to an image.
      This is a demonstration of using gl.blendFunc()
-     for something other than transparency.  It is a
-     simple multi-pass algorithm.  (Actually, it would be
+     for something other than transparency. It is a
+     simple multi-pass algorithm. (Actually, it would be
      much better to apply the blur filer in the fragement
      shader -- that method would support more general
      image filters.)
@@ -62,7 +62,7 @@ const imageURLs = [
 ];
 
 /**
- *  Draws the current image, with no blur applied.  This is used when the image is just loaded.
+ *  Draws the current image, with no blur applied. This is used when the image is just loaded.
  *  When the "apply blur" button is clicked, the image is drawn using the blur() function.
  */
 function draw() {
@@ -82,7 +82,7 @@ function draw() {
 
 /**
  * Applies a blur filter to the current image by drawing the texture image 9 times,
- * with different offsets and with color values multiplied by 9.  An additive blend
+ * with different offsets and with color values multiplied by 9. An additive blend
  * function is used, so that the values from the 9 passes are just added up.
  * At the end, the final image is copied back into the texture, so that another
  * blur can be applied to further blur the image.
@@ -117,9 +117,9 @@ function blur() {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.
@@ -149,9 +149,9 @@ function createProgram(gl, vShader, fShader) {
 
 
 /**
- *  Loads a texture image asynchronously.  The first paramter is the url
- *  from which the image is to be loaded.  The second parameter is the
- *  texture object into which the image is to be loaded.  When the image
+ *  Loads a texture image asynchronously. The first paramter is the url
+ *  from which the image is to be loaded. The second parameter is the
+ *  texture object into which the image is to be loaded. When the image
  *  has finished loading, the draw() function will be called
  *      If an error occurs during loading, an error message is displayed.
  * on the page.
@@ -175,7 +175,7 @@ function loadTexture( ) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
         textureLoaded = true;
-        draw();  // Draw the canvas, with the texture.  
+        draw();  // Draw the canvas, with the texture. 
     };
     img.onerror = function(e,f) { 
         document.getElementById("headline").innerHTML =
@@ -212,7 +212,7 @@ function initGL() {
 }
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     let canvas;

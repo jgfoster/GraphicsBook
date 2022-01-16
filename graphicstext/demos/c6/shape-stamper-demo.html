@@ -11,7 +11,7 @@
    
    Note that in this program, the WebGL context option preserveDrawingBuffer
    is set to true, which means that the image in the buffer will be retained
-   after the image is copied to the web page.  This is essential in this
+   after the image is copied to the web page. This is essential in this
    program because the response to a click is simply to draw one shape -- the
    previous image still has to be there!
 -->
@@ -83,7 +83,7 @@ var colorList = [ // available colors for shapes
 
 /**
  *  The init() function installs this function as a handler for mousedown events
- *  on the canvas.  It calles putShape to draw a shape at the current mouse position.
+ *  on the canvas. It calles putShape to draw a shape at the current mouse position.
  */
 function doMouseDown(event) {
     
@@ -98,7 +98,7 @@ function doMouseDown(event) {
 
 /**
  *  The init() function installs this function as a handler for touchstart events
- *  on the canvas.  For a one-finger touch, this method calls putShape to add
+ *  on the canvas. For a one-finger touch, this method calls putShape to add
  *  a shape to the canvas at the location of the touch.
  */
 function doTouch(evt) {
@@ -128,7 +128,7 @@ function putShape(x, y) {
     gl.uniform3fv( uniformColor, colorList[color] );
     gl.uniform1f( uniformAlpha, alpha );
     
-    /* Get the shape selection from the pop-up menu, and draw the shape.  To get
+    /* Get the shape selection from the pop-up menu, and draw the shape. To get
        the correct data into the shader, we have to call gl.vertexAttribPointer
        while the correct buffer for that shape is bound. */
     
@@ -162,9 +162,9 @@ function putShape(x, y) {
 
 /**
  *  This function is called as part the WebGL initialization to create buffers
- *  to hold values for the "a_coords" attribute.  One buffer is created and
+ *  to hold values for the "a_coords" attribute. One buffer is created and
  *  and filled with data for each of the four possible shapes.
- *    Note that all shapes are centered at (0,0).  They are translated to
+ *    Note that all shapes are centered at (0,0). They are translated to
  *  a different position when they are drawn, using the u_translation uniform.
  */
 function createShapeBuffers() {
@@ -215,9 +215,9 @@ function createShapeBuffers() {
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferCoordsTriangle );
     gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STATIC_DRAW);
     
-    /* Create data for a star.  The star is a polygon in which the
+    /* Create data for a star. The star is a polygon in which the
        odd-numbered vertices have a smaller "radius" than the even-numbered
-       vertices.  To make gl.TRIANGLE_FAN work correctly for this non-convex
+       vertices. To make gl.TRIANGLE_FAN work correctly for this non-convex
        polygon, the first vertex of the shape is set to the center of the
        star. */
     
@@ -240,9 +240,9 @@ function createShapeBuffers() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -291,7 +291,7 @@ function initGL() {
 } 
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {
@@ -394,16 +394,16 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This is a demo version of a sample WebGL program, shape-stamper.html.
-There is not much to say about its functionality.  Click the canvas to
-add a shape.  When a shape is added, its properties are taken from the
-popup menus on the right.  The "Clear" button will clear the canvas by filling
+There is not much to say about its functionality. Click the canvas to
+add a shape. When a shape is added, its properties are taken from the
+popup menus on the right. The "Clear" button will clear the canvas by filling
 it with white.</p>
 <p>It's worth looking at the source code for both the sample program and
 the demo, since there is a significant difference in the way that they
-draw the shapes.  The sample program uses a single VBO to hold the
-coordinates for the shape.  When a shape is drawn, a new set of coordinates
-is computed and is loaded into the VBO.  The demo uses four VBOs, one
-for each shape.  Coordinates for the shape are computed and loaded into
+draw the shapes. The sample program uses a single VBO to hold the
+coordinates for the shape. When a shape is drawn, a new set of coordinates
+is computed and is loaded into the VBO. The demo uses four VBOs, one
+for each shape. Coordinates for the shape are computed and loaded into
 the buffers during initialization, and the contents of the buffers are
 not changed after that. However, since the coordinates for the shapes assume
 that the shapes are centered at (0,0), a translation was added to

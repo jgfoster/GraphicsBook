@@ -2,7 +2,7 @@
 
 <!--
      This page is a rather pointless WebGL 2.0 demo using
-     multiple draw buffers attached to a framebuffer.  The
+     multiple draw buffers attached to a framebuffer. The
      program extracts the red, green, and blue color components
      into three textures that are attached to a framebuffer.
      Then the three textures are drawn to the screen as
@@ -23,9 +23,9 @@
 "use strict";
 
 
-// The same vertex shader is used for two shader programs.  The input is
+// The same vertex shader is used for two shader programs. The input is
 // 2D coordinates in the range 0 to 1, which are simply passed to the
-// fragment shader for use as texture coordinates.  The input coordinates
+// fragment shader for use as texture coordinates. The input coordinates
 // are transfromed from the range 0 to 1 to the clip coordinate range, -1 to 1.
 // The shader programs are only used to draw the unit square with vertices
 // at (0,0), (1,0), (1,1), and (0,1).
@@ -61,11 +61,11 @@ void main() {
     blue = color.b;
 }`;
 
-// The fragment shader for drawing to the screen.  It simply outputs
+// The fragment shader for drawing to the screen. It simply outputs
 // a color from a texture, and uses the red component of that color
-// as a grayscale value.  This is just used to draw each of the
+// as a grayscale value. This is just used to draw each of the
 // three textures, containing the color components from the Mona Lisa
-// image, to the screen.  (Note that since the textures use format
+// image, to the screen. (Note that since the textures use format
 // gl.R8, their colors are treated as read when read by a sampler.)
 
 const fragmentShaderSourceScreen = `#version 300 es
@@ -99,10 +99,10 @@ let texture0, texture1, texture2;  // textures that will be attached to the fram
 
 /**
  *  Draws the color components from the Mona Lisa image to three textures
- *  that are attached to a framebuffer as draw buffers.  Then copies those
- *  three textures to the screen as grayscale images.  This method is
+ *  that are attached to a framebuffer as draw buffers. Then copies those
+ *  three textures to the screen as grayscale images. This method is
  *  called by loadMondaLisaTexture() after the image has been successfully
- *  loaded.  It is only called (at most) once in this program.
+ *  loaded. It is only called (at most) once in this program.
  */
 function draw() {
 
@@ -129,8 +129,8 @@ function draw() {
 }
 
 /**
- * Initialize the WebGL graphics context.  Sets up the framebuffer, textures,
- * and coordinate buffer.  
+ * Initialize the WebGL graphics context. Sets up the framebuffer, textures,
+ * and coordinate buffer. 
  */
 function initGL() {
     gl.clearColor(0,0,0,1);  // background will be opaque black
@@ -148,7 +148,7 @@ function initGL() {
     gl.uniform1i(uniformPicture, 0);
     
     // Create the frame buffer and three textures, and attach the textures to
-    // the framebuffer draw buffers.  For each texture, memory is allocated for
+    // the framebuffer draw buffers. For each texture, memory is allocated for
     // a 320-by-399 texture of type gl.R8. This texture type represents values
     // in the range 0.0 to 1.0 as unsigned integers in the range 0 to 255.
     
@@ -168,7 +168,7 @@ function initGL() {
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT2, gl.TEXTURE_2D, texture2, 0);
     
     // Specify which draw buffers are to be used for the three outputs from
-    // the fragment shader.  (Using consecutive COLOR_ATTACHMENTx values seems like
+    // the fragment shader. (Using consecutive COLOR_ATTACHMENTx values seems like
     // maybe it should be the default, but you have to do soemthing like this to tell gl
     // to draw to three buffers, since it won't just inspect the fragment shader and
     // figure that out on its own.)
@@ -198,9 +198,9 @@ function initGL() {
 
 
 /**
- *  Loads the MonaLisa texture image asynchronously.  The parameter is the
- *  texture object into which the image is to be loaded.  When the image
- *  has finished loading, draw() will be called.  If an error occurs during loading,
+ *  Loads the MonaLisa texture image asynchronously. The parameter is the
+ *  texture object into which the image is to be loaded. When the image
+ *  has finished loading, draw() will be called. If an error occurs during loading,
  *  an error message is displayed on the page, and draw() is never called.)
  */
 function loadMondaLisaTexture(textureObject ) {
@@ -222,7 +222,7 @@ function loadMondaLisaTexture(textureObject ) {
             document.getElementById("animateCheckbox").checked = true
         }
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,gl.LINEAR);  // no mipmaps
-        draw();  // Draw the canvas, with the texture.  
+        draw();  // Draw the canvas, with the texture. 
     };
     img.onerror = function(e) { 
         // This function will be called if an error occurs while loading.
@@ -237,9 +237,9 @@ function loadMondaLisaTexture(textureObject ) {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -269,7 +269,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 /*----------------------------------------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     let canvas;
@@ -318,9 +318,9 @@ window.onload = init;  // Arrange for init() to be called after page has loaded.
 The three images above show the red, green, and blue components of the Mona Lisa image that is shown at the left,
 as grayscale images.
 The three images were created as textures in WebGL 2.0 by attaching three texture objects
-as draw buffers to the same framebuffer.  A single drawing pass reads from the original image and
-writes the three color components to the three textures.  Then the three textures are drawn
-to the screen.  This is only done as a demonstration of using multiple draw buffers in WebGL&nbsp;2.0.
+as draw buffers to the same framebuffer. A single drawing pass reads from the original image and
+writes the three color components to the three textures. Then the three textures are drawn
+to the screen. This is only done as a demonstration of using multiple draw buffers in WebGL&nbsp;2.0.
 </p>
 
 </body>

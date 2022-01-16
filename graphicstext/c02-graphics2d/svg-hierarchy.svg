@@ -7,15 +7,15 @@
      width="400" height="300" 
      viewBox="-4 -3 8 6">
      
-<!-- An example of hierarchical modeling.  Simple models are created of a
-     wheel and a cart.  A wheel is used as a component in the cart, and a
-     copy is shown in the main image.  Four copies of the cart model are
+<!-- An example of hierarchical modeling. Simple models are created of a
+     wheel and a cart. A wheel is used as a component in the cart, and a
+     copy is shown in the main image. Four copies of the cart model are
      shown in the main image, with different transforms and fill colors. -->
 
 <defs>  <!-- Objects are defined in this section, but are not drawn here -->
 
     <!-- Define an object that represents a wheel centered at (0,0) and with
-         radius 1.  The wheel is made out of several filled circles, with
+         radius 1. The wheel is made out of several filled circles, with
          thin rectangles for the spokes. -->
 
     <g id="wheel">

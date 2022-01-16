@@ -61,7 +61,7 @@ var bufferColor;     // A vertex buffer object to hold the values for color.
 var animating = false;  // is the animation running?
 
 /* Data for the points, including their coordinates, velocities and colors.
-   The values for the arrays are created during initialization.  The random
+   The values for the arrays are created during initialization. The random
    colors are used when the user selects colored rather than red points.
    The positions of the points are updated for each frame of the animation. */
 
@@ -73,7 +73,7 @@ var pointRandomColors = new Float32Array( 3*POINT_COUNT );
 function createPointData() { // called during initialization to fill the arrays with data.
     var i;
     for (i = 0; i < POINT_COUNT; i++) {
-           // Each point has two coordinates and two velocities.  Velocity number k
+           // Each point has two coordinates and two velocities. Velocity number k
            // tells how fast coordinate number k changes in pixels per frame.
         pointCoords[2*i] = 12 + (canvas.width-24) * Math.random();  // x-coordinate of point
         pointCoords[2*i+1] = 12 + (canvas.height-24) * Math.random();  // y-coordinate of point
@@ -159,9 +159,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -232,7 +232,7 @@ function doAnimationCheckbox() {
 /*-------------------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {
@@ -313,12 +313,12 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This is a demo version of a sample WebGL program, moving-points.html.
-There is not much to say about its functionality.  The colored disks
-move when the "Animate" box is checked.  If the "Random Color" box
-is unchecked, all the disks are red.  And a popup menu lets you choose
+There is not much to say about its functionality. The colored disks
+move when the "Animate" box is checked. If the "Random Color" box
+is unchecked, all the disks are red. And a popup menu lets you choose
 the size of the disks</p>
 <p>The main point of the demo is that the disks are drawn as a single
-primitive of type <i>gl.POINTS</i>.  A disk appears at each vertex
+primitive of type <i>gl.POINTS</i>. A disk appears at each vertex
 of the primitive.</p>
 </div>
 

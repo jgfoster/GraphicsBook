@@ -10,11 +10,11 @@
 <script>
 
 /*  This program shows an "icosphere" made by subdividing the faces
- *  of an icosahedron once.  Colors can be assigned either to 
- *  the vertices.  There are two kinds of animation, which can be 
+ *  of an icosahedron once. Colors can be assigned either to 
+ *  the vertices. There are two kinds of animation, which can be 
  *  turned on and off separately:  In the first kind, each color shifts
- *  continually through the range of possible hues.  In the second,
- *  individual vertices move away from the center and back.  At any
+ *  continually through the range of possible hues. In the second,
+ *  individual vertices move away from the center and back. At any
  *  given time, up to 20 vertices are moving.
  */
  
@@ -34,10 +34,10 @@ var vertexBuffer;  // The THREE.BufferAttribute containing the vertex coordinate
 var vertexVectors;  // Vertex coordinates, represented as THREE.Vector3 objects.
 
 var vertexAnimData = [];  // Array of objects, one for each vertex that
-                          // is currently being animated.  Items are added
+                          // is currently being animated. Items are added
                           // to this array in function updateForFrame()
                         
-var wireSphere;  // The wireframe sphere, which can be turned on and off.  It uses the same
+var wireSphere;  // The wireframe sphere, which can be turned on and off. It uses the same
                  // geometry as the shaded icosphere.
 
 
@@ -46,9 +46,9 @@ function render() {
 }
 
 
-/*  Create a scene showing the icosphere.  A second sphere with the same
+/*  Create a scene showing the icosphere. A second sphere with the same
  *  geometry but with a wireframe material is also shown; this effectively
- *  draws black lines between the colored faces of the icosphere.  All of
+ *  draws black lines between the colored faces of the icosphere. All of
  *  the data needed to color the vertices and do the animations is also
  *  created here.
  */
@@ -127,7 +127,7 @@ function createWorld() {
 
 
 /*  When an animation is in progress, this function is called just before rendering each
- *  frame of the animation.  In this case, colors and vertices of the icosphere are
+ *  frame of the animation. In this case, colors and vertices of the icosphere are
  *  modified, if the corresponding animation type is turned on.
  */
 function updateForFrame() {
@@ -150,7 +150,7 @@ function updateForFrame() {
     if (document.getElementById("vertexAnimationCheckbox").checked) {
              // Update animating vertices by changing their lengths.
         if (vertexAnimData.length == 0 || vertexAnimData.length < 20 && Math.random() < 0.1) {
-               // Fewer than 12 vertices are being animated.  Add data for aother new one.
+               // Fewer than 12 vertices are being animated. Add data for aother new one.
             ad = {}; // The data for an animating vertex.
             while (true) {
                    // Select ad.vertexNum to be an index of a vertex that is not already animating.
@@ -195,7 +195,7 @@ function updateForFrame() {
 }
 
 
-/*  This is called when the user clicks "Reset Vertices".  It resets the length of all vertices
+/*  This is called when the user clicks "Reset Vertices". It resets the length of all vertices
  *  that are being animated to 10 and removes all vertices from the list of animating vertices.
  *  (If a vertex animation is in progress, new vertices will quickly be added to the array.)
  */
@@ -213,7 +213,7 @@ function resetVertices() {
 }
 
 
-/*  This is called when the "Show Wireframe" checkbox is clicked.  It makes the
+/*  This is called when the "Show Wireframe" checkbox is clicked. It makes the
  *  wireframe sphere -- the black boundaries between faces -- visible or invisible.
  */
 function doShowWireframeCheckbox() {
@@ -352,36 +352,36 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>The demo shows a sphere that can be animated in two different ways.  The sphere is
+<p>The demo shows a sphere that can be animated in two different ways. The sphere is
 an "icosphere" that is created by subdividing the faces of an icosahedron.
 In this model of a sphere, all of the faces are triangles of the same size and shape.</p>
 <p>The sphere can be entirely white (when "Use Vertex Colors" is  not checked).
-Or, colors can be assigned to the vertices.  When the sphere is colored, each vertex
-has its own randomly assigned color.  Colors are then interpolated to the interior
-of each triangle.  You can see that the icosphere does not use
+Or, colors can be assigned to the vertices. When the sphere is colored, each vertex
+has its own randomly assigned color. Colors are then interpolated to the interior
+of each triangle. You can see that the icosphere does not use
 an indexed geometry, because when several triangles meet at a vertex, that vertex
-had a different color in each triangle.  This means that it's not actually the same
+had a different color in each triangle. This means that it's not actually the same
 vertex at all&mdash;each triangle gets its own set of three vertices that are not
 shared with any other triangle.</p>
 <p>For fun, the demo has two somewhat silly animations, which can run at the same time.
-First, "Animate Colors" causes each color on the sphere to change over time.  This option is
-disabled when colors are turned off.  Second, "Animate Vertices" changes the geometry of the
-object by moving some vertices.  A vertex is chosen at random and is moved away from
+First, "Animate Colors" causes each color on the sphere to change over time. This option is
+disabled when colors are turned off. Second, "Animate Vertices" changes the geometry of the
+object by moving some vertices. A vertex is chosen at random and is moved away from
 the surface of the sphere and then back; when it gets back to its starting point,
 the animation of that vertex stops, and another vertex can be animated.
-This is done for up to 20 different vertices simultaneously.  Note again that
+This is done for up to 20 different vertices simultaneously. Note again that
 vertices are not shared between triangles: When a vertex moves, only one triangle
-is affected.  (You might occasionally see two or even three vertices in the
+is affected. (You might occasionally see two or even three vertices in the
 same triangle being animated.)</p>
 <p>If you look at the source code for the demo, you will notice that when
 the colors are modified, <i>colorBuffer.needsUpdate</i> is set to true.
 Here, <i>colorBuffer</i> is the <i>THREE.BufferAttribute</i> that holds the
-color data that is used when the object is rendered.  Similarly,
+color data that is used when the object is rendered. Similarly,
 when the position of any vertex is changed, <i>vertexBuffer.needsUpdate</i>
-is set to true.  
+is set to true. 
 And when the colors are turned on or off, <i>material.needsUpdate</i> is
-set to true.  These settings are necessary to force the renderer to recompute some
-data that it has cached.  Without them, the changes would not have any effect
+set to true. These settings are necessary to force the renderer to recompute some
+data that it has cached. Without them, the changes would not have any effect
 on the appearance of the sphere.</p>
 </div>
 

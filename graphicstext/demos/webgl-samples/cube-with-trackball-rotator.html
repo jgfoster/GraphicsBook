@@ -53,13 +53,13 @@ const modelviewProjection = mat4.create();  // combined matrix
 let rotator;  // A SimpleRotator object that lets the user rotate the view by mouse.
 
 
-/* Draws a WebGL primitive.  The first parameter must be one of the constants
+/* Draws a WebGL primitive. The first parameter must be one of the constants
  * that specify primitives:  gl.POINTS, gl.LINES, gl.LINE_LOOP, gl.LINE_STRIP,
- * gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN.  The second parameter must
+ * gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN. The second parameter must
  * be an array of 4 numbers in the range 0.0 to 1.0, giving the RGBA color of
- * the color of the primitive.  The third parameter must be an array of numbers.
- * The length of the array must be a multiple of 3.  Each triple of numbers provides
- * xyz-coords for one vertex for the primitive.  This assumes that u_color is the
+ * the color of the primitive. The third parameter must be an array of numbers.
+ * The length of the array must be a multiple of 3. Each triple of numbers provides
+ * xyz-coords for one vertex for the primitive. This assumes that u_color is the
  * location of a color uniform in the shader program, a_coords_loc is the location of
  * the coords attribute, and a_coords_buffer is a VBO for the coords attribute.
  */
@@ -75,7 +75,7 @@ function drawPrimitive( primitiveType, color, vertices ) {
 
 /* Draws a colored cube, along with a set of coordinate axes.
  * (Note that the use of the above drawPrimitive function is not an efficient
- * way to draw with WebGL.  Here, the geometry is so simple that it doesn't matter.)
+ * way to draw with WebGL. Here, the geometry is so simple that it doesn't matter.)
  */
 function draw() { 
     gl.clearColor(0,0,0,1);
@@ -115,7 +115,7 @@ function draw() {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
@@ -127,9 +127,9 @@ function initGL() {
 }
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.

@@ -10,20 +10,20 @@ import java.awt.event.MouseMotionListener;
 
 /**
  * A Camera object encapsulates the information needed to define a
- * viewing transform and a projection for an OpenGL context.  The
+ * viewing transform and a projection for an OpenGL context. The
  * apply method can be called to applied this information to
- * a context.  The default view is from the point (0,0,30),
+ * a context. The default view is from the point (0,0,30),
  * looking at (0,0,0), with (0,1,0) pointing upwards on the screen.
- * The default projection is a perspective projection.  The
- * x and y limits on the screen include at least -5 to 5.  Limits
+ * The default projection is a perspective projection. The
+ * x and y limits on the screen include at least -5 to 5. Limits
  * in either the x or y direction will be expanded if necessary
- * to match the aspect ratio of the screen.  And the view volume
- * extends from -10 to 10 along the z-axis.  Only the default
- * constructor exists.  Non-default properties must be set by
+ * to match the aspect ratio of the screen. And the view volume
+ * extends from -10 to 10 along the z-axis. Only the default
+ * constructor exists. Non-default properties must be set by
  * calling methods.
  *     The camera comes along with a simulated trackball that
  * lets the user rotate the view by dragging on the drawing
- * surface.  See the installTrackball() method.
+ * surface. See the installTrackball() method.
  */
 public class Camera {
    
@@ -64,21 +64,21 @@ public class Camera {
 
    /**
     * Determine whether the xy-limits should be adjusted to match the
-    * aspect ratio of the display area.  The default is true.
+    * aspect ratio of the display area. The default is true.
     */
    public void setPreserveAspect(boolean preserveAspect) {
       this.preserveAspect = preserveAspect;
    }
 
    /**
-    * Set the limits of the view volume.  The limits are set with respect to the
-    * viewing coordinates.  That is, the view center is assumed to be at the point
-    * (0,0) in the plane of the screen.  The view up vector (more precisely, its projection
-    * onto the screen) points upwards on the screen.  The z-axis is perpendicular to the
+    * Set the limits of the view volume. The limits are set with respect to the
+    * viewing coordinates. That is, the view center is assumed to be at the point
+    * (0,0) in the plane of the screen. The view up vector (more precisely, its projection
+    * onto the screen) points upwards on the screen. The z-axis is perpendicular to the
     * screen, with the positive direction of the z-axis pointing out of the screen.
     * In this coordinate system, xmin and xmax give the horizontal limits on the screen,
     * ymin and ymax give the vertical limits on the screen, and zmin and zmax give
-    * the limits of the view volume along the z-axis.  (Note that this is NOT exactly
+    * the limits of the view volume along the z-axis. (Note that this is NOT exactly
     * the same as the parameters in either glOrtho or glFrustum!  Most important to 
     * note is that zmin and zmax are given with reference to the view center, not the
     * eye.)  Note that xmin/xmax or ymin/ymax might be adjusted to match the aspect
@@ -101,8 +101,8 @@ public class Camera {
    }
    
    /**
-    * Returns the view limits.  The return value is an array that contains the same data as
-    * the parameters to setLimits().  Note that the returned values included the
+    * Returns the view limits. The return value is an array that contains the same data as
+    * the parameters to setLimits(). Note that the returned values included the
     * originally requested xmin/xmax and ymin/ymax, and NOT values that have been
     * adjusted to reflect the aspect ratio of the display area.
     */
@@ -112,8 +112,8 @@ public class Camera {
    
    /**
     * Returns the actual xmin, xmax, ymin, ymax limits that were used when the apply
-    * method was most recently called.  These are the limits after they were, possibly,
-    * adjusted to match the aspect ratio of the display.  If apply has not been called
+    * method was most recently called. These are the limits after they were, possibly,
+    * adjusted to match the aspect ratio of the display. If apply has not been called
     * since the limits were set, then the return value contains the unadjusted, requested
     * limits.
     */
@@ -122,7 +122,7 @@ public class Camera {
    }
    
    /**
-    * Set the information for the viewing transformation.  The view will be set
+    * Set the information for the viewing transformation. The view will be set
     * in the apply method with a call to
     * gluLookAt(eyeX,eyeY,eyeZ,viewCenterX,viewCenterY,viewCenterZ,viewUpX,viewUpY,viewUpZ)
     */
@@ -148,10 +148,10 @@ public class Camera {
    }
    
    /**
-    * Apply the camera to an OpenGL context.  This method completely replaces the
-    * projection and the modelview transformation in the context.  It sets these
+    * Apply the camera to an OpenGL context. This method completely replaces the
+    * projection and the modelview transformation in the context. It sets these
     * transformations to the identity and then applies the view and projection
-    * represented by the camera.  This method is meant to be called at the begining
+    * represented by the camera. This method is meant to be called at the begining
     * of the display method and should replace any other means of setting the
     * projection and view.
     */
@@ -206,13 +206,13 @@ public class Camera {
    
    /**
     * Installs a simulated trackball for an OpenGL component, which must be the
-    * same component on which this camera is used.  The user can rotate the
-    * view by dragging on the component.  This will only work if the camera's
+    * same component on which this camera is used. The user can rotate the
+    * view by dragging on the component. This will only work if the camera's
     * apply() method is called at the start of the component's display function
-    * to set up the viewing and projection transformations.  The camera words
+    * to set up the viewing and projection transformations. The camera words
     * by modifying the camera's viewing parameters.
     * @param c  The OpenGL drawing surface where the trackball will be installed.
-    *    This is probably a GLJPanel or GLCanvas.  Passing a null as the parameter
+    *    This is probably a GLJPanel or GLCanvas. Passing a null as the parameter
     *    will remove the trackball from the component (if it has been installed
     *    there).
     */

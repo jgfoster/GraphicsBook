@@ -9,13 +9,13 @@
 <script>
 
 /* Demonstrates the use of THREE.InstancedMesh to drow
- * large numbers of copies of an object.  The basic object
- * is a sphere.  It used to make an 11-by-11-by-11 cube
- * of colored spheres.  An InstancedMesh allows each instance
+ * large numbers of copies of an object. The basic object
+ * is a sphere. It used to make an 11-by-11-by-11 cube
+ * of colored spheres. An InstancedMesh allows each instance
  * to have its own color and transformation; those are the
  * only property that can vary.
  *    This program uses WebGL2, which might not be available
- * in all web browsers.  It also works with a WebGL1Rendered,
+ * in all web browsers. It also works with a WebGL1Rendered,
  * but that presumably doesn't support true hardware instancing.
  */
 
@@ -23,7 +23,7 @@ let scene, camera, renderer;  // Three.js rendering basics.
 
 let canvas;  // The canvas on which the image is rendered.
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  */
 function createWorld() {
@@ -41,7 +41,7 @@ function createWorld() {
    scene.add(camera);
    scene.add(new THREE.AmbientLight(0x303030));
    
-   // Create the instanced mesh object.  The geometry of
+   // Create the instanced mesh object. The geometry of
    // the mesh will be rendered 1331 times, with different
    // transformations and different colors.
    
@@ -53,10 +53,10 @@ function createWorld() {
    
    let object = new THREE.InstancedMesh(geometry, material, count);
    
-   // Create the data for the instances.  Each instance has its
+   // Create the data for the instances. Each instance has its
    // own translation (x,y,z), where x, y, and z range from -5 to 5.
    // The transformations are installed into the InstancedMesh
-   // using the setMatrixAt() method.  At the same time, each
+   // using the setMatrixAt() method. At the same time, each
    // gets its own color, which are installed using the setColorAt()
    // method.
    

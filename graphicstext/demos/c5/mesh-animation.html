@@ -24,7 +24,7 @@ var mixer = null;  // The object that animates the model, of type THREE.Animatio
 var prevMixerTime; // Used to record time of last update of mixer
 
 var controls;  // An OrbitControls object that is used to implement
-               // rotation of the scene using the mouse.  (It actually rotates
+               // rotation of the scene using the mouse. (It actually rotates
                // the camera around the scene.)
 
 var model = null; // The three.js object that represents the current model.
@@ -49,8 +49,8 @@ function render() {
 }
 
 
-/*  This function is called by the init() method to create the world.  In this program,
- *  it just creates a light and a camera.  The model will be added in modelLoaded,
+/*  This function is called by the init() method to create the world. In this program,
+ *  it just creates a light and a camera. The model will be added in modelLoaded,
  *  after the model has been loaded.
  */
 function createWorld() {
@@ -69,12 +69,12 @@ function createWorld() {
 
 /**
  * This function will be called when the GLTFLoader has
- * finished loading a model.  This function creates a three.js
- * Mesh object to hold the model.  It translates the object so that
- * its center is at the origin.  It wraps the object in another object
- * that is used to scale and rotate the object.  The scale is set
+ * finished loading a model. This function creates a three.js
+ * Mesh object to hold the model. It translates the object so that
+ * its center is at the origin. It wraps the object in another object
+ * that is used to scale and rotate the object. The scale is set
  * so that the maximum coordinate in its vertices, in absolute
- * value, is scaled to 10.  The rotation is set to the second parameter,
+ * value, is scaled to 10. The rotation is set to the second parameter,
  * which is used to set up an appropriate orientation for viewing
  * the model. 
  */ 
@@ -145,7 +145,7 @@ function modelLoaded(dataFromModel, rotation) {
 
 /**
  * Called when the setting of the model-selection radio buttons is changed.
- * starts loading the model from the specified file.  When the model has
+ * starts loading the model from the specified file. When the model has
  * has been loaded, the function modelLoaded() will be called.
  */
 function installModel(modelNumber) {
@@ -280,7 +280,7 @@ animate models of a running horse and a flying stork.</p>
 the GLTF format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 129).
 A GLTF file contains an entire scene and can include animations, as well as objects.
 In this case, the files that are used contain one object (a horse or stork) and an
-animation that animates that object.  The horse and stork objects come with their
+animation that animates that object. The horse and stork objects come with their
 colors already defined.
 If <i>dataFromFile</i> is the data loaded from
 the file, then the object is <i>dataFromFile.scene.children</i>[0], and
@@ -289,7 +289,7 @@ You can look at the source code of this
 demo to see how the animation is programmed.</p>
 <p>You can use your mouse (or finger) to rotate the model, even when it is animating.</p>
 <p>(Note that this demo won't work if you are trying to load it from your local computer instead
-of from a web server.  This is because of web browser security policies that prevent the
+of from a web server. This is because of web browser security policies that prevent the
 program from loading the models locally.
 See the documentation about
 <a href="https://threejs.org/docs/index.html#manual/en/introduction/How-to-run-things-locally">running three.js examples locally</a>.)</p>

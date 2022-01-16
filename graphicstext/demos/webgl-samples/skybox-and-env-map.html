@@ -7,12 +7,12 @@
 <!-- This example combines a skybox with a fully reflective object.
      The skybox and teapot can be rotated independently. The object
      seems to be reflecting its environment, but it's really just that
-     the teapot and skybox use the same cubemap texture.  To get this
+     the teapot and skybox use the same cubemap texture. To get this
      to work, I use two shader programs, one for the skybox and one for the
-     teapot.  To get the reflection map to work with a rotatable skybox,
+     teapot. To get the reflection map to work with a rotatable skybox,
      the reflected ray in the teapot shader is transformed by the
-     inverse of the view transform rotation matrix.  (The view transform
-     is applied to both the skybox and the teapot.  The teapot is
+     inverse of the view transform rotation matrix. (The view transform
+     is applied to both the skybox and the teapot. The teapot is
      rotated by an additional modeling transform. -->
 
 <script src="gl-matrix-min.js"></script>
@@ -130,7 +130,7 @@ function draw() {
     
     // Get the inverse of the rotation that was applied to the skybox.
     // This is needed in the teapot shader to account for the rotation
-    // of the skybox.  (Note that it is passed to the shader in the
+    // of the skybox. (Note that it is passed to the shader in the
     // teapot's render function.)
     
     mat3.fromMat4(inverseViewTransform, modelview);
@@ -251,7 +251,7 @@ function createModelSB(modelData) {  // For creating the cube for the skybox.
 
 
 /**
- *  An event listener for the keydown event.  It is installed by the init() function.
+ *  An event listener for the keydown event. It is installed by the init() function.
  */
 function doKey(evt) {
     let rotationChanged = true;
@@ -275,9 +275,9 @@ function doKey(evt) {
 
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.
@@ -306,7 +306,7 @@ function createProgram(gl, vShader, fShader) {
 }
 
 
-/* Initialize the WebGL context.  Called by init() */
+/* Initialize the WebGL context. Called by init() */
 function initGL() {
     prog_SB = createProgram(gl, vertexShaderSourceSkybox, fragmentShaderSourceSkybox );
     a_coords_loc_SB =  gl.getAttribLocation(prog_SB, "coords");

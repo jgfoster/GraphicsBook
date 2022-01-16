@@ -5,7 +5,7 @@
 <!--
    This pages uses gl.drawArraysInstanced() to draw a large number
    of disks with a single function call, as an example of WebGL 2.0
-   "instancing".  Instancing is not part of core WebGL 1.0, but is
+   "instancing". Instancing is not part of core WebGL 1.0, but is
    often available as an extension in WebGL 1.0.
 -->
 
@@ -23,8 +23,8 @@
 
 
 <!--
-   Shader programs, written using GLSL ES 3.00.  The very first line in the
-   shader source must be "#version 300 es".  WebGL 2.0 can use GLSL ES 3.00,
+   Shader programs, written using GLSL ES 3.00. The very first line in the
+   shader source must be "#version 300 es". WebGL 2.0 can use GLSL ES 3.00,
    but note that it could also use GLSL ES 1.00, and the shaders for this
    program could have been written in that language.
 -->
@@ -66,14 +66,14 @@ let a_color_buffer;
 let a_translation_loc; // Location of the translation uniform in prog
 let a_translation_buffer;
 
-const DISK_COUNT = 30;  // The scene in the texture shows moving disks.  This is the number of disks.
+const DISK_COUNT = 30;  // The scene in the texture shows moving disks. This is the number of disks.
 let diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
 let diskVelocities;  // For animating the disk positions.
 
 let animating = true;
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     
     prog = createProgram(gl, "vshader-texture", "fshader-texture");
@@ -95,8 +95,8 @@ function initGL() {
     }
     
     // Get the shader program location for the attribute that represents the
-    // vertex coordinates.  Create a buffer to hold the data.  Load the
-    // coordinate data into the buffer.  Since this data won't ever change,
+    // vertex coordinates. Create a buffer to hold the data. Load the
+    // coordinate data into the buffer. Since this data won't ever change,
     // the usage hint in gl.bufferData is gl.STATIC_DRAW.
     
     a_coords_loc =  gl.getAttribLocation(prog, "a_coords");
@@ -118,10 +118,10 @@ function initGL() {
     }
     
     // Get the shader program location for the attribute that represents the
-    // colors for the disks.  Create and configure a buffer to hold the data.
+    // colors for the disks. Create and configure a buffer to hold the data.
     // Set the vertexAttribDivisor to 1, indicating that each instance will
     // get its own value for the color when gl.drawArraysInstanced() is
-    // called to draw the disks.  
+    // called to draw the disks. 
     
     a_color_loc =  gl.getAttribLocation(prog, "a_color");
     a_color_buffer = gl.createBuffer();
@@ -132,9 +132,9 @@ function initGL() {
     gl.bufferData(gl.ARRAY_BUFFER, diskColors, gl.STATIC_DRAW);
     
     // Get the shader program location for the attribute that represents the
-    // positions of the disks.  Create and configure a buffer to hold the data,
-    // but don't load the data here.  This data changes in each frame, as the
-    // disks move.  The data will be used by gl.drawArraysInstanced(), and
+    // positions of the disks. Create and configure a buffer to hold the data,
+    // but don't load the data here. This data changes in each frame, as the
+    // disks move. The data will be used by gl.drawArraysInstanced(), and
     // each instance gets its own value, so set vertexAttribDivisor to 1.
     
     a_translation_loc =  gl.getAttribLocation(prog, "a_translation");
@@ -147,21 +147,21 @@ function initGL() {
 }
 
 
-/* Draw the scene.  This is called once for each frame. Between frames,
+/* Draw the scene. This is called once for each frame. Between frames,
  * updateDiskPositions() is called to make the disks move by changing
  * the disk positions that are stored in diskCenters. */
 function draw() {
     
     gl.clear(gl.COLOR_BUFFER_BIT);
     
-    /* Draw a set of DISK_COUNT disks using instancing.  Each
+    /* Draw a set of DISK_COUNT disks using instancing. Each
        instance is a gl.TRIANGLE_FAN, using the same vertex
        coordinates, but each instance gets its own color and
        translation amount.*/
 
     // The translation data changes in each frame as the disks
-    // move.  New data from diskCenters needs to be loaded into
-    // the buffer that holds the translation amounts.  Since
+    // move. New data from diskCenters needs to be loaded into
+    // the buffer that holds the translation amounts. Since
     // the data is only used once, the usage in gl.bufferData()
     // is set to gl.STREAM_DRAW.
     
@@ -228,19 +228,19 @@ function updateDiskPositions() {
 //-------------- WebGL shader program creation -----------------------------
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elements that contain the source code for the vertex and fragment
- * shaders.  A ReferenceError will be thrown if a <script> element does
+ * shaders. A ReferenceError will be thrown if a <script> element does
  * not exist.
  */
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         let element = document.getElementById(elementID);
         let node = element.firstChild;
@@ -315,7 +315,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("message").innerHTML =
-            "<p>Sorry, could not get a WebGL2 graphics context.  This page requires WebGL 2.0.</p>";
+            "<p>Sorry, could not get a WebGL2 graphics context. This page requires WebGL 2.0.</p>";
         return;
     }
     try {

@@ -25,16 +25,16 @@
         <td style="margin-left:1cm">
         <p><big>W</big>ELCOME TO <i>Introduction to Computer Graphics</i>,
          a free, on-line textbook covering the fundamentals of computer graphics and
-         computer graphics programming.  This book is meant for use as a textbook in
+         computer graphics programming. This book is meant for use as a textbook in
          a one-semester course that would typically be taken by undergraduate computer science majors
-         in their third or fourth year of college.  Version 1.3 contains significant updates
+         in their third or fourth year of college. Version 1.3 contains significant updates
          from Version 1.2 of January 2018, including an update of the <i>three.js</i> material to release number
          129, the addition of some material on WebGL&#160;2.0, and an update of Appendix&#160;B to Blender&#160;2.93.
          See the <a href="preface.html">preface</a> for more information.
         </p>
         <p>The web pages for this book include live, interactive demos that require a modern
-        web browser such as recent versions of Chrome, Firefox, Safari, or Edge.  You might
-        have to experiment to find a browser in which the demos will work well.  While the
+        web browser such as recent versions of Chrome, Firefox, Safari, or Edge. You might
+        have to experiment to find a browser in which the demos will work well. While the
         book is mainly designed for reading on a desktop computer, most of the demos should also work
         on recent mobile devices, using a touchscreen instead of a mouse.</p>
         <p>Words in the book that are shown in <span class="newword" style="cursor:inherit">this&#160;style</span> or underlined
@@ -69,11 +69,11 @@
         <div style="margin-left: 40px; margin-right:40px">
          <i>&#169;2015&#8211;2021, David J. Eck.<br/>
             <small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-Noncommercial-ShareAlike 4.0 License</a>.
-            (This license allows you to redistribute this book in unmodified form for non-commercial purposes.  It allows you
+            (This license allows you to redistribute this book in unmodified form for non-commercial purposes. It allows you
             to make and distribute modified versions for non-commercial purposes, as long as you include an attribution to the
             original author, clearly describe the modifications that you have made, and distribute
-            the modified work under the same license as the original.  Permission might be given by the
-            author for other uses.  See the
+            the modified work under the same license as the original. Permission might be given by the
+            author for other uses. See the
             <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">license</a> for full
             details.)<br/><br/>
             The home site for this book is:
@@ -86,8 +86,8 @@
           <b>Full Web Site Download:</b>
           <ul>
           <li><b><a href="http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip">http://math.hws.edu/eck/cs424/downloads/graphicsbook-web-site.zip</a></b> &#8212;
-          This "zip" archive contains a complete copy of the web site for this textbook.  You can publish a copy of the web site on
-          your own web server, or you can use it locally on your own computer.  
+          This "zip" archive contains a complete copy of the web site for this textbook. You can publish a copy of the web site on
+          your own web server, or you can use it locally on your own computer. 
           Size:&#160;24&#160;Megabytes.
           </li>
           </ul>
@@ -113,7 +113,7 @@
         <h3>Printed Version</h3>
         <ul>
         <li>The web site and linked PDF are the preferred versions for reading this book, but for the convenience of readers who would
-        like a bound copy, I have made a printed version available at the publish-on-demand site <i>lulu.com</i>.  (Note that the printed
+        like a bound copy, I have made a printed version available at the publish-on-demand site <i>lulu.com</i>. (Note that the printed
         version is sold at lulu.com's cost, and that I don't make any profit from it.)  You can purchase the printed version through
         this link: <a href="http://www.lulu.com/content/paperback-book/introduction-to-computer-graphics/17032760">http://www.lulu.com/content/paperback-book/introduction-to-computer-graphics/17032760</a></li>
         </ul>
@@ -514,8 +514,8 @@
         <h2>Programming Exercises for Chapter <xsl:value-of select="$chapternum"/></h2>
         <hr class="break"/>
         <p class="firstpar">This page contains several exercises for Chapter <xsl:value-of select="$chapternum"/>
-        in <a href="../index.html">Introduction to Computer Graphics</a>.  For each exercise, a link to
-        a possible solution is provided.   Each solution includes a discussion of how a programmer might approach the
+        in <a href="../index.html">Introduction to Computer Graphics</a>. For each exercise, a link to
+        a possible solution is provided.  Each solution includes a discussion of how a programmer might approach the
         problem and interesting points raised by the problem or its solution, as well as complete source
         code of the solution.</p>
         <xsl:for-each select="exercises/exercise">

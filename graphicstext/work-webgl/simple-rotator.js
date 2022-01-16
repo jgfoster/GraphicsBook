@@ -1,6 +1,6 @@
 /**
  * An object of type SimpleRotator can be used to implement a trackball-like mouse rotation
- * of a WebGL scene about the origin.  Only the first parameter to the constructor is required.
+ * of a WebGL scene about the origin. Only the first parameter to the constructor is required.
  * When an object is created, mouse event handlers are set up on the canvas to respond to rotation.
  * The class defines the following methods for an object rotator of type SimpleRotator:
  *    rotator.setView(viewDirectionVector, viewUpVector, viewDistance) set up the view, where the
@@ -14,17 +14,17 @@
  *    rotator.getViewMatrixArray() returns the view transformation matrix as a regular JavaScript
  * array, but still represents as a 1D array of 16 elements, in column-major order.
  *
- * @param canvas the HTML canvas element used for WebGL drawing.  The user will rotate the
- *    scene by dragging the mouse on this canvas.  This parameter is required.
+ * @param canvas the HTML canvas element used for WebGL drawing. The user will rotate the
+ *    scene by dragging the mouse on this canvas. This parameter is required.
  * @param callback if present must be a function, which is called whenever the rotation changes.
  *    It is typically the function that draws the scene
- * @param viewDirectionVector if present must be an array of three numbers, not all zero.  The
- *    view is from the direction of this vector towards the origin (0,0,0).  If not present,
+ * @param viewDirectionVector if present must be an array of three numbers, not all zero. The
+ *    view is from the direction of this vector towards the origin (0,0,0). If not present,
  *    the value [0,0,10] is used.
  * @param viewUpVector if present must be an array of three numbers. Gives a vector that will
- *    be seen as pointing upwards in the view.  If not present, the value is [0,1,0].
- * @param viewDistance if present must be a positive number.  Gives the distance of the viewer
- *    from the origin.  If not present, the length of viewDirectionVector is used.
+ *    be seen as pointing upwards in the view. If not present, the value is [0,1,0].
+ * @param viewDistance if present must be a positive number. Gives the distance of the viewer
+ *    from the origin. If not present, the length of viewDirectionVector is used.
  */
 function SimpleRotator(canvas, callback, viewDirectionVector, viewUpVector, viewDistance) {
     var unitx = new Array(3);

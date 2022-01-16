@@ -125,7 +125,7 @@ let animating = false;
 
 /* Draws a colored cube, along with a set of coordinate axes.
  * (Note that the use of the above drawPrimitive function is not an efficient
- * way to draw with WebGL.  Here, the geometry is so simple that it doesn't matter.)
+ * way to draw with WebGL. Here, the geometry is so simple that it doesn't matter.)
  */
 function draw() { 
     gl.clearColor(1,1,1,1);
@@ -176,14 +176,14 @@ function draw() {
 
 
 /**
- *  Create an object representing an IFS model.  The modelData holds the data for
- *  an IFS using the structure from basic-objects-IFS.js.  This function
+ *  Create an object representing an IFS model. The modelData holds the data for
+ *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
- *  from the IFS, and it loads the data into those buffers.  The function
+ *  from the IFS, and it loads the data into those buffers. The function
  *  creates a new object whose properties are the identifiers of the
- *  VBOs.  The new object also has a function, render(), that can be called to
- *  render the object, using all the data from the buffers.  That object
- *  is returned as the value of the function.  
+ *  VBOs. The new object also has a function, render(), that can be called to
+ *  render the object, using all the data from the buffers. That object
+ *  is returned as the value of the function. 
  */
 function createModel(modelData) {
     let model = {};
@@ -204,7 +204,7 @@ function createModel(modelData) {
            // Since the buffer from which we are taking the coordinates and normals
            // change each time an object is drawn, we have to use gl.vertexAttribPointer
            // to specify the location of the data. And to do that, we must first
-           // bind the buffer that contains the data.  Similarly, we have to
+           // bind the buffer that contains the data. Similarly, we have to
            // bind this object's index buffer before calling gl.drawElements.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.coordsBuffer); 
         gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
@@ -238,7 +238,7 @@ function loadTexture() {
         }
         catch (e) {
            document.getElementById("message").innerHTML =
-              "<b>SORRY, can't access texture image.  Note that some<br>browsers can't use a texture from a local disk.</b>";
+              "<b>SORRY, can't access texture image. Note that some<br>browsers can't use a texture from a local disk.</b>";
            return;
         }
         gl.generateMipmap(gl.TEXTURE_2D);
@@ -256,9 +256,9 @@ function loadTexture() {
 }
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.
@@ -287,7 +287,7 @@ function createProgram(gl, vShader, fShader) {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);

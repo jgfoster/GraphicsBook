@@ -18,10 +18,10 @@ import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 /**
  * A panel of type TextureDemo displays a textured object,
- * which the user can rotate by dragging the mouse.  The main
+ * which the user can rotate by dragging the mouse. The main
  * routine in this class creates a window containing six
  * panels of type Texture Demo, with a variety of different
- * objects and textures.  The main routine shows a windoe 
+ * objects and textures. The main routine shows a windoe 
  * that contains a TexttureDemo panel.
  */
 public class TextureDemo extends GLJPanel implements GLEventListener, KeyListener {
@@ -88,7 +88,7 @@ public class TextureDemo extends GLJPanel implements GLEventListener, KeyListene
 
     /**
      * This method will be called when the GLJPanel is first
-     * created.  Here, in addition to the usual setup for 3D,
+     * created. Here, in addition to the usual setup for 3D,
      * it sets a white material color, suitable for texturing.
      * It also loads, binds and enables the texture. (Since the
      * one texture will be used throughout the program, it

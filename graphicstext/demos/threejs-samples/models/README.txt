@@ -1,9 +1,9 @@
 Horse.glb, Stork.glb, tree.obj, WaltHead.obj, and the elf model are from 
 the examples in the Version 129 download of three.js.
 
-Arrowhead.glb was created by me (David Eck) in Blender.  Suzanne-smooth.glb
-was created by exporting Blender's built-in monkey mesh object.  The teapot
-is the standard Utah teapot.  Horse-simple.glb was created by importing
+Arrowhead.glb was created by me (David Eck) in Blender. Suzanne-smooth.glb
+was created by exporting Blender's built-in monkey mesh object. The teapot
+is the standard Utah teapot. Horse-simple.glb was created by importing
 the Horse.glb from the three.js download into Blender, and re-exporting it 
 without the animations or texture coordinates included in the original.
 (The orginal Horse.glb did not include normal vectors; Blender added normal

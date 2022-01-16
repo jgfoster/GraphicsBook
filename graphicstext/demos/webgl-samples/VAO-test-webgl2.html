@@ -4,7 +4,7 @@
 
 <!--
    This program uses Vertex Array Objects (VAO) to hold the buffer and vertex pointer
-   settings for the various objects that are drawn.  This page requires WebGL 2.0.
+   settings for the various objects that are drawn. This page requires WebGL 2.0.
    The program lets the use choose among several different 3D objects to view,  Each
    model has its own VAO that organizes the buffers and vertex pointer settings for
    that object.
@@ -29,7 +29,7 @@
 <!--
     Shader programs (written in GLSL ES 1.00, which works with WebGL 2.0).
     The shaders implement very simple lighting: diffuse color only, with
-    a single light at the position of the viewer.  The base color of
+    a single light at the position of the viewer. The base color of
     the objects is yellow.
 -->
 
@@ -106,10 +106,10 @@ const objectVAOs = [];          // Vertex Array Object IDs, one for each model.
                                 // needed for one model.
 
 const objectVertexCounts = [];  // An integer for each model, giving the size of the element buffer
-                                // for that object.  For use in gl.drawElements().
+                                // for that object. For use in gl.drawElements().
 
 
-/* Draw the scene, showing the object currently selected by the user.  */
+/* Draw the scene, showing the object currently selected by the user. */
 function draw() {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -125,11 +125,11 @@ function draw() {
 
 /**
  *  Draw an object representing as an IFS model, using the data structure from
- *  basic-objects-IFS.js.  The parameter will be the currently selected model
- *  number.  The data and settings for that model are created if this is the
- *  first time that the model has been drawn.  The data is stored in VBO buffers,
+ *  basic-objects-IFS.js. The parameter will be the currently selected model
+ *  number. The data and settings for that model are created if this is the
+ *  first time that the model has been drawn. The data is stored in VBO buffers,
  *  and the data and settings for the model are organized by a vertex array
- *  object (VAO).  The ID for the VAO is saved in an array.  Subsequent
+ *  object (VAO). The ID for the VAO is saved in an array. Subsequent
  *  renderings of the object simply bind the VAO for that object to restore
  *  all of the settings.
  */
@@ -140,7 +140,7 @@ function drawModel(index) {
         gl.bindVertexArray(objectVAOs[index]);
     }
     else {
-           // This is the first time this model has been drawn.  Create the
+           // This is the first time this model has been drawn. Create the
            // data and settings for the model and a VAO to store them.
         console.log("Creating object number ", index);
         let modelData;
@@ -217,10 +217,10 @@ function drawDisks() {
 }
 
 
-/* Initialize the WebGL context.  Called from init().   */
+/* Initialize the WebGL context. Called from init().  */
 function initGL() {
     
-    // Initialize data for the scene.  Get the locations of
+    // Initialize data for the scene. Get the locations of
     // attributes and uniforms, and set up the projection matrix
     // uniform variablee, which never changes.
 
@@ -246,9 +246,9 @@ function initGL() {
 //--------------------------------------------------------------------------------
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -257,7 +257,7 @@ function initGL() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         let element = document.getElementById(elementID);
         let node = element.firstChild;
@@ -313,7 +313,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("message").innerHTML =
-            "<p>Sorry, could not get a WebGL2 graphics context.  This page requires WebGL 2.0.</p>";
+            "<p>Sorry, could not get a WebGL2 graphics context. This page requires WebGL 2.0.</p>";
         return;
     }
     try {

@@ -5,7 +5,7 @@
 <!--
    This program is was copied from render-to-texture.html and then modified
    to use Vertex Array Objects (VAO) to hold the buffer and vertex pointer
-   settings for the various things that are drawn.  It has also been modified
+   settings for the various things that are drawn. It has also been modified
    to use gl.texStorage2D() to allocate memory for the texture.
    This version, like the original, demonstrates using a framebuffer to draw
    to a texture, and using that texture on a 3D object.
@@ -137,7 +137,7 @@ let buffer_texture;        // A buffer to hold the coordinates for a_coords_loc_
 let u_color_texture;       // Location of the color uniform in prog_texture.
 let u_translation_texture; // Location of the translation uniform in proh_texture
 
-let DISK_COUNT = 30;  // The scene in the texture shows moving disks.  This is the number of disks.
+let DISK_COUNT = 30;  // The scene in the texture shows moving disks. This is the number of disks.
 let DISK_DIAMETER = 0.6;  // This is the size of the disks.
 let diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
 let diskColors;  // An array giving the colors of the disks.
@@ -152,14 +152,14 @@ const objectVAOs = [];          // Vertex Array Object IDs, one for each model.
                                 // needed for one model.
 
 const objectVertexCounts = [];  // An integer for each model, giving the size of the element buffer
-                                // for that object.  For use in gl.drawElements().
+                                // for that object. For use in gl.drawElements().
 
                                 
 let frameNumber = 0;  // frame number for texture animation
 let animating = true;
 
 
-/* Draw the scene.  */
+/* Draw the scene. */
 function draw() {
 
     /* Draw the 2D image of moving disks into a texture that has been
@@ -202,11 +202,11 @@ function draw() {
 
 /**
  *  Draw an object representing as an IFS model, using the data structure from
- *  basic-objects-IFS.js.  The parameter will be the currently selected model
- *  number.  The data and settings for that model are created if this is the
- *  first time that the model has been drawn.  The data is stored in VBO buffers,
+ *  basic-objects-IFS.js. The parameter will be the currently selected model
+ *  number. The data and settings for that model are created if this is the
+ *  first time that the model has been drawn. The data is stored in VBO buffers,
  *  and the data and settings for the model are organized by a vertex array
- *  object (VAO).  The ID for the VAO is saved in an array.  Subsequent
+ *  object (VAO). The ID for the VAO is saved in an array. Subsequent
  *  renderings of the object simply bind the VAO for that object to restore
  *  all of the settings.
  */
@@ -217,7 +217,7 @@ function drawModel(index) {
         gl.bindVertexArray(objectVAOs[index]);
     }
     else {
-           // This is the first time this model has been drawn.  Create the
+           // This is the first time this model has been drawn. Create the
            // data and settings for the model and a VAO to store them.
         console.log("Creating object number ", index);
         let modelData;
@@ -298,7 +298,7 @@ function drawDisks() {
 }
 
 
-/* Initialize the WebGL context.  Called from init().   */
+/* Initialize the WebGL context. Called from init().  */
 function initGL() {
     
     // Initialize data for the 2D image that is drawn to the texture,
@@ -325,9 +325,9 @@ function initGL() {
     gl.vertexAttribPointer(a_coords_loc_texture, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(a_coords_loc_texture);
     
-    // Initialize data for the main, on-screen scene.  Get the locations
+    // Initialize data for the main, on-screen scene. Get the locations
     // of attributes and uniforms, and set up the projection matrix and
-    // texture uniform variables, which never change.  Also initialize
+    // texture uniform variables, which never change. Also initialize
     // the texture scale uniform to 1.
 
     prog = createProgram(gl,"vshader","fshader");
@@ -384,7 +384,7 @@ function createDiskData() {
 }
 
 /* Advance disk positions by disk velocities, wrapping around when disks move
- * outside the coordinate range from 0 to 1.  Change to a new random velocity occasionally.
+ * outside the coordinate range from 0 to 1. Change to a new random velocity occasionally.
  * This method is called between frames to update the positions of the disks.
  */
 function updateDiskPositions() {
@@ -412,9 +412,9 @@ function updateDiskPositions() {
 }
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
  * elementst that contain the source code for the vertex and fragment
@@ -423,7 +423,7 @@ function updateDiskPositions() {
 function createProgram(gl, vertexShaderID, fragmentShaderID) {
     function getTextContent( elementID ) {
             // This nested function retrieves the text content of an
-            // element on the web page.  It is used here to get the shader
+            // element on the web page. It is used here to get the shader
             // source code from the script elements that contain it.
         let element = document.getElementById(elementID);
         let node = element.firstChild;
@@ -504,7 +504,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not get a WebGL2 graphics context.  This page requires WebGL 2.0.</p>";
+            "<p>Sorry, could not get a WebGL2 graphics context. This page requires WebGL 2.0.</p>";
         return;
     }
     try {

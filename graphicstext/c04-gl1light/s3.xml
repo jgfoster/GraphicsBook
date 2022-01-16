@@ -4,10 +4,10 @@
 <section title="Image Textures" id="gl1light.3">
 
 <p1>Uniformly colored 3D objects look nice enough, but they are a little
-bland.  Their uniform colors don't have the visual appeal of, say, a brick wall or a plaid couch. 
+bland. Their uniform colors don't have the visual appeal of, say, a brick wall or a plaid couch. 
 Three-dimensional objects can be made to look more interesting and more realistic by adding
-a <newword>texture</newword> to their surfaces.  A texture, in general, is some sort
-of variation from pixel to pixel within a single <word term="geometric primitive">primitive</word>.  
+a <newword>texture</newword> to their surfaces. A texture, in general, is some sort
+of variation from pixel to pixel within a single <word term="geometric primitive">primitive</word>. 
 We will consider only
 one kind of texture:  <newword term="image texture">image textures</newword>.
 An image texture can be applied to a surface to make the color of the surface
@@ -16,57 +16,57 @@ surface. Here is a picture that shows six objects with various image textures:</
 
 <img src="TextureDemo.png" width="600" height="401" tex="TextureDemo.eps" texscale="1.2"/>
 
-<np>(Topographical Earth image, courtesy <a href="http://maps.jpl.nasa.gov/">NASA/JPL-Caltech</a>.  
-The brick and metal are free textures (which were downloaded from a web site that no longer exists).  
+<np>(Topographical Earth image, courtesy <a href="http://maps.jpl.nasa.gov/">NASA/JPL-Caltech</a>. 
+The brick and metal are free textures (which were downloaded from a web site that no longer exists). 
 EarthAtNight image taken from the <a href="http://apod.nasa.gov/apod/ap001127.html">Astronomy Picture of the Day</a>
-web site; it is also a NASA/JPL image.  Copies of the images can be found in the folder named
+web site; it is also a NASA/JPL image. Copies of the images can be found in the folder named
 <sourceref href="glut/textures">textures</sourceref> in either the <i>jogl</i>
-or <i>glut</i> folder inside the source folder of the web site download.  Images
+or <i>glut</i> folder inside the source folder of the web site download. Images
 from that folder will be used in several examples in this book.)</np>
 
 <p>Textures might be the most complicated part of OpenGL, and they are a part that has survived,
 and become more complicated,
 in the most modern versions since they are so vital for the efficient creation of realistic
-images.  This section covers only part of the OpenGL 1.1 texture API.  We will see more
+images. This section covers only part of the OpenGL 1.1 texture API. We will see more
 of textures in later chapters.</p>
 
 <p>Note that an image that is used as a texture should have a width and a height that are powers of two,
-such as 128, 256, or 512.  This is a requirement in OpenGL 1.1.  The requirement is
+such as 128, 256, or 512. This is a requirement in OpenGL 1.1. The requirement is
 relaxed in some versions, but it's still a good idea to use 
 <newword term="power-of-two texture">power-of-two textures</newword>  Some of the things discussed
 in this section will not work with non-power-of-two textures, even on modern systems.</p>
 
 <p>When an image texture is applied to a surface,  the default behavior is to multiply
 the <word>RGBA color</word> components of pixels on the surface by the color components
-from the image.  The surface color will
+from the image. The surface color will
 be modified by light effects, if lighting is turned on, before it is multiplied by the
-texture color.  It is common to use white as the surface color.  If a different color is
+texture color. It is common to use white as the surface color. If a different color is
 used on the surface, it will add a "tint" to the color from the texture image.</p>
 
 
 <subsection title="Texture Coordinates" id="gl1light.3.1">
 
 <p>When a texture is applied to a surface, each point on the surface has to correspond to a point
-in the texture.  There has to be a way to determine how this mapping is computed.  For that,
-the object needs <newword>texture coordinates</newword>.   As is generally the
-case in OpenGL, texture coordinates are specified for each vertex of a primitive.  Texture
+in the texture. There has to be a way to determine how this mapping is computed. For that,
+the object needs <newword>texture coordinates</newword>.  As is generally the
+case in OpenGL, texture coordinates are specified for each vertex of a primitive. Texture
 coordinates for points inside the primitive are calculated by interpolating the values
 from the vertices of the primitive.</p>
 
-<p>A texture image comes with its own 2D coordinate system.  Traditionally, <i>s</i> is 
+<p>A texture image comes with its own 2D coordinate system. Traditionally, <i>s</i> is 
 used for the horizontal
-coordinate on the image and <i>t</i> is used for the vertical coordinate.  
+coordinate on the image and <i>t</i> is used for the vertical coordinate. 
 The <i>s</i>&nbsp;coordinate is
 a real number that ranges from 0 on the left of the image to 1 on the
-right, while <i>t</i> ranges from 0 at the bottom to 1 at the top.  Values of <i>s</i>
+right, while <i>t</i> ranges from 0 at the bottom to 1 at the top. Values of <i>s</i>
 or <i>t</i> outside of the range 0 to 1 are not inside the image, but such values are
-still valid as texture coordinates.  Note that texture coordinates are not based on
-pixels.  No matter what size the image is, values of <i>s</i> and <i>t</i> between 0 and
+still valid as texture coordinates. Note that texture coordinates are not based on
+pixels. No matter what size the image is, values of <i>s</i> and <i>t</i> between 0 and
 1 cover the entire image.</p>
 
 <p>To draw a textured primitive, we need a pair of numbers (<i>s,t</i>) for each vertex.
-These are the texture coordinates for that vertex.  They tell which
-point in the image is mapped to the vertex.  For example, suppose that we
+These are the texture coordinates for that vertex. They tell which
+point in the image is mapped to the vertex. For example, suppose that we
 want to apply part of an <i>EarthAtNight</i> image to a triangular primitive. Let's say that  the area
 in the image that is to be mapped onto the primitive is the triangle shown here outlined in thick orange:
 </p>
@@ -75,20 +75,20 @@ in the image that is to be mapped onto the primitive is the triangle shown here 
 <img src="texCoords.png" width="593" height="335" tex="texCoords.eps" texscale="0.6"/>
 
 <np>The vertices of this area have (<i>s,t</i>) coordinates (0.3,0.1), (0.45,0.6), and
-(0.25,0.7).  These coordinates from the image
+(0.25,0.7). These coordinates from the image
 should be used as the texture coordinates for the vertices of the triangular primitive.
 </np>
 
 <p>The texture coordinates of a vertex are an <word>attribute</word> of the vertex, 
-just like color, normal vectors, and material properties.   Texture coordinates
+just like color, normal vectors, and material properties.  Texture coordinates
 are specified by the family of functions <i>glTexCoord*</i>, including the functions
 <i>glTexCoord2f</i>(<i>s,t</i>), <i>glTexCoord2d</i>(<i>s,t</i>), <i>glTexCoord2fv</i>(<i>array</i>),
-and <i>glTexCoord2dv</i>(<i>array</i>).  The OpenGL state includes a current set of
-texture coordinates, as specified by these functions.  When you specify
+and <i>glTexCoord2dv</i>(<i>array</i>). The OpenGL state includes a current set of
+texture coordinates, as specified by these functions. When you specify
 a vertex with <i>glVertex*</i>, the current texture coordinates are copied and become
-an attribute that is associated with the vertex.  As usual, this means that the
+an attribute that is associated with the vertex. As usual, this means that the
 texture coordinates for a vertex must be specified <b>before</b> <i>glVertex*</i>
-is called.  Each vertex of a primitive will
+is called. Each vertex of a primitive will
 need a different set of texture coordinates.</p>
 
 <p>For example, to apply the triangular region in the image shown above to the triangle
@@ -106,13 +106,13 @@ glEnd();</pre>
 
 <np>Note that there is no particular relationship between the (<i>x,y</i>) 
 coordinates of a vertex, which give its position in space, and the (<i>s,t</i>)
-texture coordinates associated with the vertex.  In fact, in this case, the triangle that I am drawing has
+texture coordinates associated with the vertex. In fact, in this case, the triangle that I am drawing has
 a different shape from the triangular area in the image, and that piece of the
-image will have to be stretched and distorted to fit.  Such distortion occurs in most
+image will have to be stretched and distorted to fit. Such distortion occurs in most
 uses of texture images.</np>
 
-<p>Sometimes, it's difficult to decide what texture coordinates to use.  One case where it's
-easy is applying the complete texture to a rectangle.   Here is a code segment that draws
+<p>Sometimes, it's difficult to decide what texture coordinates to use. One case where it's
+easy is applying the complete texture to a rectangle.  Here is a code segment that draws
 a square in the <i>xy</i>-plane, with appropriate texture coordinates to map
 the entire image onto the square:</p>
 
@@ -129,8 +129,8 @@ glVertex2d(-0.5,0.5);
 glEnd();</pre>
 
 <p>Unfortunately, the standard shapes in the GLUT library do not come with texture coordinates
-(except for the teapot, which does).  I&nbsp;have written a set of
-functions for drawing similar shapes that do come with texture coordinates.  The functions
+(except for the teapot, which does). I&nbsp;have written a set of
+functions for drawing similar shapes that do come with texture coordinates. The functions
 can be found in <sourceref href="jogl/TexturedShapes.java"/> for JOGL
 or in <sourceref href="glut/textured-shapes.c"/> (plus the corresponding header file
 <sourceref href="glut/textured-shapes.h"/>) for&nbsp;C.
@@ -162,10 +162,10 @@ enable the use of a texture coordinate array by calling</p>
 
 <pre>void glTexCoordPointer( int size, int dataType, int stride, void* array)</pre>
 
-<np>The <i>size</i>, for us, will always be 2.  (OpenGL also allows 3 or 4 texture coordinates,
+<np>The <i>size</i>, for us, will always be 2. (OpenGL also allows 3 or 4 texture coordinates,
 but we have no use for them.)  The <i>dataType</i> can be <i>GL_FLOAT</i>, <i>GL_DOUBLE</i>,
-or <i>GL_INT</i>.  The <i>stride</i> will ordinarily be zero, to indicate that there is
-no extra data between texture coordinates in the array.  The last parameter is an
+or <i>GL_INT</i>. The <i>stride</i> will ordinarily be zero, to indicate that there is
+no extra data between texture coordinates in the array. The last parameter is an
 array or pointer to the data, which must be of the type indicated by the <i>dataType</i>.
 In <word>JOGL</word>, as usual, you would use an <word>nio buffer</word> instead of an array.</np>
 
@@ -177,8 +177,8 @@ In <word>JOGL</word>, as usual, you would use an <word>nio buffer</word> instead
 <p>When a texture is applied to a surface, the pixels in the texture
 do not usually match up one-to-one with pixels on the surface,
 and in general, the texture must be stretched or shrunk as it
-is being mapped onto the surface.  Sometimes, several pixels in
-the texture will be mapped to the same pixel on the surface.  In this case,
+is being mapped onto the surface. Sometimes, several pixels in
+the texture will be mapped to the same pixel on the surface. In this case,
 the color that is applied to the surface pixel must somehow be computed
 from the colors of all the texture pixels that map to it.
 This is an example of "filtering"; in particular, it uses a
@@ -194,25 +194,25 @@ that term from now on.</p>
 <p>When deciding how to apply a texture to a pixel on a surface,
 OpenGL must deal with the fact that that pixel actually contains
 an infinite number of points, and each point has its own texture
-coordinates.  So, how should a texture color for the pixel be computed?
+coordinates. So, how should a texture color for the pixel be computed?
 The easiest thing to do is to select one point from the pixel,
 say the point at the center of the pixel.
-OpenGL knows the texture coordinates for that point.  Those texture
+OpenGL knows the texture coordinates for that point. Those texture
 coordinates correspond to one point in the texture, and that point
-lies in one of the texture's texels.  The color of that texel
+lies in one of the texture's texels. The color of that texel
 could be used as the texture color for the pixel.
 This is called "nearest texel filtering."
 It is very fast, but it does not usually give good results.
 It doesn't take into account the difference in size between the
-pixels on the surface and the texels in the image.  An improvement on nearest texel
+pixels on the surface and the texels in the image. An improvement on nearest texel
 filtering is "linear filtering," which can take an average of
 several texel colors to compute the color that will be applied to
 the surface.</p>
 
 <p>The problem with linear filtering is that it will be very inefficient
-when a large texture is applied to a much smaller surface area.  In this
+when a large texture is applied to a much smaller surface area. In this
 case, many texels map to one pixel, and computing the average of so
-many texels becomes very inefficient.  There is a neat solution for
+many texels becomes very inefficient. There is a neat solution for
 this:  <newword term="mipmap">mipmaps</newword>.</p>
 
 <p>A mipmap for a texture is a scaled-down version of that texture.
@@ -221,30 +221,30 @@ version in which each dimension is divided by two,
 a quarter-sized version, a one-eighth-sized version, and so on.
 If one dimension shrinks to a single pixel, it is not reduced further,
 but the other dimension will continue to be cut in half until it
-too reaches one pixel.  In any case, the final mipmap consists of
-a single pixel.  Here are the first few images in the set of mipmaps for a brick
+too reaches one pixel. In any case, the final mipmap consists of
+a single pixel. Here are the first few images in the set of mipmaps for a brick
 texture:</p>
 
 
 <img src="mipmaps.png" width="331" height="141" bordered="true" tex="mipmaps.eps" texscale="0.75"/>
 
-<p>You'll notice that the mipmaps become small very quickly.  The total
+<p>You'll notice that the mipmaps become small very quickly. The total
 memory used by a set of mipmaps is only about one-third more than the
 memory used for the original texture, so the additional memory requirement 
 is not a big issue when using mipmaps.</p>
 
-<p>Mipmaps are used only for minification filtering.  They
+<p>Mipmaps are used only for minification filtering. They
 are essentially a way of pre-computing the bulk of the averaging
-that is required when shrinking a texture to fit a surface.  To texture a pixel,
+that is required when shrinking a texture to fit a surface. To texture a pixel,
 OpenGL can first select the mipmap whose texels most closely match the
-size of the pixel.  It can then do linear filtering on that mipmap
+size of the pixel. It can then do linear filtering on that mipmap
 to compute a color, and it will have to average at most a few texels 
 in order to do so.</p>
 
 <p>In newer versions of OpenGL, you can get OpenGL to generate mipmaps
-automatically.  In OpenGL 1.1, if you want to
+automatically. In OpenGL 1.1, if you want to
 use mipmaps, you must either load each mipmap individually, or you must
-generate them yourself.  (The GLU library has a method, <i>gluBuild2DMipmaps</i>
+generate them yourself. (The GLU library has a method, <i>gluBuild2DMipmaps</i>
 that can be used to generate a set of mipmaps for a 2D texture.)  However, my sample
 programs do not use mipmaps.</p>
 
@@ -253,32 +253,32 @@ programs do not use mipmaps.</p>
 <subsection title="Texture Target and Texture Parameters" id="gl1light.3.3">
 
 <p>OpenGL can actually use one-dimensional and three-dimensional textures, as well as
-two-dimensional.  Because of this, many OpenGL functions dealing with textures
+two-dimensional. Because of this, many OpenGL functions dealing with textures
 take a <newword>texture target</newword> as a parameter, to tell whether
-the function should be applied to one, two, or three dimensional textures.  For us,
+the function should be applied to one, two, or three dimensional textures. For us,
 the only texture target will be <i>GL_TEXTURE_2D</i>.</p>
 
 <p>There are a number of options that apply to textures, to control the details of how
 textures are applied to surfaces. Some of the options can be set using the
 <i>glTexParameteri</i>() function, including two that have to do with filtering.
 OpenGL supports several different filtering techniques for minification
-and magnification.  The filters can be set using <i>glTexParameteri</i>():</p>
+and magnification. The filters can be set using <i>glTexParameteri</i>():</p>
 
 <pre>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);</pre>
 
 <np>The values of <i>magFilter</i> and <i>minFilter</i> are constants that specify the
-filtering algorithm.  For the <i>magFilter</i>, the only options are 
+filtering algorithm. For the <i>magFilter</i>, the only options are 
 <i>GL_NEAREST</i> and <i>GL_LINEAR</i>, giving nearest texel and
-linear filtering.  The default for the MAG filter is <i>GL_LINEAR</i>, and
-there is rarely any need to change it.  For <i>minFilter</i>, in addition
+linear filtering. The default for the MAG filter is <i>GL_LINEAR</i>, and
+there is rarely any need to change it. For <i>minFilter</i>, in addition
 to <i>GL_NEAREST</i> and <i>GL_LINEAR</i>, there are four options that
-use mipmaps for more efficient filtering.  The default MIN filter
+use mipmaps for more efficient filtering. The default MIN filter
 is <i>GL_NEAREST_MIPMAP_LINEAR</i>, which does averaging between
-mipmaps and nearest texel filtering within each mipmap.  For even 
+mipmaps and nearest texel filtering within each mipmap. For even 
 better results, at the cost of greater inefficiency, you can use
 <i>GL_LINEAR_MIPMAP_LINEAR</i>, which does averaging both between and
-within mipmaps.  The other two options are <i>GL_NEAREST_MIPMAP_NEAREST</i>
+within mipmaps. The other two options are <i>GL_NEAREST_MIPMAP_NEAREST</i>
 and <i>GL_LINEAR_MIPMAP_NEAREST</i>.</np>
 
 <p><b>One very important note:</b>  If you are <b>not</b> using mipmaps for a texture,
@@ -290,26 +290,26 @@ Remember that if you don't create mipmaps and if you don't change the minificati
 filter, then your texture will simply be ignored by OpenGL.</p>
 
 <p>There is another pair of texture parameters to control how texture coordinates
-outside the range 0 to 1 are treated.  As mentioned above, the default is to 
-repeat the texture.  The alternative is to "clamp" the texture.  This means that 
+outside the range 0 to 1 are treated. As mentioned above, the default is to 
+repeat the texture. The alternative is to "clamp" the texture. This means that 
 when texture coordinates outside the range 0 to 1 are specified, those values
 are forced into that range:  Values less than 0 are replaced by 0, and values
-greater than 1 are replaced by 1.  Values can be clamped separately in the <i>s</i>
+greater than 1 are replaced by 1. Values can be clamped separately in the <i>s</i>
 and <i>t</i> directions using</p>
 
 <pre>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);</pre>
 
 <np>Passing <i>GL_REPEAT</i> as the last parameter restores the default
-behavior.  When clamping is in effect, texture coordinates outside the
+behavior. When clamping is in effect, texture coordinates outside the
 range 0 to 1 return the same color as a texel that lies along the outer
-edge of the image.  Here is what the effect looks like on two textured squares:</np>
+edge of the image. Here is what the effect looks like on two textured squares:</np>
 
 <img src="repeat-vs-clamp-texture.png" width="420" height="211" tex="repeat-vs-clamp-texture.eps" texscale="0.6"/>
 
 <np>The two squares in this image have <i>s</i> and <i>t</i> texture coordinates that range from
-&minus;1 to 2.  The original image lies in the center of the square.  For the square on the left, the texture
-is repeated.  On the right, the texture is clamped.</np>
+&minus;1 to 2. The original image lies in the center of the square. For the square on the left, the texture
+is repeated. On the right, the texture is clamped.</np>
 
 
 </subsection>
@@ -318,31 +318,31 @@ is repeated.  On the right, the texture is clamped.</np>
 
 <p>When a texture is applied to a primitive,
 the texture coordinates for a vertex determine which point in the texture is mapped
-to that vertex.  Texture images are 2D, but OpenGL also supports one-dimensional textures and 
-three-dimensional textures.  This means that texture coordinates cannot be restricted to
-two coordinates.  In fact, a set of texture coordinates in OpenGL is
+to that vertex. Texture images are 2D, but OpenGL also supports one-dimensional textures and 
+three-dimensional textures. This means that texture coordinates cannot be restricted to
+two coordinates. In fact, a set of texture coordinates in OpenGL is
 represented internally in the form of <word>homogeneous coordinates</word>,
-which are referred to as (<i>s</i>,<i>t</i>,<i>r</i>,<i>q</i>).  We have
+which are referred to as (<i>s</i>,<i>t</i>,<i>r</i>,<i>q</i>). We have
 used <i>glTexCoord2*</i> to specify texture <i>s</i> and <i>t</i> coordinates, but a call to
 <i>glTexCoord2f</i>(<i>s</i>,<i>t</i>), for example, is really just shorthand for
 <i>glTexCoord4f</i>(<i>s</i>,<i>t</i>,0,1).</p>
 
 <p>Since texture coordinates are no different from vertex coordinates, they can
-be transformed in exactly the same way.  OpenGL maintains a <newword>texture transformation</newword>
+be transformed in exactly the same way. OpenGL maintains a <newword>texture transformation</newword>
 as part of its state, along with the <word term="modelview transformation">modelview</word> 
 and <word term="projection transformation">projection</word>
-transformations.  The current value of each of the three transformations is stored
+transformations. The current value of each of the three transformations is stored
 as a <word>matrix</word>.
 When a texture is applied to an object, the texture coordinates that were
-specified for its vertices are transformed by the texture matrix.  The transformed
-texture coordinates are then used to pick out a point in the texture.  Of course, the
+specified for its vertices are transformed by the texture matrix. The transformed
+texture coordinates are then used to pick out a point in the texture. Of course, the
 default texture transform is the <word>identity transform</word>, which doesn't change the coordinates.</p>
 
 <p>The texture matrix can represent scaling, rotation, translation and combinations
-of these basic transforms.  To specify a texture transform, you have to use
-<i>glMatrixMode</i>() to set the matrix mode to <i>GL_TEXTURE</i>.  With this mode in
+of these basic transforms. To specify a texture transform, you have to use
+<i>glMatrixMode</i>() to set the matrix mode to <i>GL_TEXTURE</i>. With this mode in
 effect, calls to methods such as <i>glRotate*</i>, <i>glScale*</i>, and <i>glLoadIdentity</i>
-are applied to the texture matrix.  For example to install a texture transform that scales
+are applied to the texture matrix. For example to install a texture transform that scales
 texture coordinates by a factor of two in each direction, you could say:</p>
 
 <pre>glMatrixMode(GL_TEXTURE);
@@ -351,37 +351,37 @@ glScalef(2,2,1);
 glMatrixMode(GL_MODELVIEW); // Leave matrix mode set to GL_MODELVIEW.</pre>
 
 <np>Since the image lies in the <i>st</i>-plane, only the first two parameters of
-<i>glScalef</i> matter.  For rotations, you would use (0,0,1) as the axis of rotation,
+<i>glScalef</i> matter. For rotations, you would use (0,0,1) as the axis of rotation,
 which will rotate the image within the <i>st</i>-plane.</np>
 
 <p>Now, what does this actually mean for the appearance of the texture on a surface? In the example,
-the scaling transform multiplies each texture coordinate by 2.  For example, if a
+the scaling transform multiplies each texture coordinate by 2. For example, if a
 vertex was assigned 2D texture coordinates (0.4,0.1), then after the texture transform is applied,
 that vertex will be mapped to the point (<i>s</i>,<i>t</i>) = (0.8,0.2)
-in the texture.  The texture coordinates vary <i>twice as fast</i> on the surface
-as they would without the scaling transform.  A region on the surface that would map
+in the texture. The texture coordinates vary <i>twice as fast</i> on the surface
+as they would without the scaling transform. A region on the surface that would map
 to a 1-by-1 square in the texture image without the transform will instead map
 to a 2-by-2 square in the image&mdash;so that a larger piece of the image will be
-seen inside the region.  In other words, the texture image will be <i>shrunk</i> by
+seen inside the region. In other words, the texture image will be <i>shrunk</i> by
 a factor of two on the surface!  More generally, the effect of a texture transformation
 on the appearance of the texture is the <b><word term="inverse transform">inverse</word></b> of its effect 
-on the texture coordinates.  (This is exactly analogous to the inverse relationship between a viewing
+on the texture coordinates. (This is exactly analogous to the inverse relationship between a viewing
 transformation and a modeling transformation.)  If the texture transform is translation to
-the right, then the texture moves to the left on the surface.  If the texture transform
+the right, then the texture moves to the left on the surface. If the texture transform
 is a counterclockwise rotation, then the texture rotates clockwise on the surface.</p>
 
 <demo src="c4/texture-transform.html" width="675" height="550"><p>I mention texture 
 transforms here mostly to show how OpenGL can use transformations
-in another context.  But it is sometimes useful to transform a texture to make it fit
-better on a surface.  And for an unusual effect, you might even animate the texture transform
-to make the texture image move on the surface.  <tex>To see the effect of
+in another context. But it is sometimes useful to transform a texture to make it fit
+better on a surface. And for an unusual effect, you might even animate the texture transform
+to make the texture image move on the surface. <tex>To see the effect of
 texture transformations, try the on-line demo 
 <demoref href="c4/texture-transform.html"/>.</tex><web>Here is a demo that lets you
-experiment with texture transforms and see the effect.  On the left, you see the region in 
-the <i>st</i>-plane for <i>s</i> and <i>t</i> between &minus;1 and 2.  A box outlines the
+experiment with texture transforms and see the effect. On the left, you see the region in 
+the <i>st</i>-plane for <i>s</i> and <i>t</i> between &minus;1 and 2. A box outlines the
 region in the texture that maps to a region on the 3D object with texture coordinates
-in the range 0 to 1.  You can drag the sliders to apply texture transforms to see how the
-transforms affect the box and how they affect the texture on the object.  See the help text
+in the range 0 to 1. You can drag the sliders to apply texture transforms to see how the
+transforms affect the box and how they affect the texture on the object. See the help text
 in the demo for more information.</web></p></demo>
 
 </subsection>
@@ -391,9 +391,9 @@ in the demo for more information.</web></p></demo>
 
 
 <p>It's about time that we looked at the process of getting an image into OpenGL so
-that it can be used as a texture.  Usually, the image starts out in a file.
-OpenGL does not have functions for loading images from a file.  For now, we
-assume that the file has already been loaded from the file into the computer's memory.  
+that it can be used as a texture. Usually, the image starts out in a file.
+OpenGL does not have functions for loading images from a file. For now, we
+assume that the file has already been loaded from the file into the computer's memory. 
 Later in this section, I will explain how that's done in C and in Java.</p>
 
 <p>The OpenGL function for loading image data from the computer's
@@ -402,23 +402,23 @@ memory into a 2D texture is <i>glTexImage2D</i>(), which takes the form:</p>
 <pre>glTexImage2D(target, mipmapLevel, internalFormat, width, height, border,
                             format, dataType, pixels);</pre>
 
-<np>The <i>target</i> should be <i>GL_TEXTURE_2D</i>.  The <i>mipmapLevel</i>
-should ordinarily be&nbsp;0.  The value 0 is for loading the main texture; a larger value is used to load 
-an individual mipmap.  The
+<np>The <i>target</i> should be <i>GL_TEXTURE_2D</i>. The <i>mipmapLevel</i>
+should ordinarily be&nbsp;0. The value 0 is for loading the main texture; a larger value is used to load 
+an individual mipmap. The
 <i>internalFormat</i> tells OpenGL how you want the texture data to be stored in OpenGL texture
 memory. It can be <i>GL_RGB</i> to store an 8-bit red/green/blue component for
-each pixel.  Another possibility is <i>GL_RGBA</i>, which adds an alpha component.
+each pixel. Another possibility is <i>GL_RGBA</i>, which adds an alpha component.
 The <i>width</i> and <i>height</i> give the size of the image; the values should
-be powers of two.  The value of <i>border</i> should be 0; the only other
+be powers of two. The value of <i>border</i> should be 0; the only other
 possibility is 1, which indicates that a one-pixel border has been added around the
-image data for reasons that I will not discuss.  The last three parameters describe the image data.  The
+image data for reasons that I will not discuss. The last three parameters describe the image data. The
 <i>format</i> tells how the original image data is represented in the computer's memory, such as
-<i>GL_RGB</i> or <i>GL_RGBA</i>.  The <i>dataType</i> is usually <i>GL_UNSIGNED_BYTE</i>,
+<i>GL_RGB</i> or <i>GL_RGBA</i>. The <i>dataType</i> is usually <i>GL_UNSIGNED_BYTE</i>,
 indicating that each color component is represented as a one-byte value in the
-range 0 to 255.  And <i>pixels</i> is a pointer to the start of the actual
-color data for the pixels.  The pixel data has to be in a certain format, but that
+range 0 to 255. And <i>pixels</i> is a pointer to the start of the actual
+color data for the pixels. The pixel data has to be in a certain format, but that
 need not concern us here, since it is usually taken care of by the functions that are
-used to read the image from a file.  (For JOGL, the pointer would be replaced by a buffer.)</np>
+used to read the image from a file. (For JOGL, the pointer would be replaced by a buffer.)</np>
 
 
 <p>This all looks rather complicated, but in practice, a call to <i>glTexImage2D</i>
@@ -429,14 +429,14 @@ generally takes the following form, except possibly with <i>GL_RGB</i> replaced 
                                         
 
 <np>Calling this function will load the image into the texture,
-but it does not cause the texture to be used.  For that, you also have to
+but it does not cause the texture to be used. For that, you also have to
 call</np>
 
 <pre>glEnable(GL_TEXTURE_2D);</pre>
 
 <np>If you want to use the texture on some objects but not others, you can
 enable <i>GL_TEXTURE_2D</i> before drawing objects that you want to be
-textured and disable it before drawing untextured objects.  You can also change
+textured and disable it before drawing untextured objects. You can also change
 the texture that is being used at any time by calling <i>glTexImage2D</i>.</np>
 
 </subsection>
@@ -444,11 +444,11 @@ the texture that is being used at any time by calling <i>glTexImage2D</i>.</np>
 
 <subsection title="Texture from Color Buffer" id="gl1light.3.6">
 <p>Texture images for use in an OpenGL program usually come from an
-external source, most often an image file.  However, OpenGL is itself
-a powerful engine for creating images.  Sometimes, instead of loading
+external source, most often an image file. However, OpenGL is itself
+a powerful engine for creating images. Sometimes, instead of loading
 an image file, it's convenient to have OpenGL create the image internally,
-by rendering it.  This is possible because OpenGL can read texture
-data from its own color buffer, where it does its drawing.  To
+by rendering it. This is possible because OpenGL can read texture
+data from its own color buffer, where it does its drawing. To
 create a texture image using OpenGL, you just have to draw the
 image using standard OpenGL drawing commands and then load that
 image as a texture using the method</p>
@@ -470,14 +470,14 @@ will typically look like </np>
 
 <np>The end result is that the specified rectangle from
 the color buffer will be copied to texture memory and will become the
-current 2D texture.  This works in the same way as a call to
+current 2D texture. This works in the same way as a call to
 <i>glTexImage2D</i>(), except for the source of the image data.</np>
 
 <demo src="c4/texture-from-color-buffer.html" width="440" height="460">
 <p>An example can be found in the JOGL program <sourceref href="jogl/TextureFromColorBuffer.java"/> or
 in the C version <sourceref href="glut/texture-from-color-buffer.c"/>.
 This program draws the windmill-and-cart scene from  <localref href="graphics2d.4.1"/> and then uses that
-drawing as a texture on 3D objects.  <web>Here is a demo version of the program.</web><tex>Here is an image 
+drawing as a texture on 3D objects. <web>Here is a demo version of the program.</web><tex>Here is an image 
 from the program, showing the texture on a cylinder:</tex></p></demo>
 
 <texdiv>
@@ -485,13 +485,13 @@ from the program, showing the texture on a cylinder:</tex></p></demo>
 </texdiv>
 
 <np>The texture can be animated!  For the animation, a new texture is drawn for each frame.
-All the work is done in the program's display function.  In that function,
+All the work is done in the program's display function. In that function,
 the current frame of the windmill-and-cart scene is first drawn as a 2D scene with
-lighting disabled.  This picture is not shown on the computer screen;
+lighting disabled. This picture is not shown on the computer screen;
 the drawing is done off-screen and the image will be erased and replaced with the
-3D image before it's ever shown on screen.  The <i>glCopyTexImage2D</i>()
+3D image before it's ever shown on screen. The <i>glCopyTexImage2D</i>()
 function is then called to copy the
-scene into the current texture.  Then, the color buffer is cleared, lighting is
+scene into the current texture. Then, the color buffer is cleared, lighting is
 enabled, and a 3D projection is set up, before finally drawing the 3D object
 that is seen on the computer screen.</np>
 
@@ -507,10 +507,10 @@ OpenGL 1.1 introduced a new feature called <newword term="texture object">textur
 to make texture handling more efficient.
 Texture objects are used when you need to work with several texture images in the same program.
 The usual method for loading texture images, <i>glTexImage2D</i>, transfers data from your
-program into the graphics card.  This is an expensive operation, and switching among
+program into the graphics card. This is an expensive operation, and switching among
 multiple textures by using this method can seriously degrade a program's performance.
 Texture objects offer the possibility of storing texture data for multiple textures on the graphics
-card.  With texture objects, you can switch from one texture object to another with a single, 
+card. With texture objects, you can switch from one texture object to another with a single, 
 fast OpenGL command:  You just have to tell OpenGL which texture object you want to use.
 (Of course, the graphics card has only a limited amount of memory for storing textures,
 and you aren't guaranteed that all of your texture objects will actually be stored on the graphics card.
@@ -518,24 +518,24 @@ Texture objects that don't fit in the graphics card's memory are no more efficie
 than ordinary textures.)</p>
 
 <p>Texture objects are managed by OpenGL and the graphics hardware.
-A texture object is identified by an integer ID number.  To use a texture object,
-you need to obtain an ID number from OpenGL.  This is done with the <i>glGenTextures</i>
+A texture object is identified by an integer ID number. To use a texture object,
+you need to obtain an ID number from OpenGL. This is done with the <i>glGenTextures</i>
 function:</p>
 
 <pre>void glGenTexures( int textureCount, int* array )</pre>
 
-<np>This function can generate multiple texture IDs with a single call.  The first parameter
-specifies how many IDs you want.  The second parameter says where the generated IDs will be stored.
-It should be an array whose length is at least <i>textureCount</i>.  
+<np>This function can generate multiple texture IDs with a single call. The first parameter
+specifies how many IDs you want. The second parameter says where the generated IDs will be stored.
+It should be an array whose length is at least <i>textureCount</i>. 
 For example, if you plan to use three texture objects, you can say</np>
 
 <pre>int idList[3];
 glGenTextures( 3, idList );</pre>
 
 <np>You can then use <i>idList</i>[0], <i>idList</i>[1], and <i>idList</i>[2] to refer
-to the textures.  Because of the way pointers work in C, if you want to get a single
+to the textures. Because of the way pointers work in C, if you want to get a single
 texture ID, you can pass a pointer to an integer variable as the second parameter
-to <i>glGenTextures</i>().  For example,</np>
+to <i>glGenTextures</i>(). For example,</np>
 
 <pre>int texID;
 glGenTextures( 1, &amp;texID );</pre>
@@ -544,7 +544,7 @@ glGenTextures( 1, &amp;texID );</pre>
 
 <p>Every texture object has its own state, which includes  the
 values of texture parameters such as <i>GL_TEXTURE_MIN_FILTER</i> as well as the
-texture image itself.  To work with a specific texture object, you must first
+texture image itself. To work with a specific texture object, you must first
 call</p>
 
 <pre>glBindTexture( GL_TEXTURE_2D, texID )</pre>
@@ -562,22 +562,22 @@ during program initialization:</p>
 for (i = 0; i &lt; n; i++) {
     glBindTexture( textureIDList[i] );
       .
-      .  // Load texture image number i
-      .  // Configure texture image number i
+      . // Load texture image number i
+      . // Configure texture image number i
       .
 }</pre>
 
 <np>Then, while rendering a scene, you would call <i>glBindTexture</i> every time
-you want to switch from one texture image to another texture image.  This would be much more
+you want to switch from one texture image to another texture image. This would be much more
 efficient than calling <i>glTexImage2D</i> every time you want to switch textures.</np>
 
 <p>OpenGL 1.1 reserves texture ID zero as the default texture object, which is bound initially.
-It is the texture object that you are using if you never call <i>glBindTexture</i>.  This means
+It is the texture object that you are using if you never call <i>glBindTexture</i>. This means
 that you can write programs that use textures without ever mentioning <i>glBindTexture</i>.
 (However, I should note that when we get to WebGL, that will no longer be true.)</p>
 
 <p>The small sample program <sourceref href="glut/texture-objects.c"/> shows how to use texture
-objects in C.  In is available only in C since, as we will see, JOGL has its own way of working
+objects in C. In is available only in C since, as we will see, JOGL has its own way of working
 with texture objects.</p>
 
 </subsection>
@@ -588,17 +588,17 @@ with texture objects.</p>
 
 <p>We have seen how to load texture image data from memory into OpenGL.
 The problem that remains is how to get the image data into memory before
-calling <i>glTexImage2D</i>.  One possibility is to compute the data&mdash;you can
-actually have your program generate texture data on the fly.  More likely,
-however, you want to load it from a file.  This section looks at how that
-might be done in C.  You will probably want to
-use a library of image-manipulation functions.  Several free image processing libraries are available.  I will
+calling <i>glTexImage2D</i>. One possibility is to compute the data&mdash;you can
+actually have your program generate texture data on the fly. More likely,
+however, you want to load it from a file. This section looks at how that
+might be done in C. You will probably want to
+use a library of image-manipulation functions. Several free image processing libraries are available. I will
 discuss one of them, <i>FreeImage</i>, which can work with many image file formats.
 FreeImage can be obtained from <a href="http://freeimage.sourceforge.net/">http://freeimage.sourceforge.net/</a>,
 but I was able to use it in Linux simply by installing the package <i>libfreeimage-dev</i>.
 To make it available to my program, I added <i>#include&nbsp;&leftquote;FreeImage.h"</i> to the
 top of my C program, and I added the option <i>-lfreeimage</i> to the <i>gcc</i> command to make
-the library available to the compiler.  (See the sample program
+the library available to the compiler. (See the sample program
 <sourceref href="glut/texture-demo.c"/> for an example that uses
 this library.)  Instead of discussing FreeImage in detail, I present a
 well-commented function that uses it to load image data from a file:</p>
@@ -611,7 +611,7 @@ void loadTexture( char* fileName ) {
         // Loads a texture image using the FreeImage library, and stores the
         // required info in global variables imgPixels, imgWidth, imgHeight.
         // The parameter fileName is a string that contains the name of the
-        // image file from which the image is to be loaded.  If the image
+        // image file from which the image is to be loaded. If the image
         // can't be loaded, then imgPixels will be set to be a null pointer.
         
     imgPixels = 0; // Null pointer to signal that data has not been read.
@@ -619,7 +619,7 @@ void loadTexture( char* fileName ) {
     FREE_IMAGE_FORMAT format = FreeImage_GetFIFFromFilename(fileName);
          // FREE_IMAGE_FORMAT is a type defined by the FreeImage library.
          // Here, the format is determined from the file extension in
-         // the file name, such as .png, .jpg, or .gif.  Many formats
+         // the file name, such as .png, .jpg, or .gif. Many formats
          // are supported.
     
     if (format == FIF_UNKNOWN) {
@@ -630,7 +630,7 @@ void loadTexture( char* fileName ) {
     FIBITMAP* bitmap = FreeImage_Load(format, fileName, 0);
           // FIBITMAP is a type defined by the FreeImage library, representing
           // the raw image data plus some metadata such as width, height,
-          // and the format of the image data.  This actually tries to
+          // and the format of the image data. This actually tries to
           // read the data from the specified file.
           
     if (!bitmap) {
@@ -664,17 +664,17 @@ void loadTexture( char* fileName ) {
 <p>After this function has been called, the data that we need for
 <i>glTexImage2D</i>() is in the global variables <i>imgWidth</i>,
 <i>imgHeight</i>, and <i>imgPixels</i> (or <i>imgPixels</i> is 0
-to indicate that the attempt to load the image failed).  There
+to indicate that the attempt to load the image failed). There
 is one complication:  FreeImage will store the color components
 for a pixel in the order red/green/blue on some platforms but in
-the order blue/green/red on other platforms.  The second data format
-is called <i>GL_BGR</i> in OpenGL.  If you use the wrong format
+the order blue/green/red on other platforms. The second data format
+is called <i>GL_BGR</i> in OpenGL. If you use the wrong format
 in <i>glTextImage2D</i>(), then the red and blue components of the
-color will be reversed.  To tell the difference, you can use
+color will be reversed. To tell the difference, you can use
 the FreeImage constant <i>FI_RGBA_RED</i>, which tells the position
-of the red color component in pixel data.  This constant will be
+of the red color component in pixel data. This constant will be
 0 if the format is <i>GL_RGB</i> and will be 2 if the format
-is <i>GL_BGR</i>.  So, to use the texture in OpenGL, you might
+is <i>GL_BGR</i>. So, to use the texture in OpenGL, you might
 say:</p>
 
 <pre>if ( imgPixels ) { // The image data exists
@@ -692,16 +692,16 @@ else { // The image data was not loaded, so don't attempt to use the texture.
 }</pre>
 
 <p>To be even more careful, you could check that the width and the height
-of the image are powers of two.  If not, you can resize it using
+of the image are powers of two. If not, you can resize it using
 the function <i>FreeImage_Rescale</i>() from the FreeImage library.</p>
 
 <break/>
 
 <p>FreeImage is a large, complicated system that might not be easily made
-available on your computer.  To make it easier for you to experiment with
+available on your computer. To make it easier for you to experiment with
 textures in C, I have also included a small C utility for reading textures
-from .rgb files.  The rgb file format is fairly simple, but rgb files are
-generally much larger than the corresponding .png or .jpeg files.  The
+from .rgb files. The rgb file format is fairly simple, but rgb files are
+generally much larger than the corresponding .png or .jpeg files. The
 format is not widely supported, but I have included .rgb versions of my
 sample texture images in the folder <sourceref href="glut/textures-rgb"/>.
 The small library for loading them into textures is <sourceref href="glut/textures-rgb/readrgb.c"/>
@@ -719,29 +719,29 @@ Sample programs that use the library are
 
 <subsection title="Using Textures with JOGL" id="gl1light.3.9">
 
-<p>We turn finally to using texture images in Java.  
+<p>We turn finally to using texture images in Java. 
 JOGL comes with several classes that make it fairly easy to use textures in Java,
 notably the classes <classname>Texture</classname> and
 <classname>TextureIO</classname> in package
 <i>com.jogamp.opengl.util.texture</i> and
 <classname>AWTTextureIO</classname> in package
-<i>com.jogamp.opengl.util.texture.awt</i>.  For an example of using
+<i>com.jogamp.opengl.util.texture.awt</i>. For an example of using
 textures with JOGL, see the sample program
 <sourceref href="jogl/TextureDemo.java"/>.</p>
 
 <p>An object of type <classname>Texture</classname> represents
-a texture that has already been loaded into OpenGL.  Internally,
+a texture that has already been loaded into OpenGL. Internally,
 it uses a texture object to store the texture and its
-configuration data.  If <i>tex</i> is an object of type <classname>Texture</classname>,
+configuration data. If <i>tex</i> is an object of type <classname>Texture</classname>,
 you can call</p>
 
 <pre>tex.bind(gl);</pre>
 
-<np>to use the texture image while rendering objects.  The parameter, <i>gl</i>, as usual,
+<np>to use the texture image while rendering objects. The parameter, <i>gl</i>, as usual,
 is a variable of type <classname>GL2</classname> the represents the OpenGL drawing context.
 This function is equivalent
 to calling <i>glBindTexture</i> for the OpenGL texture object that is
-used by the Java <classname>Texture</classname>.  You still need to
+used by the Java <classname>Texture</classname>. You still need to
 enable <i>GL_TEXTURE_2D</i> by calling
 <i>gl.glEnable</i>(<i>GL2.GL_TEXTURE_2D)</i> or, equivalently,</np>
 
@@ -755,14 +755,14 @@ class to set the parameters:</p>
 <pre>tex.setTexParameteri( gl, parameterName, value );</pre>
 
 <np>This will automatically bind the texture object before setting
-the texture parameter.  For example, </np>
+the texture parameter. For example, </np>
 
 <pre>tex.setTexParameteri(gl, GL2.GL_TEXTURE_MIN_FILTER, GL2.LINEAR_MIPMAP_LINEAR);</pre>
 
 <p>So, once you have a <classname>Texture</classname>, it's pretty easy
-to use.  But there remains the problem of creating <classname>Texture</classname> objects.
+to use. But there remains the problem of creating <classname>Texture</classname> objects.
 For that, you can use static methods in the <classname>TextureIO</classname>
-and <classname>AWTTextureIO</classname> classes.  For example, if <i>fileName</i>
+and <classname>AWTTextureIO</classname> classes. For example, if <i>fileName</i>
 is the name of an image file (or a path to such a file), then you can say</p>
 
 <pre>tex = TextureIO.newTexture( new File(fileName), true );</pre>
@@ -775,11 +775,11 @@ the texture; by passing <i>true</i>, we automatically get a full set of mipmaps!
 <p><b>One important note:</b> Java's texture creation functions will only work
 when an OpenGL context is "current."  This will be true in the event-handling
 methods of a <classname>GLEventListener</classname>, including
-the <i>init</i>() and <i>display</i>() methods.  However, it will <b>not</b>
+the <i>init</i>() and <i>display</i>() methods. However, it will <b>not</b>
 be true in ordinary methods and constructors.</p>
 
 <p>Of course, in Java, you are more likely to store the image as
-a resource in the program than as a separate file.  If <i>resourceName</i> is
+a resource in the program than as a separate file. If <i>resourceName</i> is
 a path to the image resource, you can load the image into a texture with</p>
 
 <pre>URL textureURL;
@@ -795,8 +795,8 @@ exceptions, which you will have to catch or otherwise handle in some way.)</np>
 <p>One problem with all this is that textures loaded in this way will be
 upside down!  This happens because Java stores image data from the top row
 of the image to the bottom, whereas OpenGL expects image data to be stored
-starting with the bottom row.  If this is a problem for you, you can flip
-the image before using it to create a texture.  To do that, you have to
+starting with the bottom row. If this is a problem for you, you can flip
+the image before using it to create a texture. To do that, you have to
 load the image into a <classname>BufferedImage</classname> and then load that into a
 texture using the <classname>AWTTextureIO</classname> class.
 For example, assuming <i>resourceName</i> is a path to an image resource
@@ -810,9 +810,9 @@ ImageUtil.flipImageVertically( img );
 texture = AWTTextureIO.newTexture(GLProfile.getDefault(), img, true);</pre>
 
 <np>The <classname>ImageUtil</classname> class is defined in
-package <i>com.jogamp.opengl.util.awt</i>.  Here, I obtained a
+package <i>com.jogamp.opengl.util.awt</i>. Here, I obtained a
 <classname>BufferedImage</classname> by reading it from a
-resource.  You could also read it from a file&mdash;or even draw it using
+resource. You could also read it from a file&mdash;or even draw it using
 Java 2D graphics.</np>
 
 </subsection>

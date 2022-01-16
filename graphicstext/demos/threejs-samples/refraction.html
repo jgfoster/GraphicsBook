@@ -14,13 +14,13 @@
 <script>
 
 /*  This page shows a refraction object inside a skybox. An environment
- *  map is used on the object to make it refract the skybox.  No lighting
- *  is used since object uses MeshBasicMaterial.   The refractionRatio
- *  property of the object material is set to 0.6.  An option for "cloudy"
+ *  map is used on the object to make it refract the skybox. No lighting
+ *  is used since object uses MeshBasicMaterial.  The refractionRatio
+ *  property of the object material is set to 0.6. An option for "cloudy"
  *  glass is added, which is implemented by setting the reflectivity property
  *  of the object material to 0.7, and added an option for using higher refractive
- *  index (0.9 instead of 0.6).  And the mapping property of the skyboxTexture
- *  is set to THREE.CubeRefractionMapping.   Other than that, this example is a
+ *  index (0.9 instead of 0.6). And the mapping property of the skyboxTexture
+ *  is set to THREE.CubeRefractionMapping.  Other than that, this example is a
  *  copy of reflection-demo.html.
  */
 
@@ -108,8 +108,8 @@ function createSkybox(textureNumber) {
 }
 
 /**
- *  Creates the material to use on the models.  This is a MeshBasicMaterial with
- *  the skybox texture as an environment map.  The base color, which is blended with the
+ *  Creates the material to use on the models. This is a MeshBasicMaterial with
+ *  the skybox texture as an environment map. The base color, which is blended with the
  *  environment map, is taken from the current color selection.
  */
 function makeRefractionMaterial() {
@@ -157,13 +157,13 @@ function installModel(modelNum) {
 function installGLTFModel(modelNum) {
     /*
      * The callback function that is called by the loader when it
-     * has finished loading the object.  This function creates a three.js
-     * function to hold the object.  It translates the object so that
-     * its center is in the origin.  It wraps the object in another object
-     * that is used to scale and rotate the object.  The scale is set
+     * has finished loading the object. This function creates a three.js
+     * function to hold the object. It translates the object so that
+     * its center is in the origin. It wraps the object in another object
+     * that is used to scale and rotate the object. The scale is set
      * so that the maximum coordinate in its vertices, in absolute
-     * value, is scaled to 1.  The rotation is controlled by the arrow
-     * keys.  (The material from the JSON loader file is ignored.)
+     * value, is scaled to 1. The rotation is controlled by the arrow
+     * keys. (The material from the JSON loader file is ignored.)
      */ 
     function modelLoadedCallback(data) {
     
@@ -258,8 +258,8 @@ function setObjectColor(colorNum) {
 }
 
 /**
- * Called when the user changes the setting of the "Cloudy Glass" checkbox.  Changes
- * the material to match.  Cloudy glass only partially transmits light.  Non-cloudy
+ * Called when the user changes the setting of the "Cloudy Glass" checkbox. Changes
+ * the material to match. Cloudy glass only partially transmits light. Non-cloudy
  * glass transmits 100%.
  */
 function doCloudyCheckbox() {
@@ -269,8 +269,8 @@ function doCloudyCheckbox() {
 }
 
 /**
- * Called when the user changes the setting of the "High Refractive Index" checkbox.  Changes
- * the material to match.  A higher refractive index makes the object bend the light
+ * Called when the user changes the setting of the "High Refractive Index" checkbox. Changes
+ * the material to match. A higher refractive index makes the object bend the light
  * less, making it less visible (unless it's cloudy).
  */
 
@@ -281,7 +281,7 @@ function doHighRICheckbox() {
 }
 
 /**
- *  Called when user clicks the Reset button.  Resets model rotation and controls to default view.
+ *  Called when user clicks the Reset button. Resets model rotation and controls to default view.
  */
 function resetRotation() {
     rotateX = defaultRotation[0];
@@ -292,7 +292,7 @@ function resetRotation() {
 }
 
 /**
- *  An event listener for the keydown event.  
+ *  An event listener for the keydown event. 
  *  The arrow keys are used to rotate the model about its own axis.
  */
 function doKey(evt) {

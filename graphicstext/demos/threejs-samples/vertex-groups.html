@@ -7,11 +7,11 @@
 <script src="three.min.js"></script>
 <script>
 
-/* Shows a pyramid and a cube.  The pyramid is constructed
- * as a polygonal mesh.  Both objects can be displayed with
+/* Shows a pyramid and a cube. The pyramid is constructed
+ * as a polygonal mesh. Both objects can be displayed with
  * all faces colored white or multicolored, with a different
- * material for each face.  Display of edges can be turned
- * on and off.  The objects can be rotated using the arrow,
+ * material for each face. Display of edges can be turned
+ * on and off. The objects can be rotated using the arrow,
  * Home, PageUp, and PageDown keys.
  */
 
@@ -62,7 +62,7 @@ function createWorld() {
    viewpointLight.position.set(0,0,1);  // shines down the z-axis
    scene.add(viewpointLight);
     
-   // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+   // create a camera, sitting on the positive z-axis. The camera is not part of the scene.
    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
    camera.position.z = 10;
         
@@ -92,7 +92,7 @@ function createWorld() {
    pyramidGeom.computeVertexNormals(); // Normals are needed for Lambert materials.
       
     /* To apply an array of materials to the pyramid, the vertices have
-     * to be put into groups.  The groups are numbered 0,1,2,3,4, corresponding
+     * to be put into groups. The groups are numbered 0,1,2,3,4, corresponding
      * to the array index of the material that is to be applied to that group.
      * The first parameter to addGroup() is the vertex number for the first
      * vertex in the group. The second is the number of vertices in
@@ -167,7 +167,7 @@ function doChangeMaterial() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the models.
+/*  Responds to user's key press. Here, it is used to rotate the models.
  */
 function doKey(event) {
     let code = event.keyCode;

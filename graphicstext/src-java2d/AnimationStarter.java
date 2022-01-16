@@ -6,10 +6,10 @@ import javax.swing.*;
 
 /**
  *  This class shows the setup for drawing animated images using Java Graphics2D.
- *  The drawing code goes in the paintComponent() method.  When the program
- *  is run, the drawing is shown in a window on the screen.  The paintComponent()
+ *  The drawing code goes in the paintComponent() method. When the program
+ *  is run, the drawing is shown in a window on the screen. The paintComponent()
  *  method will be called about 60 times per second, and the value of the global
- *  variables frameNumber and elapsedTimeMillis will increase.  These variables
+ *  variables frameNumber and elapsedTimeMillis will increase. These variables
  *  can be used in paintComponent(), so that the image will change each time
  *  it is drawn.
  */
@@ -17,8 +17,8 @@ public class AnimationStarter extends JPanel {
 
     /**
      * This main() routine makes it possible to run the class AnimationStarter
-     * as an application.  It simply creates a window that contains a panel
-     * of type AnimationStarter.  The program ends when the user closed the
+     * as an application. It simply creates a window that contains a panel
+     * of type AnimationStarter. The program ends when the user closed the
      * window by clicking its close box.
      */
     public static void main(String[] args) {
@@ -50,12 +50,12 @@ public class AnimationStarter extends JPanel {
     private long elapsedTimeMillis;  // The time, in milliseconds, since the animation started.
     
     private float pixelSize;  // This is the measure of a pixel in the coordinate system
-                              // set up by calling the applyLimits method.  It can be used
+                              // set up by calling the applyLimits method. It can be used
                               // for setting line widths, for example.
 
     /**
-     * This constructor sets up an AnimationStarter when it is created.  Here, it
-     * sets the size of the drawing area.  (The size is set as a "preferred size,"
+     * This constructor sets up an AnimationStarter when it is created. Here, it
+     * sets the size of the drawing area. (The size is set as a "preferred size,"
      * which will be used by the pack() command in the main() routine.)
      */
     public AnimationStarter() {
@@ -63,8 +63,8 @@ public class AnimationStarter extends JPanel {
     }
     
     /**
-     * The paintComponent method draws the content of the JPanel.  The parameter
-     * is a graphics context that can be used for drawing on the panel.  Note that
+     * The paintComponent method draws the content of the JPanel. The parameter
+     * is a graphics context that can be used for drawing on the panel. Note that
      * it is declared to be of type Graphics but is actually of type Graphics2D,
      * which is a subclass of Graphics.
      */
@@ -87,8 +87,8 @@ public class AnimationStarter extends JPanel {
         g2.fillRect(0,0,getWidth(),getHeight()); // From the old graphics API!
         
         /* Here, I set up a new coordinate system on the drawing area, by calling
-         * the applyLimits() method that is defined below.  Without this call, I
-         * would be using regular pixel coordinates.  This function sets the value
+         * the applyLimits() method that is defined below. Without this call, I
+         * would be using regular pixel coordinates. This function sets the value
          * of the global variable pixelSize, which I need for stroke widths in the
          * transformed coordinate system.
          */
@@ -97,7 +97,7 @@ public class AnimationStarter extends JPanel {
         
         /* Finish by drawing the content of the current frame, using frameNumber
          * and/or elapsedTimeMillis in the drawing so that the image will change
-         * from frame to frame.  Here, a simple hierarchical scene is drawn as
+         * from frame to frame. Here, a simple hierarchical scene is drawn as
          * an example.
          */
                 
@@ -140,14 +140,14 @@ public class AnimationStarter extends JPanel {
     }
     
     /**
-     * Applies a coordinate transform to a Graphics2D graphics context.  The upper
+     * Applies a coordinate transform to a Graphics2D graphics context. The upper
      * left corner of the viewport where the graphics context draws is assumed to
-     * be (0,0).  The coordinate transform will make a requested view window visible
-     * in the drawing area.  The requested limits might be adjusted to preserve the
+     * be (0,0). The coordinate transform will make a requested view window visible
+     * in the drawing area. The requested limits might be adjusted to preserve the
      * aspect ratio.
      *     This method sets the value of the global variable pixelSize, which is defined as the
      * maximum of the width of a pixel and the height of a pixel as measured in the
-     * coordinate system.  (If the aspect ratio is preserved, then the width and 
+     * coordinate system. (If the aspect ratio is preserved, then the width and 
      * height will agree.
      * @param g2 The drawing context whose transform will be set.
      * @param left requested x-value at left of drawing area.

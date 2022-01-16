@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include <FreeImage.h>
 
-/*  Draws a simple scene to show how to use texture objects.  Three texture images
- *  are loaded into three texture objects.  The scene contains three copies of the
+/*  Draws a simple scene to show how to use texture objects. Three texture images
+ *  are loaded into three texture objects. The scene contains three copies of the
  *  GLUT teapot, using the three different textures.
  *     The program uses the FreeImage image processing library to read the texture
- *  images from files.  It must be linked against that library along with the GL
- *  and glut libraries.  For example, using gcc on Linux
+ *  images from files. It must be linked against that library along with the GL
+ *  and glut libraries. For example, using gcc on Linux
  *
  *      gcc -o teapots texture-objects.c -lGL -lglut -lfreeimage
  */
@@ -45,7 +45,7 @@ void initGL() {
     glMatrixMode(GL_TEXTURE);  // Matrix mode for manipulating the texture transform matrix.
     glLoadIdentity();
     glScalef(1,-1,1);  // It turns out the texture coordinates for the GLUT teapot put an upside
-                       // down texture on the sides of the teapot.  To fix that, I apply a texture
+                       // down texture on the sides of the teapot. To fix that, I apply a texture
                        // transform that flips the texture vertically.
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -118,11 +118,11 @@ void specialKeyFunction(int key, int x, int y) {
 // --------------------- texture loading -----------------------------------------
 
 /*  This function loads three textures from texture files, which must be available
- *  to the program when it is run.  Paths to the files are stored in the global
- *  array textureFileNames.  The function generates three texture object identifiers
+ *  to the program when it is run. Paths to the files are stored in the global
+ *  array textureFileNames. The function generates three texture object identifiers
  *  and stores them in the global array  textID  so that they can be used when
- *  binding textures in display().  It then loads the three texture images into
- *  the texture objects.  It calles glTexParameteri for each texture to change
+ *  binding textures in display(). It then loads the three texture images into
+ *  the texture objects. It calles glTexParameteri for each texture to change
  *  the minification filter to GL_LINEAR (without this, the texture won't work
  *  because there are no mipmaps for the textures).
  */

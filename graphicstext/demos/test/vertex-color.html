@@ -37,7 +37,7 @@ function createWorld() {
    viewpointLight.position.set(0,0,1);  // shines down the z-axis
    scene.add(viewpointLight);
     
-   // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+   // create a camera, sitting on the positive z-axis. The camera is not part of the scene.
    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
    camera.position.z = 10;
         
@@ -101,7 +101,7 @@ function render() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the models.
+/*  Responds to user's key press. Here, it is used to rotate the models.
  */
 function doKey(event) {
     let code = event.keyCode;

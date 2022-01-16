@@ -7,12 +7,12 @@ import java.io.*;
 
 /**
  *  A demo program that manipulates colors of individual pixels in
- *  a BufferedImage.  The program lets the user draw using some basic
- *  shapes.  The user can also load an image from a file; the loaded
- *  image is scaled to exactly fill the panel.  A copy of the panel
- *  content is stored in a BufferedImage.  The user can apply "filters"
- *  such as "Blur" to the image.  The filter is computed by hand, using
- *  the RGB color data in the BufferedImage.  There is also a "Smudge"
+ *  a BufferedImage. The program lets the user draw using some basic
+ *  shapes. The user can also load an image from a file; the loaded
+ *  image is scaled to exactly fill the panel. A copy of the panel
+ *  content is stored in a BufferedImage. The user can apply "filters"
+ *  such as "Blur" to the image. The filter is computed by hand, using
+ *  the RGB color data in the BufferedImage. There is also a "Smudge"
  *  tool that the user can drag on the image to spread color around like
  *  wet paint; it works with the pixel data from the BufferedImage.
  */
@@ -44,14 +44,14 @@ public class JavaPixelManipulation extends JPanel {
     private BasicStroke stroke; // The current stroke, used for lines and curves. 
 
     private Image saveLoadedImage = null;  // Keeps a copy of the last loaded image,
-                                           // for convenience.  A "Reload Image" menu
+                                           // for convenience. A "Reload Image" menu
                                            // item will load the same image.
     private JMenuItem reloadImageMenuItem; // The "Reload Image" menu item.
     
     private String dragShape = null; // When non-null, the user is dragging with
-                                     // the Oval, Rectangle, or Line tool.  The
+                                     // the Oval, Rectangle, or Line tool. The
                                      // current shape is drawn in paintComponent()
-                                     // over the BufferedImage.  The shape is only
+                                     // over the BufferedImage. The shape is only
                                      // added to the image when the drag action ends.
     private int dragStartX, dragStartY;     // Start point of drag for use with dragShape.
     private int dragCurrentX, dragCurrentY; // Current mouse position for use with dragShape.
@@ -79,7 +79,7 @@ public class JavaPixelManipulation extends JPanel {
 
 
     /**
-     * The paintComponent() copies the BufferedImage to the screen.  If the user is dragging
+     * The paintComponent() copies the BufferedImage to the screen. If the user is dragging
      * with the "Line", "Rectangle", or "Oval" tool, the shape is drawn over the image from
      * the BufferedImage.
      */
@@ -96,7 +96,7 @@ public class JavaPixelManipulation extends JPanel {
     /**
      *  For drawing the Line, Rectangle, or OvalShape defined by the two points (x1,y1) and (x2,y2).
      *  If the repaint parameter is true, then the panel's repaint() method is called for a rectangle
-     *  that contains the shape.  When this method is used to draw to the BufferedImage, repaint is
+     *  that contains the shape. When this method is used to draw to the BufferedImage, repaint is
      *  true, so that the change to the BufferedImage will also be shown on the screen. When it
      *  is called to draw the dragShape in paintComponent(), repaint is false.
      */
@@ -137,7 +137,7 @@ public class JavaPixelManipulation extends JPanel {
     
     /**
      * Copy pixel colors from a 7-by-7 square centered at (x,y) into the
-     * smudge data arrays.  The color components are separated into their
+     * smudge data arrays. The color components are separated into their
      * red, green, and blue components, which are stored in separate arrays.
      * The values are stored as type double, not int, since they will be
      * used in averaging calculations that require real arithmetic.
@@ -172,9 +172,9 @@ public class JavaPixelManipulation extends JPanel {
      *  color in a 7-by-7 square centered at (x,y) in the BufferedImage.
      *  That is, the color values in the arrays are replaced by a weighted
      *  average of the color values in the arrays and the color values in
-     *  the image.  At the same time, the color values in the image are
+     *  the image. At the same time, the color values in the image are
      *  replaced by a weighted average of the color values in the image
-     *  and the color values in the arrays.  This method is called at
+     *  and the color values in the arrays. This method is called at
      *  each point along the path that the mouse visits as the user
      *  drags the "Smudge" tool.
      */
@@ -206,12 +206,12 @@ public class JavaPixelManipulation extends JPanel {
     
     /**
      *  For the "Smudge" and "Erase" tools, apply the tool to every point along the
-     *  line from (x1,y1) to (x2,y2).  This is called each time the mouse moves as
+     *  line from (x1,y1) to (x2,y2). This is called each time the mouse moves as
      *  the user drags the tool.
      */
     private void applyToolAlongLine(String tool, int x1, int y1, int x2, int y2) {
         if (Math.abs(x1-x2) >= Math.abs(y1-y2)) {
-               // Horizontal distance is greater than vertical distance.  Apply the
+               // Horizontal distance is greater than vertical distance. Apply the
                // tool once for each x-value between x1 and x2, computing the
                // y-value for each x-value from the equation of a line. 
             double slope = (double)(y2-y1)/(x2-x1);
@@ -229,7 +229,7 @@ public class JavaPixelManipulation extends JPanel {
             }
         }
         else {
-               // Vertical distance is greater than horizontal distance.  Apply the
+               // Vertical distance is greater than horizontal distance. Apply the
                // tool once for each y-value between y1 and y2, computing the
                // x-value for each y-value from the equation of a line. 
             double slope = (double)(x2-x1)/(y2-y1);
@@ -310,12 +310,12 @@ public class JavaPixelManipulation extends JPanel {
     
     /**
      *  Apply one of the image filters from the "Filter" menu to the BufferedImage, and
-     *  copy the result to the screen.  A filters is implemented as a "convolution" with
-     *  3-by-3 arrays.  That is, the RGB components of each pixel in the image is replaced
+     *  copy the result to the screen. A filters is implemented as a "convolution" with
+     *  3-by-3 arrays. That is, the RGB components of each pixel in the image is replaced
      *  with a weighted average of the RGB components of the pixels in a 3-by-3 square.
-     *  The weighting factors are given by the convolution array.  For example, for the
+     *  The weighting factors are given by the convolution array. For example, for the
      *  "Blur" filter, all the weight factors in the array are equal, and the filter is
-     *  just a simple averaging operation.  (To make things easy on myself, I don't change
+     *  just a simple averaging operation. (To make things easy on myself, I don't change
      *  the colors of the pixels along the border of the image; this lets me assume that
      *  when I work on a pixel, the 3-by-3 square centerd at that pixel is entirely within
      *  the image.)  The filter must be one of the strings form the "Filter" menu.
@@ -372,7 +372,7 @@ public class JavaPixelManipulation extends JPanel {
     
     
     /**
-     * Load an image from a file selected by the user.  The image is scaled to
+     * Load an image from a file selected by the user. The image is scaled to
      * exactly fill the panel, possibly changing the aspect ratio.
      */
     private void loadImageFile() {

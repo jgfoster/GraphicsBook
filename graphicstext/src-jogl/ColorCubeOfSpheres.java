@@ -15,10 +15,10 @@ import java.nio.FloatBuffer;
 
 /**
  * A Jogl/OpenGL application that an 11-by-11-by-11 cube of
- * spheres in different colors.  Five rendering methods are 
- * available, selected using a popup menu.  The rendering time
- * to draw the scene is shown.  Use the mouse to rotate
- * the scene and force a redraw.  (You can also force a redraw
+ * spheres in different colors. Five rendering methods are 
+ * available, selected using a popup menu. The rendering time
+ * to draw the scene is shown. Use the mouse to rotate
+ * the scene and force a redraw. (You can also force a redraw
  * by resizing the window.)  This program requires OpenGL 1.5
  * or higher for support of vertex buffer objects.
  */
@@ -59,7 +59,7 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
      * Make a regular JPanel to hold the GLJPanel,  Add a small panel at the
      * bottom to hold a check box that determines whether a display list is used
      * for rendering and a label that displays the rendering time of the most
-     * recent display of the GLJPanel.  The user can rotate the view with the
+     * recent display of the GLJPanel. The user can rotate the view with the
      * mouse.
      */
     public ColorCubeOfSpheres() {
@@ -95,7 +95,7 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
 
     /**
      * This method will be called when the GLJPanel is first
-     * created.  It can be used to initialize the GL context.
+     * created. It can be used to initialize the GL context.
      */
     public void init(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
@@ -121,7 +121,7 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
 
     /**
      * Draw a color cube of spheres, 11 spheres on each side, using
-     * different colors.  Each of the red, green, and blue components
+     * different colors. Each of the red, green, and blue components
      * of the color varies along one dimension of the cube.
      */
     public void display(GLAutoDrawable drawable) {
@@ -202,9 +202,9 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
     /**
      * Creates the vertex coordinate and normal vectors for a sphere.
      * The data is stored in the FloatBuffers sphereVertexBuffer and
-     * sphereNormalBuffer.  In addition, VBOs are created to hold
+     * sphereNormalBuffer. In addition, VBOs are created to hold
      * the data and the data is copied from the FloatBuffers into
-     * the VBOs.  (Note: The VBOs are used for render mode 4; the
+     * the VBOs. (Note: The VBOs are used for render mode 4; the
      * FloatBuffers are used for render mode 3.)
      */
     private void createSphereArraysAndVBOs(GL2 gl) {
@@ -265,7 +265,7 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
     }
 
     /**
-     * Draw one sphere.  The VertexPointer and NormalPointer must already
+     * Draw one sphere. The VertexPointer and NormalPointer must already
      * be set to point to the data for the sphere, and they must be enabled.
      */
     private void drawSphereWithDrawArrays(GL2 gl) {
@@ -298,12 +298,12 @@ public class ColorCubeOfSpheres extends JPanel implements GLEventListener, Actio
     
     /**
      * Draw a sphere with a given radius, number of slices, and number
-     * of stacks.  The number of slices is the number of lines of longitude
-     * (like the slices of an orange).  The number of stacks is the number
+     * of stacks. The number of slices is the number of lines of longitude
+     * (like the slices of an orange). The number of stacks is the number
      * of divisions perpendicular the axis; the lines of latitude are the
      * dividing lines between stacks, so there are stacks-1 lines of latitude.
      * The last parameter tells whether or not to generate texture
-     * coordinates for the sphere.  The texture wraps once around the sphere.
+     * coordinates for the sphere. The texture wraps once around the sphere.
      * The sphere is centered at (0,0,0), and its axis lies along the z-axis.
      * (Copied from TexturedShapes.uvSphere().)
      */

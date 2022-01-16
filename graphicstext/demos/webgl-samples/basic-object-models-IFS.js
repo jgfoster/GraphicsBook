@@ -2,10 +2,10 @@
 /**
  * The functions in this file create models in an
  * IFS format that can be drawn using gl.drawElements
- * with primitive type gl.TRIANGLES.  Objects have
+ * with primitive type gl.TRIANGLES. Objects have
  * vertex coordinates, normal vectors, and texture
  * coordinates for each vertex, plus a list of indicies
- * for the element array buffer.  The return value
+ * for the element array buffer. The return value
  * of each function is an object, model, with properties:
  * 
  *    model.vertexPositions -- the vertex coordinates;
@@ -20,10 +20,10 @@
 
  
  /**
-  * Create a model of a cube, centered at the origin.  (This is not
+  * Create a model of a cube, centered at the origin. (This is not
   * a particularly good format for a cube, since an IFS representation
   * has a lot of redundancy.)
-  * @side the length of a side of the cube.  If not given, the value will be 1.
+  * @side the length of a side of the cube. If not given, the value will be 1.
   */
 function cube(side) {
    var s = (side || 1)/2;
@@ -59,16 +59,16 @@ function cube(side) {
 
 /**
  * Creates a model of an annulus or disk lying in the xy plane,
- * centered at the origin.  (This is not a great representation,
+ * centered at the origin. (This is not a great representation,
  * since all the normals are the same.)
  * @param innerRadius the radius of the hole in the radius; a value of
- *    zero will give a disk rather than a ring.  If not present,
+ *    zero will give a disk rather than a ring. If not present,
  *    the default value is 0.25.
  * @param outerRadius the radius of the ring, from the center to teh
- *    outer edge.  Must be greater than innerRadius.  If not provided,
+ *    outer edge. Must be greater than innerRadius. If not provided,
  *    the default value is 2*innerRadius or is 0.5 if innerRadius is 0.
  * @slices the number of radial subdivisions in the circular approximation
- *    of an annulus.  If not provided, the value will be 32.
+ *    of an annulus. If not provided, the value will be 32.
  */
 function ring(innerRadius, outerRadius, slices) {
    if (arguments.length == 0)
@@ -145,11 +145,11 @@ function ring(innerRadius, outerRadius, slices) {
 }
 
 /**
- * Create a model of a sphere.  The z-axis is the axis of the sphere,
+ * Create a model of a sphere. The z-axis is the axis of the sphere,
  * with the north pole on the positive z-axis and the center at (0,0,0).
  * @param radius the radius of the sphere, default 0.5 if not specified.
  * @param slices the number of lines of longitude, default 32
- * @param stacks the number of lines of latitude plus 1, default 16.  (This 
+ * @param stacks the number of lines of latitude plus 1, default 16. (This 
  *    is the number of vertical slices, bounded by lines of latitude, the
  *    north pole and the south pole.)
  */
@@ -207,14 +207,14 @@ function uvSphere(radius, slices, stacks) {
 
 
 /**
- * Create a model of a torus (surface of a doughnut).  The z-axis goes through the doughnut hole,
+ * Create a model of a torus (surface of a doughnut). The z-axis goes through the doughnut hole,
  * and the center of the torus is at (0,0,0).
  * @param outerRadius the distance from the center to the outside of the tube, 0.5 if not specified.
  * @param innerRadius the distance from the center to the inside of the tube, outerRadius/3 if not
- *    specified.  (This is the radius of the doughnut hole.)
- * @param slices the number of lines of longitude, default 32.  These are slices parallel to the
+ *    specified. (This is the radius of the doughnut hole.)
+ * @param slices the number of lines of longitude, default 32. These are slices parallel to the
  * z-axis and go around the tube the short way (through the hole).
- * @param stacks the number of lines of latitude plus 1, default 16.  These lines are perpendicular
+ * @param stacks the number of lines of latitude plus 1, default 16. These lines are perpendicular
  * to the z-axis and go around the tube the long way (arouind the hole).
  */
 function uvTorus(outerRadius, innerRadius, slices, stacks) {
@@ -277,10 +277,10 @@ function uvTorus(outerRadius, innerRadius, slices, stacks) {
 }
 
 /**
- * Defines a model of a cylinder.  The axis of the cylinder is the z-axis,
+ * Defines a model of a cylinder. The axis of the cylinder is the z-axis,
  * and the center is at (0,0,0).
  * @param radius the radius of the cylinder
- * @param height the height of the cylinder.  The cylinder extends from -height/2
+ * @param height the height of the cylinder. The cylinder extends from -height/2
  * to height/2 along the z-axis.
  * @param slices the number of slices, like the slices of an orange.
  * @param noTop if missing or false, the cylinder has a top; if set to true,
@@ -408,10 +408,10 @@ function uvCylinder(radius, height, slices, noTop, noBottom) {
 
 
 /**
- * Defines a model of a cone.  The axis of the cone is the z-axis,
+ * Defines a model of a cone. The axis of the cone is the z-axis,
  * and the center is at (0,0,0).
  * @param radius the radius of the cone
- * @param height the height of the cone.  The cone extends from -height/2
+ * @param height the height of the cone. The cone extends from -height/2
  * to height/2 along the z-axis, with the tip at (0,0,height/2).
  * @param slices the number of slices, like the slices of an orange.
  * @param noBottom if missing or false, the cone has a bottom; if set to true,

@@ -9,11 +9,11 @@
 
 /* This page shows two scenes that use a cubemap texture.
  * The first shows a skybox viewed from outside the skybox
- * cube.  (This scene doesn't really use a cubemap texture;
+ * cube. (This scene doesn't really use a cubemap texture;
  * instead, the six skybox images are mapped to the faces
  * of the cube using an array of materials.)  The second scene
  * shows what the skybox looks like form the inside of
- * the cube.  In fact, the cubemap texture is simply set
+ * the cube. In fact, the cubemap texture is simply set
  * to be the background of the scene object, and no objects
  * or lights at all are added to the scene.
  */
@@ -30,8 +30,8 @@ let textureURLs = [  // URLs of the six faces of the cube map
    ];
 
 /**
- *  Loads a list of textures.  If a callback function is provided, it is
- *  called once after all textures are loaded.  This is used to load a
+ *  Loads a list of textures. If a callback function is provided, it is
+ *  called once after all textures are loaded. This is used to load a
  *  set of six textures to use on the six faces of the cube in the first
  *  scene.
  */
@@ -56,7 +56,7 @@ function loadTextures(textureURLs, callback) {
 }
 
 /**
- *  Loads a set of six textures as a single cubemap texture.  Used for the second scene.
+ *  Loads a set of six textures as a single cubemap texture. Used for the second scene.
  */
 function loadCubemapTexture(textureURLs, callback) {
     /* A funtion that will be called if the attempt to load the texture fails. */
@@ -70,7 +70,7 @@ function loadCubemapTexture(textureURLs, callback) {
 /*  This page uses THREE.OrbitControls to let the user use the mouse to rotate
  *  either view. 
  *     The first parameter is the camera that will be rotated by the controls.
- *  The second is the canvas where the scene is rendered.  The second
+ *  The second is the canvas where the scene is rendered. The second
  *  is the callback function that should be called when the controls change; it
  *  should be the function that renders the scene.
  */
@@ -84,13 +84,13 @@ function installOrbitControls(camera, canvas, callback) {
 
 
 /**
- *  Sets up the first scene.  This function is also used as a scope
+ *  Sets up the first scene. This function is also used as a scope
  *  to keep the scene, camera, etc for this scene separate from
  *  from those for the other scene.
  *      World1 shows a cube with a cube map texture viewed from the
- *  outside of the cube.  The textures are loaded as six separate
+ *  outside of the cube. The textures are loaded as six separate
  *  THREE.Texture objects, and an array of materials is used to apply
- *  the textures to the six faces of the cube.  Each face uses a
+ *  the textures to the six faces of the cube. Each face uses a
  *  MeshPhongMaterial, and the scene has a light to illuminate the
  *  cube.
  *      Note that this function returns true or false to indicate
@@ -118,7 +118,7 @@ function world1() {
         return false;
     }
     
-    /* Set up the scene with a camera and light.  The light is attached to the camera
+    /* Set up the scene with a camera and light. The light is attached to the camera
        so that it always shines in the direction the camera is facing. */
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 1, 100);
@@ -154,9 +154,9 @@ function world1() {
 
 
 /**
- *  Sets up the second scene.  The cube map is loaded as a single texture that
- *  is set as the background for the scene.  No objects or lights are added
- *  to the scene.  When the background of the scene is a cubemap texture, it
+ *  Sets up the second scene. The cube map is loaded as a single texture that
+ *  is set as the background for the scene. No objects or lights are added
+ *  to the scene. When the background of the scene is a cubemap texture, it
  *  is automatically used a skybox for the scene.
  *      Note that this function returns true or false to indicate
  *  whether it was possible to set up WebGL.
@@ -244,7 +244,7 @@ but with resolution reduced to 512-by-512.</p>
     <h3>2. Skybox with Cubemap Texture</h3>
     <p style="max-width: 420px">For this scene, the images are loaded as a single cubemap texture.
     That texture is set as the background of the scene, which automatically uses it as a
-    skybox.  No objects or lights are added to the scene.</p>
+    skybox. No objects or lights are added to the scene.</p>
 </td>
 </tr>
 <tr>

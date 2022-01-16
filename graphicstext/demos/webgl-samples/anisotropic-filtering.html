@@ -95,7 +95,7 @@ function draw() {
 
 
 /* Called when the texture has loaded and when user changes the setting of
- * the "Use Anistropic Filtering" checkbox.  Turns anisotropic filtering
+ * the "Use Anistropic Filtering" checkbox. Turns anisotropic filtering
  * on and off as appropriate.
  */
 function doAnisotropy() {
@@ -112,7 +112,7 @@ function doAnisotropy() {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
@@ -121,7 +121,7 @@ function initGL() {
     u_texture =  gl.getUniformLocation(prog, "texture");
     gl.enable(gl.DEPTH_TEST);
     
-    // Set up the data for drawing the rectangle.  The data never changes.
+    // Set up the data for drawing the rectangle. The data never changes.
     
     let vertices = [ -100,0,50, 100,0,50, 100,0,-100, -100,0,-100 ];
     gl.enableVertexAttribArray(a_coords_loc);
@@ -159,7 +159,7 @@ function initGL() {
         }
         catch (e) {
             document.getElementById("message").innerHTML =
-               "<span style='color:red'>Sorry, an error occurred.  Could not load texture image.<br>" +
+               "<span style='color:red'>Sorry, an error occurred. Could not load texture image.<br>" +
                "Note that some browsers can't load images from the local file system.</span>";
             return;
         }
@@ -176,16 +176,16 @@ function initGL() {
     };
     img.onerror = function() {
         document.getElementById("message").innerHTML =
-             "<span style='color:red'>Sorry, an error occurred.  Could not load texture image.</span>";
+             "<span style='color:red'>Sorry, an error occurred. Could not load texture image.</span>";
     };
     img.src = textureURL;
     
 } // end initGL
 
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.

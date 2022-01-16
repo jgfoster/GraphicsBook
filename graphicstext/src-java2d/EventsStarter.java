@@ -7,9 +7,9 @@ import javax.swing.*;
 
 /**
  *  This class shows a setup for responding to user events in a graphics program.
- *  Mouse and keyboard events are implemented.  In this example, the image that
- *  should be displayed on the screen is stored in a BuffereImage.  The paintComponent
- *  method simply copies that image to the screen.  Event-handling methods make
+ *  Mouse and keyboard events are implemented. In this example, the image that
+ *  should be displayed on the screen is stored in a BuffereImage. The paintComponent
+ *  method simply copies that image to the screen. Event-handling methods make
  *  changes to the BufferedImage and call repaint() to get the changed image copied
  *  to the screen. 
  *     To experiment with events, modify the definitions of the event-handling
@@ -19,8 +19,8 @@ public class EventsStarter extends JPanel {
 
     /**
      * This main() routine makes it possible to run the class EventsStarter
-     * as an application.  It simply creates a window that contains a panel
-     * of type EventsStarter.  The program ends when the user closed the
+     * as an application. It simply creates a window that contains a panel
+     * of type EventsStarter. The program ends when the user closed the
      * window by clicking its close box.
      */
     public static void main(String[] args) {
@@ -46,8 +46,8 @@ public class EventsStarter extends JPanel {
     private Color color = null; // For this example, the current drawing color.
 
     /**
-     * This constructor sets up an AnimationStarter when it is created.  Here, it
-     * sets the size of the drawing area.  (The size is set as a "preferred size,"
+     * This constructor sets up an AnimationStarter when it is created. Here, it
+     * sets the size of the drawing area. (The size is set as a "preferred size,"
      * which will be used by the pack() command in the main() routine.)
      */
     public EventsStarter() {
@@ -64,8 +64,8 @@ public class EventsStarter extends JPanel {
     
     
     /**
-     * The paintComponent method draws the content of the JPanel.  In this program,
-     * it simply copies the off-screen canvas to the screen.  (Often, a program would
+     * The paintComponent method draws the content of the JPanel. In this program,
+     * it simply copies the off-screen canvas to the screen. (Often, a program would
      * draw extra stuff on top of the image, such as a selection box.)
      */
     protected void paintComponent(Graphics g) {
@@ -167,7 +167,7 @@ public class EventsStarter extends JPanel {
         public void keyTyped(KeyEvent evt) {
                 // this method is called when the user types a character
                 // (which can involve several key presses and key
-                // releases).  The character is given by evt.getKeyChar()
+                // releases). The character is given by evt.getKeyChar()
             char ch = evt.getKeyChar();
             
             // Here, as an example, the current drawing color is changes if

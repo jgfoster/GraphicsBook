@@ -27,7 +27,7 @@ var graphics;
     }
     SceneGraphNode.prototype.draw = function(g) {
            // This method should be CALLED to draw the object
-           // represented by this SceneGraphNode.  It should NOT
+           // represented by this SceneGraphNode. It should NOT
            // ordinarily be overridden in subclasses.
         graphics.save();
         if (this.fillColor) {
@@ -61,7 +61,7 @@ var graphics;
     
     /**
      *  Defines a subclass, CompoundObject, of SceneGraphNode to represent
-     *  an object that is made up of sub-objects.  Initially, there are no
+     *  an object that is made up of sub-objects. Initially, there are no
      *  sub-objects.
      */
     function CompoundObject() {
@@ -70,7 +70,7 @@ var graphics;
     }
     CompoundObject.prototype = new SceneGraphNode(); // (makes it a subclass!)
     CompoundObject.prototype.add = function(node) {
-            // Add node a subobject of this object.  Note that the
+            // Add node a subobject of this object. Note that the
             // return value is a reference to this node, to allow chaining
             // of method calls.
         this.subobjects.push(node);
@@ -85,8 +85,8 @@ var graphics;
     /**
      *  Define a subclass, TransformedObject, of SceneGraphNode that
      *  represents an object along with a modeling transformation to
-     *  be applied to that object.  The object must be specified in
-     *  the constructor.  The transformation is specified by calling
+     *  be applied to that object. The object must be specified in
+     *  the constructor. The transformation is specified by calling
      *  the setScale(), setRotate() and setTranslate() methods. Note that
      *  each of these methods returns a reference to the TransformedObject
      *  as its return value, to allow for chaining of method calls.
@@ -104,7 +104,7 @@ var graphics;
     }
     TransformedObject.prototype = new SceneGraphNode();  // (makes it a subclass!)
     TransformedObject.prototype.setRotation = function(angle) {
-           // Set the angle of rotation, measured in DEGREES.  The rotation
+           // Set the angle of rotation, measured in DEGREES. The rotation
            // is always about the origin.
         this.rotationInDegrees = angle;
         return this;
@@ -163,7 +163,7 @@ var graphics;
     
     /**
      * Directly create a line object as a SceneGraphNode with a
-     * custom doDraw() method.  line is of length 1 and
+     * custom doDraw() method. line is of length 1 and
      * extends along the x-axis from (0,0) to (1,0).
      */
     var line = new SceneGraphNode();
@@ -176,7 +176,7 @@ var graphics;
     
     /**
      * Directly create a filled rectangle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledRect is a square with side 1, centered
+     * custom doDraw() method. filledRect is a square with side 1, centered
      * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5).
      */
     var filledRect = new SceneGraphNode();
@@ -186,8 +186,8 @@ var graphics;
     
     /**
      * Directly create a rectangle object as a SceneGraphNode with a
-     * custom doDraw() method.  rect is a square with side 1, centered
-     * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5).  Only the
+     * custom doDraw() method. rect is a square with side 1, centered
+     * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5). Only the
      * outline of the square is drawn.
      */
     var rect = new SceneGraphNode();
@@ -197,7 +197,7 @@ var graphics;
     
     /**
      * Directly create a filled circle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledCircle is a circle with radius 0.5
+     * custom doDraw() method. filledCircle is a circle with radius 0.5
      * (diameter 1), centered at (0,0).
      */
     var filledCircle = new SceneGraphNode();
@@ -209,8 +209,8 @@ var graphics;
     
     /**
      * Directly create a circle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledCircle is a circle with radius 0.5
-     * (diameter 1), centered at (0,0).  Only the outline of the circle
+     * custom doDraw() method. filledCircle is a circle with radius 0.5
+     * (diameter 1), centered at (0,0). Only the outline of the circle
      * is drawn.
      */
     var circle = new SceneGraphNode();
@@ -253,7 +253,7 @@ var graphics;
         g.fill();
     }
         
-    var world;  // A SceneGraphNode representing the entire picture.  This should
+    var world;  // A SceneGraphNode representing the entire picture. This should
                 // be created in the createWorld() method.
     
     var pixelSize;  // The size of one pixel, in the transformed coordinates.
@@ -276,8 +276,8 @@ var graphics;
 
     
     /**
-     *  Create the scene graph data structure.  The global variable world must
-     *  refer to the root node of the scene graph.  This function is called in
+     *  Create the scene graph data structure. The global variable world must
+     *  refer to the root node of the scene graph. This function is called in
      *  the init() function.
      */
     function createWorld() {
@@ -348,7 +348,7 @@ var graphics;
     // ------------------------------- graphics support functions --------------------------
     
     /**
-      * Draw one frame of the animation.  Probably doesn't need to be changed,
+      * Draw one frame of the animation. Probably doesn't need to be changed,
       * except maybe to change the setting of preserveAspect in applyLimits().
       */
     function draw() {
@@ -364,8 +364,8 @@ var graphics;
     
     /**
      * Applies a coordinate transformation to the graphics context, to map
-     * xleft,xright,ytop,ybottom to the edges of the canvas.  This is called
-     * by draw().  This does not need to be changed.
+     * xleft,xright,ytop,ybottom to the edges of the canvas. This is called
+     * by draw(). This does not need to be changed.
      */
     function applyLimits(g, xleft, xright, ytop, ybottom, preserveAspect) {
        var width = canvas.width;   // The width of this drawing area, in pixels.
@@ -462,10 +462,10 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>This demo shows a simple animated 2D scene. The scene is constructed
-using hierarchical modeling.  That is objects, such as the cart,
+using hierarchical modeling. That is objects, such as the cart,
 can be made up of simpler objects, such as wheels, which can in
 turn be made up of even simpler objects, such as lines and disks,
-and so on.  (The source code for this demo uses an object-oriented
+and so on. (The source code for this demo uses an object-oriented
 scene graph API.)</p>
 <p>The only interactivity is the checkbox, which turns the
 animation off and on.</p>

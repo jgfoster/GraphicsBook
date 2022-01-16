@@ -1,11 +1,11 @@
 /**
  * An OpenGL application that an 11-by-11-by-11 cube of
- * spheres in different colors.  Five rendering methods are 
- * available, selected using a pop-up menu.  The rendering time
- * to draw the scene is shown at the bottom of the window.  
+ * spheres in different colors. Five rendering methods are 
+ * available, selected using a pop-up menu. The rendering time
+ * to draw the scene is shown at the bottom of the window. 
  * Use the mouse to rotate the scene. This program requires 
  * OpenGL 1.5 or higher for support of vertex buffer objects.
- * This program depends on camera.c.  It must be linked to 
+ * This program depends on camera.c. It must be linked to 
  * that file and the the GL, glut, GLU, and math libraries.
  * For example, on Linux using gcc,
  *
@@ -23,7 +23,7 @@
 
 /*---------------------------------------------------------------------------------
    The following three function prototypes are for functions taht are used in
-   this program but that are not part of OpenGL 1.1.  (They were added in 
+   this program but that are not part of OpenGL 1.1. (They were added in 
    OpenGL 1.5.)  Declarations for this functions are not -- or might not -- be
    included in the header file GL/gl.h, so I am giving their declarations here.
 */
@@ -98,9 +98,9 @@ void uvSphere(double radius, int slices, int stacks) {
 
 /* Creates the vertex coordinate and normal vectors for a sphere.
  * The data is stored in the float arrays sphereVertexArray and
- * sphereNormalArray.  In addition, VBOs are created to hold
+ * sphereNormalArray. In addition, VBOs are created to hold
  * the data and the data is copied from the FloatBuffers into
- * the VBOs.  (Note: The VBOs are used for render renderMode 4; the
+ * the VBOs. (Note: The VBOs are used for render renderMode 4; the
  * FloatBuffers are used for render renderMode 3.)
  */
 void createSphereArraysAndVBOs() {
@@ -157,7 +157,7 @@ void createSphereArraysAndVBOs() {
 }
 
 /**
- * Draw one sphere.  The VertexPointer and NormalPointer must already
+ * Draw one sphere. The VertexPointer and NormalPointer must already
  * be set to point to the data for the sphere, and they must be enabled.
  */
 void drawSphereWithDrawArrays() {

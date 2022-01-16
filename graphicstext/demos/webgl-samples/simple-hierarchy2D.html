@@ -2,8 +2,8 @@
 
 <!--
    This page is an example of implementing hierarchical transformation
-   for 2D graphics in WebGL.  The transforms are implemented as objects
-   of type AffineTransform2D.  The class is defined in AffineTransform2D.js.
+   for 2D graphics in WebGL. The transforms are implemented as objects
+   of type AffineTransform2D. The class is defined in AffineTransform2D.js.
 -->
 
 <html>
@@ -61,7 +61,7 @@ function pushTransform() {
 
 /**
  *  Remove the top item from the transform stack, and set it to be the current
- *  transform.  If the stack is empty, nothing is done (and no error is generated).
+ *  transform. If the stack is empty, nothing is done (and no error is generated).
  */
 function popTransform() {
     if (transformStack.length > 0) {
@@ -74,7 +74,7 @@ function popTransform() {
 
 /**
  * Draws a set of 12 "spokes" -- lines of length 0.5 radiating out from the
- * origin.  (Actually drawing as 6 lines of length 1 centered at the origin.)
+ * origin. (Actually drawing as 6 lines of length 1 centered at the origin.)
  * Uses the current color and line width.
  */
 function spokes() {
@@ -133,8 +133,8 @@ function circle() {
 /* (note that calling one of these can change the current color and transform) */
 
 /**
- * Draws a set of nested squares.  The size of the outermost square is 1, and the
- * squares are centered at the origin.  Each square is 0.8 times the size of the
+ * Draws a set of nested squares. The size of the outermost square is 1, and the
+ * squares are centered at the origin. Each square is 0.8 times the size of the
  * previous square and is rotated by an an angle eqault to (framenumber/200) radians.
  * The rotations and size changes are cumulative.
  */
@@ -150,8 +150,8 @@ function nestedSquares() {
 }
 
 /**
- * Draws a wheel of radius 1 centered at the origin.  The wheel is made up of three
- * filled circles and a set of spokes.  The parameter gives the number of radians
+ * Draws a wheel of radius 1 centered at the origin. The wheel is made up of three
+ * filled circles and a set of spokes. The parameter gives the number of radians
  * to rotate the wheel.
  */
 function wheel(angle) {
@@ -171,9 +171,9 @@ function wheel(angle) {
 }
 
 /**
- *  Draws a bar with a rotating wheel on each end.  The bar is rotating, with
- *  angle of rotation given by (framenumber/127) radians.  The bar is 2 units
- *  long.  With the wheels, the object is 3 units long.
+ *  Draws a bar with a rotating wheel on each end. The bar is rotating, with
+ *  angle of rotation given by (framenumber/127) radians. The bar is 2 units
+ *  long. With the wheels, the object is 3 units long.
  */
 function axel() {
     transform.rotate( framenumber/127 );
@@ -259,9 +259,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -358,7 +358,7 @@ function doAnimationCheckbox() {
 /*--------------------------- initialization ----------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

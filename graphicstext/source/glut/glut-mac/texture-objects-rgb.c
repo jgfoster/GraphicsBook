@@ -4,16 +4,16 @@
 #include "textures-rgb/readrgb.h"
 #include "pixel-scale.h"
 
-/*  Draws a simple scene to show how to use texture objects.  Three texture images
- *  are loaded into three texture objects.  The scene contains three copies of the
+/*  Draws a simple scene to show how to use texture objects. Three texture images
+ *  are loaded into three texture objects. The scene contains three copies of the
  *  GLUT teapot, using the three different textures.
  *    
  *  This is a version of texture-objects.c that uses .rgb textures instead of 
- *  using the FreeImage library.  The textures are read using readrgb.c, from
- *  the folder textures-rgb.  The texture images in that folder are .rgb versions
- *  of the image files from the textures folder.  This program must be linked
+ *  using the FreeImage library. The textures are read using readrgb.c, from
+ *  the folder textures-rgb. The texture images in that folder are .rgb versions
+ *  of the image files from the textures folder. This program must be linked
  *  with the GL and glut libraries and must be compiled together with
- *  the file textures-rgb/readrgb.c.  For example, on MacOS using XCode developer tools:
+ *  the file textures-rgb/readrgb.c. For example, on MacOS using XCode developer tools:
  *
  *      clang -DGL_SILENCE_DEPRECATION -o teapots texture-objects-rgb.c textures-rgb/readrgb.c -framework OpenGL -framework GLUT
  */
@@ -50,7 +50,7 @@ void initGL() {
     glMatrixMode(GL_TEXTURE);  // Matrix mode for manipulating the texture transform matrix.
     glLoadIdentity();
     glScalef(1,-1,1);  // It turns out the texture coordinates for the GLUT teapot put an upside
-                       // down texture on the sides of the teapot.  To fix that, I apply a texture
+                       // down texture on the sides of the teapot. To fix that, I apply a texture
                        // transform that flips the texture vertically.
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -130,11 +130,11 @@ void specialKeyFunction(int key, int x, int y) {
 // --------------------- texture loading -----------------------------------------
 
 /*  This function loads three textures from texture files, which must be available
- *  to the program when it is run.  Paths to the files are stored in the global
- *  array textureFileNames.  The function generates three texture object identifiers
+ *  to the program when it is run. Paths to the files are stored in the global
+ *  array textureFileNames. The function generates three texture object identifiers
  *  and stores them in the global array  textID  so that they can be used when
- *  binding textures in display().  It then loads the three texture images into
- *  the texture objects.  It calles glTexParameteri for each texture to change
+ *  binding textures in display(). It then loads the three texture images into
+ *  the texture objects. It calles glTexParameteri for each texture to change
  *  the minification filter to GL_LINEAR (without this, the texture won't work
  *  because there are no mipmaps for the textures).
  */

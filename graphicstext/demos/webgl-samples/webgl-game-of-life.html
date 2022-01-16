@@ -3,25 +3,25 @@
 <!--
    This page implements John H. Conway's "Game of Life" using WebGL.
    There is a 1024-by-1024 grid of "cells", represented by pixels in
-   a canvas.  Each cell can be "alive" or "dead".  Dead cells are black;
-   living cells are white.  The rules of life tell how to compute a
+   a canvas. Each cell can be "alive" or "dead". Dead cells are black;
+   living cells are white. The rules of life tell how to compute a
    new "generation", or configuration of all the cells, from the
    current generation:  To determine whether a cell is alive in the
    next generation, count the number of neighbors (in the eight cells
-   surrounding this cell) that are alive.  If the cell is alive, then
+   surrounding this cell) that are alive. If the cell is alive, then
    it will stay alive in the next generation if the number of alive
-   neighbors is 2 or 3; otherwise it dies.  If the cell is dead, then
+   neighbors is 2 or 3; otherwise it dies. If the cell is dead, then
    it will come to life in the next generation if the number of alive
    neighbors is exactly 3; otherwise it stays dead.
        This program lets the user select from several possible initial
-   initial configurations of the board.  It can the compute and display
-   the next generation of the board.  The user can run an animation in
+   initial configurations of the board. It can the compute and display
+   the next generation of the board. The user can run an animation in
    which one generation after another is displayed, and the user can
    control the speed at which new generations are computed.
        This page is meant as an example of using WebGL to perform a
     task that requires significant computation, not just graphics.
         Note that one of the example initial configurations requires
-    the file "textures/puffer.png".  If it can be loaded, then the
+    the file "textures/puffer.png". If it can be loaded, then the
     "Puffer" example will appear in the popup menu of initial
     configurations.
 -->
@@ -51,9 +51,9 @@ canvas {
 </style>
     
 <!-----------------------------------------------------------------------------------
-   This page uses two WebGL shader programs.  One is used for drawing the initial
+   This page uses two WebGL shader programs. One is used for drawing the initial
    convigeration, and the other is used for drawing the next generation based on
-   the current generation.  (The image for the current generation is copied to
+   the current generation. (The image for the current generation is copied to
    a texture for use in computing the next generation.)
 
    The vertex shader for both programs come from the script with id=vshader.
@@ -61,17 +61,17 @@ canvas {
    from the range 0 to 1 to the clip coordinate range -1 to 1.
    
    The fragment shader for drawing the initial board come from the script
-   with id="fshader-create".  The output color can be white, or it can be
+   with id="fshader-create". The output color can be white, or it can be
    computed using Perlin noise, or it can be taken from a texture, depending
-   on the value of the uniform int named fill.  In any case, the output color
-   will be either black or white.  (Perlin noise is to produce random-looking
+   on the value of the uniform int named fill. In any case, the output color
+   will be either black or white. (Perlin noise is to produce random-looking
    patterns.)
    
    The fragment shader for computing the next generation comes from the
-   script with id="fshader-nextgen.  It computes the next generation value
+   script with id="fshader-nextgen. It computes the next generation value
    for one cell, taking data for the current generatin from a texture.
    It uses 9 texture lookups to find the state of the cell and of its eight
-   neighbors.  Since the texture uses the REPEAT wrap mode, cells along an
+   neighbors. Since the texture uses the REPEAT wrap mode, cells along an
    edge of the board will use values from the opposite edge.
 -->
 
@@ -196,7 +196,7 @@ canvas {
         else
            alive = 0;
            
-        // Count the living neighbors.  To check for living, just test
+        // Count the living neighbors. To check for living, just test
         // the red component of the color, which will be 1.0 for a
         // living cell and 0.0. for a dead cell.
            
@@ -268,7 +268,7 @@ var pufferTexture;  // A texture to hold the "Puffer" initial configuration
 
 /**
  *  Creates and configures a texture object for the texture that will hold the
- *  current board while the next generation is being computed.  Then creates
+ *  current board while the next generation is being computed. Then creates
  *  the shader program that will do the computation.
  */
 function createNextGenShaderAndTexture() {
@@ -307,11 +307,11 @@ function computeOneGeneration() {
 
 
 
-/* Creates an initial configuration for the game of Life.  Several configurations are
- * possible, depending on the setup of a pop-up menu.  Two configurations use random
- * fill, while three draw white line segments.  One configureation is a well-known
+/* Creates an initial configuration for the game of Life. Several configurations are
+ * possible, depending on the setup of a pop-up menu. Two configurations use random
+ * fill, while three draw white line segments. One configureation is a well-known
  * example: the "Puffer" that moves right-to-left generating a sequence of "glider guns";
- * each glider gun emits a sequence of "gliders".  (The puffer requires loading a
+ * each glider gun emits a sequence of "gliders". (The puffer requires loading a
  * texture and is not available if the attempt to load the texture fails.)
  */
 function createInitialConfiguration() {
@@ -466,10 +466,10 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
 }
 
 
-/** Load the puffer example as an image texture.  The image is purely black and
+/** Load the puffer example as an image texture. The image is purely black and
  *  white, to match the convention for alive/dead cells in this program.
  *  A texture with the same size as the canvas is created, and the loaded
- *  image, which is much smaller, is loaded into it as a subimage.  That
+ *  image, which is much smaller, is loaded into it as a subimage. That
  *  texture is used to transfer the data for the example onto the board,
  *  by drawing a textured square that covers the canvas.
  */
@@ -504,8 +504,8 @@ function loadPufferExample(texture, textureUnit) {
 /**************** Animation support *********************/
 
 // (Note that only a certain number of frames can actually be displayed per second,
-// possibly about 60 depending on the display refresh rate.  So we might have to
-// compute several generations in one frame to keep up with the frame rate.  On the
+// possibly about 60 depending on the display refresh rate. So we might have to
+// compute several generations in one frame to keep up with the frame rate. On the
 // other hand, for targeted frame rates less than the display rate, there can be
 // many frames in which nothing is done.
 
@@ -517,7 +517,7 @@ var targetGPS = 60;     // How many frames per second do we want? (from popup me
 function doFrame(time) {
     if (animating) { // continue the animation
         if (startTime == null) {
-                 // Animation is just starting.  Store the stating time and generation
+                 // Animation is just starting. Store the stating time and generation
                  // number, and do one generation.
             startTime = time;
             startGeneration = generation;
@@ -526,10 +526,10 @@ function doFrame(time) {
             document.getElementById("gen").innerHTML = "" + generation;
         }
         else {
-                 // Animation is continuing.  Determine how many generations need
+                 // Animation is continuing. Determine how many generations need
                  // to be computed to keep up with targeted frames-per-second rate.
                  // Do that many generations -- possibly zero but not more than
-                 // 10.  Compute and display the actual frames-per-second rate since
+                 // 10. Compute and display the actual frames-per-second rate since
                  // the start of this animation sequence.
             var elapsedTime = (time - startTime)/1000;
             var elapsedGens = generation - startGeneration;
@@ -547,7 +547,7 @@ function doFrame(time) {
         }
         requestAnimationFrame(doFrame);
     }
-    else { // Animation has ended.  Actual rate is only shown during the animation
+    else { // Animation has ended. Actual rate is only shown during the animation
         document.getElementById("actualrate").innerHTML = "";
     }
 }

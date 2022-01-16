@@ -8,17 +8,17 @@
 <script>
 
 /* This program is a variation on vertex-groups.html that uses
- * an indexed-face-set representation for the pyramid.  Because
+ * an indexed-face-set representation for the pyramid. Because
  * the IFS representation that is used here cannot support the
  * correct normal vectors for flat faces, MeshBasicMaterial is
  * used in place of the MeshLambertMaterial that was used in
  * vertex-groups.html. */
 
-/* Shows a pyramid and a cube.  The pyramid is constructed
- * as an indexed face set.  Both objects can be displayed with
+/* Shows a pyramid and a cube. The pyramid is constructed
+ * as an indexed face set. Both objects can be displayed with
  * all faces colored white or multicolored, with a different
- * material for each face.  Display of edges can be turned
- * on and off.  The objects can be rotated using the arrow,
+ * material for each face. Display of edges can be turned
+ * on and off. The objects can be rotated using the arrow,
  * Home, PageUp, and PageDown keys.
  */
 
@@ -55,7 +55,7 @@ const pyramidMaterialArray= [ // Array of materials, for use as pyramids's mater
 
 
 
-/*  Create the scene graph.  This function is called once, as soon as the page loads.
+/*  Create the scene graph. This function is called once, as soon as the page loads.
  *  The renderer has already been created before this function is called.
  *  (This scene uses only MeshBasicMaterials, so no lights are needed.)
  */
@@ -63,7 +63,7 @@ function createWorld() {
    renderer.setClearColor( 0x555555 );  // Set background color.
    scene = new THREE.Scene();
     
-   // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+   // create a camera, sitting on the positive z-axis. The camera is not part of the scene.
    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
    camera.position.z = 10;
         
@@ -85,7 +85,7 @@ function createWorld() {
             0, 1, 0     // vertex number 4
         ]);
    let pyramidFaceIndexArray = [
-               // Data for the pyramidGeom index property.  Each group
+               // Data for the pyramidGeom index property. Each group
                // of 3 numbers specifies the vertex numbers for one face.
             3, 2, 1,  // one half of the bottom face
             3, 1, 0,  // second half of the bottom face
@@ -101,7 +101,7 @@ function createWorld() {
 
       
     /* To apply an array of materials to the pyramid, the vertices have
-     * to be put into groups.  The groups are numbered 0,1,2,3,4, corresponding
+     * to be put into groups. The groups are numbered 0,1,2,3,4, corresponding
      * to the array index of the material that is to be applied to that group.
      * The first parameter to addGroup() is the vertex number for the first
      * vertex in the group. The second is the number of vertices in
@@ -176,7 +176,7 @@ function doChangeMaterial() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press.  Here, it is used to rotate the models.
+/*  Responds to user's key press. Here, it is used to rotate the models.
  */
 function doKey(event) {
     let code = event.keyCode;

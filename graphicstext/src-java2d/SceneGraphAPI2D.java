@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 /**
  * A panel that displays a two-dimensional animation that is constructed
- * using hierarchical modeling.  A cart rolls down a road while a sun
- * shines and three windmills turn in the background.  This class also
+ * using hierarchical modeling. A cart rolls down a road while a sun
+ * shines and three windmills turn in the background. This class also
  * contains a main() routine that simply opens a window that displays
  * the animation.
  */
@@ -150,7 +150,7 @@ public class SceneGraphAPI2D extends JPanel {
    private CompoundObject world;     // A SceneGraphNode representing the entire scene.
    
    private TransformedObject cart;   // Four variables for objects in the scene that
-   private TransformedObject wheel;  //   are animated.  These are instance variables
+   private TransformedObject wheel;  //   are animated. These are instance variables
    private TransformedObject sun;    //   to allow their transformations to be set
    private TransformedObject rotor;  //   in each frame.
    
@@ -185,7 +185,7 @@ public class SceneGraphAPI2D extends JPanel {
    
    
    /**
-    * Draw the current frame of the animation.  This method sets up the graphics
+    * Draw the current frame of the animation. This method sets up the graphics
     * environment, then calls the draw() in the object that represents the scene.
     */
    protected void paintComponent(Graphics g) {
@@ -198,8 +198,8 @@ public class SceneGraphAPI2D extends JPanel {
    }
    
    /**
-    *  Builds the data structure that represents the entire picture.  This data structure
-    *  is referred to by the global variable, world.  The global variables sun, wheel,
+    *  Builds the data structure that represents the entire picture. This data structure
+    *  is referred to by the global variable, world. The global variables sun, wheel,
     *  cart, and windmill are also set in this method.
     */
    private void createWorld() {
@@ -258,7 +258,7 @@ public class SceneGraphAPI2D extends JPanel {
    
    
    /**
-    * This method is called just before each frame is drawn.  It updates the modeling
+    * This method is called just before each frame is drawn. It updates the modeling
     * transformations of the objects in the scene that are animated.
     */
    public void updateFrame() {
@@ -271,10 +271,10 @@ public class SceneGraphAPI2D extends JPanel {
 
     
    /**
-    * Applies a coordinate transform to a Graphics2D graphics context.  The upper left corner of 
-    * the viewport where the graphics context draws is assumed to be (0,0).  The coordinate
-    * transform will make a requested rectangle visible in the drawing area.  The requested
-    * limits might be adjusted to preserve the aspect ratio.  (This method sets the global variable 
+    * Applies a coordinate transform to a Graphics2D graphics context. The upper left corner of 
+    * the viewport where the graphics context draws is assumed to be (0,0). The coordinate
+    * transform will make a requested rectangle visible in the drawing area. The requested
+    * limits might be adjusted to preserve the aspect ratio. (This method sets the global variable 
     * pixelSize to be equal to the size of one pixel in the transformed coordinate system.)
     * @param g2 The drawing context whose transform will be set.
     * @param xleft requested x-value at left of drawing area.
@@ -285,7 +285,7 @@ public class SceneGraphAPI2D extends JPanel {
     * @param preserveAspect if preserveAspect is false, then the requested rectangle will exactly fill
     * the viewport; if it is true, then the limits will be expanded in one direction, horizontally or
     * vertically, to make the aspect ratio of the displayed rectangle match the aspect ratio of the
-    * viewport.  Note that when preserveAspect is false, the units of measure in the horizontal and
+    * viewport. Note that when preserveAspect is false, the units of measure in the horizontal and
     * vertical directions will be different.
     */
    private void applyLimits(Graphics2D g2, double xleft, double xright, double ytop, double ybottom, boolean preserveAspect) {
