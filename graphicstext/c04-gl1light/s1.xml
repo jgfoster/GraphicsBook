@@ -192,7 +192,7 @@ to be turned on. </p>
 
 <p>I should emphasize again that this is all just an approximation, and in this
 case not one that has a basis in the physics of the real world. Real light sources
-do not have separate ambient, diffuse, and specular colors, and some computer
+do not have separate ambient, diffuse, and specular colors, and many computer
 graphics systems model light sources using just one color.</p>
 
 </subsection>
@@ -256,6 +256,7 @@ normal vectors that were used for the two pictures:</np>
 
 <np>The thick blue lines represent the rectangles, as seen edge-on from above.
 The arrows represent the normal vectors. Each rectangle has two normals, one at each endpoint.
+Each vertex is part of two rectangles, and so two normal vectors are specified at each vertex.
 </np>
 
 <p>In the bottom half of the illustration, two rectangles that meet at a point have different
@@ -271,7 +272,8 @@ they also share the same normal at that vertex. Visually, this eliminates the ab
 change in shading, resulting in something that looks more like a smoothly curving surface.</p>
 
 <demo src="c4/smooth-vs-flat.html" width="630" height="380"><p>The two ways of assigning normal
-vectors are called "flat shading" and "smooth shading". Flat shading makes a surface look
+vectors are called <newword>flat shading</newword> and <newword>smooth shading</newword>.
+Flat shading makes a surface look
 like it is made of flat sides or facets. Smooth shading makes it look more like a smooth
 surface. <web>This demo will help you to understand these concepts.</web><tex>The
 on-line demo <demoref href="c4/smooth-vs-flat.html"/> can help you to understand the difference.</tex>
@@ -415,7 +417,7 @@ the specular contribution to the color is given by
 <i>ls<sub>r</sub>*ms<sub>r</sub>*max(0,V&middot;R)<sup>mh</sup></i>.
 Taking the maximum of 0 and <i>V&middot;R</i> ensures that the specular contribution is
 zero if the angle between <i>V</i> and <i>R</i> is greater than 90 degrees. Assuming that
-is not the case, <i>max(0,V&middot;R)</i> is equal to the <i>V&middot;R</i>.
+is not the case, <i>max(0,V&middot;R)</i> is equal to <i>V&middot;R</i>.
 Note that this dot product is raised to the exponent <i>mh</i>, which is
 the material's shininess property.
 When <i>mh</i> is 0, <i>(V&middot;R)<sup>mh</sup></i> is 1, and there is no dependence on the angle; 
@@ -443,7 +445,7 @@ over-exposure.</p>
 The equation as presented doesn't take into account
 the fact that the effect of a point light can depend on the distance to the light,
 and it doesn't take into account spotlights, which emit just a cone of light. Both of these
-can configured in OpenGL, but I won't discuss them in this book. There are also many
+can configured in OpenGL&nbsp;1.1, but this book does not cover how to do that. There are also many
 aspects of light that are not captured by the simple model used in OpenGL. One of the
 most obvious omissions is shadows: Objects don't block light! Light shines right through them.
 We will encounter some extensions to the model in later chapters when we discuss other graphics

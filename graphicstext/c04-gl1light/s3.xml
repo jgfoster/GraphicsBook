@@ -17,7 +17,7 @@ surface. Here is a picture that shows six objects with various image textures:</
 <img src="TextureDemo.png" width="600" height="401" tex="TextureDemo.eps" texscale="1.2"/>
 
 <np>(Topographical Earth image, courtesy <a href="http://maps.jpl.nasa.gov/">NASA/JPL-Caltech</a>. 
-Brick and metal textures from <a href="http://www.grsites.com/archive/textures/">http://www.grsites.com/archive/textures/</a>. 
+The brick and metal are free textures (which were downloaded from a web site that no longer exists). 
 EarthAtNight image taken from the <a href="http://apod.nasa.gov/apod/ap001127.html">Astronomy Picture of the Day</a>
 web site; it is also a NASA/JPL image. Copies of the images can be found in the folder named
 <sourceref href="glut/textures">textures</sourceref> in either the <i>jogl</i>
@@ -31,7 +31,7 @@ images. This section covers only part of the OpenGL 1.1 texture API. We will see
 of textures in later chapters.</p>
 
 <p>Note that an image that is used as a texture should have a width and a height that are powers of two,
-such as 128, 256, or 512. This is a requirement in OpenGL 1.1. The requirement might be
+such as 128, 256, or 512. This is a requirement in OpenGL 1.1. The requirement is
 relaxed in some versions, but it's still a good idea to use 
 <newword term="power-of-two texture">power-of-two textures</newword>  Some of the things discussed
 in this section will not work with non-power-of-two textures, even on modern systems.</p>
@@ -53,7 +53,8 @@ case in OpenGL, texture coordinates are specified for each vertex of a primitive
 coordinates for points inside the primitive are calculated by interpolating the values
 from the vertices of the primitive.</p>
 
-<p>A texture image comes with its own 2D coordinate system. Traditionally, <i>s</i> used for the horizontal
+<p>A texture image comes with its own 2D coordinate system. Traditionally, <i>s</i> is 
+used for the horizontal
 coordinate on the image and <i>t</i> is used for the vertical coordinate. 
 The <i>s</i>&nbsp;coordinate is
 a real number that ranges from 0 on the left of the image to 1 on the
@@ -190,11 +191,16 @@ surface, the texture has to be magnified, and we need a
 as <newword term="texel">texels</newword>, short for "texture pixel" or "texture element", and I will use
 that term from now on.</p>
 
-<p>When deciding how to apply a texture to a point on a surface,
+<p>When deciding how to apply a texture to a pixel on a surface,
+OpenGL must deal with the fact that that pixel actually contains
+an infinite number of points, and each point has its own texture
+coordinates. So, how should a texture color for the pixel be computed?
+The easiest thing to do is to select one point from the pixel,
+say the point at the center of the pixel.
 OpenGL knows the texture coordinates for that point. Those texture
 coordinates correspond to one point in the texture, and that point
-lies in one of the texture's texels. The easiest thing to do
-is to apply the color of that texel to the point on the surface.
+lies in one of the texture's texels. The color of that texel
+could be used as the texture color for the pixel.
 This is called "nearest texel filtering."
 It is very fast, but it does not usually give good results.
 It doesn't take into account the difference in size between the
@@ -368,7 +374,8 @@ is a counterclockwise rotation, then the texture rotates clockwise on the surfac
 transforms here mostly to show how OpenGL can use transformations
 in another context. But it is sometimes useful to transform a texture to make it fit
 better on a surface. And for an unusual effect, you might even animate the texture transform
-to make the texture image move on the surface. <tex>To see the effect, try the on-line demo 
+to make the texture image move on the surface. <tex>To see the effect of
+texture transformations, try the on-line demo 
 <demoref href="c4/texture-transform.html"/>.</tex><web>Here is a demo that lets you
 experiment with texture transforms and see the effect. On the left, you see the region in 
 the <i>st</i>-plane for <i>s</i> and <i>t</i> between &minus;1 and 2. A box outlines the
@@ -399,10 +406,10 @@ memory into a 2D texture is <i>glTexImage2D</i>(), which takes the form:</p>
 should ordinarily be&nbsp;0. The value 0 is for loading the main texture; a larger value is used to load 
 an individual mipmap. The
 <i>internalFormat</i> tells OpenGL how you want the texture data to be stored in OpenGL texture
-memory. It is ordinarily <i>GL_RGB</i> to store an 8-bit red/green/blue component for
+memory. It can be <i>GL_RGB</i> to store an 8-bit red/green/blue component for
 each pixel. Another possibility is <i>GL_RGBA</i>, which adds an alpha component.
 The <i>width</i> and <i>height</i> give the size of the image; the values should
-usually be powers of two. The value of <i>border</i> should be 0; the only other
+be powers of two. The value of <i>border</i> should be 0; the only other
 possibility is 1, which indicates that a one-pixel border has been added around the
 image data for reasons that I will not discuss. The last three parameters describe the image data. The
 <i>format</i> tells how the original image data is represented in the computer's memory, such as
@@ -478,7 +485,7 @@ from the program, showing the texture on a cylinder:</tex></p></demo>
 </texdiv>
 
 <np>The texture can be animated!  For the animation, a new texture is drawn for each frame.
-All the work is done in the display method. In that method,
+All the work is done in the program's display function. In that function,
 the current frame of the windmill-and-cart scene is first drawn as a 2D scene with
 lighting disabled. This picture is not shown on the computer screen;
 the drawing is done off-screen and the image will be erased and replaced with the
@@ -526,7 +533,14 @@ For example, if you plan to use three texture objects, you can say</np>
 glGenTextures( 3, idList );</pre>
 
 <np>You can then use <i>idList</i>[0], <i>idList</i>[1], and <i>idList</i>[2] to refer
-to the textures.</np>
+to the textures. Because of the way pointers work in C, if you want to get a single
+texture ID, you can pass a pointer to an integer variable as the second parameter
+to <i>glGenTextures</i>(). For example,</np>
+
+<pre>int texID;
+glGenTextures( 1, &amp;texID );</pre>
+
+<np>The new texture ID will be stored in the variable <i>texID</i>.</np>
 
 <p>Every texture object has its own state, which includes  the
 values of texture parameters such as <i>GL_TEXTURE_MIN_FILTER</i> as well as the
@@ -579,11 +593,11 @@ actually have your program generate texture data on the fly. More likely,
 however, you want to load it from a file. This section looks at how that
 might be done in C. You will probably want to
 use a library of image-manipulation functions. Several free image processing libraries are available. We will
-discuss one of them, <i>FreeImage</i>.
+discuss one of them, <i>FreeImage</i>, which can work with many image file formats.
 FreeImage can be obtained from <a href="http://freeimage.sourceforge.net/">http://freeimage.sourceforge.net/</a>,
-but you may be able to use it in Linux simply by installing the package <i>libfreeimage-dev</i>.
+but I was able to use it in Linux simply by installing the package <i>libfreeimage-dev</i>.
 To make it available to your program, add <i>#include&nbsp;&leftquote;FreeImage.h"</i> to the
-top of a C program, and add the option <i>-lfreeimage</i> to the <i>gcc</i> command to make
+top of your C program, and add the option <i>-lfreeimage</i> to the <i>gcc</i> command to make
 the library available to the compiler. (See the sample program
 <sourceref href="glut/texture-demo.c"/> for an example that uses
 this library.)  Instead of discussing FreeImage in detail, we present a
@@ -680,6 +694,23 @@ else { // The image data was not loaded, so don't attempt to use the texture.
 <p>To be even more careful, you could check that the width and the height
 of the image are powers of two. If not, you can resize it using
 the function <i>FreeImage_Rescale</i>() from the FreeImage library.</p>
+
+<break/>
+
+<p>FreeImage is a large, complicated system that might not be easily made
+available on your computer. To make it easier for you to experiment with
+textures in C, I have also included a small C utility for reading textures
+from .rgb files. The rgb file format is fairly simple, but rgb files are
+generally much larger than the corresponding .png or .jpeg files. The
+format is not widely supported, but I have included .rgb versions of my
+sample texture images in the folder <sourceref href="glut/textures-rgb"/>.
+The small library for loading them into textures is <sourceref href="glut/textures-rgb/readrgb.c"/>
+and its header file <sourceref href="glut/textures-rgb/readrgb.h"/>.
+(The library is from 
+<a href="http://paulbourke.net/dataformats/sgirgb/">http://paulbourke.net/dataformats/sgirgb/</a>.)
+Sample programs that use the library are
+<sourceref href="glut/texture-objects-rgb.c"/> and <sourceref href="glut/texture-demo-rgb.c"/>.</p>
+
 
 
 </subsection>

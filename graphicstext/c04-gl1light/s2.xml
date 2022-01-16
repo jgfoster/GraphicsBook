@@ -4,7 +4,14 @@
 <section title="Light and Material in OpenGL 1.1" id="gl1light.2">
 
 <p1>In this section, we will see how to use light and material in OpenGL.
-The use of light and material must be enabled by calling
+The functions that are discussed in this section are specific to
+older versions of OpenGL, and will not carry over directly to
+other graphics <word term="API">APIs</word>. (But the general
+ideas that they implement, which were covered in the
+<localref href="gl1light.1">previous section</localref>
+are more generally applicable.)</p1>
+
+<p>In OpenGL 1.1, the use of light and material must be enabled by calling
 <i>glEnable</i>(<i>GL_LIGHTING</i>). When lighting is disabled,
 the color of a vertex is simply the current color as set by
 <i>glColor*</i>. When lighting is enabled, the color of a vertex
@@ -27,8 +34,8 @@ to be lit while another part <i>of the same primitive</i> is unlit.
 when lighting is enabled, it is applied to point and line primitives 
 as well as to polygons, even though it rarely makes sense to do so.)  Lighting
 can be enabled and disabled by calling <i>glEnable</i>
-and <i>glDisable</i> with parameter <i>GL_LIGHTING</i>. Light and
-material settings don't have to be changed when lighting is turned off, 
+and <i>glDisable</i> with parameter <i>GL_LIGHTING</i>. Other light and
+material settings don't have to be modified when lighting is turned off, 
 since they are simply ignored when lighting is disabled. </p>
 
 <p>To light a scene, in addition to enabling <i>GL_LIGHTING</i>,
@@ -78,7 +85,7 @@ front face, the back face, or both. The second parameter tells which material pr
 is being set. It can be <i>GL_AMBIENT</i>, <i>GL_DIFFUSE</i>, <i>GL_SPECULAR</i>,
 <i>GL_EMISSION</i>, or <i>GL_AMBIENT_AND_DIFFUSE</i>. Note that it is possible to
 set the ambient and diffuse colors to the same value with one call to <i>glMaterialfv</i>
-by using <i>GL_AMBIENT_AND_DIFFUSE</i> as the property name.
+by using <i>GL_AMBIENT_AND_DIFFUSE</i> as the property name; this is the most common case.
 The last parameter to <i>glMaterialfv</i> is an array containing four <ptype>float</ptype> numbers. The 
 numbers give the <word term="RGBA color">RGBA</word> color components as values in the range from 0.0 to
 1.0; values outside this range are actually allowed, and will be used in lighting computations,
@@ -351,7 +358,8 @@ will not be unit normals after a scaling transformation. However, if you have en
 <i>GL_NORMALIZE</i>, the transformed normals will automatically be converted back to unit
 normals. My recommendation is to <b>always</b> enable <i>GL_NORMALIZE</i> as part of
 your OpenGL initialization. The only exception would be if all of the normal vectors
-that you provide are of length one and you do not apply any scaling transformations.</p>
+that you provide are of length one and you do not apply any scaling transformations.
+(Translations and rotations are OK, because they do not modify lengths.)</p>
 
 
 </subsection>
@@ -418,7 +426,7 @@ can be considered to be a point at infinity in the direction of
 
 <p>On the other hand, if the fourth
 number, <i>w</i>, is non-zero, then the light is a point light, and it is located
-at the point (<i>x/w,y/w,z/w</i>). Usually, <i>w</i> is&nbsp;1. The
+at the point (<i>x/w,&nbsp;y/w,&nbsp;z/w</i>). Usually, <i>w</i> is&nbsp;1. The
 value (<i>x,y,z,</i>1) gives a point light at (<i>x,y,z</i>).
 Again, this is really homogeneous coordinates.</p>
 
@@ -582,7 +590,7 @@ the back faces on the inside surface:</np><texdiv>
 important. It has to do with the direction from a surface to the viewer in the
 lighting equation. By default, this direction is always taken to point directly
 out of the screen, which is true for an <word>orthographic projection</word> but
-is not for not accurate for a <word>perspective projection</word>. If you turn on the
+is not accurate for a <word>perspective projection</word>. If you turn on the
 local viewer option, the true direction to the viewer is used.
 In practice, the difference is usually not very noticeable.</p>
 
