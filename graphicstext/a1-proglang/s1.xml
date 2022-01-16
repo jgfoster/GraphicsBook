@@ -10,8 +10,7 @@ can make it seem a little verbose and overly strict, but they also make it possi
 for programming environments to provide excellent support for writing and debugging
 programs. If you are going to write Java code, you should consider using a 
 full-featured programming environment such as <newword>Eclipse</newword> 
-(<a href="http://eclipse.org/">http://eclipse.org/</a>)
-or <newword>Netbeans</newword> (<a href="https://netbeans.org/">https://netbeans.org/</a>). <localref href="gl1geom.6.2"/>
+(<a href="https://eclipse.org/">https://eclipse.org/</a>). <localref href="gl1geom.6.2"/>
 explains how to set up Eclipse for programming with <word>JOGL</word>,
 the Java API for <word>OpenGL</word>.</p1>
 
@@ -23,6 +22,11 @@ enough information to let you "fill in the blanks" in the starter programs and m
 sample programs that come with the book. If you want to learn Java in more detail,
 you can consider my free on-line Java textbook, <a href="http://math.hws.edu/javanotes">http://math.hws.edu/javanotes</a>.</p>
 
+<p>Java has had several 2D graphics <word term="API">APIs</word>: AWT, Swing, and JavaFX. Swing is
+built on top of the AWT, while JavaFX is a completely new API. JavaFX is not used in this
+textbook, but you will see references here both to Swing and to the AWT.
+</p>
+
 <subsection title="Basic Language Structure" id="proglang.1.1">
 
 <p>Java is object-oriented. A Java program is made up of classes, which can contain 
@@ -30,7 +34,7 @@ variable definitions and method definitions. ("Method" is the object-oriented te
 function or subroutine.)   A class is defined in its own file,
 whose name must match the name of the class:  If the class is named "MyClass", then
 the name of the file must be <i>MyClass.java</i>. Classes can also occur as nested classes
-within other classes; a nested classe,
+within other classes; a nested class,
 of course, doesn't get its own file. The basic syntax for defining a class is</p>
 
 <pre>public class MyClass {
@@ -47,7 +51,7 @@ of an existing class, you need to say that the new class "extends" an the existi
 <np>A class in Java can only extend one class. However, in addition to or instead of extending
 a class, a new class can also implement
 one or more "interfaces."  An interface in Java specifies some methods that must be
-defined in a class that implements the interface. With all of these options, a class
+defined in every class that implements the interface. With all of these options, a class
 definition might look something like this:</np>
 
 <pre>public class MyGUI extends JPanel implements KeyListener, MouseListener { ...</pre>
@@ -95,7 +99,7 @@ command line, working in that folder, with the command</p>
 <pre>java  MyClass</pre>
 
 <np>However, programs that use JOGL require some extra options in these commands. What you need
-to know is explained in <localref href="gl1geom.6.2"/>. (Eclipse and Netbeans have their own simple
+to know is explained in <localref href="gl1geom.6.2"/>. (The Eclipse IDE has its own simple
 commands for running a program.)</np>
 
 <p>There are many standard classes that are available for use in programs. A few of the
@@ -116,7 +120,9 @@ can be imported with</np>
 
 <np>It is possible to put your own classes into packages, but that adds some complications when
 compiling and using them. My sample programs in this book are not defined in named packages. Officially,
-they are said to be in the "default package."</np>
+they are said to be in the "default package."  Recent versions of Java also have "modules,"
+which are collections of packages. Again, using modules complicates things, and they are not
+used in this textbook.</np>
 
 <break/>
 
@@ -144,7 +150,7 @@ a variable is a class, then the possible values of the variable are objects belo
 to that class. An interface also defines a type, whose possible values are objects that
 implement the interface. An object, unlike a primitive value, contains variables and methods. For example,
 <classname>Point</classname> is a class. An object of type <classname>Point</classname> 
-contains <ptype>int</ptype> variables <i>x</i> and <i>y</i>. A <i>String</i> is an object,
+contains <ptype>int</ptype> variables <i>x</i> and <i>y</i>. A <classname>String</classname> is an object,
 and it contains several methods for working with the string, including one
 named <i>length</i>() that returns its length and another named
 <i>charAt</i>(<i>i</i>) that returns the <i>i</i>-th character in the string. Variables
@@ -205,7 +211,7 @@ functions include <i>Math.sin</i>(<i>x</i>), <i>Math.cos</i>(<i>x</i>), <i>Math.
 and <i>Math.pow</i>(<i>x,y</i>) for raising <i>x</i> to the power&nbsp;<i>y</i>. <i>Math.random</i>()
 returns a random number in the range 0.0 to 1.0, including 0.0 but not including 1.0.
 The method <i>System.out.println</i>(<i>str</i>) outputs a string to the command line. In graphical programs,
-is useful mainly for debugging. To output more than one item, use string
+<i>System.out.println</i> is useful mainly for debugging. To output more than one item, use string
 concatenation:</p>
 
 <pre>System.out.println("The values are x = " + x + " and y = " + y);</pre>
@@ -223,7 +229,7 @@ similar to C's <i>printf</i> function.</np>
 
 <p>In addition to the primitive types, Java has "object types" that represent values
 that are objects. A variable of object type
-doesn't hold an object; it can only holds a pointer to an object. (Sometimes it's
+doesn't hold an object; it can only hold a pointer to an object. (Sometimes it's
 said that Java doen't use pointers, but it's more correct to say that it forces you to
 use them.)  The name of a class or of an interface is an object type.
 Objects are created from classes using the <b>new</b> operator. For example,</p>
@@ -370,8 +376,9 @@ automatically through all of the objects in the list.)</np>
 and events. We will mention some of the most common. We will try to tell you
 enough to understand and work with the sample programs in this book. Writing programs from
 scratch will require more in-depth knowledge. All of the classes
-that we discuss are in the packages <i>java.awt</i>, <i>javax.swing</i>,
-and <i>java.awt.event</i>, and many of my programs begin with the following
+that we discuss are part of the Swing GUI API, and are contained
+in the packages <i>java.awt</i>, <i>javax.swing</i>,
+and <i>java.awt.event</i>. Many of my programs begin with the following
 <i>import</i> directives to make the classes that they contain available:</p>
 
 <pre>import java.awt.*;

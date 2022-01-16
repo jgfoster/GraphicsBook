@@ -100,7 +100,7 @@ It can also compute other properties, such as color.</gitem>
 <gitem term="fragment shader">A shader program that will be executed once for
 each pixel in a primitive. A fragment shader must compute a color for the pixel,
 or discard it. Fragment shaders are also called pixel shaders.</gitem>
-<gitem term="GLSL">OpenGL Shader Language, the programming languauge that is used to write
+<gitem term="GLSL">OpenGL Shader Language, the programming language that is used to write
 shader programs for use with OpenGL.</gitem>
 <gitem term="vertex">One of the points that define a geometric primitive, such as the
 two endpoints of a line segment or the three vertices of a triangle. (The plural is "vertices.")
@@ -297,7 +297,7 @@ off-screen canvas can be implemented as an object of type BufferedImage.</gitem>
 <gitem term="typed array">In JavaScript, an array type that is limited to holding numerical values
 of a single type. For example, the type Float32Array represents arrays that can hold 32-bit floating
 point values, and Uint8Array arrays can hold only 8-bit integer values. Such arrays are more efficient
-than general JavaScript arrays for numerical calculations. They were introduced into JavaScript
+than general JavaScript arrays for numerical calculations. The were introduced into JavaScript
 along with HTML canvas graphics and WebGL.</gitem>
 
 <gitem term="HTML">HyperText Markup Language.  A language that is used for specifying
@@ -633,8 +633,7 @@ programming languages). Netbeans is a free program that can be downloaded from
 https://netbeans.org.</gitem>
 <gitem term="constructor">In object-oriented programming, a subroutine that is used to create
 objects. A constructor for a class creates and initializes objects belonging to that
-class. (JavaScript, which does not have classes as such, does have constructors, so that
-a constructor in effect defines a class.)</gitem>
+class.</gitem>
 <gitem term="GUI">(Graphical User Interface.) A user interface for a program where the user
 interacts with the program using components such as windows, menus, buttons, and
 text-input boxes.</gitem>
@@ -887,7 +886,7 @@ As the number of samples increases, the average converges to a very high-quality
 idea of "material" in 3D graphics. A BSDF gives the probability that a light ray that arrives
 at point of space from one direction will leave that point heading in a another direction.
 The probability is a function of the two directions, the point, and the wavelength of the light.
-Once kind of scattering is reflection of light from a surface. For that case, the term
+One kind of scattering is reflection of light from a surface. For that case, the term
 BRDF (Bidirectional Reflectance Distribution Function) is used.</gitem>
 <gitem term="subsurface scattering">A lighting effect in which light enters a slightly translucent
 object, is reflected internally one or more times, and then exits the object at a different point.
@@ -895,12 +894,50 @@ Subsurface scattering contributes to the appearance of materials such as jade, m
 <gitem term="ambient occlusion">A rendering technique that takes into account the fact that ambient light
 will illuminate different surfaces to varying extents, depending on the degree to which ambient light is blocked,
 or "occluded," from reaching each surface by other geometry in the scene. 
-Ambient occlusion is an improvement on basic ambient lighting, but it is not an actual physical phenomenon.</gitem>
+Ambient occlusion is an improvement on basic ambient lighting, but, like ambient light itself,
+it is not an actual physical phenomenon.</gitem>
 
 
 <gitem term="PBR">Physically Based Rendering. A general term encompassing a variety of techniques
 for rendering materials that look more physically realistic than the materials traditionally used
-in OpenGL and similar graphics APIs. PBR has recently become common in real-time graphics such
+in OpenGL and similar graphics APIs. The idea is to implement the actual physics of light
+and material more directly. PBR has become common in real-time graphics such
 as video games.</gitem>
+
+<gitem term="ES6">A version of JavaScript implemented by almost all modern web browsers. More formally
+known as ECMAScript&nbsp;6 or ECMAScript&nbsp;2015. ES6 introduced a large number of new features.</gitem>
+<gitem term="Direct3D">Microsoft's proprietary API for 3D graphics on the Windows operating system.</gitem>
+<gitem term="Metal">Apple's proprietary API for 3D graphics and computation on MacOS computers and iOS devices.</gitem>
+<gitem term="Vulkan">An open-source cross-platform API for 3D graphics and computation, designed as a
+more modern and efficient replacement for OpenGL.</gitem>
+
+<gitem term="GLTF">GL Transfer Format. A file format for 3D models. A GLTF file can
+contain complete 3D scenes, including objects, materials, lights, and even animations.
+The GLTF specification comes from the Khronos Group, which is also responsible for
+OpenGL, WebGL, and Vulkan.</gitem>
+
+<gitem term="VAO">Vertex Array Object. In WebGL 2.0, a region of memory, typically on the graphics card,
+that holds a collection of attribute settings such as enabled state and values of vertex attribute pointers.
+All of the settings can then be selected simply by binding the VAO.</gitem>
+<gitem term="instanced drawing">In WebGL 2.0, the ability to draw multiple versions of a primitive
+with a single function call. Each copy can have its own values for certain attributes, such as
+color or transformation.</gitem>
+
+<gitem term="WebGPU">A JavaScript API under development that is designed to let web programs access
+GPU computational capabilities as well as graphics.</gitem>
+
+<gitem term="global illumination">The goal of 3D rendering algorithms that take into account all the interactions
+of light in a scene, including indirect illumination by light that bounces off other objects.</gitem>
+
+<gitem term="displacement mapping">A technique used to modify a polygonal mesh by
+moving, or displacing, the vertices of the mesh.</gitem>
+
+<gitem term="height map">An image in which the grayscale value represents a height,
+or elevation. Height maps can be used in displacement mapping to specify the
+amount of displacement.</gitem>
+
+<gitem term="HDR image">A high dynamic range image. An HDR image has more color information
+than the usual eight bits per color channel per pixel. This makes it more suitable to
+uses that require calculation with the color values.</gitem>
 
 </glossary>
