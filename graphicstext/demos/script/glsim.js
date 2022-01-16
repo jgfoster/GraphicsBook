@@ -11,8 +11,8 @@
    of OpenGL 1.1.
    
    In October 2021, several modifications were made to glsim.js to fix errors and
-   make it more compatible with OpenGL 1.1.  It was used in a number of OpenGL
-   assignments in a course based on the textbook.  Labs from that course can be
+   make it more compatible with OpenGL 1.1. It was used in a number of OpenGL
+   assignments in a course based on the textbook. Labs from that course can be
    found at http://math.hws.edu/eck/cs424/index_f21.html with labs 4, 5, 5, and 7
    using glsim.
 */

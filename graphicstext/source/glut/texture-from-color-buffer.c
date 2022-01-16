@@ -1,7 +1,7 @@
 
 /*
  * Draws a 2D scene, reads it from the color buffer into a texture,
- * then uses a texture on a 3D object.  The scene can be animated.
+ * then uses a texture on a 3D object. The scene can be animated.
  * This can be compiled, for example, on Linux with:
  *
  *    gcc -o colorbuffertex texture-from-color-buffer.c camera.c textured-shapes.c -lGL -lglut -lGLU -lm

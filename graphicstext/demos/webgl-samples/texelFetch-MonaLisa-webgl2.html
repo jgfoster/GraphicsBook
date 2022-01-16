@@ -3,15 +3,15 @@
 <!--
      This page is a rather silly WebGL 2.0 demo using the
      texelFetch() function, which is only available in
-     GLSL ES 3.00.  A single gl.POINTS primitive consisting
+     GLSL ES 3.00. A single gl.POINTS primitive consisting
      of 25,000 points is drawn, taking the points' colors
-     from a texture in the vertex shader.  The colors
+     from a texture in the vertex shader. The colors
      are grabbed using texelFetch(), based on the position
-     of the vertex in canvas coordinates.  Since the texture
+     of the vertex in canvas coordinates. Since the texture
      is the same size as the cavas, that's the same as
-     texel coordinates in the textrue.  When animation is turned
+     texel coordinates in the textrue. When animation is turned
      on, the vertex coordinates for the primitive are updated
-     in each frame, making the points move.  This program requires
+     in each frame, making the points move. This program requires
      that the texture be at relative URL "textures/mons-lisa.jpg".
      (The texture image comes from Wikimedia and is in the public
      domain.)
@@ -84,7 +84,7 @@ const  pointVelocities = new Float32Array( 2*POINT_COUNT );  // (Could be a regu
  */
 function createPointData() {
     for (let i = 0; i < POINT_COUNT; i++) {
-           // Each point has two coordinates and two velocities.  Velocity number k
+           // Each point has two coordinates and two velocities. Velocity number k
            // tells how fast coordinate number k changes in pixels per frame.
         pointCoords[2*i] = canvas.width * Math.random();  // x-coordinate of point
         pointCoords[2*i+1] = canvas.height * Math.random();  // y-coordinate of point
@@ -96,8 +96,8 @@ function createPointData() {
 }
 
 /**
- *  Called between frames to update point coordinates.  The parameter give the
- *  time in seconds since the previous frame.   The points are moved.  If a point
+ *  Called between frames to update point coordinates. The parameter give the
+ *  time in seconds since the previous frame.  The points are moved. If a point
  *  crosses an edge of the canvas, its velocity is reveresed, making it bounce
  *  off the edge.
  */
@@ -151,9 +151,9 @@ function draw() {
 
 /**
  * Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type String is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type String is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
@@ -181,10 +181,10 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 
 
 /**
- *  Loads the MonaLisa texture image asynchronously.  The parameter is the
- *  texture object into which the image is to be loaded.  When the image
+ *  Loads the MonaLisa texture image asynchronously. The parameter is the
+ *  texture object into which the image is to be loaded. When the image
  *  has finished loading, the value of textureLoaded will be set to true
- *  and draw() will be called.  Also, if an error occurs during loading,
+ *  and draw() will be called. Also, if an error occurs during loading,
  *  an error message is displayed on the page, and the animation is stopped.)
  */
 function loadMondaLisaTexture(textureObject ) {
@@ -209,7 +209,7 @@ function loadMondaLisaTexture(textureObject ) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,gl.LINEAR);
        // gl.generateMipmap(gl.TEXTURE_2D);  // Create mipmaps; you must either
                               // do this or change the minification filter.
-        draw();  // Draw the canvas, with the texture.  
+        draw();  // Draw the canvas, with the texture. 
     };
     img.onerror = function(e) { 
         // This function will be called if an error occurs while loading.
@@ -287,7 +287,7 @@ function doAnimationCheckbox() {
 /*----------------------------------------------------------------*/
 
 /**
- * Initialize the program.  This function is called after the page has been loaded.
+ * Initialize the program. This function is called after the page has been loaded.
  */
 function init() {
     try {

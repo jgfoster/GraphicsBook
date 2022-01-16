@@ -7,20 +7,20 @@
 #include "stdio.h"
 
 // This program can display any of 8 objects, textured using any of
-// 6 texture images.  The texture images MUST be availalbe in a directory
-// named "textures" in the same directory as the executable.  (Or, you can
+// 6 texture images. The texture images MUST be availalbe in a directory
+// named "textures" in the same directory as the executable. (Or, you can
 // edit the names in the textureFileNames array.)
 //   The user can change the object by pressing the left and right arrow
-// keys and can change the texture with the up and down arrow keys.  The
-// view can be rotated by dragging the mouse on the window.  The default
+// keys and can change the texture with the up and down arrow keys. The
+// view can be rotated by dragging the mouse on the window. The default
 // view can be restored using the HOME key.
 //
 //  This is a version of texture-demo.c that uses .rgb textures instead of 
-//  using the FreeImage library.  The textures are read using readrgb.c, from
-//  the folder textures-rgb.  The texture images in that folder are .rgb versions
-//  of the image files from the textures folder.  
+//  using the FreeImage library. The textures are read using readrgb.c, from
+//  the folder textures-rgb. The texture images in that folder are .rgb versions
+//  of the image files from the textures folder. 
 //    This program depends on camera.c, textured-shapes.c, and readrgb.c, as well 
-// as on the GL, GLU, GLUT, and math libraries.  Example of compiling
+// as on the GL, GLU, GLUT, and math libraries. Example of compiling
 // it on Linux:
 //      gcc -o texdemo texture-demo-rgb.c camera.c textured-shapes.c textures-rgb/readrgb.c -lGL -lglut -lm -lGLU
 

@@ -1,12 +1,12 @@
 /*
  *  As a first example of using OpenGL in C, this program draws the
- *  classic red/green/blue triangle.  It uses the default OpenGL
+ *  classic red/green/blue triangle. It uses the default OpenGL
  *  coordinate system, in which x, y, and z are limited to the range
- *  -1 to 1, and the positive z-axis points into the screen.  Note
+ *  -1 to 1, and the positive z-axis points into the screen. Note
  *  that this coordinate system is hardly ever used in practice.
  *
  *  When compiling this program, you must link it to the OpenGL library
- *  and to the glut library.  For example, the following command might
+ *  and to the glut library. For example, the following command might
  *  work on MacOS with XCode developer tools installed:
  *
  *     clang -DGL_SILENCE_DEPRECATION -o first-triangle first-triangle.c -framework OpenGL -framework GLUT
@@ -38,7 +38,7 @@ void display() {  // Display function will draw the image.
 
 void reshape(int width, int height) {
         // This will be called when the window opens and when the user
-        // changes its size.  (PIXEL_SCALE is defined in pixel-scale.h
+        // changes its size. (PIXEL_SCALE is defined in pixel-scale.h
         // to try to account for high-resolutions displays in MacOS.)
      glViewport( 0, 0, width*PIXEL_SCALE, height*PIXEL_SCALE );
 }

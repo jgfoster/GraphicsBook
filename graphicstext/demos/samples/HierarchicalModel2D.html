@@ -2,7 +2,7 @@
 <!--
    This web page uses canvas graphics to show an animated scene.
    The scene uses hierarchical graphics, with a data structure
-   based on a scene graph API.  (This page requires modern JavaScript.
+   based on a scene graph API. (This page requires modern JavaScript.
    For a version of the scene graph API that is written without using
    the class keyword, see the demo cart-and-windmills.html from
    Chapter 2.)
@@ -49,7 +49,7 @@ let graphics;
         }
         draw(g) {
                 // This method should be CALLED to draw the object
-                // represented by this SceneGraphNode.  It should NOT
+                // represented by this SceneGraphNode. It should NOT
                 // ordinarily be overridden in subclasses.
             graphics.save();
             if (this.fillColor) {
@@ -85,7 +85,7 @@ let graphics;
     
     /**
      *  Defines a subclass, CompoundObject, of SceneGraphNode to represent
-     *  an object that is made up of sub-objects.  Initially, there are no
+     *  an object that is made up of sub-objects. Initially, there are no
      *  sub-objects.
      */
     class CompoundObject extends SceneGraphNode {
@@ -94,7 +94,7 @@ let graphics;
             this.subobjects = [];  // the list of sub-objects of this object
         }
         add(node) {
-                // Add node a subobject of this object.  Note that the
+                // Add node a subobject of this object. Note that the
                 // return value is a reference to this node, to allow chaining
                 // of method calls.
             this.subobjects.push(node);
@@ -111,8 +111,8 @@ let graphics;
     /**
      *  Define a subclass, TransformedObject, of SceneGraphNode that
      *  represents an object along with a modeling transformation to
-     *  be applied to that object.  The object must be specified in
-     *  the constructor.  The transformation is specified by calling
+     *  be applied to that object. The object must be specified in
+     *  the constructor. The transformation is specified by calling
      *  the setScale(), setRotate() and setTranslate() methods. Note that
      *  each of these methods returns a reference to the TransformedObject
      *  as its return value, to allow for chaining of method calls.
@@ -130,13 +130,13 @@ let graphics;
             this.translateY = 0;
         }
         setRotation(angle) {
-                // Set the angle of rotation, measured in DEGREES.  The rotation
+                // Set the angle of rotation, measured in DEGREES. The rotation
                 // is always about the origin.
              this.rotationInDegrees = angle;
              return this;
         }
         setScale(sx, sy = sx) {
-               // Sets scaling factors.  If called with one parameter, does
+               // Sets scaling factors. If called with one parameter, does
                // uniform scaling.
             this.scaleX = sx;
             this.scaleY = sy;
@@ -194,7 +194,7 @@ let graphics;
     
     /**
      * Directly create a line object as a SceneGraphNode with a
-     * custom doDraw() method.  line is of length 1 and
+     * custom doDraw() method. line is of length 1 and
      * extends along the x-axis from (0,0) to (1,0).
      */
     const line = new SceneGraphNode();
@@ -207,7 +207,7 @@ let graphics;
     
     /**
      * Directly create a filled rectangle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledRect is a square with side 1, centered
+     * custom doDraw() method. filledRect is a square with side 1, centered
      * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5).
      */
     const filledRect = new SceneGraphNode();
@@ -217,8 +217,8 @@ let graphics;
     
     /**
      * Directly create a rectangle object as a SceneGraphNode with a
-     * custom doDraw() method.  rect is a square with side 1, centered
-     * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5).  Only the
+     * custom doDraw() method. rect is a square with side 1, centered
+     * at (0,0), with corners at (-0.5,-0.5) and (0.5,0.5). Only the
      * outline of the square is drawn.
      */
     const rect = new SceneGraphNode();
@@ -228,7 +228,7 @@ let graphics;
     
     /**
      * Directly create a filled circle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledCircle is a circle with radius 0.5
+     * custom doDraw() method. filledCircle is a circle with radius 0.5
      * (diameter 1), centered at (0,0).
      */
     const filledCircle = new SceneGraphNode();
@@ -240,8 +240,8 @@ let graphics;
     
     /**
      * Directly create a circle object as a SceneGraphNode with a
-     * custom doDraw() method.  filledCircle is a circle with radius 0.5
-     * (diameter 1), centered at (0,0).  Only the outline of the circle
+     * custom doDraw() method. filledCircle is a circle with radius 0.5
+     * (diameter 1), centered at (0,0). Only the outline of the circle
      * is drawn.
      */
     const circle = new SceneGraphNode();
@@ -284,7 +284,7 @@ let graphics;
         g.fill();
     };
         
-    let world;  // A SceneGraphNode representing the entire picture.  This should
+    let world;  // A SceneGraphNode representing the entire picture. This should
                 // be created in the createWorld() method.
     
     let pixelSize;  // The size of one pixel, in the transformed coordinates.
@@ -307,8 +307,8 @@ let graphics;
 
     
     /**
-     *  Create the scene graph data structure.  The global variable world must
-     *  refer to the root node of the scene graph.  This function is called in
+     *  Create the scene graph data structure. The global variable world must
+     *  refer to the root node of the scene graph. This function is called in
      *  the init() function.
      */
     function createWorld() {
@@ -378,7 +378,7 @@ let graphics;
     // ------------------------------- graphics support functions --------------------------
     
     /**
-      * Draw one frame of the animation.  Probably doesn't need to be changed,
+      * Draw one frame of the animation. Probably doesn't need to be changed,
       * except maybe to change the setting of preserveAspect in applyLimits().
       */
     function draw() {
@@ -394,8 +394,8 @@ let graphics;
     
     /**
      * Applies a coordinate transformation to the graphics context, to map
-     * xleft,xright,ytop,ybottom to the edges of the canvas.  This is called
-     * by draw().  This does not need to be changed.
+     * xleft,xright,ytop,ybottom to the edges of the canvas. This is called
+     * by draw(). This does not need to be changed.
      */
     function applyLimits(g, xleft, xright, ytop, ybottom, preserveAspect) {
        let width = canvas.width;   // The width of this drawing area, in pixels.

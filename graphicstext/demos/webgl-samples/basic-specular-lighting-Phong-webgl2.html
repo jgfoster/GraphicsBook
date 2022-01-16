@@ -16,16 +16,16 @@
     This program has the same functionality as
     basic-specular-lighting-Phong.html, but it has been
     modified to use WebGL 2.0 and GLSL ES 3.00.
-    Changes in the shader program are minimal.  The main
+    Changes in the shader program are minimal. The main
     change on the JavaScript side is to use Vertex Array
-    Objects to organize the data better.  The main
+    Objects to organize the data better. The main
     changes on the JavaScript side are in the
     installModel() function.
 
     Shows objects using simple lighting, with diffuse and
-    specular color and a single white light.  The lighting
+    specular color and a single white light. The lighting
     uses Phong shading; that is, the lighting calculations
-    are done in the fragment shader.    
+    are done in the fragment shader.   
 -->
 
 
@@ -148,7 +148,7 @@ function draw() {
     gl.uniformMatrix4fv(u_modelview, false, modelview );
     gl.uniformMatrix4fv(u_projection, false, projection );
     
-    /* Draw the model.  The data for the model was set up in installModel(),
+    /* Draw the model. The data for the model was set up in installModel(),
        and the VAO for the model is already bound. */
    
     gl.drawElements(gl.TRIANGLES, objects[currentModelNumber].count, gl.UNSIGNED_SHORT, 0);
@@ -161,7 +161,7 @@ function draw() {
  * data is created, a Vertex Array Object and bufferes are created for the
  * model, and the data for the model are copied into the appropriate buffers.
  * After this method has executed, the VAO for the selected model is bound.
- * The VAO and the number of vertices are saved for later use.  (The vertex
+ * The VAO and the number of vertices are saved for later use. (The vertex
  * count is need to draw the model in the draw() method.)
  */
 function installModel(modelNumber) {
@@ -200,7 +200,7 @@ function installModel(modelNumber) {
 }
 
 
-/* Initialize the WebGL context.  Called from init() */
+/* Initialize the WebGL context. Called from init() */
 function initGL() {
     let prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
@@ -222,9 +222,9 @@ function initGL() {
  
  
 /* Creates a program for use in the WebGL context gl, and returns the
- * identifier for that program.  If an error occurs while compiling or
- * linking the program, an exception of type Error is thrown.  The error
- * string contains the compilation or linking error.  If no error occurs,
+ * identifier for that program. If an error occurs while compiling or
+ * linking the program, an exception of type Error is thrown. The error
+ * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are strings that contain the
  * source code for the vertex shader and for the fragment shader.
