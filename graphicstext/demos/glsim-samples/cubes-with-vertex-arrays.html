@@ -17,23 +17,23 @@
 
 <script>
 
-    var rotateX = 15;   // rotations of cube about the axes
-    var rotateY = -15;
-    var rotateZ = 0;
+    let rotateX = 15;   // rotations of cube about the axes
+    let rotateY = -15;
+    let rotateZ = 0;
     
     /* Arrays for use with glDrawElements. This is the data for a cube with 6 different
      * colors at the six vertices. (Looks kind of strange without lighting.)
      */
     
-    var vertexCoords = [  // Coordinates for the vertices of a cube.
+    const vertexCoords = [  // Coordinates for the vertices of a cube.
                1,1,1,   1,1,-1,   1,-1,-1,   1,-1,1,
               -1,1,1,  -1,1,-1,  -1,-1,-1,  -1,-1,1  ];
               
-    var vertexColors = [  // An RGB color value for each vertex
+    const vertexColors = [  // An RGB color value for each vertex
                1,1,1,   1,0,0,   1,1,0,   0,1,0,
                0,0,1,   1,0,1,   0,0,0,   0,1,1  ];
               
-    var elementArray = [  // Vertex number for the six faces.
+    const elementArray = [  // Vertex number for the six faces.
               0,1,2,3, 0,3,7,4, 0,4,5,1,
               6,2,1,5, 6,5,4,7, 6,7,3,2  ];
 
@@ -41,7 +41,7 @@
      * (It looks pretty bad without lighting if edges aren't drawn.
      */
       
-    var edgeElementArray = [
+    const edgeElementArray = [
             0,1,  1,5,  5,4,  4,0,    // edges of the top face
             7,3,  3,2,  2,6,  6,7,    // edges of the bottom face
             1,2,  0,3,  4,7,  5,6  ]; // edges connecting top face to bottom face
@@ -55,7 +55,7 @@
      * the colors are associated with the vertices, not the faces.
      */
     
-    var cubeCoords = [
+    const cubeCoords = [
            1,1,1,    -1,1,1,   -1,-1,1,   1,-1,1,      // face #1
            1,1,1,     1,-1,1,   1,-1,-1,  1,1,-1,      // face #2
            1,1,1,     1,1,-1,  -1,1,-1,  -1,1,1,       // face #3
@@ -63,7 +63,7 @@
            -1,-1,-1, -1,-1,1,  -1,1,1,   -1,1,-1,      // face #5
            -1,-1,-1,  1,-1,-1,  1,-1,1,   -1,-1,1  ];  // face #6
     
-    var cubeFaceColors = [
+    const cubeFaceColors = [
             1,0,0,  1,0,0,  1,0,0,  1,0,0,      // face #1 is red
             0,1,0,  0,1,0,  0,1,0,  0,1,0,      // face #2 is green
             0,0,1,  0,0,1,  0,0,1,  0,0,1,      // face #3 is blue
@@ -131,7 +131,7 @@
     }
     
     function doKeyDown(evt) {
-        var key = evt.keyCode;
+        let key = evt.keyCode;
         if ( key == 37 ) // left
            rotateY -= 15;
         else if ( key == 39 ) // right

@@ -25,10 +25,11 @@
 
 <script>
 
+    "use strict";
 
     // -------------------------- rendering code ----------------------------------
 
-    var frameNumber = 0;     // For use only in an animation.
+    let frameNumber = 0;     // For use only in an animation.
 
     /**
      *  Called when the display needs be redrawn. Usually, it will completely
@@ -37,6 +38,7 @@
      */
     function display() {
 
+        glClearColor(0,0,0,1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // For 2D, usually leave out the depth buffer.
         
         glMatrixMode(GL_PROJECTION);   // Set up a simple orthographic projection, ignoring aspect ratio.
@@ -47,6 +49,7 @@
         glLoadIdentity();             // Start with no modeling transform. 
             
         // TODO: INSERT DRAWING CODE HERE!!
+       
     }
     
     // --------------- support for key events ----------------------------------------
@@ -60,7 +63,7 @@
      * 96 for 'a', 97 for 'b', and so on).
      */
     function doKeyDown(evt) {
-        var keyCode = evt.keyCode;  // code for the key that was pressed
+        let keyCode = evt.keyCode;  // code for the key that was pressed
 
         // TODO:  Add code to respond to the key press.
         
@@ -81,11 +84,11 @@
      */
     function installMouseHandler(canvasID) {
     
-        var canvas = document.getElementById(canvasID);
+        const canvas = document.getElementById(canvasID);
 
-        var dragging = false;  // set to true when a drag action is in progress.
-        var startX, startY;    // coordinates of mouse at start of drag.
-        var prevX, prevY;      // previous mouse position during a drag.
+        let dragging = false;  // set to true when a drag action is in progress.
+        let startX, startY;    // coordinates of mouse at start of drag.
+        let prevX, prevY;      // previous mouse position during a drag.
         
         function doMouseDown(evt) {
                 // This function is called when the user presses a button on the mouse.
@@ -96,10 +99,9 @@
             if (evt.button != 0) {
                 return;  // don't respond unless the button is the main (left) mouse button.
             }
-            var x,y;  // mouse position in canvas coordinates
-            var r = canvas.getBoundingClientRect();
-            x = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
-            y = Math.round(evt.clientY - r.top);   // round to integer values; some browsers would give non-integers.
+            let r = canvas.getBoundingClientRect();
+            let x = Math.round(evt.clientX - r.left);  // translate mouse position from screen coords to canvas coords.
+            let y = Math.round(evt.clientY - r.top);   // round to integer values; some browsers would give non-integers.
             dragging = true;  // (TODO: This might not be the case for all mousedowns in all programs.)
             if (dragging) {
                 startX = prevX = x;
@@ -114,10 +116,9 @@
             if (!dragging) {
                 return;  // (shouldn't be possible)
             }
-            var x,y;  // mouse position in canvas coordinates
-            var r = canvas.getBoundingClientRect();
-            x = Math.round(evt.clientX - r.left);  //mouse position, in canvas coords, with (0,0) at upper left.
-            y = Math.round(evt.clientY - r.top);
+            let r = canvas.getBoundingClientRect();
+            let x = Math.round(evt.clientX - r.left);  //mouse position, in canvas coords, with (0,0) at upper left.
+            let y = Math.round(evt.clientY - r.top);
  
             // TODO:  ADD CODE TO REPSOND TO THE MOUSE BEING DRAGGED.
              
@@ -148,7 +149,7 @@
      * variable will be incremented for each frame. Call pauseAnimation() to stop animating.
      */
     
-    var animating = false;      // indicates whether an animation is in progress;
+    let animating = false;      // indicates whether an animation is in progress;
                                 // do not change directly; call startAnimation() and pauseAnimation()
     
     function updateFrame() {
@@ -223,11 +224,12 @@
         //startAnimation();
     }
 
+    window.onload = init;
 </script>
 
 </head>
 
-<body onload="init()">
+<body>
 
 <h3>A Simulated OpenGL Program</h3>
 

@@ -40,7 +40,7 @@
 
 "use strict";
 
-var vertexShaderSource =
+const  vertexShaderSource =
        "attribute vec2 a_coords;\n" +
        "uniform float u_width;\n" +
        "uniform float u_height;\n" +
@@ -50,7 +50,7 @@ var vertexShaderSource =
        "   gl_Position = vec4(x, y, 0.0, 1.0);\n" +
        "}\n";
 
-var fragmentShaderSource =
+const  fragmentShaderSource =
        "precision mediump float;\n" +
        "uniform vec3 u_color;\n" +
        "uniform float u_alpha;\n" +
@@ -58,19 +58,19 @@ var fragmentShaderSource =
        "   gl_FragColor = vec4(u_color, u_alpha);\n" +
        "}\n";
 
-var canvas;  // The canvas where WebGL draws.
+let  canvas;  // The canvas where WebGL draws.
 
-var gl;  // The WebGL graphics context.
+let  gl;  // The WebGL graphics context.
 
-var uniformWidth;   // Location of uniform named "u_width"
-var uniformHeight;  // Location of uniform named "u_height"
-var uniformColor;   // Location of uniform named "u_color" (for RGB components)
-var uniformAlpha;   // Location of uniform named "u_alpha" (for alpha components)
+let  uniformWidth;   // Location of uniform named "u_width"
+let  uniformHeight;  // Location of uniform named "u_height"
+let  uniformColor;   // Location of uniform named "u_color" (for RGB components)
+let  uniformAlpha;   // Location of uniform named "u_alpha" (for alpha components)
 
-var attributeCoords;  // Location of the attribute named "a_coords".
-var bufferCoords;     // A vertex buffer object to hold the values for coords.
+let  attributeCoords;  // Location of the attribute named "a_coords".
+let  bufferCoords;     // A vertex buffer object to hold the values for coords.
 
-var colorList = [ // available colors for shapes
+const  colorList = [ // available colors for shapes
         [ 1, 0, 0 ],
         [ 0, 0.8, 0 ],
         [ 0, 0, 1 ],
@@ -95,15 +95,15 @@ function doMouseDown(event) {
     
     /* Get mouse position (x,y) in pixel coords on the canvas. */
     
-    var r = canvas.getBoundingClientRect();
-    var x = event.clientX - r.left;
-    var y =event.clientY - r.top;
+    let  r = canvas.getBoundingClientRect();
+    let  x = event.clientX - r.left;
+    let  y =event.clientY - r.top;
     
     /* Get the settings from the pop-up menu, and use them to set the color and alpha uniforms. */
     
-    var shape = document.getElementById("shapeChoice").value;
-    var colorNumber = Number(document.getElementById("colorChoice").value);
-    var alpha = Number(document.getElementById("opacityChoice").value);
+    let  shape = document.getElementById("shapeChoice").value;
+    let  colorNumber = Number(document.getElementById("colorChoice").value);
+    let  alpha = Number(document.getElementById("opacityChoice").value);
     
     gl.uniform3fv( uniformColor, colorList[colorNumber] );
     gl.uniform1f( uniformAlpha, alpha );
@@ -111,15 +111,15 @@ function doMouseDown(event) {
     /* Create the values for the a_coords attribute, depending on the shape. The shape
        will be drawn as a primitive of type gl.TRIANGLE_FAN. */
        
-    var coords;  // a Float32Array to hold the coordinates.
-    var k;  // index into the coords array, starting at index 0.
+    let  coords;  // a Float32Array to hold the coordinates.
+    let  k;  // index into the coords array, starting at index 0.
     
     switch (shape) {
     case "Circle":  // Approximated as a regular polygon with 32 sides
         coords = new Float32Array(64);
         k = 0;
-        for (var i = 0; i < 32; i++) {
-            var angle = i/32 * 2*Math.PI;
+        for (let  i = 0; i < 32; i++) {
+            let  angle = i/32 * 2*Math.PI;
             coords[k++] = x + 50*Math.cos(angle);  // x-coord of vertex
             coords[k++] = y + 50*Math.sin(angle);  // y-coord of vertex
         }
@@ -149,9 +149,9 @@ function doMouseDown(event) {
         k = 0;
         coords[k++] = x;
         coords[k++] = y;
-        for (var i = 0; i <= 10; i++) {
-            var angle = -Math.PI/2 + i/10 * 2*Math.PI;
-            var radius = (i % 2 == 0)? 50 : 21;
+        for (let  i = 0; i <= 10; i++) {
+            let  angle = -Math.PI/2 + i/10 * 2*Math.PI;
+            let  radius = (i % 2 === 0)? 50 : 21;
             coords[k++] = x + radius*Math.cos(angle);  // x-coord of vertex
             coords[k++] = y + radius*Math.sin(angle);  // y-coord of vertex
         }
@@ -177,24 +177,24 @@ function doMouseDown(event) {
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
-   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   let  vsh = gl.createShader( gl.VERTEX_SHADER );
    gl.shaderSource( vsh, vertexShaderSource );
    gl.compileShader( vsh );
    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+      throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
    }
-   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
    gl.shaderSource( fsh, fragmentShaderSource );
    gl.compileShader( fsh );
    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+      throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
    }
-   var prog = gl.createProgram();
+   let  prog = gl.createProgram();
    gl.attachShader( prog, vsh );
    gl.attachShader( prog, fsh );
    gl.linkProgram( prog );
    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+      throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
    }
    return prog;
 }
@@ -203,7 +203,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
  * Initialize the WebGL graphics context, and fill the canvas with white.
  */
 function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
+    let  prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     attributeCoords = gl.getAttribLocation(prog, "a_coords");
     bufferCoords = gl.createBuffer();
@@ -226,14 +226,13 @@ function initGL() {
 function init() {
     try {
         canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program,
+        let  options = {  // no need for alpha channel or depth buffer in this program,
                          // but we need to preserve the image in the drawingBuffer
             alpha: false,
             depth: false,
             preserveDrawingBuffer: true
         };
-        gl = canvas.getContext("webgl", options) || 
-                         canvas.getContext("experimental-webgl", options);
+        gl = canvas.getContext("webgl", options);
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -248,7 +247,7 @@ function init() {
     }
     catch (e) {
         document.getElementById("canvas-holder").innerHTML =
-            "<p>Sorry, could not initialize the WebGL graphics context:" + e + "</p>";
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e + "</p>";
         return;
     }
     document.getElementById("shapeChoice").value = "Star";
@@ -257,9 +256,13 @@ function init() {
     canvas.addEventListener("mousedown", doMouseDown, false);
 }
 
+
+window.onload = init;  // Arrange for init() to be called after page has loaded.
+
+
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <h2>WebGL Shape-Stamper</h2>
 

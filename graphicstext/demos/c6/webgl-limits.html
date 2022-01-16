@@ -115,7 +115,7 @@ function init() {
 
 <div id="content">
 
-<h3 id="headline">WebGL / GLSL Limits on this Device</h3>
+<h3 id="headline">WebGL 1.0 / GLSL Limits on this Device</h3>
 
 <div id="holder">
 <canvas id="webglcanvas"></canvas>
@@ -146,6 +146,10 @@ to the number of values of sampler variables in the shader.</p>
 where the limits applied to antialised points and lines. In
 WebGL, the limits have nothing to do with aliasing. They apply to
 all points and lines.)</p>
+<p>The demo uses a WebGL 1.0 drawing context.  It is possible that
+some values might differ for a WebGL 2.0 context on the same
+device.  (On my computer, that's true for <i>ALIASED_LINE_WIDTH_RANGE</i>.)
+</p>
 </div>
 
 

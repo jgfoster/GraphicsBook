@@ -1,6 +1,6 @@
 
 #include "GL/gl.h"
-#include "GL/freeglut.h"
+#include "GL/glut.h"
 #include "camera.h"
 #include "textured-shapes.h"
 #include "FreeImage.h"
@@ -17,7 +17,7 @@
 //    This program depends on camera.c and textured-shapes.c, as well as
 // the GL, GLU, GLUT, math, and FreeImage libraries. Example of compiling
 // it:
-//      gcc texture-demo.c camera.c textured-shapes.c -lGL -lglut -lfreeimage -lm -lGLU
+//      gcc -o texdemo texture-demo.c camera.c textured-shapes.c -lGL -lglut -lfreeimage -lm -lGLU
 
 const int           // code numbers for the 8 objects that can be displayed
      SPHERE = 0,

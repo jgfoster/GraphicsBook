@@ -23,9 +23,9 @@
 
 <script>
 
-    var rotateX = 15;   // rotations of cube about the axes
-    var rotateY = -15;
-    var rotateZ = 0;
+    let rotateX = 15;   // rotations of cube about the axes
+    let rotateY = -15;
+    let rotateZ = 0;
     
     // ------------------- functions for drawing the cube -------------------
     
@@ -99,7 +99,7 @@
     }
     
     function doKeyDown(evt) {
-        var key = evt.keyCode;
+        let key = evt.keyCode;
         if ( key == 37 ) // left
            rotateY -= 15;
         else if ( key == 39 ) // right

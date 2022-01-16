@@ -17,7 +17,7 @@
 
 "use strict";
 
-var vertexShaderSource =
+const vertexShaderSource =
        "attribute vec2 a_coords;\n" +
        "uniform mat3 u_transform;\n" +
        "void main() {\n" +
@@ -25,32 +25,32 @@ var vertexShaderSource =
        "   gl_Position = vec4(transformedCoords.xy, 0.0, 1.0);\n" +
        "}\n";
 
-var fragmentShaderSource =
+const fragmentShaderSource =
        "precision mediump float;\n" +
        "uniform vec3 u_color;\n" +
        "void main() {\n" +
        "   gl_FragColor = vec4(u_color, 1.0);\n" +
        "}\n";
 
-var gl;  // The WebGL graphics context.
+let  gl;  // The WebGL graphics context.
 
-var a_coords_loc;    // Location for "a_coords" attribute.
-var u_transform_loc; // Location for "u_transform" uniform.
-var u_color_loc;     // Location for "u_color" uniform.
+let  a_coords_loc;    // Location for "a_coords" attribute.
+let  u_transform_loc; // Location for "u_transform" uniform.
+let  u_color_loc;     // Location for "u_color" uniform.
 
-var squareCoordsVBO; // Buffers holding coordinates for basic objects.
-var diskCoordsVBO;
-var spokesCoordsVBO;
+let  squareCoordsVBO; // Buffers holding coordinates for basic objects.
+let  diskCoordsVBO;
+let  spokesCoordsVBO;
 
-var animating = false;  // Set to true when the animation is running.
-var framenumber = 0;    // Current frame number in the animation.
+let  animating = false;  // Set to true when the animation is running.
+let  framenumber = 0;    // Current frame number in the animation.
 
 
 /*----------------------- Current transform and transform stack --------------*/
 
-var transform = new AffineTransform2D();  // Current AffineTransform2D, initially the identity.
+let  transform = new AffineTransform2D();  // Current AffineTransform2D, initially the identity.
 
-var transformStack = [];  // An array to serve as the transform stack.
+const  transformStack = [];  // An array to serve as the transform stack.
 
 /**
  *  Push a copy of the current transform onto the transform stack.
@@ -141,7 +141,7 @@ function circle() {
 function nestedSquares() {
     gl.uniform3f( u_color_loc, 0, 0, 1);
     square();
-    for (var i = 1; i < 16; i++) {
+    for (let  i = 1; i < 16; i++) {
         gl.uniform3f( u_color_loc, i/16, 0, 1 - i/16);
         transform.scale(0.8);
         transform.rotate(framenumber / 200);
@@ -265,24 +265,24 @@ function draw() {
  * the program identifier is the return value of the function.
  */
 function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
-   var vsh = gl.createShader( gl.VERTEX_SHADER );
+   let  vsh = gl.createShader( gl.VERTEX_SHADER );
    gl.shaderSource( vsh, vertexShaderSource );
    gl.compileShader( vsh );
    if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
-      throw "Error in vertex shader:  " + gl.getShaderInfoLog(vsh);
+      throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
    }
-   var fsh = gl.createShader( gl.FRAGMENT_SHADER );
+   let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
    gl.shaderSource( fsh, fragmentShaderSource );
    gl.compileShader( fsh );
    if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
-      throw "Error in fragment shader:  " + gl.getShaderInfoLog(fsh);
+      throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
    }
-   var prog = gl.createProgram();
+   let  prog = gl.createProgram();
    gl.attachShader( prog, vsh );
    gl.attachShader( prog, fsh );
    gl.linkProgram( prog );
    if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
-      throw "Link error in program:  " + gl.getProgramInfoLog(prog);
+      throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
    }
    return prog;
 }
@@ -292,7 +292,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
  * VBOs that hold the coordinates for vertices of basic objects.
  */
 function initGL() {
-    var prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
+    const  prog = createProgram( gl, vertexShaderSource, fragmentShaderSource );
     gl.useProgram(prog);
     a_coords_loc = gl.getAttribLocation(prog, "a_coords");
     gl.enableVertexAttribArray(a_coords_loc); 
@@ -300,22 +300,22 @@ function initGL() {
     u_transform_loc = gl.getUniformLocation(prog, "u_transform");
     squareCoordsVBO = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, squareCoordsVBO);
-    var squareCoords = new Float32Array( [ -0.5,-0.5, 0.5,-0.5, 0.5,0.5, -0.5,0.5 ] );
+    let  squareCoords = new Float32Array( [ -0.5,-0.5, 0.5,-0.5, 0.5,0.5, -0.5,0.5 ] );
     gl.bufferData(gl.ARRAY_BUFFER, squareCoords, gl.STATIC_DRAW);
     diskCoordsVBO = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, diskCoordsVBO);
-    var circleCoords = new Float32Array( 64 );
-    for (var i = 0; i < 32; i++) {
-        var angle = (2*Math.PI)/32 * i;
+    let  circleCoords = new Float32Array( 64 );
+    for (let  i = 0; i < 32; i++) {
+        let  angle = (2*Math.PI)/32 * i;
         circleCoords[2*i] = 0.5 * Math.cos(angle);
         circleCoords[2*i+1] = 0.5 * Math.sin(angle);
     }
     gl.bufferData(gl.ARRAY_BUFFER, circleCoords, gl.STATIC_DRAW);
     spokesCoordsVBO = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, spokesCoordsVBO);
-    var spokesCoords = new Float32Array( 24 );
-    for (var i = 0; i < 6; i++) {
-        var angle = (2*Math.PI)/12 * i;
+    let  spokesCoords = new Float32Array( 24 );
+    for (let  i = 0; i < 6; i++) {
+        let  angle = (2*Math.PI)/12 * i;
         spokesCoords[4*i] = 0.5 * Math.cos(angle);
         spokesCoords[4*i+1] = 0.5 * Math.sin(angle);
         spokesCoords[4*i+2] = -0.5 * Math.cos(angle);
@@ -362,13 +362,11 @@ function doAnimationCheckbox() {
  */
 function init() {
     try {
-        var canvas = document.getElementById("webglcanvas");
-        var options = {  // no need for alpha channel or depth buffer in this program
-            alpha: false,
+        let  canvas = document.getElementById("webglcanvas");
+        let  options = {  // no need for depth buffer in this program
             depth: false
         };
-        gl = canvas.getContext("webgl", options) || 
-                         canvas.getContext("experimental-webgl", options);
+        gl = canvas.getContext("webgl", options);
         if ( ! gl ) {
             throw "Browser does not support WebGL";
         }
@@ -391,9 +389,11 @@ function init() {
     draw();    // draw the image
 }
 
+window.onload = init;  // Arrange for init() to be called after page has been loaded.
+
 </script>
 </head>
-<body onload="init()" style="background-color: lightGray">
+<body style="background-color: lightGray">
 
 <h2>WebGL Hierarchy2D</h2>
 

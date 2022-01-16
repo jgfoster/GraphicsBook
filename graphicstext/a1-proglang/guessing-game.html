@@ -2,13 +2,13 @@
 <html>
 <head>
 <title>Guessing Game</title>
-<script type="text/javascript">
+<script>
     "use strict";
-    var number = Math.floor( 1 + 100*Math.random() );
-    var guessCount = 0;
-    var guessMessage = "Your guesses so far: ";
+    let number = Math.floor( 1 + 100*Math.random() );
+    let guessCount = 0;
+    let guessMessage = "Your guesses so far: ";
     function guess() {
-        var userNumber = Number( document.getElementById("guess").value );
+        let userNumber = Number( document.getElementById("guess").value );
         document.getElementById("guess").value = "";
         if ( isNaN(userNumber) || userNumber < 1 || userNumber > 100 ) {
             document.getElementById("question").innerHTML =

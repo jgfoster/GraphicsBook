@@ -29,16 +29,16 @@ void createPolyhedra();  // CALL THIS BEFORE USING THE FOLLOWING VARIABLES!
 
 /* The available polyhedral models. */
 
-Polyhedron house;
-Polyhedron cube;
-Polyhedron dodecahedron;
-Polyhedron icosahedron;
-Polyhedron octahedron;
-Polyhedron rhombicDodecahedron;
-Polyhedron socerBall;
-Polyhedron stellatedDodecahedron;
-Polyhedron stellatedIcosahedron;
-Polyhedron stellatedOctahedron;
-Polyhedron tetrahedron;
-Polyhedron truncatedIcosahedron;
-Polyhedron truncatedRhombicDodecahedron;
+extern Polyhedron house;
+extern Polyhedron cube;
+extern Polyhedron dodecahedron;
+extern Polyhedron icosahedron;
+extern Polyhedron octahedron;
+extern Polyhedron rhombicDodecahedron;
+extern Polyhedron socerBall;
+extern Polyhedron stellatedDodecahedron;
+extern Polyhedron stellatedIcosahedron;
+extern Polyhedron stellatedOctahedron;
+extern Polyhedron tetrahedron;
+extern Polyhedron truncatedIcosahedron;
+extern Polyhedron truncatedRhombicDodecahedron;

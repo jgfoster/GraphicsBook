@@ -14,7 +14,7 @@
  *    model.indices -- the face indices.
  *
  * The first three properties are of type Float32Array, while
- * model.indicesis of type Uint16Array.
+ * model.indices is of type Uint16Array.
  *
  */
 
@@ -54,7 +54,7 @@ function cube(side) {
       vertexNormals: new Float32Array(normals),
       vertexTextureCoords: new Float32Array(texCoords),
       indices: new Uint16Array(indices)
-   }
+   };
 }
 
 /**
@@ -247,9 +247,9 @@ function uvTorus(outerRadius, innerRadius, slices, stacks) {
          z = sin*tubeRadius;
          vertices[indexV] = x;
          normals[indexV++] = cx*cos;
-         vertices[indexV] = y
+         vertices[indexV] = y;
          normals[indexV++] = cy*cos;
-         vertices[indexV] = z
+         vertices[indexV] = z;
          normals[indexV++] = sin;
          texCoords[indexT++] = i/slices;
          texCoords[indexT++] = j/stacks;

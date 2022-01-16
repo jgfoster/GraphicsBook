@@ -15,6 +15,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "polyhedron.h"
 #include "camera.h"
@@ -29,7 +30,7 @@ int drawEdges = 1;
 int colored = 1;
 
 
-double* randomColorArray(length) {
+double* randomColorArray(int length) {
     double* colors = malloc(3*length*sizeof(double));
     int i;
     for (i = 0; i < length*3; i++) {

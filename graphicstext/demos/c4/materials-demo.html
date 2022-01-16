@@ -78,19 +78,19 @@ function newModel() {
 	    currentModel = cubeModel;
 	    break;
 	case "Cone":
-	    coneModel = coneModel || uvCone();
+	    coneModel = coneModel || uvCone(0.5, 1.2, 64);
 	    currentModel = coneModel;
 	    break;
 	case "Cylinder":
-	    cylinderModel = cylinderModel || uvCylinder();
+	    cylinderModel = cylinderModel || uvCylinder(0.5, 1, 64);
 	    currentModel = cylinderModel;
 	    break;
 	case "Torus":
-	    torusModel = torusModel || uvTorus();
+	    torusModel = torusModel || uvTorus(0.5, 0.5/3, 64, 32);
 	    currentModel = torusModel;
 	    break;
 	case "Sphere":
-	    sphereModel = sphereModel || uvSphere(0.5,64,32);
+	    sphereModel = sphereModel || uvSphere(0.5,128,64);
 	    currentModel = sphereModel;
 	    break;
     }
