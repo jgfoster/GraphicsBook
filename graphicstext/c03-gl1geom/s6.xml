@@ -18,8 +18,10 @@ simple frames for OpenGL drawing surfaces. It has support for
 handling mouse and keyboard events, and it can do basic animation.
 It does not support controls such as buttons or input fields,
 but it does allow for a menu that pops up in response to
-a mouse action. You can find information about the GLUT API at</p>
-<p align="center"><a href="https://www.opengl.org/resources/libraries/glut/">https://www.opengl.org/resources/libraries/glut/</a></p>
+a mouse action. The original version of GLUT is no longer actively
+supported, and a version called freeglut (<a href="http://freeglut.sourceforge.net/">http://freeglut.sourceforge.net/</a>)
+is recommended instead. For example, the version included in Linux is actually freeglut.
+For details of the freeglut API, see</p>
 
 <np>If possible, you should use FreeGLUT, which is compatible with GLUT but has
 a few extensions and a fully open source license.  See</np>
@@ -50,11 +52,11 @@ of OpenGL 1.1 that is used in this book.</p>
 
 
 <p>To work with GLUT, you will need
-a C compiler and copies of the OpenGL and GLUT (or FreeGLUT)
+a C compiler and copies of the OpenGL and GLUT (or freeglut)
 development libraries. We can't tell you exactly that means on
 your own computer. On a computer which runs Linux Mint, for example,
 the free C compiler gcc is already available. To do OpenGL
-development, you would install several packages, including
+development, you need to install several packages, including
 <i>freeglut3-dev</i> and <i>libgl1-mesa-dev</i>.
 (Mesa is a Linux implementation of OpenGL.)  If <i>glutprog.c</i> contains
 a complete C program that uses GLUT, you can compile it using a command such as
@@ -82,6 +84,24 @@ window, the program contains the framework needed to do OpenGL drawing, includin
 animation, responding to mouse and keyboard events, and setting up a menu. The source
 code contains comments that tell you how to use it.</p>
 
+<p><b>On Windows</b>, you might consider installing the WSL, or Windows Subsystem for Linux,
+(<a href="https://docs.microsoft.com/en-us/windows/wsl/">https://docs.microsoft.com/en-us/windows/wsl/</a>),
+which should soon include the ability to work with GUI programs.
+WSL is an official Microsoft system lets you install a version of Linux inside Windows.
+Another option is the older open source project, Cygwin (<a href="https://cygwin.com/">https://cygwin.com/</a>).
+(Using Cygwin, install the packages gcc-core, xinit, xorg-server, libglut-devel, libGLU-devel,
+and libGL-devel. After starting the X11 window system with the startxwin command, you should be able to 
+compile and run OpenGL examples from this textbook in a Cygwin terminal window using the same
+commands that you would use in Linux.)</p>
+
+<p><b>For MacOS</b>, the situation is more complicated, because OpenGL has been deprecated
+in favor of Metal, Apple's own proprietary API. However, as I write this, OpenGL can still be
+used on MacOS with Apple's XCode developer tools. The examples from this textbook require
+some modification to work with XCode tools, since the OpenGL and GLUT libraries are not loaded
+in the same way on Mac as they are on Linux. Modified programs for use on MacOS can be found in the
+source folder <sourceref href="glut/glut-mac"/>. See the README.txt file in that folder
+for more information.</p>
+
 <break/>
 
 <p>The GLUT library makes it easy to write basic OpenGL applications in&nbsp;C. GLUT
@@ -92,7 +112,8 @@ on the keyboard.</p>
 <p>To use GLUT, you need to include the header file <i>glut.h</i> (or <i>freeglut.h</i>)
 at the start of any source code file that uses it, along with the general OpenGL header file,
 <i>gl.h</i>. The header files should be installed in a standard location, in a folder named <i>GL</i>.
-So, the program usually begins with</p>
+(But note that the folder name could be different, or omitted entirely.)
+So, the program usually begins with something like</p>
 
 <pre>#include &lt;GL/gl.h&gt;
 #include &lt;GL/glut.h&gt;</pre>
@@ -192,7 +213,7 @@ of <i>glutSwapBuffers</i>(). However, all of the examples in this book use <i>GL
 
 <p><codedef>glutDisplayFunc(display)</codedef> &mdash; The display function
 should contain OpenGL drawing code that can completely redraw the scene. This is
-similar to <i>paintComponent</i>() in Java.
+similar to <i>paintComponent</i>() in the Java Swing API.
 The display function can have any name, but it must be declared as a void
 function with no parameters: <i>void&nbsp;display</i>().</p>
 
@@ -417,8 +438,10 @@ sample program <sourceref href="glut/color-cube-of-spheres.c"/>.</p>
 
 <p>JOGL is a framework for using OpenGL in Java programs. It is a large and complex API that
 supports all versions of OpenGL, but it is fairly easy to use for basic applications.
-In my examples and discussion, I will be using JOGL&nbsp;2.3.2. Note that version 2.3 is not fully compatible with earlier versions.
-(Hopefully, later versions will remain compatible with 2.3.)</p>
+You should use JOGL&nbsp;2.4 or later. Version 2.4.0 is still under development, but I have
+used it to run the sample programs from this textbook without any problems. The previous
+version, Jogl&nbsp;2.3.2, has some problems with modern versions of Java, but it might work
+for you.</p>
 
 <p>The sample program <sourceref href="jogl/JoglStarter.java"/> can be used as a starting
 point for writing OpenGL programs using JOGL. While it doesn't do anything except open a
@@ -433,26 +456,25 @@ a collection of routines that can be called from Java but are not written in Jav
 in a native library will work on only one kind of computer; you need a different native library
 for each type of computer on which your program is to be used. The native libraries for
 JOGL are stored in additional .jar files, which are available in several versions for
-different computers. For example, for 64-bit Linux, you need
+different computers. For example, for 64-bit Linux on Intel or AMD CPUs, you need
 <i>jogl-all-natives-linux-amd64.jar</i> and <i>gluegen-rt-natives-linux-amd64.jar</i>.
-For 32-bit Linux, the files are
-<i>jogl-all-natives-linux-i586.jar</i> and <i>gluegen-rt-natives-linux-i586.jar</i>.
-It is unfortunate that there are different versions for 64 and 32 bit operating systems, since
-many people don't know which they are using. However, if you are in doubt, you can get
-both; JOGL will figure out which of the two to use. (In fact, though, 32-bit operating systems have become farily rare.)
-For Mac&nbsp;OS, you need
-<i>jogl-all-natives-macos-universal.jar</i> and <i>gluegen-rt-natives-macos-universal.jar</i>.
-For 64-bit Windows, the files are
-<i>jogl-all-natives-windows-amd64.jar</i> and <i>gluegen-rt-natives-windows-amd64.jar</i>.</p>
+It is unfortunate that there are different versions for different platforms, since
+many people don't know exactly which one they are using. However, if you are in doubt, you can get
+more than one version; JOGL will figure out which one to use.</p>
 
-<p>You can get the jar files from the JOGL web site, <a href="http://jogamp.org/jogl/www/">http://jogamp.org/jogl/www/</a>.
-I extracted them from the very large (54 megabyte) archive file</p>
+<p>JOGL software can be found at <a href="https://jogamp.org/">https://jogamp.org/</a>.
+You can download the jar files from the most recent release, which
+can be found at the very end of the list at</p>
 
 <p align="center">
 <a href="http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z">http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z</a>
 </p>
 
-<np>I have also made the necessary files available on my own web site, at</np>
+<np>I downloaded the files from the release <i>v2.4.0-rc-20210111</i>. Click on the
+release name, then click on the <i>jar/</i> link to see the full list of jar files.
+Find and download <i>jogl-all.jar</i> and <i>gluegen-rt.jar</i> and the corresponding
+native library files. I have also made jogl-all.jar and gluegen-rt.jar available on
+my own web site, along with the native libraries for some of the most common platforms, at</np>
 
 <p align="center">
 <a href="http://math.hws.edu/eck/cs424/jogl_2_3_support/">http://math.hws.edu/eck/cs424/jogl_2_3_support/</a>
@@ -517,13 +539,16 @@ look something like this:</p>
 once, and then you can use it in all of your JOGL projects.</np>
 
 <p>Now, to use OpenGL in a project, create a new Java project as usual in Eclipse.
-Right-click the project in the Project Explorer view, and select "Build&nbsp;Path" /
+(If you are asked whether you want to create a module-info.java file for the project, say "Don't Create".
+Sample programs for this textbook do not use Java modules.) 
+Right-click the new project in the Project Explorer view, and select "Build&nbsp;Path" /
 "Configure&nbsp;Build&nbsp;Path" from the menu. You will see the project Properties
-dialog, with "Build Path" selected on the left. (You can also access this through the
+dialog, with "Java Build Path" selected on the left. (You can also access this through the
 "Properties" command in the "Project" menu.)  Select the "Libraries" tab at the top of the
-window, and then click the "Add&nbsp;Library" button. In the popup window, select "User&nbsp;Library"
+window, and then click on "Class&nbsp;Path" in the "Libraries" tab to select it.
+Click the "Add&nbsp;Library" button, on the right. In the popup window, select "User&nbsp;Library"
 and click "Next."  In the next window, select your JOGL User Library and click "Finish."
-Finally, click "OK" in the main Properties window. Your project should now be set up
+Finally, click "Apply and Close" in the main Properties window. Your project should now be set up
 to do JOGL development. You should see the JOGL User Library listed as part of the
 project in the Project Explorer. Any time you want to start a new JOGL project, you can go through
 the same setup to add the JOGL User Library to the build path in the project.</p>
@@ -533,7 +558,7 @@ the same setup to add the JOGL User Library to the build path in the project.</p
 <p>With all that setup out of the way, it's time to talk about actually
 writing OpenGL programs with Java. With JOGL,
 we don't have to talk about mouse and keyboard handling or animation, since that can be done
-in the same way as in any Java program. You will only need to know about a few classes from
+in the same way as in any Java Swing program. You will only need to know about a few classes from
 the JOGL API.</p>
 
 <p>First, you need a GUI component on which you can draw using OpenGL. For that, you
@@ -750,7 +775,7 @@ same directory as the HTML file, you can do that with</p>
 is the JavaScript <word>DOM</word> object corresponding to the &lt;canvas&gt; element. Once you
 have created the drawing context in this way, any OpenGL commands that you give will apply to
 the canvas. To run the program, you just need to open the HTML document in a web browser that
-supports <word>WebGL</word>.</np>
+supports <word>WebGL</word>&nbsp;1.0.</np>
 
 <p>The easiest way to get started programming is to modify a program that already exists.
 The sample program <sourceref href="glsim/first-triangle.html"/>, from <localref href="gl1geom.1.2"/>

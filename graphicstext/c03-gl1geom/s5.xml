@@ -35,7 +35,7 @@ at a point <i>P</i>, then we can, to a certain extent, identify <i>V</i>
 with <i>P</i>&mdash;at least as long as we remember that an arrow starting
 at any other point could also be used to represent <i>V</i>.
 If <i>P</i> has coordinates (<i>a,b,c</i>), we can use the same coordinates
-for <i>V</i>. When we think of (<i>a,b,c</i>) as a vector, <i>a</i> represents
+for <i>V</i>. When we think of (<i>a,b,c</i>) as a vector, the value of <i>a</i> represents
 the <b>change</b> in the <i>x</i>-coordinate between the starting point of the arrow and
 its ending point, <i>b</i> is the change in the <i>y</i>-coordinate, and <i>c</i> is
 the change in the <i>z</i>-coordinate. For
@@ -297,7 +297,8 @@ distance in a perspective projection.
 <p>Surprisingly, we can still represent a perspective projection as a 4-by-4 matrix, provided
 we are willing to stretch our use of coordinates even further than we have already. We
 have already represented 3D vectors by 4D vectors in which the fourth coordinate is 1.
-We now allow the fourth coordinate to be anything at all. When the fourth coordinate, <i>w</i>,
+We now allow the fourth coordinate to be anything at all, except for requiring that
+at least one of the four coordinates is non-zero. When the fourth coordinate, <i>w</i>,
 is non-zero, we consider the coordinates (<i>x,y,z,w</i>) to
 represent the three-dimensional vector (<i>x/w,y/w,z/w</i>). Note that this
 is consistent with our previous usage, since it considers (<i>x,y,z,1</i>)
