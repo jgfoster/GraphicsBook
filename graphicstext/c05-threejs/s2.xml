@@ -8,7 +8,8 @@ geometry and a material. We have seen how to create simple
 geometries that are suitable for point and line primitives,
 and we have encountered a variety of standard mesh geometries
 such as <classname>THREE.CylinderGeometry</classname> and
-<classname>THREE.IcosahedronGeometry</classname>. In this
+<classname>THREE.IcosahedronGeometry</classname>, that use
+the <i>GL_TRIANGLES</i> primitive. In this
 section, we will see how to create new mesh geometries from
 scratch. We'll also look at some of the other support
 that <i>three.js</i> provides for working with objects and
@@ -30,37 +31,144 @@ For example,</p>
 
 <pre>var f = new THREE.Face3( 0, 7, 2 );</pre>
 
-<np>The three indices are stored as properties <i>f.a</i>, <i>f.b</i>, and
-<i>f.c</i> of the face object. As an example, let's see how to directly create a <i>three.js</i> geometry
-for this pyramid:</np>
+<p>A mesh in <i>three.js</i> is what we called a <word>polygonal mesh</word> in
+<localref href="gl1geom.4"/>, although in a <i>three.js</i> mesh, all of the polygons 
+must be triangles. There are two ways to draw polygonal meshes in <word>WebGL</word>.
+One uses the function <i>glDrawArrays</i>(), which requires just a list of vertices.
+The other uses the representation that we called an <word>indexed face set</word> (IFS),
+which is drawn using the function <i>glDrawElements</i>(). In addition to a list of
+vertices, an IFS uses a list of face indices to specify the triangles. We will look at
+both methods, using this pyramid as an example:</p>
 
 <img src="pyramid-IFS.png" width="419" height="194" tex="pyramid-IFS.eps" texscale="0.6"/>
 
 <np>Note that the bottom face of the pyramid, which is a square, has to be
 divided into two triangles in order for the pyramid to be represented as a mesh geometry.
-If <i>pyramidGeom</i> is the geometry object for this pyramid, then
-<i>pyramidGeom.vertices</i> is the vertex array, and <i>pyramidGeom.faces</i>
-is the face array. With that in mind, we can define:</np>
+The vertices are numbered from 0 to 4. A triangular face can be specified by the
+three numbers that give the vertex numbers of the vertices of that triangle. 
+As usual, the vertices of a triangle should be specified in counterclockwise order
+when viewed from the front, that is, from outside the pyramid. Here is the data that
+we need.</np>
+
+<pre>      VERTEX COORDINATES:         FACE INDICES:
+
+      Vertex 0:   1, 0,  1        Face 1:  3, 2, 1 
+      Vertex 1:   1, 0, -1        Face 2:  3, 1, 0 
+      Vertex 2:  -1, 0, -1        Face 3:  3, 0, 4 
+      Vertex 3:  -1, 0,  1        Face 4:  0, 1, 4 
+      Vertex 4:   0, 1,  0        Face 5:  1, 2, 4 
+                                  Face 6:  2, 3, 4</pre>
+
+<p>A basic polygonal mesh representation does not use face indices.
+Instead, it specifies each triangle by listing the
+coordinates of the vertices. This requires nine numbers&mdash;three numbers per vertex&mdash;for
+the three vertices of the triangle. Since a vertex can be shared by several 
+triangles, there is some redundancy. For the pyramid, the coordinates for a vertex
+will be repeated three or four times.</p>
+
+
+<p>A <i>three.js</i> mesh object requires a geometry and a material.
+The geometry is an object of type <classname>THREE.BufferedGeometry</classname>,
+which has a "position" attribute that holds the coordinates of the vertices that are
+used in the mesh. The attribute uses a typed array
+that holds the coordinates of the vertices of the triangles that make up the
+mesh. Geometry for the pyramid can be created like this:</p>
+
+
+<pre>let pyramidVertices = new Float32Array( [
+               // Data for the pyramidGeom "position" attribute.
+               // Contains the x,y,z coordinates for the vertices.
+               // Each group of three numbers is a vertex;
+               // each group of three vertices is one face.
+            -1,0,1,  -1,0,-1,  1,0,-1, // First triangle in the base.
+            -1,0,1,   1,0,-1,  1,0,1,  // Second triangle in the base.
+            -1,0,1,   1,0,1,   0,1,0,  // Front face.
+             1,0,1,   1,0,-1,  0,1,0,  // Right face.
+             1,0,-1, -1,0,-1,  0,1,0,  // Back face.
+            -1,0,-1, -1,0,1,   0,1,0   // Left face.
+        ] );
+let pyramidGeom = new THREE.BufferGeometry();
+pyramidGeom.setAttribute("position",
+                new THREE.BufferAttribute(pyramidVertices,3) );</pre>
+
+<p>When this geometry is used with a <word term="Lambert shading">Lambert</word>
+or <word term="Phong shading">Phong</word> material, <word term="normal vector">normal vectors</word>
+are required for the vertices. 
+If the geometry has no normal vectors, Lambert and Phong materials will appear black.
+The normal vectors for a mesh have to be stored in
+another attribute of the <classname>BufferedGeometry</classname>. The name of the
+attribute is "normal", and it holds a normal vector for each vertex in the
+"position" attribute. It could be created in the same way that the "position"
+attribute is created, but a <classname>BufferedGeometry</classname> object
+includes a method for calculating normal vectors. For the
+<i>pyramidGeom</i>, we can simply call</p>
+
+<pre>pyramidGeom.computeVertexNormals();</pre>
+
+<np>For a basic polygonal mesh, this will create normal vectors that are perpendicular
+to the faces. When several faces share a vertex, that vertex will have a different
+normal vector for each face.
+This will produce flat-looking faces, which are appropriate for
+a polyhedron, whose sides are in fact flat. It is not appropriate if the polygonal
+mesh is being used to approximate a smooth surface. In that case, we should be
+using normal vectors that are perpendicular to the surface, which would mean
+creating the "normal" attribute by hand. (See <localref href="gl1light.1.3"/>.)</np>
+
+<p>Once we have the geometry for our pyramid, we can use it in a <i>three.js</i>
+mesh object by combining it with, say, a yellow Lambert material:</p>
+
+<pre>pyramid = new THREE.Mesh( 
+             pyramidGeom,
+             new THREE.MeshLambertMaterial({ color: "yellow" }) 
+          );</pre>
+
+<p>But the pyramid would look a little boring with just one color.
+It is possible to use different materials on different faces of a
+mesh. For that to work, the vertices in the geometry must be
+divided into groups. The <i>addGroup</i>() method in the
+<classname>BufferedGeometry</classname> class is used to create
+the groups. The vertices in the geometry are numbered
+0, 1, 2, &dots;, according their sequence in the "position" attribute.
+(This is not the same numbering used above.) The <i>addGroup</i>()
+method takes three parameters:  the number of the first vertex
+in the group, the number of vertices in the group, and a material
+index. The material index is an integer that determines which
+material will be applied to the group. If you are using groups,
+it is important to put all of the vertices into groups. Here
+is how groups can be created for the pyramid:</p>
+
+<pre>pyramidGeom.addGroup(0,6,0);  // The base (2 triangles)
+pyramidGeom.addGroup(6,3,1);  // Front face.
+pyramidGeom.addGroup(9,3,2);  // Right face.
+pyramidGeom.addGroup(12,3,3); // Back face.
+pyramidGeom.addGroup(15,3,4); // Left face.</pre>
+
+<p>To apply different materials to different groups, the
+materials should be put into an array. The material index
+of a group is an index into that array.</p>
+
+<pre>pyramidMaterialArray= [ 
+           // Array of materials, for use as pyramids's material.
+        new THREE.MeshLambertMaterial( { color: 0xffffff } ),
+        new THREE.MeshLambertMaterial( { color: 0x99ffff } ),
+        new THREE.MeshLambertMaterial( { color: 0xff99ff } ),
+        new THREE.MeshLambertMaterial( { color: 0xffff99 } ),
+        new THREE.MeshLambertMaterial( { color: 0xff9999 } )
+    ];</pre>
+    
+<np>This array can be passed as the second parameter to the
+<classname>THREE.Mesh</classname> constructor, where a single
+material would ordinarily be used.</np>
 
 
 <pre>var pyramidGeom = new THREE.Geometry();
 
-pyramidGeom.vertices = [  // array of Vector3 giving vertex coordinates
-        new THREE.Vector3( 1, 0, 1 ),    // vertex number 0
-        new THREE.Vector3( 1, 0, -1 ),   // vertex number 1
-        new THREE.Vector3( -1, 0, -1 ),  // vertex number 2
-        new THREE.Vector3( -1, 0, 1 ),   // vertex number 3
-        new THREE.Vector3( 0, 1, 0 )     // vertex number 4
-    ];
-    
-pyramidGeom.faces = [  // array of Face3 giving the triangular faces
-        new THREE.Face3( 3, 2, 1 ),  // first half of the bottom face
-        new THREE.Face3 3, 1, 0 ),   // second half of the bottom face
-        new THREE.Face3( 3, 0, 4 ),  // remaining faces are the four sides
-        new THREE.Face3( 0, 1, 4 ),
-        new THREE.Face3( 1, 2, 4 ),
-        new THREE.Face3( 2, 3, 4 )
-    ];</pre>
+<p>A <classname>THREE.BoxGeometry</classname> comes with groups that
+make it possible to assign a different material to each face.
+The sample program <sourceref href="threejs/vertex-groups.html"/>
+uses the code from this section to create a pyramid, and it
+displays both the pyramid and a cube, using multiple materials on each object. 
+Here's what they look like:</p>
 
 <np>Note that the order of the vertices on a face is not completely
 arbitrary:  They should be listed in counterclockwise order as seen from
@@ -109,46 +217,47 @@ is stored in the property <i>face.normal</i>. The vertex normals are stored in
 
 <break/>
 
-<p>With a full set of normal vectors, the pyramid is ready to be used with any of the mesh
-materials that we have covered, but it looks a little boring with just one color.
-It's possible to use several colors on one mesh. To do that, you can supply an
-array of materials to the mesh object constructor, instead of a single material.
-This makes it possible to apply
-different materials to different faces. For example, here is how to make
-a cube with different materials on its six sides:</p>
+<p>There is another way to assign different colors to different vertices.
+A <classname>BufferedGeometry</classname> can have an attribute named "color"
+that specifies a color for each vertex. The "color" attribute uses an array containing
+a set of three <word term="RGB color">RGB</word> component values for each 
+vertex. The vertex colors are ignored by default. To use them, the
+geometry must be combined with a material in which the <i>vertexColors</i>
+property is set to <i>true</i>. Here is how vertex colors could be used
+to color the sides of the pyramid:</p>
 
-<pre>var cubeGeom = new THREE.BoxGeometry(10,10,10);
-var cubeMaterials =  [
-    new THREE.MeshPhongMaterial( { color: "red" } ),     // for the +x face
-    new THREE.MeshPhongMaterial( { color: "cyan" } ),    // for the -x face
-    new THREE.MeshPhongMaterial( { color: "green" } ),   // for the +y face
-    new THREE.MeshPhongMaterial( { color: "magenta" } ), // for the -y face
-    new THREE.MeshPhongMaterial( { color: "blue" } ),    // for the +z face
-    new THREE.MeshPhongMaterial( { color: "yellow" } )   // for the -z face
-];
-var cube = new THREE.Mesh( cubeGeom, cubeMaterials );</pre>
+<pre>pyramidGeom.setAttribute(
+         "color",
+         new THREE.BufferAttribute( new Float32Array([
+                  1,1,1,  1,1,1,  1,1,1, // Base vertices are white
+                  1,1,1,  1,1,1,  1,1,1,
+                  1,0,0,  1,0,0,  1,0,0, // Front face vertices are red,
+                  0,1,0,  0,1,0,  0,1,0, // Right face vertices are green,
+                  0,0,1,  0,0,1,  0,0,1, // Back face vertices are blue,
+                  1,1,0,  1,1,0,  1,1,0  // Left face vertices are yellow.
+               ]), 3)
+      );
+pyramid = new THREE.Mesh( 
+        pyramidGeom, 
+        new THREE.MeshLambertMaterial({
+              color: "white",
+              vertexColors: true
+         }) 
+      );</pre>
 
-<p>For this to work with a geometry, each face
-of the geometry needs a "material index."  The material index of a face is an integer
-that is an index into the array of  materials. The faces of a <classname>BoxGeometry</classname>
-have appropriate indices. Note that a box geometry has 12 faces, since each rectangular side
-is divided into two triangular faces. The two triangles that make up a rectangular side
-have the same material index. (<classname>BoxGeometry</classname> is the only standard
-geometry that I can find that comes with non-zero material indices. The default value
-for the material index is zero.)</p>
+<np>The color components of the vertex colors from the geometry are actually
+multiplied by the color components of the color in the Lambert material. It makes
+sense for that color to be white, with color components equal to one; in that case
+the vertex colors are not modified by the material color.</np>
 
-<p>Suppose that we want to use different materials on each side of the
-pyramid that was created above. For that to work, each face needs a material index,
-which is stored in a property of the face named <i>materialIndex</i>. For the pyramid, the first two 
-faces in the array of faces make up the square
-base of the pyramid. They should probably have the same material index. The following code
-assigns material index 0 to the first two faces and material indices 1, 2, 3, and 4 to
-the other four faces:</p>
-
-<pre>pyramidGeom.faces[0].materialIndex = 0;
-for (var i = 1; i &lt;= 5; i++) {
-    pyramidGeom.faces[i].materialIndex = i-1;
-}</pre>
+<p>In this example, each face of the pyramid is a solid color. There is a lot of 
+redundancy in the color array for the pyramid, because a color must be specified for
+every vertex, even if all of the vertex colors for a given face are the same.
+In fact, it's not required that all of the vertices of a face have the same color.
+If they are assigned different colors, colors will be interpolated from the vertices
+to the interior of the face. As an example, in <tex>this image</tex><web>the 
+following demo</web>, a random vertex color was specified for each vertex of
+an icosahedral approximation for a sphere:</p>
 
 <np>This code is from the sample program <sourceref href="threejs/MeshFaceMaterial.html"/>.
 The program displays a cube and a pyramid using multiple materials on each object. Here's what they
@@ -207,6 +316,67 @@ geometry in which some of the vertices have been displaced:</tex></p></demo>
 
 <texdiv><img tex="multicolor-icosphere.eps" texscale="0.6"/></texdiv>
 
+<p>The <i>glDrawElements</i>() function is used to avoid the redundancy
+of the basic polygonal mesh representation. It uses the indexed face set pattern,
+which requires an array of face
+indices to specify the vertices for the faces of the mesh. In that array,
+a vertex is specified by a single number, rather than repeating all of 
+the coordinates and other data for that vertex. Note that a given
+vertex number refers to <b>all</b> of the data for that vertex:
+vertex coordinates, normal vector, vertex color, and any other data that
+are provided in attributes of the geometry. Suppose that two faces
+share a vertex. If that vertex has a different normal vector, or a different
+value for some other attribute, in the two faces, then that vector will need
+to occur twice in the attribute arrays. The two occurrences can be combined
+only if the vertex has identical properties in the two faces. The IFS
+representation is most suitable for a polygonal mesh that is being used as
+an approximation for a smooth surface, since in that case a vertex has the
+same normal vector for all of the vertices in which it occurs. 
+It can also be appropriate for an object that uses a <classname>MeshBasicMaterial</classname>,
+since normal vectors are not used with that type of material.</p>
+
+<p>To use the IFS pattern with a <classname>BufferedGeometry</classname>, you need
+to provide a face index array for the geometry. The array is specified by the geometry's
+<i>setIndex</i>() method. The parameter can be an ordinary JavaScript array of integers.
+For our pyramid example the "position" attribute of the geometry would contain
+each vertex just once, and the face index array would refer to a vertex by its
+position in that list of vertices:</p>
+
+<pre>pyramidVertices = new Float32Array( [
+             1, 0,  1,  // vertex number 0
+             1, 0, -1,  // vertex number 1
+            -1, 0, -1,  // vertex number 2
+            -1, 0,  1,  // vertex number 3
+             0, 1,  0   // vertex number 4
+   ] );
+   
+pyramidFaceIndexArray = [
+            3, 2, 1,  // First triangle in the base.
+            3, 1, 0,  // Second Triangle in the base.
+            3, 0, 4,  // Front face.
+            0, 1, 4,  // Right face.
+            1, 2, 4,  // Back face.
+            2, 3, 4   // Left face.
+   ];
+   
+pyramidGeom = new THREE.BufferGeometry();
+pyramidGeom.setAttribute("position",
+                new THREE.BufferAttribute(pyramidVertices,3) );
+pyramidGeom.setIndex( pyramidFaceIndexArray );</pre>
+
+<np>This would work with a <classname>MeshBasicMaterial</classname>.
+The sample program <sourceref href="threejs/vertex-groups-indexed.html"/> is
+a variation on <sourceref href="threejs/vertex-groups.html"/> that uses this
+approach.</np>
+
+<p>The <i>computeVertexNormals</i>() method can still be
+used for a <classname>BufferedGeometry</classname> that has an index array. 
+To compute a normal vector for a vertex, it finds all of the faces
+in which that vertex occurs. For each of those faces, it computes a
+vector perpendicular to the face. Then it averages those vectors to
+get the vertex normal. (I will note if you tried this for our
+pyramid, it would look pretty bad. It's really only appropriate for
+smooth surfaces.)</p>
 
 </subsection>
 
@@ -220,14 +390,17 @@ illustrated in the sample program <sourceref href="threejs/curves-and-surfaces.h
 discuss a few of them here.</p>
 
 <p>Parametric surfaces are the easiest to work with. A parametric surface is defined by
-a mathematical function <i>f</i>(<i>u,v</i>), where <i>u</i> and <i>v</i> are numbers,
+a mathematical function of two parameters (<i>u,v</i>), where <i>u</i> and <i>v</i> are numbers,
 and each value of the function is a point in space. The surface consists of all the points
 that are values of the function for <i>u</i> and <i>v</i> in some specified ranges.
-For <i>three.js</i>, the function is a regular JavaScript function that returns values of
-type <classname>THREE.Vector3</classname>. A parametric surface geometry 
-is created by evaluating the function at a grid of <i>uv</i> points. This gives a
-grid of points on the surface, which are then connected to give a polygonal approximation
-of the surface. In <i>three.js</i>, the values of <i>u</i> and <i>v</i> are always in the
+For <i>three.js</i>, the function is a regular JavaScript function that takes
+three parameters: <i>u</i>, <i>v</i>, and an object of
+type <classname>THREE.Vector3</classname>. The function must modify the vector
+to represent the point in space that corresponds to the values of the <i>u</i>
+and <i>v</i> parameters. A parametric surface geometry 
+is created by calling the function at a grid of <i>(u,v)</i> points. This gives a
+collection of points on the surface, which are then connected to give a polygonal approximation
+of the surface. In <i>three.js</i>, the values of both <i>u</i> and <i>v</i> are always in the
 range 0.0 to 1.0. The geometry is created by a constructor</p>
 
 <pre>new THREE.ParametricGeometry( func, slices, stacks )</pre>
@@ -256,16 +429,17 @@ an example, from the sample program:</np>
 <pre>var surfaceGeometry = new THREE.ParametricGeometry(surfaceFunction, 64, 64);
 var surface = new THREE.Mesh( surfaceGeometry, material );</pre>
 
-<p>Curves are more complicated in <i>three.js</i> (and, unfortunately, the API for working
-with curves is not very consistent). The class <classname>THREE.Curve</classname>
-represents the abstract idea of a parametric curve in two or three dimensions. (It does not represent
+<p>Curves are more complicated in <i>three.js</i>. The class <classname>THREE.Curve</classname>
+represents the abstract idea of a parametric curve in two or three dimensions. (It does <b>not</b> represent
 a <i>three.js</i> geometry.)  A parametric curve is defined by a function of one numeric variable
 <i>t</i>. The value returned by the function is of type <classname>THREE.Vector2</classname> for a 2D curve or 
 <classname>THREE.Vector3</classname> for
 a 3D curve. For an object, <i>curve</i>, of type <classname>THREE.Curve</classname>,
 the method <i>curve.getPoint</i>(<i>t</i>) should return the point on the curve corresponding
-to the value of the parameter <i>t</i>. However, in the <classname>Curve</classname> class
-itself, this function is undefined. To get an actual curve, you have to define it.
+to the value of the parameter <i>t</i>. The curve consists of points generated
+by this function for values of <i>t</i> ranging from 0.0 to 1.0.
+However, in the <classname>Curve</classname> class
+itself, <i>getPoint</i>() is undefined. To get an actual curve, you have to define it.
 For example,</p>
 
 <pre>var helix = new THREE.Curve();
@@ -447,10 +621,13 @@ the seam between copies of the image. For mirrored repetition, use the property 
 <pre>tex.wrapS = THREE.MirroredRepeatWrapping;
 tex.wrapT = THREE.MirroredRepeatWrapping;</pre>
 
-<p>The texture properties <i>repeat</i> and <i>offset</i> control the scaling and translation that are applied
-to the texture as <word term="texture transformation">texture transformations</word>. (There is no
-texture rotation.)  The values of these properties are of type <classname>THREE.Vector2</classname>,
-so that each property has an <i>x</i> and a <i>y</i> component. For a <classname>Texture</classname>,
+<p>The texture properties <i>repeat</i>, <i>offset</i>, and <i>rotation</i> control the scaling, translation, and rotation that are applied
+to the texture as <word term="texture transformation">texture transformations</word>. The values of <i>repeat</i> and <i>offset</i>
+are of type <classname>THREE.Vector2</classname>,
+so that each property has an <i>x</i> and a <i>y</i> component. The <i>rotation</i> is a number, measured in radians,
+giving the rotation of the texture about the point (0,0). (But the center of rotation is actually given by
+another property named <i>center</i>.)
+For a <classname>Texture</classname>,
 <i>tex</i>, the two components of <i>tex.offset</i> give the texture translation in the horizontal
 and vertical directions. To offset the texture by 0.5 horizontally, you can say
 either</p>
@@ -490,25 +667,22 @@ beginning of this section. In order to apply a texture image to an object, WebGL
 for that object. When we build a mesh from scratch, we have to supply the texture
 coordinates as part of the mesh's geometry object.</p>
 
-<p>A geometry object such as <i>pyramidGeom</i> in the example has a property
-named <i>faceVertexUvs</i> to hold texture coordinates. ("UV"&nbsp;refers to the
-coordinates on an object that are mapped to the <i>s</i> and <i>t</i> coordinates in a texture.)
-The value of <i>faceVertexUvs</i> is an array, where each element of the array
-is itself an array of arrays; in most cases only the element <i>faceVertexUvs</i>[0]
-is used, but additional sets of uv coordinates are used in some advanced applications.
-The value of <i>faceVertexUvs</i>[0] is itself an array,
-with one element for each face in the geometry.
-The data stored for each face is, again, an array: <i>faceVertexUvs</i>[0][<i>N</i>] is
-an array containing one pair of coordinates for each of the three vertices of face number&nbsp;<i>N</i>. 
-Finally, each pair of texture coordinates
-in that array is represented as an object of type <classname>THREE.Vector2</classname>.</p>
+<p>Let's see how to do this on our pyramid example.
+A <classname>BufferedGeometry</classname> object such as <i>pyramidGeom</i> 
+in the example has an attribute
+named "uv" to hold texture coordinates. (The name "uv" refers to the
+coordinates on an object that are mapped to the <i>s</i> and <i>t</i> coordinates in a texture.
+The texture coordinates for a surface are often referred to as "uv coordinates.")
+The <classname>BufferAttribute</classname> for a "uv" attribute can be made from
+a typed array containing a pair of texture coordinates for
+each vertex.</p>
 
-<p>The pyramid has six triangular faces. We need an array of three objects of
-type <classname>Vector2</classname> for each face. The coordinates have to be chosen
+<p>Our pyramid example has six triangular faces, with a total of 18 vertices.
+We need an array containing vertex coordinates for 18 vertices. The coordinates have to be chosen
 to map the image in a reasonable way onto the faces. My choice of coordinates
 maps the entire texture image onto the square base of the pyramid, and it cuts
 a triangle out of the image to apply to each of the sides. It takes some
-care to come up with the correct coordinates. We define the texture
+care to come up with the correct coordinates. I define the texture
 coordinates for the pyramid geometry as follows:</p>
 
 <pre>pyramidGeometry.faceVertexUvs = [[
@@ -574,11 +748,20 @@ on top of other rotations that might already have been applied.</p>
 angle <i>angle</i> about the vector (that is, about the line between the origin
 and the point given by <i>axis</i>). The <i>axis</i> must be a normalized vector.</p>
 
+<p>(Rotation is actually even more complicated. The rotation of an object, <i>obj</i>,
+is actually represented by the property <i>obj.quaternion</i>, not by the property
+<i>obj.rotation</i>. <newword term="quaternion">Quaternions</newword> are mathematical objects
+that are often used in computer graphics as an alternative to <word>Euler angles</word>,
+to represent rotations. However, when you change one of the properties
+<i>obj.rotation</i> or <i>obj.quaterion</i>, the other is automatically updated
+to make sure that both properties represent the same rotation. So, we don't need
+to work directly with the quaternions.)</p>
+
 <p>I should emphasize that the translation and rotation functions modify the
 <i>position</i> and <i>rotation</i> properties of the object. That is, they apply
 in object coordinates, not world coordinates, and they are applied as the first modeling
 transformation on the object when the object is
-rendered. For example, a rotation is
+rendered. For example, a rotation in
 world coordinates can change the position of an object, if it is not positioned
 at the origin. However, changing the value of the <i>rotation</i> property of
 an object will never change its position.</p>
@@ -610,66 +793,68 @@ is most useful for a camera.
 <p>Although it is possible to create mesh objects by listing their vertices and faces,
 it would be difficult to do it by hand for all but very simple objects. It's much
 easier, for example, to design an object in an interactive modeling program
-such as <word>Blender</word> (<localref href="blender"/>). <i>Three.js</i> has utility functions for loading 
-models from files, and it comes with scripts that can be used to
-export objects from Blender and other 3D modeling programs to a
-file format that <i>three.js</i> can read. (In the <i>three.js</i> download,
-look in the <i>exporters</i> folder inside the <i>utils</i> folder.)</p>
+such as <word>Blender</word> (<localref href="blender"/>). Modeling programs like
+Blender can export objects using many different file formats.
+<i>Three.js</i> has utility functions for loading 
+models from files in a variety of file formats. These utilities are not
+part of the <i>three.js</i> core, but JavaScript files that define them
+can be found in the <i>examples</i> folder in the <i>three.js</i> download.</p>
 
-<p><i>Three.js</i> has its own file format, in which models are specified
-using <word>JSON</word>, a common format for representing JavaScript objects.
-This is the file format that is produced
-by the export scripts. The class <classname>THREE.JSONLoader</classname>
-can be used to read model descriptions from such files. There are some
-other loaders, which work with other file formats, but I will only discuss 
-<classname>JSONLoader</classname> here.</p>
+<p>The preferred format for model files is <newword>GLTF</newword>. A GLTF model can be stored
+in a text file with extension .gltf or in a binary file with extension .glb.
+Binary files are smaller and more efficient, but not human-readable.
+A <i>three.js</i> loader for GLTF files is defined by the file <i>GLTFLoader.js</i>.
+from the <i>three.js</i> download. Copies of that script, as well as scripts for
+other model loaders, can be found in the
+<sourceref href="threejs"/> folder in the <i>source</i> folder for this textbook.
+</p>
 
-<p>If <i>loader</i> is an object of type <classname>THREE.JSONLoader</classname>,
+<p>If <i>loader</i> is an object of type <classname>THREE.GTLFLoader</classname>,
 you can use its <i>load</i>() method to start the process of loading a model:</p>
 
-<pre>loader.load( url, callback );</pre>
+<pre>loader = new THREE.GLTFLoader()
+loader.load( url, onLoad, onProgress, onError );</pre>
 
-<np>The first parameter is a URL for the file that contains the model.
-JSON models are stored as actual JavaScript
-code, so the file will usually have a name ending in&nbsp;".js". The second parameter, <i>callback</i>,
-is  a function that will be called when the loading is done. The loading
-is asynchronous; <i>loader.load</i>() starts the process and returns immediately. It is
-the responsibility of the callback function to use the data from the file to create a
-<i>three.js</i> <classname>Object3D</classname> and to add it to the scene. 
-The callback function takes two parameters,
-<i>geometry</i> and <i>materials</i>, which contain the information needed to create
-the object; the parameters represent the data that has been read from the file.
-The <i>materials</i> parameter is a material or an array of materials that can be used
-as the second parameter in a mesh object constructor. 
-(Of course, you could also just use your own material
-instead of the material from the file.)</np>
+<np>Only the first parameter is required; it is a URL for the file that contains the model.
+The other three parameters are callback functions: <i>onLoad</i> will be called when the
+loading is complete, with a parameter that represents the data from the file;
+<i>onProgress</i> is called periodically during the loading with a parameter that contains
+information about the size of the model and how much of it has be loaded; and
+<i>onError</i> is called if any error occurs. (I have not actually used <i>onProgress</i> myself.)
+Note that, as for textures, the loading is done asynchronously.</np>
 
-<p>Here, then, is a pair of functions that can be used to load a JSON model
-from a specified url and add it to the scene (although in general, you probably
-want to do something more complicated with the object):</p>
+<p>A GLTF file can be quite complicated and can contain an entire 3D scene,
+containing multiple objects, lights, and other things.
+The data returned by a <classname>GLTFLoader</classname> contains a <i>three.js</i>
+<classname>Scene</classname>. Any objects defined by the file will be
+part of the scene graph for that scene. All of the model files used in this
+textbook define a <classname>Mesh</classname> object that is the first child
+of the <classname>Scene</classname> object. This object comes complete with
+both geometry and material. The <i>onLoad</i> callback function can add
+that object to the scene and might look something like this:</p>
 
-<pre>function loadModel( url ) {  // Call this function to load the model.
-    var loader = new THREE.JSONLoader();
-    loader.load( url, modelLoaded ); // Start load, call modelLoaded when done.
-}
-
-function modelLoaded( geometry, material ) { // callback function for loader
-    var object = new THREE.Mesh( geometry, material );
-    scene.add(object);
-    render(); // (only need this if there is no animation running)
+<pre>function onLoad(data) { // the parameter is the loaded model data
+    let object = data.scene.children[0];
+    // maybe modify the modeling transformation or material...
+    scene.add(object);  // add the loaded object to our scene
+    render();  // call render to show the scene with the new object
 }</pre>
 
-<p>The sample program <sourceref href="threejs/json-model-viewer.html"/>
-uses <classname>JSONLoader</classname> to read model descriptions. It can display seven
-different objects. We created one of the objects using Blender. The other objects
-came with <i>three.js</i>. Five of the objects use a simple white material;
-the "horse" and "stork" use colors that are provided as vertex colors (not materials) in the model file.</p>
+<p>The sample program <sourceref href="threejs/model-viewer.html"/>
+uses <classname>GLTFLoader</classname> to load several models. It also uses
+loaders for models in two other formats, Collada and OBJ, that work much
+the same way. The technique for loading the models is actually a little
+more general that what I've described here. See the source code for
+the example program for details.</p>
 
+<p>(If you try to run the sample program from a download of the web site
+version of this textbook, it probably won't work because of security
+restrictions in most web browsers. See the section on 
+<a href="https://threejs.org/docs/index.html#manual/en/introduction/How-to-run-things-locally">running things locally</a>
+in the <i>three.js</i> documentation. The same applies to the demo below.)</p>
 
-<demo src="c5/mesh-animation.html" width="550" height="520"><p>I'll also mention that JSON models can define 
-simple keyframe animations. To do this,
-the file includes alternative sets of vertices for each keyframe (<i>three.js</i> calls them
-"morph targets"). <i>Three.js</i> has several classes that support animation, including
+<demo src="c5/mesh-animation.html" width="550" height="520"><p>I'll also mention that GLTF models can include
+animations. <i>Three.js</i> has several classes that support animation, including
 <classname>THREE.AnimationMixer</classname>, <classname>THREE.AnimationAction</classname>,
 and <classname>THREE.AnimationClip</classname>.  I won't discuss animation here, but these three
 classes are used to animate the horse and stork models in <web>this demo:</web><tex>the 

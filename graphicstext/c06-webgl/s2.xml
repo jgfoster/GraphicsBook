@@ -39,7 +39,12 @@ translucent, letting the background (on the web page behind the canvas) show
 through. The default value is <i>true</i>. It is safe to set the value to <i>false</i>,
 if you want the canvas to be fully opaque. Setting it to false does not stop
 you from doing <word>alpha blending</word> of the drawing color with the image
-color; the RGB color components can still be computed by blending.</p>
+color; the RGB color components can still be computed by blending.
+However, setting the value to false is only necessary if your program outputs
+pixels with alpha component less than 1.0, and you don't want your image
+to blend with the background of the canvas. (Note however that a graphics context
+with an alpha component might be handled more efficiently, because web pages
+use RGBA colors for their display.)</p>
 
 <p><b>depth</b> &mdash; determines whether a <word>depth buffer</word>
 is allocated. The default value is <i>true</i>.
@@ -73,7 +78,8 @@ you can add to it incrementally over time.</p>
 
 <p>The <localref href="webgl.3">next section</localref> will cover GLSL more thoroughly.
 But you will need to know something about the language to understand the examples
-in this section.</p>
+in this section. This section discusses GLSL ES 1.00 only, but remember that
+that language can be used with both WebGL&nbsp;1.0 and WebGL&nbsp;2.0.</p>
 
 <p>A <word term="vertex shader">vertex</word> or <word>fragment shader</word> 
 can contain global variable declarations, type definitions,
@@ -90,7 +96,7 @@ and does not return a value, so it takes the form</p>
 
 <np>(Alternatively, it can be declared as <i>void main</i>(<i>void</i>).)</np>
 
-<p>Control structures in GLSL are limited. <i>If</i> statements take
+<p>Control structures are limited. <i>If</i> statements take
 the same form as in C or Java. But some limitations are placed on the <i>for</i> loop syntax,
 and <i>while</i> and <i>do&dots;while</i> loops are not allowed. Data structures include
 arrays and <i>structs</i>, again with some limitations. We will cover all this in some
@@ -134,7 +140,7 @@ giving the four <word>RGBA color</word> components for the pixel.</np>
 
 <p>A vertex shader needs, at a minimum, an attribute to give the coordinates
 of the vertex. For 2D drawing, it's natural for that attribute to be of
-type <i>vec2</i>. If we assume that the values of the attributes are already
+type <i>vec2</i>. If we assume that the values for the attribute are already
 expressed in clip coordinates, then the complete source code for the vertex
 shader could be as simple as:</p>
 
@@ -248,7 +254,7 @@ var attributeColor;   // Location of the attribute named "color".
 var bufferColor;      // A vertex buffer object to hold the values for color.</pre>
 
 <np>The graphics context is created in the <i>init</i>() function. The other variables
-are initialized in the function <i>initGL</i>() that is called from <i>init</i>(). That
+are initialized in a function <i>initGL</i>() that is called from <i>init</i>(). That
 function also creates the shader program, using the <i>createProgram</i>() function
 from <localref href="webgl.1.2"/>:</np>
 
@@ -309,7 +315,11 @@ functions <i>glClearColor</i> and <i>glClear</i>. Here is the code:</p>
 <p>In this function, the variable <i>coords</i> contains values for the attribute
 named "a_coords" in the vertex shader. That attribute represents the <i>x</i> and <i>y</i> coordinates 
 of the vertex. Since the attribute is of type <i>vec2</i>, two numbers are required for
-each vertex. Similarly, the variable <i>color</i> contains values for the "a_color" attribute
+each vertex. The value for <i>coords</i> is created here with a
+<classname>Float32Array</classname> constructor that takes an ordinary JavaScript
+array as its parameter; the values from the JavaScript array are copied into the
+newly created typed array.
+Similarly, the variable <i>color</i> contains values for the "a_color" attribute
 in the vertex shader, with three numbers per vertex.</p>
 
 <p>We have now accounted for all the pieces of the RGB triangle program. Read the
@@ -448,7 +458,7 @@ y2 = 1 - 2*( y1 / canvas.height );</pre>
 <np>In WebGL, the coordinate transformation is usually applied in the vertex shader.
 In this case, to implement the transformation, the vertex shader just needs to know the
 width and height of the canvas. The program provides the width and height to the
-vertex shader as uniform variables. The original, pixel coordinates of the vertex
+vertex shader as uniform variables. The original pixel coordinates of the vertex
 are input to the vertex shader as an attribute. The shader applies the coordinate
 transformation to compute the value of <i>gl_Position</i>, which must be expressed
 in the default coordinate system. Here is the vertex shader source code:</np>
@@ -587,7 +597,8 @@ edge of the square and 1 at the right. The second component, <i>gl_PointCoord.y<
 is 0 at the top of the square and 1 at the bottom. So, for example, the value
 is (0,0) at the top-left corner, (1,0) at the top-right corner, and
 (0.5,0.5) at the center of the square. (That, at least, is what the specification
-says, but some implementations incorrectly put (0,0) at the bottom left corner.)</p>
+says, but you might encounter implementations that incorrectly 
+put (0,0) at the bottom left corner. Hopefully that is fixed in modern web browsers.)</p>
 
 <p>If the fragment shader uses <i>gl_PointCoord</i>
 in its computation, the color of the square can vary from pixel to pixel. As a simple
@@ -638,7 +649,7 @@ each vertex. The values are loaded into a VBO, and the values for the color
 attribute are taken from the VBO. But what happens when all the disks are
 red?  Do we have to fill an array with multiple copies of "1,&nbsp;0,&nbsp;0" and
 use that data for the attribute?  In fact, we don't. If we disable the
-VertexAtrribArray for the color attribute, then that attribute will have
+VertexAttribArray for the color attribute, then that attribute will have
 the same value for every vertex. The value is specified by the <i>gl.vertexAttrib*</i>
 family of functions. So, in the sample program, the code for providing 
 values for the color attribute is</p>
@@ -702,9 +713,11 @@ Any non-zero value means that an error occurred at some point before the call
 to <i>gl.getError</i>. By moving the output statements around in the code, I
 can narrow in on the statement that actually produced the error.</np>
 
-<p>Note that some browsers might automatically output certain information about 
-incorrect use of WebGL to their console. It's always a good idea to check the
-browser console when running a WebGL program that is under development!</p>
+<p>Note that some browsers automatically output certain information about 
+incorrect use of WebGL to their JavaScript console, which is part of the
+development tools built into many browsers. That console is also the destination
+for messages written using <i>console.log</i>(). It's always a good idea to check the
+console when running a WebGL program that is under development!</p>
 
 
 </subsection>

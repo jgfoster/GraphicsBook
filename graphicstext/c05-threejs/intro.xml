@@ -17,7 +17,7 @@ directly with WebGL. However, before we do that, we will look
 at a higher-level <word>API</word> for 3D web graphics that is built on top of WegGL:  
 <i><newword>three.js</newword></i>. There are several reasons for starting at this high level.
 It will allow you to see how some of the things that you have learned are used in
-a modern graphics package. It will allow me to introduce some new features such as
+a modern object-oriented graphics package. It will allow us to introduce some new features such as
 shadows and environment mapping. It will let you work with a graphics library that
 you might use in real web applications.
 And it will be a break from the low-level detail we have been dealing with, before
