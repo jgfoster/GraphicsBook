@@ -186,8 +186,8 @@ for the transformation; you just need to understand what it does geometrically.<
 <p>A <word>rotation</word> transform, for our purposes here, rotates each point about the origin, (0,0).
 Every point is rotated through the same
 angle, called the angle of rotation. For this purpose, angles can be measured either
-in degrees or in radians. (The 2D graphics <word term="API">APIs</word> for Java and JavaScript that we will look at
-later in this chapter use radians, but OpenGL and SVG uses degrees.)
+in degrees or in radians. (The 2D graphics <word term="API">APIs</word> for Java and JavaScript 
+that we will look at later in this chapter use radians, but OpenGL and <word>SVG</word> use degrees.)
 A rotation with a positive angle rotates objects in the direction from the positive x-axis towards the positive y-axis. 
 This is counterclockwise in a coordinate system where the y-axis points up, 
 as it does in my examples here, but it is
@@ -433,7 +433,7 @@ has pixel coordinates (0,0):</p>
 matrices, and the points on which they operate are represented as
 vectors. Recall that a <newword>matrix</newword>, from the point of view of a
 computer scientist, is a two-dimensional array of numbers, while a
-<newword>vector</newword> is one-dimensional. Matrices and vectors are
+<newword>vector</newword> is a one-dimensional array. Matrices and vectors are
 studied in the field of mathematics called <newword>linear algebra</newword>.
 Linear algebra is fundamental to computer graphics. In fact,
 matrix and vector math is built into <word term="GPU">GPUs</word>.

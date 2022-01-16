@@ -75,7 +75,7 @@ named <i>demos</i>.</tex>
 </p>
 </demo>
 
-<p>A mathematical line
+<p>Suppose, for example, that we want to draw a line segment. A mathematical line
 has no thickness and would be invisible. So we really want to draw a thick line
 segment, with some specified width. Let's say that the line should be 
 one pixel wide. The problem is that, unless the line is horizontal or vertical,
@@ -98,7 +98,7 @@ the color of a partially covered pixel would be gray, with the shade of gray dep
 on the fraction of the pixel that is covered by the line. (In practice, calculating this
 area exactly for each pixel would be too difficult, so some approximate method is used.)
 Here, for example, is a geometric line, shown on the left, along with two approximations
-of that line made by coloring pixels. The lines are greately magnified so that you can see the
+of that line made by coloring pixels. The lines are greatly magnified so that you can see the
 individual pixels. The line on the right is drawn using antialiasing, while the one in the 
 middle is not:</p>
 
@@ -109,7 +109,10 @@ middle is not:</p>
 are caused by aliasing (at least when it is viewed on a normal scale).</np>
 
 <p>There are other issues involved in mapping real-number coordinates to pixels.
-As mentioned earlier, we say that integer coordinates refer to the
+For example, which point in a pixel should correspond to integer-valued coordinates
+such as (3,5)?  The center of the pixel?  One of the corners of the pixel?
+In general, we think of the numbers as referring to the top-left corner of the pixel.
+Another way of thinking about this is to say that integer coordinates refer to the
 lines between pixels, rather than to the pixels themselves. But that still
 doesn't determine exactly which pixels are affected when a geometric shape is drawn.
 For example, here are two lines drawn using HTML canvas graphics,
@@ -389,7 +392,7 @@ to avoid visual effects that might occur due to rounding errors in the computati
 Such applications might use a 16-bit integer or even a 32-bit floating point value for
 each color component. On the other hand, sometimes fewer bits are used. For example, one
 common color scheme uses 5 bits for the red and blue components and 6 bits for the green
-component, for a total of 16 bits for a color. (Green gets an addition bit because
+component, for a total of 16 bits for a color. (Green gets an extra bit because
 the eye is more sensitive to green light than to red or blue.)  This "16-bit color" saves memory
 compared to 24-bit color and was more common when memory was more expensive.</p>
 

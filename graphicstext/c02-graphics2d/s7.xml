@@ -29,9 +29,8 @@ used in the rest of this chapter.</p>
 <p>SVG can be used as a file format for storing vector graphics
 images, in much the same way that PNG and JPEG are file formats for
 storing pixel-based images. That means that you can open an SVG
-file with a web browser to view the image. (This is true, at least,
-for modern web browsers.)  An SVG image can be included in a web page
-by using it as the source of an <tag>img</tag> element. That's how the
+file with almost any web browser to view the image.  An SVG image can be included in a web page
+by using it as the <i>src</i> of an <tag>img</tag> element. That's how the
 SVG examples <web>on this page</web><tex>in the 
 <a href="http://math.hws.edu/eck/cs424/graphicsbook2015/c2/s7.html">web version</a> of this
 section</tex> are displayed. Since SVG documents are written in plain text,
@@ -197,7 +196,7 @@ and <i>ry</i> give the horizontal and vertical radii of the elliptical arcs.</np
 
 <p>Style attributes can be added to say how the shape should be stroked and filled.
 The default is to use a black fill and no stroke. (More precisely, as we will see later,
-the default for is for a shape to inherit the values of style attributes from its 
+the default is for a shape to inherit the values of style attributes from its 
 environment. Black fill and no stroke is the initial environment.)  Here are some
 common style attributes:</p>
 
@@ -544,7 +543,7 @@ it will start over, and it will repeat indefinitely, that is, as long as the ima
 displayed. If the <i>repeatCount</i> attribute is omitted, then after the animation
 runs once, the rectangle will jump back to its original position and remain there.
 If <i>repeatCount</i> is replaced by <i>fill</i>=&leftquote;freeze", then after the animation runs,
-the rectangle will br frozen in its final position, instead of jumping back to the starting
+the rectangle will be frozen in its final position, instead of jumping back to the starting
 position. The animation begins when the image first loads. If you want the animation to
 start at a later time, you can add a <i>begin</i> attribute whose value gives the time
 when the animation should start, as a number of seconds after the image loads.</np>

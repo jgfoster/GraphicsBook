@@ -7,8 +7,7 @@
 in common with <word>vector graphics</word> than with <word>raster graphics</word>. 
 That is, the content of an image is specified as a list of geometric objects. 
 The technique is referred to as <newword>geometric modeling</newword>. The starting point
-is to construct an "artificial 3D <newword term="world">world</newword>" as a collection 
-of simple geometric shapes, arranged in
+is to construct an "artificial 3D world" as a collection of simple geometric shapes, arranged in
 three-dimensional space. The objects can have <word term="attribute">attributes</word> that, combined with
 global properties of the world, determine the appearance of the objects.
 Often, the range of basic shapes is very limited, perhaps including only points, line segments,
@@ -27,8 +26,7 @@ a <word>coordinate system</word> that associates each point in the space with th
 usually referred to as the <i>x</i>, <i>y</i>, and <i>z</i> coordinates of the point.
 This coordinate system is referred to as "world coordinates."</p>
 
-<p>We want to build a <newword term="scene">scene</newword> inside the world, made up of geometric objects. 
-For example, 
+<p>We want to build a scene inside the world, made up of geometric objects. For example, 
 we can specify a line segment in the scene by giving the coordinates of its two endpoints, 
 and we can specify a triangle by giving the coordinates of its three vertices. The smallest building
 blocks that we have to work with, such as line segments and triangles, are called
@@ -86,7 +84,7 @@ color as well as other properties such as shininess, roughness, and transparency
 <p>One of the most useful kinds of material property is a <newword>texture</newword>.
 In most general terms, a texture is a way of varying material properties from point-to-point
 on a surface. The most common use of texture is to allow different colors for different
-points. This is done by using a 2D image as a texture, which can be applied to a surface
+points. This is often done by using a 2D image as a texture. The image can be applied to a surface
 so that the image looks like it is "painted" onto the surface.
 However, texture can also refer to changing values for things like transparency or
 "bumpiness."  Textures allow us to add detail to a scene without using a huge number of

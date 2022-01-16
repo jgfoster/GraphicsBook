@@ -27,7 +27,7 @@ In the source code of a web page, a canvas element is created with code of the f
 
 <p>To draw on a canvas, you need a graphics context. A graphics context is an object that
 contains functions for drawing shapes. It also contains variables that record the current graphics 
-state, including  things like the current drawing color, transform, and font. Here, we will 
+state, including things like the current drawing color, transform, and font. Here, we will 
 generally use <i>graphics</i> as the name of the variable that refers to the graphics context, 
 but the variable name is, of course, up to the programmer. This graphics context plays the same role in 
 the canvas API that a variable of type <classname>Graphics2D</classname> plays in Java.
@@ -86,7 +86,7 @@ a very minimal web page that uses canvas graphics:
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 
-<np>For a more complete, though still minimal, example, look at the sample page
+<np>For a more complete, though still minimal, example, you can look at the sample page
 <sourceref href="canvas2d/GraphicsStarter.html"/>. (You should look at the page
 in a browser, but you should also read the source code.)  This example shows
 how to draw some basic shapes using canvas graphics, and you can use it as
@@ -107,7 +107,7 @@ and mouse events.</np>
 <p>The default coordinate system on a canvas is the usual: The unit of measure is one pixel;
 (0,0) is at the upper left corner; the <i>x</i>-coordinate increases to the right;
 and the <i>y</i>-coordinate increases downward.  The range of <i>x</i> and <i>y</i>
-values are given by the <i>width</i> and <i>height</i> properties of the <tag>canvas</tag>
+values is given by the <i>width</i> and <i>height</i> properties of the <tag>canvas</tag>
 element. The term "pixel" here for the unit of measure is not really correct. 
 Probably, we should say something like "one nominal pixel."
 The unit of measure is one pixel at typical desktop resolution with no magnification.
@@ -405,8 +405,8 @@ procedurally or as a data structure. It's pretty much the same as in Java.
 In fact, you should see that the basic concepts that you learned about
 transformations and modeling carry over to the canvas graphics API. Those
 concepts apply very widely and even carry over to 3D graphics APIs, with
-just a little added complexity. The demo program
-<demoref href="c2/cart-and-windmills.html"/> from <localref href="graphics2d.4"/>
+just a little added complexity. The sample web page
+<sourceref href="canvas2d/HierarchicalModel2D.html"/>
 implements hierarchical modeling using the 2D canvas API.</p>
 
 <break/>
@@ -604,7 +604,7 @@ Here is the function that we call to do this:</p>
 <np>The floating point array, <i>smudgeColorArray</i>, will be used for computing new
 color values for the image as the mouse moves. The color values
 from this array will be copied into the image data object, <i>smudgeImageData</i>, 
-which will them be used to put the color values into the image. This is done in
+which will then be used to put the color values into the image. This is done in
 another function, which is called for each point that is visited as the user
 drags the Smudge tool over the canvas:</np>
 

@@ -165,8 +165,8 @@ to the basic idea, but there is always a line segment along which the color vari
 The color is specified at the endpoints of the line segment, and possibly at additional
 points; between those points, the color is <word term="interpolation">interpolated</word>.
 The color can also be extrapolated to other points on the line that contains the line segment 
-but lying outside the line segment; this can be done either by repeating the pattern from the 
-line segment or by simply extending the color from the nearest endpoint. For a
+but lying outside the line segment; this can be done either by repeating the pattern from the line segment
+or by simply extending the color from the nearest endpoint. For a
 <newword>linear gradient</newword>, the color is constant along lines perpendicular to the basic
 line segment, so you get lines of solid color going in that direction.
 In a <newword>radial gradient</newword>, the color is constant along circles centered at one

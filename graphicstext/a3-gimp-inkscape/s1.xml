@@ -10,26 +10,43 @@ from scratch and for modifying existing images. This book covers only
 a very limited subset of Gimp's features. It's easy to find
 documentation and tutorials on Gimp, starting with its "Help" menu.</p1>
 
-<p>Gimp can be downloaded from <a href="http://www.gimp.org">http://www.gimp.org</a>. It is 
-available for Linux, Mac&nbsp;OS, and Windows. This appendix is based
-on Gimp&nbsp;2.10, which is the latest stable version as of February, 2020.
-Documentation is available on-line at <a href="https://docs.gimp.org">https://docs.gimp.org</a>.
+<p>Gimp can be downloaded from <a href="https://www.gimp.org">https://www.gimp.org</a>. It is 
+available for Linux, Mac&nbsp;OS, and Windows. (For Linux, consider installing it from your
+distribution's software repository.)  This section was originally written for
+Gimp&nbsp;2.8. The current stable version as of July, 2021 is Gimp&nbsp;2.10,
+and version 3.00 is under development. If you are using version 2.10, you will see additional
+tools and options, but everything covered in this section is still valid. I will note
+a few differences as we go along.
+User manuals are available on-line at <a href="https://docs.gimp.org/2.8/en/">https://docs.gimp.org/2.8/en</a>
+and <a href="https://docs.gimp.org/2.10/en/">https://docs.gimp.org/2.10/en/</a>.
 </p>
 
 <p>Note that when you start Gimp 2.10 for the first time it will be in 
 "single-window mode,"
 which organizes all of Gimp's open images and dialogs into one window.
-You will see a window with a central area where you can work on
+To use it, just  enable the option "Single-Window Mode" in the "Windows" menu.
+You will then see a window with a central area where you can work on
 images, with dialogs along the left and right edges. The central
-editing area uses tabs when multiple images are open. There are
-also tabs on the dialog window to the right that allow you to
-access several different dialogs.</p>
-
-<p>If you ever mess up the original window layout, it can be difficult to
+editing area uses tabs when multiple images are open. 
+If you ever mess up the original window layout, it can be difficult to
 figure out how to get it back. To do that:  Select the "Preferences" command
 from the menu. Go to the "Window Management" section
 of the preferences. Click "Reset Saved Window Positions to Default
-Values."  Restart Gimp for the changes to take effect.</p>
+Values."  Restart Gimp for the changes to take effect. And finally,
+switch back to single-window mode by selecting the option in the "Windows"
+menu.</p>
+
+<p><b>About Gimp 2.10</b>:  Gimp 2.10 will start up in single-window mode by
+default, but there is still an option for multi-window mode in the "Windows" menu
+if you prefer that mode.
+However, I would recommend changing some interface preferences. Open the
+"Preferences" dialog from the "Edit" menu (or from the
+"Gimp&nbsp;2.10" menu on Mac), and look under the "Interface" section in the list on the
+left. Under the "Toolbox" section, I strongly recommend turning off the
+"Use tool groups" option. This will let you see all the tools at once, similar
+to what is shown in the image below, rather than hiding many of them in groups.
+Under "Theme" in the "Interface" section, I prefer the "Light" or "System"
+theme. And under "Icon Theme", I much prefer "Color" or "Legacy".</p>
 
 <break/>
 
@@ -82,8 +99,8 @@ The Brush is probably the most basic and useful tool:</np>
 
 <p>You'll notice that Gimp does not have tools for drawing shapes
 such as rectangles and circles. However, it is possible to draw
-such shapes using <i>selections</i>. The selection tools&mdash;at
-the top of the Toolbox&mdash;can be used to select regions in the
+such shapes using <i>selections</i>. Selection tools
+can be used to select regions in the
 image. For example, click the Rectangle tool, and drag the
 mouse on the image to select a rectangular region. 
 One of the settings in the "Tool Options" dialog for the Rectangle Select tool allows you
@@ -139,7 +156,18 @@ the color sequence to start, drag the mouse while holding down the button,
 and release the button at the point where you want the color sequence to end.
 Remember that you can limit the area affected by the gradient by
 making a selection; that is, you can fill a shape with a gradient by creating the shape as a selection
-and then applying the gradient tool. Here is an image that was created entirely with a few
+and then applying the gradient tool.</p>
+
+<p>The gradient tool is somewhat changed in Gimp 2.10. By default, after you draw
+a gradient, a line remains on the screen with dots along the line showing the
+gradient's color stops. You can edit the gradient by dragging the dots. Or click
+one of the dots and you will get a dialog where you can edit the color. Press return
+to finish editing. This can get annoying if you don't actually want to edit the
+gradient. If you turn on "Instant mode" in the Tool Options for the gradient tool,
+then you will not get the editing option when you draw a gradient.</p>
+
+<p>As an example of what you can do with gradients, 
+here is an image that was created entirely with a few
 applications of the gradient tool:</p>
 
 <img src="gimp-gradients.png" width="256" height="256" tex="gimp-gradients.eps" texscale="0.7"/>
@@ -158,13 +186,14 @@ selection, so only that part was drawn.</np>
 
 <p>You will want to try some of the other tools as well, such as the Smudge tool,
 the Eraser, and the Clone tool. For help on using any tool, look at the
-message in the bottom of the image window while using the tool. Consult the
+message at the bottom of the image window while using the tool. Consult the
 user manual if you want to learn more.</p>
 
 <break/>
 
 <p>In addition to its painting tools, Gimp has a wide variety of color manipulation tools
-that apply to an entire image at once. Look for them in the "Color" menu and in the
+that apply to an entire image at once (or just to the selected part of
+the image, if there is a selection). Look for them in the "Color" menu and in the
 "Filter" menu. These tools are often used to modify the colors in photographs or to apply 
 effects to images. </p>
 
@@ -198,7 +227,7 @@ image, one for making the image look like an old photograph,
 and one to make it look like it's made out of cloth. Some filters
 in Gimp generate images from nothing, and some do even more
 complicated things. You will find Gimp's filters in the
-"Filter" menu. We will not discuss them further here, but
+"Filter" menu. I will not discuss them further here, but
 some interesting filters to try include:  Distorts/Emboss, Distorts/Mosaic,
 Distorts/Ripple, Edge-Detect, Artistic/Apply-Canvas, Artistic/Cubism,
 Decor/Old-Photo, and Map/Warp.</p>
@@ -214,7 +243,7 @@ One of the most important things to understand about them
 is that a pixel can be "partially selected."
 That is, a selection is not necessarily just a collection of pixels; it's really an assignment
 of a "degree of selectedness" to each pixel. For example, the Cut command
-(Control-X) deletes the content of a selection. It sets a fully selected pixel
+(Control-X or Command-X on Mac) deletes the content of a selection. It sets a fully selected pixel
 to transparent (if the image has an <word term="alpha color component">alpha component</word>) 
 or to the background color (if there is no alpha component). However, a partially selected pixel will only
 be partially cut. If there is an alpha component, the pixel becomes translucent;
@@ -266,9 +295,10 @@ Paths are not visible in the actual image, but you
 can "stroke" a path to make it visible. Paths are not selections, but they are closely
 related. You can convert a path into a selection, or a selection into a path.</p>
 
-<p>Paths are created using the Path Tool (the eighth tool in the Toolbox). To create
+<p>Paths are created using the Paths Tool. To create
 a path, click a sequence of points with the Path Tool. Optionally, you can make a closed
-path by control-clicking back on the first point. This gives a polygonal path.
+path by control-clicking back on the first point (or command-clicking on a Mac). 
+This gives a polygonal path.
 You can then drag on one of the sides of the polygon to change it from a straight line
 into a curve. When you do that, the usual Bezier control handles will appear at the
 endpoints of the curve. You can drag the ends of the control handles for finer control
@@ -279,16 +309,18 @@ handles are constrained to be a straight line and to have the same length, which
 the curve smooth at that point.</p>
 
 <p>Paths are ordinarily not visible except when they are being edited with the
-Path Tool. However, any path that you create is saved the to Path Dialog. The Path
-Dialog is one of the four tabbed dialogs in the upper right of the Gimp window. Initially,
-it is hidden by the Layers Dialog. Click the Paths tab to see the Path Dialog. (See the
-illustration of the Layers Dialog, later in this section.)  The Paths Dialog contains a list of paths.
+Paths Tool. However, any path that you create is saved to the Path Dialog. The Path
+Dialog is one of a group of tabbed dialogs that you will find along the right
+edge of the Gimp window. (See the
+illustration of the Layers Dialog, later in this section.)  Initially,
+it is hidden behind the Layers Dialog. Click the Paths tab to see the 
+Path Dialog. The Paths Dialog contains a list of paths.
 Right-click one of the paths in the list to get a popup menu. From the popup menu, choose "Path Tool"
 to make the path visible again in the image and to switch to the Path Tool so that the path
 can be edited. Choose "Path to Selection" from the popup menu to convert the
 path into a selection; all of the pixels that lie inside the path will be selected.
 Choose "Stroke Path" to draw a line or drag a paint tool along the path. A dialog box will
-open to let you set the properties of the stroke. There is also a command "Select to Path"
+open to let you set the properties of the stroke. There is also a command "Selection to Path"
 that will convert the current selection into a path; this command is available in the popup
 menu if you click anywhere in the Path Dialog.</p>
 
@@ -305,7 +337,7 @@ menu if you click anywhere in the Path Dialog.</p>
 from a stack of "layers."  Each layer is itself an image. The final image is composed by
 starting with a blank canvas, then copying each layer to the canvas, one after the other.
 A layer doesn't necessarily have to be
-the same size as the canvas. A layer be translucent, and can have transparent parts.
+the same size as the canvas. A layer can be translucent, and can have transparent parts.
 The advantage of layers is that you can edit one layer without changing the others. You can
 move a layer (with the Move Tool), and the stuff in the lower layers will be still be there.
 While layers are used mostly in advanced applications, they are an an important feature
@@ -317,7 +349,8 @@ That layer is called the active layer. This can be annoying if you lose track of
 layer is active. It can be especially annoying if the active layer is hidden in the
 visible image or has been made completely transparent!</p>
 
-<p>Layers are listed in the Layer Dialog, one of the four tabbed dialogs in the upper right corner of
+<p>Layers are listed in the Layer Dialog, one of the tabbed dialogs in the 
+upper right or lower right corner of
 the Gimp window. In the list of layers, the active layer is highlighted. Click a different
 layer in the list to make it active. Right-click the dialog for a popup menu of commands for
 working with layers. Some of the commands are duplicated in the "Layer" menu.
@@ -328,7 +361,7 @@ Layer Dialog from a project that uses four layers:</p>
 <img src="gimp-layers.png" width="455" height="415" tex="gimp-layers.eps" texscale="0.8"/>
 
 <p>A new image will only have one layer. You can add a new layer with a command in the
-"Layer" menu or in the popup menu that you get by clicking the Layer Dialog. New layers
+"Layer" menu or in the popup menu that you get by right-clicking the Layer Dialog. New layers
 are also added automatically in some cases. The Text Tool, in particular, always creates
 a new layer. Text layers are special. They only contain text, and they can only be
 edited with the text tool. (More exactly, if you edit a text layer with some other tool,

@@ -10,7 +10,7 @@ expensive computers designed for intensive graphical applications. (Today,
 you probably have more graphics computing power on your smart phone.)  OpenGL
 is supported by the graphics hardware in most modern computing devices, including
 desktop computers, laptops, and many mobile devices. This section will give
-you a bit of background about the history of OpenGL and about the graphics
+you a bit of background about the history of OpenGL and about the graphics 
 hardware that supports it.</p1>
 
 <p>In the first desktop computers, the contents of the screen were managed
@@ -22,8 +22,8 @@ Computers are much faster in general, of course, but the big change is that
 in modern computers, graphics processing is done by a specialized component
 called a <newword>GPU</newword>, or Graphics Processing Unit. A GPU includes processors
 for doing graphics computations; in fact, it can include a large number of such
-processors that work in parallel to greatly speed up graphical operations.
-It also includes its own dedicated memory for storing things like images and
+processors that work in parallel to greatly speed up graphical operations. 
+It also includes its own dedicated memory for storing things like images and 
 lists of coordinates. GPU processors have very fast
 access to data that is stored in GPU memory&mdash;much faster than their access to data
 stored in the computer's main memory.</p>
@@ -38,22 +38,34 @@ OpenGL in the sense that they can understand OpenGL commands, or at least
 that OpenGL commands can efficiently be translated into commands that the
 GPU can understand.</p>
 
-<p>OpenGL is not the only graphics API. The best-known alternatives are probably the proprietary APIs used by Apple and Microsoft. Apple's MacOS uses an API known as Metal, while Microsoft Windows uses Direct3D. Nevertheless, OpenGL can currently still be used on MacOS and Windows. Furthermore, a newer open API named Vulkan has been defined as a replacement for OpenGL itself. Vulkan is a complex, low-level API designed more for speed and efficiency rather than ease-of-use, and it will likely not completely replace OpenGL for some time, if ever. Metal, Direct3D, and Vulkan are not covered in this textbook. We are using OpenGL since it provides an easier introduction to 3D graphics and because it is still the basis for 3D graphics in Web browsers.</p>
+<p>OpenGL is not the only graphics API. The best-known alternatives are probably
+the proprietary APIs used by Apple and Microsoft. Apple's MacOS uses an API known
+as Metal, while Microsoft Windows uses Direct3D. Nevertheless, OpenGL
+can currently still be used on MacOS and Windows. Furthermore, a newer open API named
+Vulkan has been defined as a replacement for OpenGL itself.
+Vulkan is a complex, low-level
+API designed more for speed and efficiency rather than ease-of-use, and it will likely
+not completely replace OpenGL for some time, if ever. Metal, Direct3D, and Vulkan
+are not covered in this textbook. We are using OpenGL since it provides an easier
+introduction to 3D graphics and because it is still the basis for 3D graphics in
+Web browsers. </p>
 
 <break/>
 
 <p>We have said that OpenGL is an API, but in fact it is a series of APIs that have
-been subject to repeated extension and revision. The current version, in 2021, is 4.6, which was first released in 2017, and it is very different from the 1.0 version from 1992. Furthermore,
+been subject to repeated extension and revision. The current version, in 2021,
+is 4.6, which was first released in 2017. It is very different from the 1.0 version from 1992.
+Furthermore,
 there is a specialized version called OpengGL&nbsp;ES for "embedded systems" such
 as mobile phones and tablets. And there is also WebGL, for use in Web browsers,
-which is basically a port of OpenGL&nbsp;ES. It will be useful to know something
+which is basically a port of OpenGL ES. It will be useful to know something
 about how and why OpenGL has changed.</p>
 
 <p>First of all, you should know that OpenGL was designed as a "client/server"
 system. The server, which is responsible for controlling the computer's
 display and performing graphics computations, carries out commands issued by the
 client. Typically, the server is a GPU, including its graphics processors and memory.
-The server executes OpenGL commands. The client is the CPU in the same computer, along
+The server executes OpenGL commands. The client is the CPU in the same computer, along 
 with the application program that it is running. OpenGL commands come from the
 program that is running on the CPU. However,
 it is actually possible to run OpenGL programs remotely over a network. That
@@ -82,7 +94,7 @@ be transmitted to the GPU to draw a given image.</p>
 Specifying a primitive means specifying <word term="coordinate system">coordinates</word>
 and <word term="attribute">attributes</word> for each of its <word term="vertex">vertices</word>. In the
 original OpenGL&nbsp;1.0, a separate command was used to specify the coordinates of each vertex,
-and a command was needed each time the value of an attribute changed. To draw a single
+and a command was needed each time the value of an attribute changed. To draw a single 
 triangle would require three or more commands. Drawing a complex object made up of
 thousands of triangles would take many thousands of commands. Even in OpenGL&nbsp;1.1,
 it became possible to draw such an object with a single command instead of thousands. All the data
@@ -110,7 +122,7 @@ complicated! OpenGL was a giant machine, with new pieces always being tacked ont
 but still not pleasing everyone. The real solution was to make the machine <b>programmable</b>.
 With OpenGL 2.0, it became possible to write programs to be executed as part of the
 graphical computation in the GPU. The programs are run on the GPU at GPU speed.
-A programmer who wants to use a new graphics technique can write a program to
+A programmer who wants to use a new graphics technique can write a program to 
 implement the feature and just hand it to the GPU. The OpenGL API doesn't have to
 be changed. The only thing that the API has to support is the ability to send programs
 to the GPU for execution.</p>
@@ -135,8 +147,8 @@ all the original features of OpenGL are still supported in desktop versions of O
 probably continue to be available in the future. On the embedded system side, however,
 with OpenGL&nbsp;ES&nbsp;2.0 and later, the use of shaders is mandatory, and a large part
 of the OpenGL&nbsp;1.1 API has been completely removed.
-WebGL, the version of OpenGL for use in web browsers,
-is based on OpenGL&nbsp;ES&nbsp;2.0, and it also requires shaders to get anything at all done.
+WebGL, the version of OpenGL for use in web browsers, 
+is based on OpenGL&nbsp;ES, and it also requires shaders to get anything at all done.
 Nevertheless, we will begin our study of OpenGL with version 1.1. Most of the concepts and
 many of the details from that version are still relevant, and it offers an easier entry point
 for someone new to 3D graphics programming.</p>

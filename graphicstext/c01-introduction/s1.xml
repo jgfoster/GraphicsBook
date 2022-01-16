@@ -12,7 +12,7 @@ topic in its own right. Furthermore, a lot of ideas carry over
 from two dimensions to three. So, it makes sense to start
 with graphics in 2D.</p1>
 
-<p>An image that is presented on a computer screen is made up of <newword term="pixel">pixels</newword>. The screen
+<p>An image that is presented on the computer screen is made up of <newword term="pixel">pixels</newword>. The screen
 consists of a rectangular grid of pixels, arranged in rows and columns. The pixels are small enough that
 they are not easy to see individually. In fact, for many very high-resolution displays, they become
 essentially invisible. At a given time, each pixel can
@@ -140,9 +140,8 @@ Short introductions to Gimp and Inkscape can be found in <localref href="gimp"/>
 There are many ways to represent an image as data stored in a file. If the original image
 is to be recovered from the bits stored in the file, the representation must follow some exact, known
 specification. Such a specification is called a graphics file format. Some popular graphics file
-formats include GIF, PNG, JPEG, and SVG. Most images used on the Web are GIF, PNG, or JPEG.
-Modern web browsers also have support for SVG images.
-</p>
+formats include GIF, PNG, JPEG, WebP, and SVG. Most images used on the Web are GIF, PNG, or JPEG,
+but most browsers also have support for SVG images and for the newer WebP format.</p>
 
 <p>GIF, PNG, JPEG, and WebP are basically raster graphics formats; an image is specified by storing a color 
 value for each pixel. GIF is an older file format,
@@ -163,7 +162,7 @@ This might not sound like a good idea, but in fact the difference is often not v
 using lossy compression usually permits a greater reduction in the size of the compressed data.
 JPEG generally works well for photographic images, but not as well for images that have sharp edges
 between different colors. It is especially bad for line drawings and images that contain text; PNG is 
-the preferred format for such images.  WebP can use both lossless and lossy compression.
+the preferred format for such images. WebP can use both lossless and lossy compression.
 </p>
 
 <p>SVG, on the other hand, is fundamentally a vector graphics format (although SVG images can include
@@ -194,7 +193,7 @@ or from bottom-to-top.)</p>
 
 <p>For a vector image, it is natural to use real-number coordinates. The coordinate system for an
 image is arbitrary to some degree; that is, the same image can be specified using different coordinate
-systems. We do not say a lot about coordinate systems here, but they will be a major
+systems. We do not want to say a lot about coordinate systems here, but they will be a major
 focus of a large part of the book, and they are even more important in three-dimensional graphics
 than in two dimensions.</p>
 
