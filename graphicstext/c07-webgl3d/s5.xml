@@ -17,8 +17,8 @@ These standard extensions are documented at
 </p1>
 
 <p>Standard OpenGL also has an extension mechanism. Historically, many features from extensions in
-one version of OpenGL have become required features in later versions. The same is likely to be
-true for WebGL extensions. In fact, some of the WebGL 1.0 extensions have been incorporated as
+one version of OpenGL have become required features in later versions. The same is
+true for WebGL extensions:  Some of the WebGL&nbsp;1.0 extensions have been incorporated as
 required features in WebGL&nbsp;2.0.</p>
 
 <p>This section covers the WebGL extension mechanism, and it discusses a few of the standard
@@ -34,10 +34,11 @@ handle that case very well. (Filtering was covered in <localref href="gl1light.3
 A better result can be obtained, at the cost of additional computation, using something called
 <newword>anisotropic filtering</newword>, which samples the texture taking the trapezoidal shape
 into account. Many <word term="GPU">GPUs</word> can do anisotropic filtering. It is not a required feature
-in WebGL implementations, but it is commonly available as an extension.</p>
+in WebGL implementations, but it is commonly available as an extension. The anisotropic filtering
+extension can be used with both WebGL&nbsp;1.0 and WebGL&nbsp;2.0, in the same way.</p>
 
-<p>The sample program <sourceref href="webgl/anisotropic-filtering.html"/> shows how to use anisotropic
-filtering in WebGL. It shows a large plane textured with a brick image that can be viewed from a sharp,
+<p>The sample program <sourceref href="webgl/anisotropic-filtering.html"/> shows how to use the anisotropic
+filtering extension. It shows a large plane textured with a brick image that can be viewed from a sharp,
 oblique angle. If the extension is available, then the user can turn anisotropic filtering on and off.
 If it is not available, the program will still draw the scene, but only using standard filtering.
 Here are two images from the program. Anisotropic filtering is used in the image on the right.
@@ -50,8 +51,8 @@ the viewer:</p>
 extension, where <i>name</i> is a string containing the name of the extension. The return value of the function is <i>null</i>
 if the extension is not available, and you should always check the return value before attempting to 
 use the extension. If the return value is not null, then it is a JavaScript object. The object might contain,
-for example, constants that are meant to be passed to WebGL API functions in order to make use of the functionality
-of the extension.</p>
+for example, constants that are meant to be passed to WebGL functions in order to make use of the capabilities
+of the extension. It can also contain completely new functions.</p>
 
 <p>The name of the anisotropic filtering extension is "EXT_texture_filter_anisotropic."  (Names are
 not case-sensitive.) To test for
@@ -100,7 +101,8 @@ have, but it will still work (and only a very observant user is likely to notice
 and "WEBGL_color_buffer_float". The first of these makes it possible to use textures
 in which color component values are floating-point numbers, instead of eight-bit integers.
 The second makes it possible to render to such a texture by using it as the color buffer in a
-<word>framebuffer</word>.</p>
+<word>framebuffer</word>. (These extensions are only for WebGL&nbsp;1.0, but
+there is a similar WebGL&nbsp;2.0 extension, EXT_color_buffer_float.)</p>
 
 <p>Why would someone want to do this?  Eight-bit integers are fine for representing colors visually,
 but they don't have enough precision for doing accurate calculations. 
@@ -158,7 +160,7 @@ as floating point values in the GPU, not as eight-bit integers.</p>
 
 <p>We use this technique in the sample program <sourceref href="webgl/image-evolver.html"/>.
 In that program, the problem is to find the average <i>difference</i> in color between two
-images. We start by drawing the two images to two textures. We then
+images. I start by drawing the two images to two textures. We then
 render a difference image, in which the color of a pixel is the
 absolute value of the difference between the colors of the same pixel in the two textures.
 This is done with another special-purpose shader program. We then apply the above averaging
@@ -170,11 +172,12 @@ Felix Taschbach and Pieter Schaap, who worked on a similar program for their fin
 though they didn't use the GPU.)  In the program, the average difference between the original
 image and an approximation is used as a measure of how good the approximation is.
 I used a very simple grayscale image as the goal, with
-approximations made from triangles. You don't need to know anything about the genetic algorithm, 
+approximations made from small squares. You don't need to know anything about the genetic algorithm, 
 especially since the program has no practical purpose. However,
 the source code is heavily commented if you want to try to understand it. Here is a screenshot
-from one run of the program, showing the original image and the best approximation produced after running
-the genetic algorithm for several hundred generations:</p>
+from one particularly successful run of the program, showing the original image and 
+the best approximation produced after running
+the genetic algorithm for 7500 generations:</p>
 
 <img src="image-evolver.png" width="534" height="269" tex="image-evolver.eps" texscale="0.75"/>
 
@@ -223,11 +226,61 @@ value is legal in <i>gl.readPixels</i> only because the extensions have been act
 
 </subsection>
 
+<subsection title="Instanced Drawing in WebGL 1.0" id="webgl3d.5.3a">
+
+<p><localref href="webgl.1.7"/> and <localref href="webgl.1.8"/> discussed two features
+of WebGL&nbsp;2.0, <word term="VAO">Vertex Array Objects</word> and <word>instanced drawing</word>.
+Although these features are not a standard part of WebGL&nbsp;1.0, both are available as
+optional WebGL&nbsp;1.0 extensions. VAOs are enabled by the extension
+"OES_vertex_array_object", while instanced drawing is enabled by
+"ANGLE_instanced_arrays". As an example, we look briefly at instanced drawing in WebGL&nbsp;1.0.
+</p>
+
+<p>The sample WebGL 1.0 program <sourceref href="webgl/instancing-test-webgl1.html"/> uses
+the instanced drawing extension. It is a copy of the sample WebGL&nbsp;2.0 program from
+<localref href="webgl.1.8"/>, modified to use version&nbsp;1.0, but with exactly the
+same functionality. To use instanced drawing in WebGL&nbsp;1.0, the appropriate
+extension has to be enabled:</p>
+
+<pre>instancedDrawExt = gl.getExtension("ANGLE_instanced_arrays");
+if (!instancedDrawExt) {
+    throw new Error("WebGL 1.0 Instanced Arrays extension is required.");
+}</pre>
+
+<np>The extension object, <i>instancedDrawExt</i>, contains functions that are equivalent to the WebGL&nbsp;2.0
+functions for instanced drawing:  <i>gl.vertexAttribDivisor</i>().
+<i>gl.drawArraysInstanced</i>(), and <i>gl.drawElementsInstanced</i>().
+However, the functions are properties of the extension object, not of the graphics context&nbsp;<i>gl</i>,
+and their names have the word "ANGLE" appended. So, the command</np>
+
+<pre>gl.drawArraysInstanced(gl.TRIANGLE_FAN, 0, 64, DISK_COUNT);</pre>
+
+<np>from the original WebGL 2.0 program is replaced by</np>
+
+<pre>instancedDrawExt.drawArraysInstancedANGLE(gl.TRIANGLE_FAN, 0, 64, DISK_COUNT);</pre>
+
+<np>in the WebGL 1.0 program. And</np>
+
+<pre>gl.vertexAttribDivisor(a_color_loc,1);</pre>
+
+<np>becomes</np>
+
+<pre>instancedDrawExt.vertexAttribDivisorANGLE(a_color_loc,1);</pre>
+
+<p>Note that, in general, a WebGL 1.0 program that does <b>not</b> use any 
+extensions will work as a WebGL&nbsp;2.0 program without any
+modifications. However, if the WebGL&nbsp;1.0 program uses extensions
+that are no longer available or no longer needed in WebGL&nbsp;2.0,
+some work will be required to convert the program to WebGL&nbsp;2.0.
+</p>
+
+</subsection>
+
 <subsection title="Deferred Shading" id="webgl3d.5.3">
 
-<p>We will discuss one more WebGL extension, one that is useful for an important
-rendering technique called <newword>deferred shading</newword>. We don't have a sample
-program for deferred rendering, and we will only discuss it in general terms.</p>
+<p>I will discuss one more WebGL 1.0 extension, one that is useful for an important
+rendering technique called <newword>deferred shading</newword>. I don't have a sample
+program for deferred rendering, and I will only discuss it in general terms.</p>
 
 <p>Deferred shading is used as
 an optimization when rendering complex scenes, and it is often used to speed up rendering
@@ -260,7 +313,7 @@ Shader programs are free to interpret data in a texture however they like.</p>
 
 <break/>
 
-<p>A WebGL shader can write data to a texture, using a framebuffer. But standard WebGL can only write
+<p>A WebGL shader can write data to a texture, using a framebuffer. But standard WebGL&nbsp;1.0 can only write
 to one framebuffer at a time. Now, it would be possible to use a separate pass for each texture that
 we need to compute, but that would involve a lot of redundant calculations, which is what we are
 trying to avoid. What we need is a WebGL extension that makes it possible for a shader to write
@@ -335,7 +388,7 @@ are attached at attachment points 2 and 3, you would call</np>
 
 <p>With all that setup, you are ready to do the first pass for deferred shading.
 For the subsequent passes, you would use a different shader, with a single color
-buffer (and with the blend function set to do additive blending). For those passes,
+buffer. For those passes,
 you want to run the fragment shader once for each pixel in the image. The fragment
 shader will use the pixel data that was saved in the first pass, together with
 other information such as light properties, to compute the output color for the pixel.
@@ -346,6 +399,80 @@ single rectangle that covers the image.</p>
 a lot of details to get right in the implementation. Deferred shading is just
 one of many tricks that are used by video game programmers to improve the rendering
 speed for their games.</p>
+
+</subsection>
+
+<subsection title="Multiple Draw Buffers in WebGL 2.0" id="webgl3d.5.4">
+
+<p>The ability to write to multiple draw buffers is a standard part of WebGL 2.0. The sample
+program <sourceref href="webgl/multiple-draw-buffers-webgl2.html"/> is a simple demonstration.
+This program takes a sample image and breaks it up into three separate images that show
+the red, green, and blue color components from the original image. It does that
+by attaching three textures to a framebuffer, and writing each color component to
+one of the textures. The image from each texture is then copied to the screen
+as a grayscale image.</p>
+
+<p>The program has to create and allocate storage for three texture objects, and bind them
+to a frame buffer as color buffers. Here is the code that does this:</p>
+
+<pre>framebuffer = gl.createFramebuffer();
+gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
+texture0 = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, texture0);
+gl.texStorage2D(gl.TEXTURE_2D, 1, gl.R8, 320, 399);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, 
+               gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture0, 0);
+texture1 = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, texture1);
+gl.texStorage2D(gl.TEXTURE_2D, 1, gl.R8, 320, 399);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, 
+               gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, texture1, 0);
+texture2 = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, texture2);
+gl.texStorage2D(gl.TEXTURE_2D, 1, gl.R8, 320, 399);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, 
+               gl.COLOR_ATTACHMENT2, gl.TEXTURE_2D, texture2, 0);</pre>
+
+<np>The textures are created with format <i>gl.R8</i>, which stores one eight-bit unsigned
+integer per pixel; that is sufficient for a grayscale image. (For this format, an 8-bit
+integer is considered to be scaled to represent a color value in the range 0.0 to 1.0.)</np>
+
+<p>The function <i>gl.drawBuffers</i>() must be called to enable writing to multiple
+draw buffers and to specify the output destinations. The destinations are specified
+as an array of attachment points on the framebuffer:</p>
+
+<pre>gl.drawBuffers( [
+    gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1, gl.COLOR_ATTACHMENT2
+] );</pre>
+
+<p>The shader programs for this example are written in GLSL ES 3.00, which uses <i>out</i>
+variables in the fragment shader to send output to draw buffers. When there is a single
+<i>out</i> variable, it automatically sends output to the first draw buffer (draw buffer number
+zero). When there is more than one <i>out</i> variable, the destination number must be specified for
+every <i>out</i> variable using a <i>layout</i> qualifier. The <i>location</i> specified
+for an <i>out</i> variable in the fragment shader is an index into the array of attachment points
+that was passed to <i>gl.drawBuffers</i>(). As an example, here is the fragment shader
+from the sample program:</p>
+
+<pre>#version 300 es
+precision mediump float;
+uniform sampler2D u_picture; // texture containing original image
+in vec2 v_coords;
+layout(location = 0) out float red;   // write to draw buffer 0
+layout(location = 1) out float green; // write to draw buffer 1
+layout(location = 2) out float blue;  // write to draw buffer 2
+void main() {
+    vec4 color = texture(u_picture, v_coords);
+    red = color.r;
+    green = color.g;
+    blue = color.b;
+}</pre>
+
+<np>This fragment shader sends the separate RGB color components from the original image
+to the three textures that are attached to the framebuffer.</np>
+
+<p>This is a fairly simple and not-very-useful example of using multiple draw buffers,
+but it does illustrate all the steps that are required to do so.</p>
 
 </subsection>
 

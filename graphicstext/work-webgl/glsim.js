@@ -1,12 +1,29 @@
 "use strict";
 
+/*
+   glsim.js is written by David J. Eck (http://math.hws.edu/eck/index.html) for use
+   with his free, on-line computer graphics textbook, http://math.hws.edu/graphicsbook
+   It implements a subset of OpenGL 1.1 on top of WebGL. It uses some code from
+   gl-matrix.js (see below), and it can be freely used and distributed in any way
+   that is compatible with the glmatrix license.
+   
+   glsim.js is not well-tested and is not meant in any way as a serious implementation
+   of OpenGL 1.1.
+   
+   In October 2021, several modifications were made to glsim.js to fix errors and
+   make it more compatible with OpenGL 1.1. It was used in a number of OpenGL
+   assignments in a course based on the textbook. Labs from that course can be
+   found at http://math.hws.edu/eck/cs424/index_f21.html with labs 4, 5, 5, and 7
+   using glsim.
+*/
+
 /*-----------------------------------------------------------------------------
- *   This section copied from gl-matrix.js (http://glmatrix.com). Just the
+ *   This section copied from gl-matrix.js (http://glmatrix.net). Just the
  * parts of mat4 that are needed by GLSim are included here. This section
  * is subject to the original license, reproduced below. The software has
  * been modified by deleting unneeded parts and by moving and renaming one
- * function from mat3 into mat4 (mat4.normalTransformMatrix). Also, vec4.transformMat4
- * has been moved to mat4 and renamed to mat4.applyToVec4
+ * function from mat3 into mat4 (mat4.normalTransformMatrix). Also,
+ * vec4.transformMat4 has been moved to mat4 and renamed to mat4.applyToVec4
  */
 
 
@@ -886,126 +903,156 @@ GLSim.prototype._fixArrayForGL_QUADS = function(array, itemSize) {
 GLSim.lightCount = 4;
 GLSim.error = function(message) { throw message; },
 GLSim.currentContext = null;
-GLSim.vertexShaderSource =
-    "struct materialProperties {\n" +
-    "     vec3 ambient;\n" +
-    "     vec4 diffuse;\n" +
-    "     vec3 specular;\n" +
-    "     vec3 emissive;\n" +
-    "     float shininess;\n" +
-    "};\n" +
-    "struct lightProperties {\n" +
-    "   vec4 position;\n" +
-    "   vec3 diffuse;\n" +
-    "   vec3 specular;\n" +
-    "   vec3 ambient;\n" +
-    "   bool enabled;\n" +
-    "};\n" +
-    "attribute vec3 coords;\n" +
-    "attribute vec3 normal;\n" +
-    "attribute vec4 color;\n" +
-    "uniform vec3 front_ambient; \n" +
-    "uniform vec4 front_diffuse; \n" +
-    "uniform vec3 front_specular;\n" +
-    "uniform vec3 front_emissive;\n" +
-    "uniform float front_shininess;\n" +
-    "uniform vec3 back_ambient; \n" +
-    "uniform vec4 back_diffuse; \n" +
-    "uniform vec3 back_specular;\n" +
-    "uniform vec3 back_emissive;\n" +
-    "uniform float back_shininess;\n" +
-    "uniform mat3 normalMatrix;\n" +
-    "uniform bool unitNormals;\n" +
-    "uniform bool lit;\n" +
-    "uniform bool twoSided;\n" +
-    "uniform bool localViewer;\n" +
-    "uniform vec3 globalAmbient;\n" +
-    "uniform lightProperties light[" + GLSim.lightCount + "];\n" +
-    "uniform mat4 modelview;\n" +
-    "uniform mat4 projection;\n" +
-    "uniform mediump float pointSize;\n" +
-    "varying vec4 frontColor;\n" +
-    "varying vec4 backColor;\n" +
-    "materialProperties material;\n" +
-    "vec4 eyeCoords;\n" +
-    "vec3 tnormal;\n" +
-    "vec3 pointsToViewer;\n" +
-    "vec4 lighting(vec3 vertex, vec3 V, vec3 N) {\n" +
-    "       // A function to compute the color of this fragment using the lighting equation.\n" +
-    "       // vertex contains the coords of the points; V is a unit vector pointing to viewer;\n" +
-    "       // N is the normal vector. This function also uses the values in the global variables\n" +
-    "       // material, globalAmbient, and light[0]..light[7].\n" +
-    "   vec3 color = material.emissive + material.ambient * globalAmbient;\n" +
-    "   for (int i = 0; i < " + GLSim.lightCount + "; i++) {\n" +
-    "       if (light[i].enabled) {\n" +
-    "           color += material.ambient * light[i].ambient;\n" +
-    "           vec3 L;\n" +
-    "           if (light[i].position.w == 0.0) {\n" +
-    "              L = normalize( light[i].position.xyz );\n" +
-    "           }\n" +
-    "           else {\n" +
-    "              L = normalize( light[i].position.xyz/light[i].position.w - vertex );\n" +
-    "           }\n" +
-    "           if ( dot(L,N) > 0.0) {\n" +
-    "              vec3 R;\n" +
-    "              R = (2.0*dot(N,L))*N - L;\n" +
-    "              color += dot(N,L)*(light[i].diffuse*material.diffuse.rgb);\n" +
-    "              if ( dot(V,R) > 0.0)\n" +
-    "                 color += pow(dot(V,R),material.shininess) * (light[i].specular * material.specular);\n" +
-    "           }\n" +
-    "       }\n" +
-    "   }\n" +
-    "   return vec4(color, material.diffuse.a);\n" +
-    "}\n" +
-    "void main() {\n" +
-    "     eyeCoords = modelview * vec4(coords,1.0);\n" +
-    "     gl_Position = projection*eyeCoords;\n" +
-    "     gl_PointSize = pointSize;\n" +
-    "     if (!lit) {\n" +
-    "          frontColor = color;\n" +
-    "          return;\n" +
-    "     }\n" +
-    "     tnormal = normalMatrix*normal;\n" +
-    "     if (unitNormals) {\n" +
-    "          tnormal = normalize(tnormal);\n" +
-    "     }\n" +
-    "     if (localViewer) {\n" +
-    "          pointsToViewer = normalize(-eyeCoords.xyz/eyeCoords.w);\n" +
-    "     }\n" +
-    "     else {\n" +
-    "          pointsToViewer = vec3(0.0,0.0,1.0);\n" + 
-    "     }\n" +
-    "     if (twoSided) {\n" +
-    "          material = materialProperties(back_ambient, back_diffuse, back_specular, back_emissive, back_shininess);\n" +
-    "          backColor = lighting(eyeCoords.xyz/eyeCoords.w, pointsToViewer, -tnormal);\n" +
-    "     }\n" +
-    "     else {\n" +
-    "          backColor = vec4(1.0);  // will not be used\n" +
-    "     }\n" +
-    "     material = materialProperties(front_ambient, front_diffuse, front_specular, front_emissive, front_shininess);\n" +
-    "     frontColor = lighting(eyeCoords.xyz/eyeCoords.w, pointsToViewer, tnormal);\n" +
-    "}\n";
-GLSim.fragmentShaderSource =
-    "precision mediump float;\n" +
-    "uniform bool lit;\n" +
-    "uniform bool twoSided;\n" +
-    "uniform float pointSize;\n" +
-    "uniform int pointMode;\n" +
-    "varying vec4 frontColor;\n" +
-    "varying vec4 backColor;\n" +
-    "vec4 clr;\n" +
-    "void main() {\n" +
-    "     if (pointMode == 2 && pointSize > 1.5 && distance(gl_PointCoord,vec2(0.5)) > 0.5) {\n" +
-    "          discard;\n" +
-    "     }\n" +
-    "     if (!lit || !twoSided || gl_FrontFacing) {\n" +
-    "          clr = frontColor;\n" +
-    "     }\n" +
-    "     else {\n" +
-    "          clr = backColor;\n" +
-    "     }\n" +
-    "     gl_FragColor = clr;\n" +
-    "}\n";
+GLSim.error = function(message) {
+    if (window.console && console.log ) {
+        console.log("GLSim error: " + message);
+        if (console.trace) {
+            console.trace();
+        }
+        console.log("");
+    }
+    throw message;
+};
+GLSim.vertexShaderSource = function() {  // This is a function so it can incorporate the number of lights.
+          // NOTE:  I originally used type bool for shader variables that are logically boolean,
+          // but the resulting code didn't work in some WebGL implementations. So, I am using type int
+          // for boolean values, which seems to increase the number of implementations on which it works. 
+    return "struct materialProperties {\n" +
+        "     vec3 ambient;\n" +
+        "     vec4 diffuse;\n" +
+        "     vec3 specular;\n" +
+        "     vec3 emission;\n" +
+        "     float shininess;\n" +
+        "};\n" +
+        "struct lightProperties {\n" +
+        "   vec4 position;\n" +
+        "   vec3 diffuse;\n" +
+        "   vec3 specular;\n" +
+        "   vec3 ambient;\n" +
+        "   int enabled;\n" +
+        "};\n" +
+        "attribute vec3 coords;\n" +
+        "attribute vec2 texCoords;\n" +
+        "attribute vec3 normal;\n" +
+        "attribute vec4 color;\n" +
+        "attribute vec3 front_ambient; \n" +
+        "attribute vec4 front_diffuse; \n" +
+        "attribute vec3 front_specular;\n" +
+        "attribute vec3 front_emission;\n" +
+        "attribute float front_shininess;\n" +
+        "attribute vec3 back_ambient; \n" +
+        "attribute vec4 back_diffuse; \n" +
+        "attribute vec3 back_specular;\n" +
+        "attribute vec3 back_emission;\n" +
+        "attribute float back_shininess;\n" +
+        "uniform mat3 normalMatrix;\n" +
+        "uniform int unitNormals;\n" +
+        "uniform mediump int lit;\n" +       // mediump is here to match precision in the fragment shader
+        "uniform mediump int twoSided;\n" +
+        "uniform int localViewer;\n" +
+        "uniform vec3 globalAmbient;\n" +
+        "uniform lightProperties light[" + GLSim.lightCount + "];\n" +
+        "uniform mat4 modelview;\n" +
+        "uniform mat4 projection;\n" +
+        "uniform mat4 textureMatrix;\n" +
+        "uniform mediump float pointSize;\n" +
+        "varying vec4 frontColor;\n" +
+        "varying vec4 backColor;\n" +
+        "varying vec2 vTexCoords;\n" +
+        "materialProperties material;\n" +
+        "vec4 eyeCoords;\n" +
+        "vec3 tnormal;\n" +
+        "vec3 pointsToViewer;\n" +
+        "vec4 lighting(vec3 vertex, vec3 V, vec3 N) {\n" +
+        "       // A function to compute the color of this fragment using the lighting equation.\n" +
+        "       // vertex contains the coords of the points; V is a unit vector pointing to viewer;\n" +
+        "       // N is the normal vector. This function also uses the values in the global variables\n" +
+        "       // material, globalAmbient, and light[0]..light[7].\n" +
+        "   vec3 color = material.emission + material.ambient * globalAmbient;\n" +
+        "   for (int i = 0; i < " + GLSim.lightCount + "; i++) {\n" +
+        "       if (light[i].enabled != 0) {\n" +
+        "           color += material.ambient * light[i].ambient;\n" +
+        "           vec3 L;\n" +
+        "           if (light[i].position.w == 0.0) {\n" +
+        "              L = normalize( light[i].position.xyz );\n" +
+        "           }\n" +
+        "           else {\n" +
+        "              L = normalize( light[i].position.xyz/light[i].position.w - vertex );\n" +
+        "           }\n" +
+        "           if ( dot(L,N) > 0.0) {\n" +
+        "              vec3 R;\n" +
+        "              R = (2.0*dot(N,L))*N - L;\n" +
+        "              color += dot(N,L)*(light[i].diffuse*material.diffuse.rgb);\n" +
+        "              if ( dot(V,R) > 0.0)\n" +
+        "                 color += pow(dot(V,R),material.shininess) * (light[i].specular * material.specular);\n" +
+        "           }\n" +
+        "       }\n" +
+        "   }\n" +
+        "   return vec4(color, material.diffuse.a);\n" +
+        "}\n" +
+        "void main() {\n" +
+        "     eyeCoords = modelview * vec4(coords,1.0);\n" +
+        "     gl_Position = projection*eyeCoords;\n" +
+        "     gl_PointSize = pointSize;\n" +
+        "     vec4 transformedTexCoords = textureMatrix*vec4(texCoords,0,1);\n" +
+        "     vTexCoords = transformedTexCoords.xy;\n" +
+        "     if (lit == 0) {\n" +
+        "          frontColor = color;\n" +
+        "          return;\n" +
+        "     }\n" +
+        "     tnormal = normalMatrix*normal;\n" +
+        "     if (unitNormals != 0) {\n" +
+        "          tnormal = normalize(tnormal);\n" +
+        "     }\n" +
+        "     if (localViewer != 0) {\n" +
+        "          pointsToViewer = normalize(-eyeCoords.xyz/eyeCoords.w);\n" +
+        "     }\n" +
+        "     else {\n" +
+        "          pointsToViewer = vec3(0.0,0.0,1.0);\n" + 
+        "     }\n" +
+        "     if (twoSided != 0) {\n" +
+        "          material = materialProperties(back_ambient, back_diffuse, back_specular, back_emission, back_shininess);\n" +
+        "          backColor = lighting(eyeCoords.xyz/eyeCoords.w, pointsToViewer, -tnormal);\n" +
+        "     }\n" +
+        "     else {\n" +
+        "          backColor = vec4(1.0);  // will not be used\n" +
+        "     }\n" +
+        "     material = materialProperties(front_ambient, front_diffuse, front_specular, front_emission, front_shininess);\n" +
+        "     frontColor = lighting(eyeCoords.xyz/eyeCoords.w, pointsToViewer, tnormal);\n" +
+        "}\n";
+    };
+GLSim.fragmentShaderSource = function() {
+  return "precision mediump float;\n" +
+        "uniform int lit;\n" +
+        "uniform int twoSided;\n" +
+        "uniform int textured;\n" +
+        "uniform sampler2D texture;\n" +
+        "uniform float pointSize;\n" +
+        "uniform int pointMode;\n" +
+        "varying vec4 frontColor;\n" +
+        "varying vec4 backColor;\n" +
+        "varying vec2 vTexCoords;\n" +
+        "vec4 clr;\n" +
+        "void main() {\n" +
+        "     if (pointMode == 2 && pointSize > 1.5 && distance(gl_PointCoord,vec2(0.5)) > 0.5) {\n" +
+        "          discard;\n" +
+        "     }\n" +
+        "     if (gl_FrontFacing) {\n" +
+        "          clr = frontColor;\n" +
+        "     }\n" +
+        "     else if (lit == 0 || twoSided == 0) {\n" +
+        "          clr = frontColor;\n" +
+        "     }\n" +
+        "     else {\n" +
+        "          clr = backColor;\n" +
+        "     }\n" +
+        "     if (textured != 0) {\n" +
+        "         vec4 texclr = texture2D(texture,vTexCoords);\n" +
+        "         clr = clr*texclr;\n" +
+        "     }\n" +
+        "     gl_FragColor = clr;\n" +
+        "}\n";
+    };
 
 var  // enable/disable constants (used as indices into an array)
     GL_DEPTH_TEST = 0,
@@ -1918,119 +1965,162 @@ function glsimDrawModel(ifsModel) {  // ifsModel must have structure of objects 
 /*------------- SimpleRotator, which can be used independently or through glsimInstallRotator -----*
 
 /**
- * An object of type SimpleRotator can be used to implement a trackball-like mouse rotation
- * of a WebGL scene about the origin. Only the first parameter to the constructor is required.
- * When an object is created, mouse event handlers are set up on the canvas to respond to rotation.
- * The class defines the following methods for an object rotator of type SimpleRotator:
- *    rotator.setView(viewDirectionVector, viewUpVector, viewDistance) set up the view, where the
- * parameters are optional and are used in the same way as the corresponding parameters in the constructor;
- *    rotator.setViewDistance(viewDistance) sets the distance of the viewer from the origin without
- * changing the direction of view;
- *    rotator.getViewDistance() returns the viewDistance;
- *    rotator.getViewMatrix() returns a Float32Array representing the viewing transformation matrix
- * for the current view, suitable for use with gl.uniformMatrix4fv or for further transformation with
- * the glmatrix library mat4 class;
- *    rotator.getViewMatrixArray() returns the view transformation matrix as a regular JavaScript
- * array, but still represents as a 1D array of 16 elements, in column-major order.
- *
- * @param canvas the HTML canvas element used for WebGL drawing. The user will rotate the
- *    scene by dragging the mouse on this canvas. This parameter is required.
- * @param callback if present must be a function, which is called whenever the rotation changes.
- *    It is typically the function that draws the scene
- * @param viewDirectionVector if present must be an array of three numbers, not all zero. The
- *    view is from the direction of this vector towards the origin (0,0,0). If not present,
- *    the value [0,0,10] is used.
- * @param viewUpVector if present must be an array of three numbers. Gives a vector that will
- *    be seen as pointing upwards in the view. If not present, the value is [0,1,0].
- * @param viewDistance if present must be a positive number. Gives the distance of the viewer
- *    from the origin. If not present, the length of viewDirectionVector is used.
+ * A Camera object encapsulates the information needed to define a
+ * viewing transform and a projection for an OpenGL context. The
+ * apply method can be called to applied this information to
+ * a context. The default view is from the point (0,0,30),
+ * looking at (0,0,0), with (0,1,0) pointing upwards on the screen.
+ * The default projection is a perspective projection. The
+ * x and y limits on the screen include at least -5 to 5. Limits
+ * in either the x or y direction will be expanded if necessary
+ * to match the aspect ratio of the screen. And the view volume
+ * extends from -10 to 10 along the z-axis. Only the default
+ * constructor exists. Non-default properties must be set by
+ * calling methods.
+ *     The camera comes along with a simulated trackball that
+ * lets the user rotate the view by dragging on the drawing
+ * surface. See the installTrackball() method.
  */
-function SimpleRotator(canvas, callback, viewDirectionVector, viewUpVector, viewDistance) {
-    var unitx = new Array(3);
-    var unity = new Array(3);
-    var unitz = new Array(3);
-    var viewZ;
-    this.setView = function( viewDirectionVector, viewUpVector, viewDistance ) {
-        var viewpoint = viewDirectionVector || [0,0,10];
-        var viewup = viewUpVector || [0,1,0];
-	if (viewDistance && typeof viewDistance == "number")
-	    viewZ = viewDistance;
-	else
-	    viewZ = length(viewpoint);
-        copy(unitz,viewpoint);
-        normalize(unitz, unitz);
-        copy(unity,unitz);
-        scale(unity, unity, dot(unitz,viewup));
-        subtract(unity,viewup,unity);
-        normalize(unity,unity);
-        cross(unitx,unity,unitz);
+ 
+function Camera() {
+   
+   this.eyex = 0;
+   this.eyey = 0; 
+   this.eyez = 30;
+   
+   this.refx = 0;
+   this.refy = 0;
+   this.refz = 0;
+   
+   this.upx = 0;
+   this.upy = 1;
+   this.upz = 0;
+      
+   this.xminRequested = -5;
+   this.xmaxRequested = 5;
+   this.yminRequested = -5;
+   this.ymaxRequested = 5;
+   this.zmin = -10;
+   this.zmax = 10;
+   this.xminActual = -5;
+   this.xmaxActual = 5;
+   this.yminActual = -5;
+   this.ymaxActual = 5;
+   
+   this.orthographic = false;
+   this.preserveAspect = true;
+
+}
+
+/**
+ * Set whether the projection is orthographic or perspective.
+ * Pass true for orthographic, false for perspective. The default
+ * is orthographic.
+ */
+Camera.prototype.setOrthographic = function(ortho) {
+    this.orthographic = ortho;
+}
+Camera.prototype.getOrthographic = function() {
+    return this.orthographic;
+}
+
+/**
+ * Set whether the projection preserves the aspect ratio of the
+ * viewport. Value is true or false; the default is true.
+ */
+Camera.prototype.setPreserveAspect = function(preserveAspect) {
+    this.preserveAspect = preserveAspect;
+}
+Camera.prototype.getPreserveAspect = function() {
+    return this.preserveAspect;
+}
+
+/**
+* Set the limits of the view volume. The limits are set with respect to the
+* viewing coordinates. That is, the view center is assumed to be at the point
+* (0,0) in the plane of the screen. The view up vector (more precisely, its projection
+* onto the screen) points upwards on the screen. The z-axis is perpendicular to the
+* screen, with the positive direction of the z-axis pointing out of the screen.
+* In this coordinate system, xmin and xmax give the horizontal limits on the screen,
+* ymin and ymax give the vertical limits on the screen, and zmin and zmax give
+* the limits of the view volume along the z-axis. (Note that this is NOT exactly
+* the same as the parameters in either glOrtho or glFrustum!  Most important to 
+* note is that zmin and zmax are given with reference to the view center, not the
+* eye.)  Note that xmin/xmax or ymin/ymax might be adjusted to match the aspect
+* ratio of the display area.
+*/
+Camera.prototype.setLimits = function (xmin, xmax, ymin, ymax, zmin, zmax) {
+   if (arguments.length != 6) {
+       GLSim.error("seLimits requires six parameters"); return;
+   }
+   this.xminRequested = this.xminActual = xmin;
+   this.xmaxRequested = this.xmaxActual = xmax;
+   this.yminRequested = this.yminActual = ymin;
+   this.ymaxRequested = this.ymaxActual = ymax;
+   this.zmin = zmin;
+   this.zmax = zmax;
+}
+   
+/**
+* A convenience method for calling setLimits(-limit,limit,-limit,limit,-2*limit,2*limit)
+*/
+Camera.prototype.setScale = function (limit) {
+    if (arguments.length != 1 || !(typeof limit == "number") || limit == 0) {
+        GLSim.error("setScale requires one non-zero numeric parameter"); return;
     }
-    this.getViewMatrix = function (){
-        return new Float32Array( this.getViewMatrixArray() );
+    this.setLimits(-limit,limit,-limit,limit,-2*limit,2*limit);
+}
+   
+/**
+* Returns the view limits. The return value is an array that contains the same data as
+* the parameters to setLimits(). Note that the returned values included the
+* originally requested xmin/xmax and ymin/ymax, and NOT values that have been
+* adjusted to reflect the aspect ratio of the display area.
+*/
+Camera.prototype.getLimits = function() {
+   return [ this.xminRequested, this.xmaxRequested, this.yminRequested, 
+                                 this.ymaxRequested, this.zmin, this.zmax ];
+}
+
+/**
+* Returns the actual xmin, xmax, ymin, ymax limits that were used when the apply
+* method was most recently called. These are the limits after they were, possibly,
+* adjusted to match the aspect ratio of the display. If apply has not been called
+* since the limits were set, then the return value contains the unadjusted, requested
+* limits.
+*/
+Camera.prototype.getActualXYLimits = function() {
+   return [ this.xminActual, this.xmaxActual, this.yminActual, this.ymaxActual ];
+}
+
+/**
+* Set the information for the viewing transformation. The view will be set
+* in the apply method with a call to
+* gluLookAt(eyeX,eyeY,eyeZ,viewCenterX,viewCenterY,viewCenterZ,viewUpX,viewUpY,viewUpZ)
+* If the viewUp paramters are omitted, they are set to (0,1,0).
+* if the viewCenter parameters are omitted, they are set to (0,0,0).
+* The eye parameters are not optional.
+*/
+Camera.prototype.lookAt = function (eyeX, eyeY, eyeZ,
+                    viewCenterX, viewCenterY, viewCenterZ,
+                    viewUpX, viewUpY, viewUpZ) {
+    this.eyex = eyeX;
+    this.eyey = eyeY;
+    this.eyez = eyeZ;
+    if (arguments.length < 6) {
+        this.refx = 0;
+        this.refy = 0;
+        this.refz = 0;
     }
-    this.getViewMatrixArray = function() {
-	return [ unitx[0], unity[0], unitz[0], 0,
-            unitx[1], unity[1], unitz[1], 0, 
-            unitx[2], unity[2], unitz[2], 0,
-	    0, 0, -viewZ, 1 ];
+    else {
+        this.refx = viewCenterX;
+        this.refy = viewCenterY;
+        this.refz = viewCenterZ;
     }
-    this.getViewDistance = function() {
-	return viewZ;
-    }
-    this.setViewDistance = function(viewDistance) {
-	viewZ = viewDistance;
-    }
-    function applyTransvection(e1, e2) {  // rotate vector e1 onto e2
-        function reflectInAxis(axis, source, destination) {
-        	var s = 2 * (axis[0] * source[0] + axis[1] * source[1] + axis[2] * source[2]);
-		    destination[0] = s*axis[0] - source[0];
-		    destination[1] = s*axis[1] - source[1];
-		    destination[2] = s*axis[2] - source[2];
-        }
-        normalize(e1,e1);
-        normalize(e2,e2);
-        var e = [0,0,0];
-        add(e,e1,e2);
-        normalize(e,e);
-        var temp = [0,0,0];
-        reflectInAxis(e,unitz,temp);
-	reflectInAxis(e1,temp,unitz);
-	reflectInAxis(e,unitx,temp);
-	reflectInAxis(e1,temp,unitx);
-	reflectInAxis(e,unity,temp);
-	reflectInAxis(e1,temp,unity);
-    }
-    var centerX = canvas.width/2;
-    var centerY = canvas.height/2;
-    var radius = Math.min(centerX,centerY);
-    var radius2 = radius*radius;
-    var prevx,prevy;
-    var prevRay = [0,0,0];
-    var dragging = false;
-    function doMouseDown(evt) {
-        if (dragging)
-           return;
-        dragging = true;
-        document.addEventListener("mousemove", doMouseDrag, false);
-        document.addEventListener("mouseup", doMouseUp, false);
-        var box = canvas.getBoundingClientRect();
-        prevx = evt.clientX - box.left;
-        prevy = evt.clientY - box.top;
-    }
-    function doMouseDrag(evt) {
-        if (!dragging)
-           return;
-        var box = canvas.getBoundingClientRect();
-        var x = evt.clientX - box.left;
-        var y = evt.clientY - box.top;
-        var ray1 = toRay(prevx,prevy);
-        var ray2 = toRay(x,y);
-        applyTransvection(ray1,ray2);
-        prevx = x;
-        prevy = y;
-	if (callback) {
-	    callback();
-	}
+    if (arguments.length < 9) {
+        this.upx = 0;
+        this.upy = 1;
+        this.upz = 0;
     }
     function doMouseUp(evt) {
         if (dragging) {
@@ -2039,15 +2129,46 @@ function SimpleRotator(canvas, callback, viewDirectionVector, viewUpVector, view
 	    dragging = false;
         }
     }
-    function toRay(x,y) {
-       var dx = x - centerX;
-       var dy = centerY - y;
-       var vx = dx * unitx[0] + dy * unity[0];  // The mouse point as a vector in the image plane.
-       var vy = dx * unitx[1] + dy * unity[1];
-       var vz = dx * unitx[2] + dy * unity[2];
-       var dist2 = vx*vx + vy*vy + vz*vz;
-       if (dist2 > radius2) {
-          return [vx,vy,vz];
+}
+
+/**
+* Returns the view information -- the 9 parameters of lookAt(), in an array.
+*/
+Camera.prototype.getViewParameters = function() {
+    return [ this.eyex, this.eyey, this.eyez, this.refx, this.refy, this.refz,
+                                                        this.upx, this.upy, this.upz ];
+}
+
+/**
+* Apply the camera to the current GLSim context. This method completely replaces the
+* projection and the modelview transformation in the context. It sets these
+* transformations to the identity and then applies the view and projection
+* represented by the camera. This method is meant to be called at the begining
+* of the display method and should replace any other means of setting the
+* projection and view.
+*/
+Camera.prototype.apply = function apply() {
+    if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
+    this.xminActual = this.xminRequested;
+    this.xmaxActual = this.xmaxRequested;
+    this.yminActual = this.yminRequested;
+    this.ymaxActual = this.ymaxRequested;
+    if (this.preserveAspect) {
+       var viewport = GLSim.currentContext.gl.getParameter(GLSim.currentContext.gl.VIEWPORT);
+       var viewWidth = viewport[2];
+       var viewHeight = viewport[3];
+       var windowWidth = this.xmaxActual - this.xminActual;
+       var windowHeight = this.ymaxActual - this.yminActual;
+       var aspect = viewHeight / viewWidth;
+       var desired = windowHeight / windowWidth;
+       if (desired > aspect) { //expand width
+           var extra = (desired / aspect - 1.0) * (this.xmaxActual - this.xminActual) / 2.0;
+           this.xminActual -= extra;
+           this.xmaxActual += extra;
+       } else if (aspect > desired) { // expand height
+           var extra = (aspect / desired - 1.0) * (this.ymaxActual - this.yminActual) / 2.0;
+           this.yminActual -= extra; 
+           this.ymaxActual += extra;
        }
        else {
           var z = Math.sqrt(radius2 - dist2);
@@ -2057,8 +2178,94 @@ function SimpleRotator(canvas, callback, viewDirectionVector, viewUpVector, view
     function dot(v,w) {
 	return v[0]*w[0] + v[1]*w[1] + v[2]*w[2];
     }
-    function length(v) {
-	return Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+    else {
+        var near = viewDistance-this.zmax;
+        if (near < 0.1)
+           near = 0.1;
+        var centerx = (this.xminActual + this.xmaxActual) / 2;
+        var centery = (this.yminActual + this.ymaxActual) / 2;
+        var newwidth = (near / viewDistance) * (this.xmaxActual - this.xminActual);
+        var newheight = (near / viewDistance) * (this.ymaxActual - this.yminActual);
+        var x1 = centerx - newwidth / 2;
+        var x2 = centerx + newwidth / 2;
+        var y1 = centery - newheight / 2;
+        var y2 = centery + newheight / 2;
+        glFrustum(x1, x2, y1, y2, near, viewDistance-this.zmin);
+    }
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(this.eyex, this.eyey, this.eyez, this.refx, this.refy, this.refz,
+                                                        this.upx, this.upy, this.upz);
+}
+
+/**
+ * Installs a trackball rotator for the camera in the current GLSim context.
+ * The user can drag the mouse on the canvas to rotate the view. The eye and
+ * viewup vectors specified in Camera.lookAt are modified to implement the rotation.
+ * The displayCallback should be a function that is to be called each time the
+ * view has been changed. Ordinarily, it is a display routine that calls
+ * Camera.apply and then draws the scene.
+ */
+Camera.prototype.installTrackball = function(displayCallback) {
+    if (!GLSim.currentContext) { GLSim.error("No OpenGL context"); return; }
+    var gl = GLSim.currentContext.gl;
+    var canvas = GLSim.currentContext.canvas;
+    var me = this;
+    canvas.addEventListener("mousedown",doMouseDown,false);
+    canvas.addEventListener("touchstart",doTouchStart,false);
+    function norm(v0, v1, v2) {
+        var x = v0*v0 + v1*v1 + v2*v2;
+        return Math.sqrt(x);
+    }
+    function normalize(v) {
+        var n = norm(v[0],v[1],v[2]);
+        v[0] /= n;
+        v[1] /= n;
+        v[2] /= n;
+    }
+    function reflectInAxis(axis, source, destination) {
+        var s = 2 * (axis[0] * source[0] + axis[1] * source[1] + axis[2] * source[2]);
+        destination[0] = s * axis[0] - source[0];
+        destination[1] = s * axis[1] - source[1];
+        destination[2] = s * axis[2] - source[2];
+    }
+    function transformToViewCoords(v, x, y, z, out) {
+       out[0] = v[0]*x[0] + v[1]*y[0] + v[2]*z[0];
+       out[1] = v[0]*x[1] + v[1]*y[1] + v[2]*z[1];
+       out[2] = v[0]*x[2] + v[1]*y[2] + v[2]*z[2];
+    }
+    function applyTransvection(from, to) {
+        // rotate vector e1 onto e2; must be 3D *UNIT* vectors.
+        var zDirection = [me.eyex - me.refx, me.eyey - me.refy, me.eyez - me.refz];
+        var viewDistance = norm(zDirection[0],zDirection[1],zDirection[2]);
+        normalize(zDirection);
+        var yDirection = [me.upx, me.upy, me.upz];
+        var upLength = norm(yDirection[0],yDirection[1],yDirection[2]);
+        var proj = yDirection[0]*zDirection[0] + yDirection[1]*zDirection[1] + yDirection[2]*zDirection[2];
+        yDirection[0] = yDirection[0] - proj*zDirection[0];
+        yDirection[1] = yDirection[1] - proj*zDirection[1];
+        yDirection[2] = yDirection[2] - proj*zDirection[2];
+        normalize(yDirection);
+        var xDirection = [yDirection[1]*zDirection[2] - yDirection[2]*zDirection[1],
+                yDirection[2]*zDirection[0] - yDirection[0]*zDirection[2],
+                yDirection[0]*zDirection[1] - yDirection[1]*zDirection[0] ];
+        var temp = new Array(3), e1 = new Array(3), e2 = new Array(3);
+        transformToViewCoords(from, xDirection, yDirection, zDirection, e1);
+        transformToViewCoords(to, xDirection, yDirection, zDirection, e2);
+        var e = [e1[0] + e2[0], e1[1] + e2[1], e1[2] + e2[2]];
+        normalize(e);
+        reflectInAxis(e, zDirection, temp);
+        reflectInAxis(e1, temp, zDirection);
+        reflectInAxis(e, xDirection, temp);
+        reflectInAxis(e1, temp, xDirection);
+        reflectInAxis(e, yDirection, temp);
+        reflectInAxis(e1, temp, yDirection);
+        me.eyex = me.refx + viewDistance * zDirection[0];
+        me.eyey = me.refy + viewDistance * zDirection[1];
+        me.eyez = me.refz + viewDistance * zDirection[2];
+        me.upx = upLength * yDirection[0];
+        me.upy = upLength * yDirection[1];
+        me.upz = upLength * yDirection[2];
     }
     function normalize(v,w) {
 	var d = length(w);

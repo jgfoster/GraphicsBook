@@ -37,7 +37,7 @@ The functions that we need are</p>
 The new matrix is the identity matrix.</li>
 <li><codedef>mat3.identity(A)</codedef> &mdash; Sets <i>A</i> to be the identity matrix, where <i>A</i> is an 
 already-existing <classname>mat3</classname>.</li>
-<li><codedef>mat3.translate(A,B,[dx,dy])</codedef> &mdash; Multiplies <i>B</i> by a matrix representing
+<li><codedef>mat3.translate(A,B,[dx,dy])</codedef> &mdash; Multiplies the matrix <i>B</i> by a matrix representing
 translation by (<i>dx,dy</i>), and sets <i>A</i> to be the resulting matrix. <i>A</i>&nbsp;and <i>B</i>
 must already exist.</li>
 <li><codedef>mat3.scale(A,B,[sx,sy])</codedef> &mdash; Multiplies <i>B</i> by a matrix representing
@@ -375,7 +375,7 @@ height map that was applied to the torus:</p>
 
 <img src="bumpmap.png" width="600" height="142" bordered="true" tex="bumpmap.eps" texscale="0.6"/>
 
-<np>In the first example, the black dots in the height map produce the appearance of bumps on the torus.
+<np>In the first example, the gray dots in the height map produce the appearance of bumps on the torus.
 The darker the color from the map, the greater apparent displacement of the point on the surface. The
 black centers of the dots map to the tops of the bumps.
 For the second example, the dark curves in the height map seem to produce deep grooves in the surface.
@@ -518,7 +518,7 @@ mapped onto its interior. However, the object will only seem to be reflecting th
 skybox. And if there are other objects in the environment, they won't be part of
 the reflection.</p>
 
-<p>The sample program <sourceref href="webgl/skybox-and-env-map.html"/> does environment mapping
+<p>The sample program <sourceref href="webgl/skybox-and-env-map.html"/> implements environment mapping
 in WebGL. The program shows a single fully reflective object inside a skybox. No lighting
 is used in the scene; the colors for both the skybox and the object are taken directly from
 the cubemap texture. The object looks like a perfect mirror. This is not the only way of 
@@ -588,7 +588,7 @@ as a cross-section of the 3D geometry:</p>
 represents the cubemap texture. (You really should think of it as being at infinite distance.)
 <i>V</i>&nbsp;is a vector that points from the object
 towards the viewer. <i>N</i>&nbsp;is the normal vector to the surface. And <i>R</i> is the reflection of
-<i>V</i> through&nbsp;<i>N</i>. <i>R</i>&nbsp;points to the point in the cubemap texture
+<i>V</i> through&nbsp;<i>N</i>. <i>R</i>&nbsp;points to the texel in the cubemap texture
 that is visible to the viewer at the point on the surface; it is the vector that is needed to sample
 the cubemap texture. The picture shows the three vectors at two different points on the surface.
 In GLSL, <i>R</i> can be computed as <i>&minus;reflect</i>(<i>V</i>,&nbsp;<i>N</i>).</np>
@@ -614,8 +614,8 @@ hasn't moved:</p>
 <np>If we compute <i>R</i> as before and use it to sample the cubemap texture, we get the
 wrong point in the texture. The viewer should see the point where <i>R</i> intersects
 the skybox, not the point where <i>R</i> intersects the texture. The correct point in the
-texture is picked out by the vector&nbsp;<i>T</i>. <i>T</i>&nbsp;is computed by applying
-the inverse of the viewing transformation to&nbsp;<i>R</i>. <i>R</i>&nbsp;was rotated
+texture is picked out by the vector&nbsp;<i>T</i>. <i>T</i>&nbsp;is computed by 
+transforming <i>R</i> by the inverse of the viewing transformation. <i>R</i>&nbsp;was rotated
 by the viewing transformation; the inverse viewing transformation undoes that transformation,
 putting <i>T</i> into the same coordinate system as the cube map. In this case, since <i>R</i>
 was rotated by 30 degrees, a rotation of &minus;30 degrees is applied to compute&nbsp;<i>T</i>.

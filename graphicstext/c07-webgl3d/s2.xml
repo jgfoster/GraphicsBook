@@ -317,8 +317,20 @@ example from that demo:</tex></p></demo>
 <img tex="per-pixel-vs-per-vertex.eps" texscale="0.6"/>
 <np>For this cylinder, all of the vertices are along the top and bottom edges, and the
 light source is fairly close to the cylinder. In this example, per-pixel lighting misses the
-specular highlight entirely.</np>
+specular highlight on the cylinder entirely. On the other hand, for a torus, which is made
+up of very small triangles, the per-vertex lighting in the demo gives a fairly good
+approximation of the correct specular highlights.</np>
 </texdiv>
+
+<p>The sample program <sourceref href="webgl/basic-specular-lighting-Phong-webgl2.html"/>
+is a port of the original WebGL&nbsp;1.0 Phong lighting program to WebGL&nbsp;2.0. It shows
+what the shader program looks like in GLSL&nbsp;ES&nbsp;3.00. The changes are minimal.
+Attribute variables become "in" variables, varying variables become "out" variables in
+the vertex shader and "in" variables in the fragment shader, and the built-in fragment
+shader variable <i>gl_FragColor</i> is replaced with a custom "out" variable. The
+JavaScript side would not have to be changed at all, but as an example, it has
+been modified to use <word term="VAO">vertex array objects</word> to organize the
+data for the various objects that can be drawn in the in program.</p>
 
 </subsection>
 
@@ -328,7 +340,7 @@ specular highlight entirely.</np>
 <p>Our shader programs are getting more complex. As we add support for multiple lights,
 additional light properties, two-sided lighting, textures, and other features, it will be
 useful to use data structures and functions to help manage the complexity. GLSL data
-structures were introduced in <localref href="webgl.3.2"/>, and functions in
+structures were introduced in <localref href="webgl.3.2"/>, and function definitions in
 <localref href="webgl.3.5"/>. Let's look briefly at how they can be used to work with
 light and material.</p>
 
@@ -463,7 +475,7 @@ for (int i = 0; i &lt; 3; i++) {
 gl_FragColor = vec4(color,1.0);</pre>
 
 <np>Note that in the second call to <i>lightEquation</i>, the normal vector
-is given as &minus;<i>normal</i>. The negative side reverses the direction
+is given as &minus;<i>normal</i>. The negative sign reverses the direction
 of the normal vector for use on a back face.</np>
 
 <p>If you want to use two-sided lighting when doing per-vertex lighting, you have
@@ -483,10 +495,10 @@ order when the front face is viewed. The command <i>gl.frontFace(gl.CCW)</i> res
 the default rule.</p>
 
 <p>In some cases, you can be sure that no back faces are visible. This will happen when
-the objects are closed surfaces seen from the outside, and all the polygons face towards
+the objects are closed surfaces seen from the outside, and all the triangles face towards
 the outside. In such cases, it is wasted effort to draw back faces, since you can be sure
 that they will be hidden by front faces. The JavaScript command
-<i>gl.enable</i>(<i>gl.CULL_FACE</i>) tells WebGL to discard polygons without drawing
+<i>gl.enable</i>(<i>gl.CULL_FACE</i>) tells WebGL to discard triangles without drawing
 them, based on whether they are front-facing or back-facing. The commands
 <i>gl.cullFace</i>(<i>gl.BACK</i>) and <i>gl.cullFace</i>(<i>gl.FRONT</i>) determine
 whether it is back-facing or front-facing polygons that are discarded when <i>CULL_FACE</i>
@@ -518,7 +530,7 @@ and is turned off while drawing the grid lines.</np>
 
 <p>In our examples so far, lights have been fixed with respect to the viewer. But some
 lights, such as the headlights on a car, should move along with an object. And some,
-such as a street light, should stay in the same position in the world, but changing position
+such as a street light, should stay in the same position in the world, but change position
 in the rendered scene as the point of view changes.</p>
 
 <p>Lighting calculations are done in eye coordinates. When the position of a light
@@ -541,7 +553,8 @@ the <word term="identity transform">identity</word>.</p>
 transformation is the viewing transformation. The viewing transformation
 must be applied to the world-coordinate light position to transform it to eye coordinates. In WebGL,
 the transformation should be applied on the JavaScript side, and the output of the
-transformation should be sent to a uniform variable in the shader program. Similarly,
+transformation should be sent to the uniform variable in the shader program that represents
+the light position in eye coordinates. Similarly,
 for a light that moves around in the world, the combined modeling and viewing transform should be
 applied to the light position on the JavaScript side. The <i>glMatrix</i> library
 (<localref href="webgl3d.1.2"/>) defines the function</p>
@@ -634,20 +647,29 @@ struct becomes:</p>
     float spotExponent;
 };</pre>
 
-<np>With this definition, we can compute the factor <i>c<sup>e</sup></i> that is multiplied
+<np>If <i>position.z</i> is zero, then the light is directional and cannot be a spotlight.
+For a point light, if <i>spotCosineCutoff</i> is less than or equal to zero, then
+the light is a regular point light, not a spotlight. For a spotlight,
+we need to compute the factor <i>c<sup>e</sup></i> that is multiplied
 by the basic light color to give the effective light intensity of the spotlight at a point
 on a surface. The following code for the computation is from the fragment shader in the sample program.
-The value of <i>c<sup>e</sup></i> is assigned to <i>spotFactor</i>:</np>
+For a spotlight, the value of <i>c<sup>e</sup></i> is assigned to <i>spotFactor</i>:</np>
 
-<pre>L = normalize( light.position.xyz/light.position.w - v_eyeCoords );
-if (light.spotCosineCutoff > 0.0) { // the light is a spotlight
-    vec3 D = normalize(light.spotDirection);  // unit vector!
-    float spotCosine = dot(D,-L);
-    if (spotCosine >= light.spotCosineCutoff) { 
-        spotFactor = pow(spotCosine,light.spotExponent);
-    }
-    else { // The point is outside the cone of light from the spotlight.
-        return vec3(0.0); // The light will add no color to the point.
+<pre>float spotFactor = 1.0;  // multiplier to account for spotlight
+if ( light.position.w == 0.0 ) {
+    L = normalize( light.position.xyz );
+}
+else {
+    L = normalize( light.position.xyz/light.position.w - v_eyeCoords );
+    if (light.spotCosineCutoff > 0.0) { // the light is a spotlight
+        vec3 D = -normalize(light.spotDirection);
+        float spotCosine = dot(D,L);
+        if (spotCosine >= light.spotCosineCutoff) { 
+            spotFactor = pow(spotCosine,light.spotExponent);
+        }
+        else { // The point is outside the cone of light from the spotlight.
+            spotFactor = 0.0; // The light will add no color to the point.
+        }
     }
 }
 // Light intensity will be multiplied by spotFactor</pre>
@@ -752,21 +774,16 @@ than per-vertex lighting, especially for spotlights. However, with multiple ligh
 spotlights, and attenuation, per-pixel lighting requires a lot of uniform variables in the
 fragment shader &mdash; possibly more than are supported in some implementations.
 (See <localref href="webgl.3.7"/> for information about limitations in shader programs.)
-That's not really serious for a sample program in a textbook; it just means that the
+That's not really serious for a sample program in a textbook and not really likely on
+modern GPUs; it just means that there is some possibility that the
 example won't work in some browsers on some devices. But for more serious applications,
-an alternative approach would be desirable, hopefully better than simply moving the
+using even more complex lighting, an alternative approach would be desirable, hopefully 
+better than simply moving the
 calculation to the vertex shader. One option is to use a <word>multi-pass algorithm</word>
 in which the scene is rendered several times, with each pass doing the lighting calculation
-for a smaller number of lights.</p>
+for a smaller number of lights. See <localref href="webgl3d.5.3"/> for a technique that
+can be used to implement this idea efficiently.</p>
 
-<p>(In fact, even on my very old computer, which advertises a limit of 4096 uniform vectors in
-the fragment shader, I had a problem trying to use five lights in the diskworld example.
-With five lights, I got weird color errors. For example, the red or green color component might
-be completely missing from the image. I solved the problem by using the same light for
-the sun and the lamp, which are never both on at the same time. The program worked fine
-with four lights. Admittedly, I have an eight-year old computer with a somewhat buggy GPU,
-but this shows some of the issues that can come up for certain WebGL programs on
-certain devices.)</p>
 
 </subsection>
 

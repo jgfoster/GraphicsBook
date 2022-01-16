@@ -198,12 +198,11 @@ for a dense medium like milk, it would be quite short.</p>
 <p>A great deal of computation is required to trace enough light paths to get
 a high-quality image. Although path tracing was invented in the 1980s, it
 is only recently that it has become practical for general use, and it can still
-take many hours to get acceptable quality. In fact, you can do path tracing
+take many hours to get high quality rendering. In fact, you can do path tracing
 on your desktop computer using the 3D modeling program Blender, which is discussed
-in <localref href="blender"/>. Blender has an alternative rendering engine,
-called the Cycles renderer, that uses path tracing. Cycles is not discussed in the
-appendix, but you can look up some tutorials on it, if you are interested in
-seeing what path tracing can do.</p>
+in <localref href="blender"/>. Blender has a rendering engine
+called Cycles that uses path tracing. See the appendix for more information
+about Blender.</p>
 
 </subsection>
 
