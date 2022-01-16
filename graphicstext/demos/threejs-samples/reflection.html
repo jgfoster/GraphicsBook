@@ -13,8 +13,8 @@
 <script>
 
 /*  This page shows a reflecting object inside a skybox. An environment
- *  map is used on the object to make it reflect the skybox. No lighting
- *  is used since the skybox and the object both use MeshBasicMaterial.
+ *  map is used on the object to make it refract the skybox. No lighting
+ *  is used since object uses MeshBasicMaterial. 
  */
 
 "use strict";
@@ -100,7 +100,7 @@ function createSkybox(textureNumber) {
 
 /**
  *  Creates the material to use on the models. This is a MeshBasicMaterial with
- *  the skybox as an environment map. The base color, which is blended with the
+ *  the skybox texture as an environment map. The base color, which is blended with the
  *  environment map, is taken from the current color selection.
  */
 function makeReflectionMaterial() {
@@ -136,7 +136,7 @@ function installModel(modelNum) {
  */
 function installJSONModel(modelNum) {
     /*
-     * The callback function that is called by the JSONLoader when it
+     * The callback function that is called by the loader when it
      * has finished loading the object. This function creates a three.js
      * function to hold the object. It translates the object so that
      * its center is in the origin. It wraps the object in another object
@@ -234,7 +234,7 @@ function setObjectColor(colorNum) {
 }
 
 /**
- *  Called when user clicks the button. Resets model rotation to zero and controls to default view.
+ *  Called when user clicks the Reset button. Resets model rotation and controls to default view.
  */
 function resetRotation() {
     rotateX = rotateY = 0;
@@ -244,7 +244,7 @@ function resetRotation() {
 }
 
 /**
- *  An event listener for the keydown event. It is installed by the init() function.
+ *  An event listener for the keydown event. 
  *  The arrow keys are used to rotate the model about its own axis.
  */
 function doKey(evt) {

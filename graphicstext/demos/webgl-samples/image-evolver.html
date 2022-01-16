@@ -5,7 +5,7 @@
     This page was written as a demonstration of using the
     WebGL extension WEBGL_color_buffer_float, which allows
     floating-point values for color components in a color
-    buffer, including a texture that is attacheck as a color
+    buffer, including a texture that is attached as a color
     buffer to a framebuffer. (This is instead of the usual
     8-bit integer color components.)  It is used here for
     the increaded accuracy of arithmetic operations with
@@ -38,10 +38,12 @@ canvas {
 </style>
 
 
-<!-- A vertex and fragment shader for drawing a primitive with a color
-     attribute. The color is a grayscale value, represented by a float.
+<!-- A vertex and fragment shader for drawing a POINT primitive with color
+     and size attributes. The color is a grayscale value, represented by a float.
      The fragment shader uses the interpolated color value for all three
-     color components in the fragment color.
+     color components in the fragment color. The coordinates for the points
+     are assumed to be in the range 0 to 1. The shader scales that to the
+     usual clip coordinate range, -1 to 1.
 -->
 <script type="x-shader/x-vertex" id="vshader-draw">
     attribute vec2 a_coords;  // coordinates on square, ranging from 0 to 1
@@ -155,9 +157,9 @@ var avgFitness; // The average fitness of the individuals in the current generat
 
 /**
  * Called once during initialization to draw the original image. It is drawn to the
- * canvas on the left of the web page. It is copied to a texture that will be used
- * to compute the difference between the original image and the individuals in the
- * population.
+ * canvas on the left of the web page, using canvas graphics, not WebGL. The image
+ * is then copied to a texture that will be used to compute the difference between
+ * the original image and the individuals in the population.
  */
 function createOriginal(canvas, graphics) {
     graphics.fillStyle = "white";
@@ -180,9 +182,10 @@ function createOriginal(canvas, graphics) {
 /**
  *  Compute the fitness of an individual. An individual is an image made up of
  *  triangles. This function computes the average color difference between that
- *  image and the original image. The fitness is one minus that average. That
- *  formula is used so that higher fitness is better. The fitness value is always
- *  in the range 0 to 1.
+ *  image and the original image. The fitness is the square of one minus that average.
+ *  That formula is used so that higher fitness is better, and the value is squared
+ *  to increase the relative advantage of more highly fit individuals (to give selection
+ *  a larger difference to work with). The fitness value is always in the range 0 to 1.
  */
 function individualFitness(individual) {
     draw(individual, fb1);  // Draw the image for this individual into frame buffer number 1.
@@ -219,13 +222,16 @@ function draw(individual, framebuffer) {
  *  frame buffers, where src contains the image and the image in dest is not used.
  *  The image in both framebuffers is modified during the computation.
  *     The algorithm starts by drawing a half-size image in dest that is the
- *  average of the four quadrants in the original image. It swaps the src
+ *  average of the four quadrants in the original image. It then swaps the src
  *  and dest and draws a quarter-size image that is the average of the
  *  four quadrants of the half-size image. And so, unitil the image size
  *  is 4-by-4 pixels. It the reads the color data for that four-by-four
  *  image and returns the average of the red color components of the
  *  16 color values. (Since the colors are grayscale, the three color
- *  components would be the same.)
+ *  components would be the same.)  It stops with a 4-by-4 rectangle because
+ *  it seems likely that reading 16 color values from the GPU will probably
+ *  be faster than doing two more draw operations to reduce the size to 1 pixel,
+ *  and then reading one pixel. This is totally a guess.
  */
 function getAverageColor(src, dest) {
     gl.useProgram(averageProg.prog);
@@ -236,8 +242,8 @@ function getAverageColor(src, dest) {
     gl.vertexAttribPointer(averageProg.a_coords, 2, gl.FLOAT, false, 0, 0);
         // The VBO for the attribute averageProg.a_coords contains the coordinates for
         // the corners of 7 squares, starting with the square with vertices at (0,0) and (1,1).
-        // Each square is half the size of the previous one. As level goes from one to seven
-        // in the following four loop, the squares that are drawn are 128-by-128 pixels,
+        // Each square is half the size of the previous one. As level goes from one to six
+        // in the following for loop, the squares that are drawn are 128-by-128 pixels,
         // 64-by-64 pixels, ..., 4-by-4 pixels.
     for (var level = 1; level < 7; level++) {
         gl.bindFramebuffer(gl.FRAMEBUFFER, dest);
@@ -288,8 +294,8 @@ function doDiff() {
 }
 
 /**
- *  Compute a fitness value for every individual in the population, and store that value
- *  as a property of the object that represents the individual. The generation number,
+ *  Compute a fitness value for each individual in the population, and store that value
+ *  as a property of the object that represents that individual. The generation number,
  *  maximum fitness, and average fitness are reported on the web page, and the generation
  *  number is incremented. The individual with the highest fitness is moved to index 0 in
  *  the population array and is drawn in the second canvas on the web page.
@@ -320,10 +326,11 @@ function doFitness() {
 
 /**
  *  Create the initial data for the population array. This is called once during
- *  initialization. And individual contains an array of vertex colors and an
- *  array of vertex coordinates for the triangles that make up the image.
- *  These are assigned random values. There is only one color component per
- *  vertex, representing a grayscale value.
+ *  initialization. An individual contains arrays of vertex coordinates, vertex
+ *  colors, and point sizes. There is only one color component per
+ *  point, representing a grayscale value. A fitness value will be added to
+ *  each individual later. Coordinates and colors are in the range 0 to 1.
+ *  point sizes are in the range 1 to 32.
  */
 function createInitialPopulation() {
     population = new Array(POPULATION_SIZE);
@@ -431,14 +438,20 @@ function crossover(a,b) {
  *  Produce a new generation by copying individuals from the current
  *  population. The number of copies of an individual depends on
  *  its fitness. An array containing the new population is returned.
+ *  Every individual in the new array is a copy of some individual
+ *  from the current population. A copy of population[0], which
+ *  is the most fit individual in the current population will be
+ *  at index 0 in the new array.
  */
 function reproduce(population, averageFitness) {
     function copy(a) {
            // Copy individual a to the new population array.
            // If this is the first copy of that individual,
            // just copy the pointer. If it's not the first,
-           // make the new individial out of new copies of the
-           // data from a.
+           // make the new individual out of new copies of the
+           // data from a. Fitnesses are not copied; they
+           // will be recomputed after crossover and mutation
+           // in the evolve() function, which calls this function.
         if (first) {
             newPop.push(a);
             first = false;
@@ -450,12 +463,12 @@ function reproduce(population, averageFitness) {
             } );
         }
     }
-    var first;
-    var newPop = [];  // The new population array.
-    for (var i = 0; i < population.length; i++) {
-        var a = population[i];
-        var f = a.fitness/averageFitness; // Fitness of this
-           // f is the ration of the fitness of a to the average
+    let first;
+    let newPop = [];  // The new population array.
+    for (let i = 0; i < population.length; i++) {
+        let a = population[i];
+        let f = a.fitness/averageFitness; 
+           // f is the ratio of the fitness of a to the average
            // fitness of the population. There will be at least
            // Math.floor(f) copies of a added to newPop (which can
            // be zero.)  And there is a ( f - Math.floor(f) ) probabilty
@@ -472,8 +485,8 @@ function reproduce(population, averageFitness) {
         }
     }
     // The above procedure should have produced a new population with
-    // about the same size as the current population. But if not, the
-    // size is adjusted to equal POPULATION_SIZE
+    // about the same size as the current population. But the
+    // size is adjusted to exactly equal POPULATION_SIZE
     while (newPop.length < POPULATION_SIZE) {
            // Add extra copies to fill the population, without regard to fitness.
         first = false;
@@ -533,9 +546,14 @@ function evolve() {
     // Make the new population.
     population = reproduce(population,avgFitness);
     
-    // Apply crossover to pairs of individuals in the population, but not including population[0]
-    var i,j;
-    var indices; // Will contain 1, 2, 3, ..., POPULATION_SIZE-1.
+    // Apply crossover to pairs of individuals in the population, but not to population[0].
+    // As a fudge, the highest fitness individual, population[0], can be mutated
+    // but not crossed over. Crossover will almost always decrease its fitness,
+    // while mutation has a good chance of increasing it. It seems like after
+    // the first few hundred generations, most of the increase in fitness is coming
+    // from mutation (pretty slowly), so avoiding crossover on population[0] speeds
+    // things up in the long run.
+    let indices; // Will contain 1, 2, 3, ..., POPULATION_SIZE
     indices = new Uint32Array(population.length - 1);
     for (i = 0; i < indices.length; i++) { 
         indices[i] = i+1; // leave out index 0 
@@ -571,7 +589,7 @@ function evolve() {
     doFitness();
 
     // There will be a delay of between 10 and 100 milliseconds before this function
-    // is called. The delay is the time spent in this function, divided by 2, then
+    // is called. The delay is the time spent in this function, divided by 4, then
     // clamped to the range 10 to 100. (Longer compute times give longer wait times,
     // to be fair to other processes.)
     var computetime = (new Date().getTime()) - start;
@@ -595,22 +613,20 @@ function initGL() {
     // for RGBA colors in a texture, to use such a texture as a color buffer for a
     // framebuffer, and to read floating-point values from the framebuffer with gl.readPixels.
     //    Note: OES_texture_float has in the past implicitly activated functionality
-    // similar to WEBGL_color_buffer_float for using floating point texures as color
+    // similar to WEBGL_color_buffer_float for using floating point textures as color
     // buffers with framebuffers, but this has been deprecated. Officially, both
-    // should be explicitely activated. However, I only test for EXTtf, since browsers
-    // that have that probably will work with this page even if they don't say that
-    // they have WEBGL_color_buffer_float.
-    var EXTcbf = gl.getExtension("WEBGL_color_buffer_float");
-    var EXTtf = gl.getExtension("OES_texture_float"); // Should always be available if EXTcbf is.
-    if (!EXTtf) {
-        throw "<br>This program require the WebGL extension OES_texture_float," +
-              "<br>which is not available in this browser.";
+    // should be explicitly activated.
+    let EXTcbf = gl.getExtension("WEBGL_color_buffer_float");
+    let EXTtf = gl.getExtension("OES_texture_float"); // Should always be available if EXTcbf is.
+    if (!EXTcbf || !EXTtf) {
+        throw new Error("<br>This program require the WebGL extension WEBGL_color_buffer_float," +
+              "<br>which is not available in this browser.");
     }
     
     gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, 1 );  // so the original image isn't upside down when copied to the texture.
 
     // This application uses three different shader programs, each with its own
-    // attribute and uniform locations. A shader program and association locations
+    // attribute and uniform locations. A shader program and associated locations
     // are stored in an object.
     drawProg = {};
     drawProg.prog = createProgram( gl, "vshader-draw", "fshader-draw");
@@ -631,11 +647,12 @@ function initGL() {
     
     // Create a VBO to hold vertices for 7 squares staring with the square
     // with vertices (0,0) and (1,1). All the squares have a vertex at (0,0),
-    // and the size of each square is half of the preceding one.
-    var coords = new Float32Array( 7*4*2 );  
-    var size = 1;
-    var j = 0;
-    for (var level = 0; level < 7; level++) {
+    // and the size of each square is half of the preceding one. This is
+    // used in getAverageColor()
+    let coords = new Float32Array( 7*4*2 );  
+    let size = 1;
+    let j = 0;
+    for (let level = 0; level < 7; level++) {
         coords[j++] = 0;     // first vertex
         coords[j++] = 0;
         coords[j++] = size;  // second vertex
@@ -782,11 +799,11 @@ function init() {
 
 <p style="width:600px">This is an only-partly successful attempt to apply the genetic algorithm
 to evolve an approximation of a given image. The original image is very simple. The candidate
-approximations are grayscale images made up of 100 triangles. As time goes on, for example,
-you will probably see a darker region in the upper right corner, corresponding to the black disk
+approximations are grayscale images made up of 500 small squares. As time goes on, for example,
+you should see a darker region emerging in the upper right corner, corresponding to the black disk
 in the original image. However, big improvements don't seem to come up much after
-the first couple of hundred generations. (Still, you might get a good approximation after a
-few tens of thousands of generations.)</p>
+the first couple of hundred generations. (Still, you might get a decent approximation after
+several thousand generations.)</p>
 <p style="width:600px">In any case, the main point of this exercise was to use an optional
 extension to the WebGL 3D graphics system that make it possible to work with a "floating-point
 color buffer". The page is not functional if that extension is not available, even if your browser

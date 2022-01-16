@@ -140,7 +140,7 @@ function installModel(modelNum) {
  */
 function installJSONModel(modelNum) {
     /*
-     * The callback function that is called by the JSONLoader when it
+     * The callback function that is called by the loader when it
      * has finished loading the object. This function creates a three.js
      * function to hold the object. It translates the object so that
      * its center is in the origin. It wraps the object in another object
@@ -380,12 +380,12 @@ function init() {
 
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
-<p>The demo shows a cubemap texture used on a skybox and as a reflection map on an object.
+<p>The demo shows a cubemap texture used as a skybox and as a reflection map on an object.
 You have a choice of two textures and six objects. The "Base Color" radio buttons change the
 color of the object. The color is multiplied by the reflection map, which adds a tint to the
 reflection. The colors that are used on the object are only a little different from white.</p>
 <p>Note that the object does not really reflect its environment in the scene. It only looks
-like it does because the same texture is used on the skybox and for reflection map on the
+like it does because the same texture is used for the skybox and for reflection map on the
 object. The radio buttons above the scene let you choose to see just the skybox, just the object,
 or both. Note that the object shows the same reflection whether the skybox is there or not.
 </p>

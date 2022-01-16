@@ -43,12 +43,11 @@
                             // will be zero in the first frame.
     
     /**
-     *  The draw() function is called by init() after the page loads,
-     *  to draw the content of the canvas. At the start, clear the canvas
-     *  and save a copy of the state; restore the state at the end. This
-     *  method will be called once for each frame of the animation. It can
-     *  use the global variables frameNumber and elapsedTimeMillis to draw
-     *  a different image each time it is drawn. it will be called about
+     *  The draw() function is called for each frame of the animation.
+     *  At the start, clear the canvas and save a copy of the state;
+     *  restore the state at the end. This function can use the
+     *  global variables frameNumber and elapsedTimeMillis to draw
+     *  a different image each time it is drawn. It should be called about
      *  60 times per second.
      */
     function draw() {

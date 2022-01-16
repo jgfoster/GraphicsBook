@@ -41,25 +41,44 @@
 
 "use strict";
 
-var gl;   // The webgl context.
+const vertexShaderSource =`
+attribute vec3 a_coords;
+uniform mat4 modelviewProjection;
+void main() {
+    vec4 coords = vec4(a_coords,1.0);
+    gl_Position = modelviewProjection * coords;
+}`;
 
-var a_coords_loc;          // Location of the a_coords attribute variable in the shader program.
-var a_coords_buffer;       // Buffer to hold the values for a_coords.
-var u_color;               // Location of the uniform specifying a color for the primitive.
-var u_modelviewProjection; // Location of the uniform matrix representing the combined transformation.
+const fragmentShaderSource = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+   precision highp float;
+#else
+   precision mediump float;
+#endif
+uniform vec4 color;
+void main() {
+    gl_FragColor = color;
+}`;
 
-var projection = mat4.create();  // projection matrix
-var modelviewProjection = mat4.create();  // combined matrix
+let gl;   // The webgl context.
 
-var rotator;  // A SimpleRotator object that lets the user rotate the view by mouse.
+let a_coords_loc;          // Location of the a_coords attribute variable in the shader program.
+let a_coords_buffer;       // Buffer to hold the values for a_coords.
+let u_color;               // Location of the uniform specifying a color for the primitive.
+let u_modelviewProjection; // Location of the uniform matrix representing the combined transformation.
+
+const projection = mat4.create();  // projection matrix
+const modelviewProjection = mat4.create();  // combined matrix
+
+let rotator;  // A SimpleRotator object that lets the user rotate the view by mouse.
 
 
 /* Draws a WebGL primitive. The first parameter must be one of the constants
- * that specifiy primitives:  gl.POINTS, gl.LINES, gl.LINE_LOOP, gl.LINE_STRIP,
+ * that specify primitives:  gl.POINTS, gl.LINES, gl.LINE_LOOP, gl.LINE_STRIP,
  * gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN. The second parameter must
  * be an array of 4 numbers in the range 0.0 to 1.0, giving the RGBA color of
  * the color of the primitive. The third parameter must be an array of numbers.
- * The length of the array must be amultiple of 3. Each triple of numbers provides
+ * The length of the array must be a multiple of 3. Each triple of numbers provides
  * xyz-coords for one vertex for the primitive. This assumes that u_color is the
  * location of a color uniform in the shader program, a_coords_loc is the location of
  * the coords attribute, and a_coords_buffer is a VBO for the coords attribute.
@@ -129,7 +148,7 @@ function initGL() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program. If an error occurs while compiling or
- * linking the program, an exception of type String is thrown. The error
+ * linking the program, an exception of type Error is thrown. The error
  * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>

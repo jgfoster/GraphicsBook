@@ -24,7 +24,7 @@ var animating = false;
 var mixer = null;  // The object that animates the model, of type THREE.AnimationMixer
 var prevMixerTime; // Used to record time of last update of mixer
 
-var controls;  // A TrackballControls object that is used to implement
+var controls;  // An OrbitControls object that is used to implement
                // rotation of the scene using the mouse. (It actually rotates
                // the camera around the scene.)
 
@@ -68,7 +68,7 @@ function createWorld() {
 
 
 /**
- * This function will be called when the JSONLoader has
+ * This function will be called when the GLTFLoader has
  * finished loading a model. This function creates a three.js
  * Mesh object to hold the model. It translates the object so that
  * its center is at the origin. It wraps the object in another object
@@ -317,21 +317,22 @@ function init() {
 animate models of a running horse and a flying stork.</p>
 
 <p>The models are in
-the JSON format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 89).
-Each of the two model files includes a set of "morph targets." A morph target is
-an alternate set of vertices for the mesh geomety of the model. The morph targets
-describe the geometry of the model at different points in time. Those points in time
-are "key frames" for the animation; that is, the geometry for points between the
-key frames is obtained by interpolating the vertex positions from their values
-at the key frames. A <i>THREE.AnimationMixer</i> is used to apply the interpolation to
-the mesh object. (This "mixer" works with a <i>THREE.AnimationClip</i> and
-a <i>THREE.AniamtionAction</i> in a rather complex animation system. See the
-source code.)  The colors for the horse and for the stork are part of the models.</p>
-<p>The techniques for this demo are based on the sample program
-canvas_morphtargets_horse.html, which is part of the download of <i>three.js</i>
-from its web site, threejs.org. You can look at the source code of this
-demo or of that sample program to see how the animation is programmed.</p>
-<p>You can use your mouse to rotate the model, even when it is animating.</p>
+the GLTF format used by <i>three.js</i> and are part of the <i>three.js</i> download (version 129).
+A GLTF file contains an entire scene and can include animations, as well as objects.
+In this case, the files that are used contain one object (a horse or stork) and an
+animation that animates that object. The horse and stork objects come with their
+colors already defined.
+If <i>dataFromFile</i> is the data loaded from
+the file, then the object is <i>dataFromFile.scene.children</i>[0], and
+the animation is <i>dataFromFile.animations</i>[0].
+You can look at the source code of this
+demo to see how the animation is programmed.</p>
+<p>You can use your mouse (or finger) to rotate the model, even when it is animating.</p>
+<p>(Note that this demo won't work if you are trying to load it from your local computer instead
+of from a web server. This is because of web browser security policies that prevent the
+program from loading the models locally.
+See the documentation about
+<a href="https://threejs.org/docs/index.html#manual/en/introduction/How-to-run-things-locally">running three.js examples locally</a>.)</p>
 </div>
 
 

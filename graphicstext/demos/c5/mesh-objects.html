@@ -377,10 +377,9 @@ with a surface, there are actually two objects, one to represent the wireframe
 and one to represent the surface. The two objects use the same geometry
 but different material.</p>
 <p>The shading radio buttons, which can be set to Flat or to Smooth, control a
-property of Lambert and Phong materials. 
-Unfortunately, this property seems to be ignored for some materials on some objects,
-and it has no effect for Basic materials.
-For Flat shading, when it is working correctly, a normal vector is computed for each triangular face and is
+property of Phong materials. This option appears only when a Phong material
+is selected.
+For Flat shading, a normal vector is computed for each triangular face and is
 used for all vertices of that face. This makes the face appear flat. For
 Smooth shading, a normal vector is computed for each vertex of the solid,
 using an average of the face normals for faces that share that vertex. The

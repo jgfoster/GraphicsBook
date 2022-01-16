@@ -27,7 +27,7 @@ var scene, camera, renderer;  // Three.js rendering basics.
 var canvas;  // The canvas on which the image is rendered.
 
 
-var model;   // Contains the visible objects in the scene, but
+let model;   // Contains the visible objects in the scene, but
              // not the lights or camera. The model can be
 			 // rotated using the keyboard. 
 
@@ -133,7 +133,7 @@ function doAnimateCheckbox() {
 
 //----------------------------- keyboard support ----------------------------------
 
-/*  Responds to user's key press. Here, it is used to rotate the model.
+/*  Responds to user's key press. Here, it is used to rotate the entire model.
  */
 function doKey(event) {
 	var code = event.keyCode;

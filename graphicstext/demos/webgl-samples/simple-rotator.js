@@ -16,20 +16,20 @@
  *       matrix is in column-matrix order (ready for use with glMatrix or
  *       gl.uniformMatrix4fv). The view matrix takes into account the
  *       view distance and the center of view.
- *    rotator.setXLimit( d ) -- sets the range of possible rotations
- *       about the x-axis. The paramter must be a non-negative number,
+ *    rotator.setXLimit( d ) -- sets the range of possible rotations.
+ *       about the x-axis. The parameter must be a non-negative number,
  *       and the value is clamped to the range 0 to 85. The allowed range
  *       of rotation angles is from -d to d degrees. If the value is zero
  *       only rotation about the y-axis is allowed. Initial value is 85.
- *    rotation.getXLimit() -- returns the current limit
- *    rotation.setRotationCenter( vector ) -- Sets the center of rotation.
+ *    rotator.getXLimit() -- returns the current limit.
+ *    rotator.setRotationCenter( vector ) -- Sets the center of rotation.
  *       The parameter must be an array of (at least) three numbers. The
  *       view is rotated about this point. Usually, you want the rotation
  *       center to be the point that appears at the middle of the canvas,
  *       but that is not a requirement. The initial value is effectively
  *       equal to [0,0,0].
- *    rotation.getRotationCenter() -- returns the current value.
- *    rotation.setAngles( rotateY, rotateX ) -- sets the angles of rotation
+ *    rotator.getRotationCenter() -- returns the current value.
+ *    rotator.setAngles( rotateY, rotateX ) -- sets the angles of rotation
  *       about the y- and x- axes. The values must be numbers and are
  *       given in degrees. The limit on the range of x rotations is enforced.
  *       If the callback function is defined, it is called.

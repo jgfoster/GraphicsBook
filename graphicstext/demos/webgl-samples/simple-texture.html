@@ -46,7 +46,8 @@ var textureObject;          // A texture object to hold the texture image.
 
 /**
  *  Draws the content of the canvas. This will only be called after the
- *  texture has finished loading. In this function, draw() is only called once.
+ *  texture has finished loading. In this program, draw() is only called once,
+ *  so some of the one-time WebGL initialization can be done here.
  */
 function draw() {
 
@@ -119,7 +120,7 @@ function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
 }
 
 /**
- *  Loads a texture image asynchronously. The first paramter is the url
+ *  Loads a texture image asynchronously. The first parameter is the url
  *  from which the image is to be loaded. The second parameter is the
  *  texture object into which the image is to be loaded. When the image
  *  has finished loading, the draw() function will be called to draw the
@@ -137,9 +138,16 @@ function loadTexture( url, textureObject ) {
         gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
         gl.generateMipmap(gl.TEXTURE_2D);  // Create mipmaps; you must either
                               // do this or change the minification filter.
-        draw();  // Draw the canvas, with the texture. 
-    }
-    img.onerror = function(e,f) { 
+        }
+        catch (e) { // Probably a security exception, because this page has been
+                    // loaded through a file:// URL.
+            document.getElementById("headline").innerHTML =
+              "Sorry, couldn't load texture.<br>" +
+              "Some web browsers won't use images from a local disk";
+        }
+        draw();  // Draw the canvas, with or without the texture. 
+    };
+    img.onerror = function() { 
         // This function will be called if an error occurs while loading.
         document.getElementById("headline").innerHTML =
                         "<p>Sorry, texture image could not be loaded.</p>";

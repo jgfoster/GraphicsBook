@@ -78,8 +78,7 @@ var pointVelocities = new Float32Array( 2*POINT_COUNT );
 var pointRandomColors = new Float32Array( 3*POINT_COUNT );
 
 function createPointData() { // called during initialization to fill the arrays with data.
-    var i;
-    for (i = 0; i < POINT_COUNT; i++) {
+    for (let i = 0; i < POINT_COUNT; i++) {
            // Each point has two coordinates and two velocities. Velocity number k
            // tells how fast coordinate number k changes in pixels per frame.
         pointCoords[2*i] = canvas.width * Math.random();  // x-coordinate of point

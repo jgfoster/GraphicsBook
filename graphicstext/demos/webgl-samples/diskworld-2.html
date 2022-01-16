@@ -502,7 +502,7 @@ function popMatrix() {
  *  an IFS using the structure from basic-objects-IFS.js. This function
  *  creates VBOs to hold the coordinates, normal vectors, and indices
  *  from the IFS, and it loads the data into those buffers. The function
- *  creates a new object whose properties are the identifies of the
+ *  creates a new object whose properties are the identities of the
  *  VBOs. The new object also has a function, render(), that can be called to
  *  render the object, using all the data from the buffers. That object
  *  is returned as the value of the function. (The second parameter,
@@ -559,7 +559,7 @@ function createModel(modelData, xtraTranslate) {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program. If an error occurs while compiling or
- * linking the program, an exception of type String is thrown. The error
+ * linking the program, an exception of type Error is thrown. The error
  * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
@@ -609,7 +609,6 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
     }
     return prog;
 }
-
 
 
 /* Initialize the WebGL context. Called from init() */

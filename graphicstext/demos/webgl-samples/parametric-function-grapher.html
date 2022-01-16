@@ -169,9 +169,9 @@ function draw() {
     gl.uniformMatrix3fv(u_normalMatrix, false, normalMatrix);
     gl.uniformMatrix4fv(u_modelview, false, modelview );
     gl.uniformMatrix4fv(u_projection, false, projection );
-
+    
     /* Draw the model. The data for the model was set up in installModel() */
-
+    
     gl.uniform1i(u_lit, 1);  // Turn on lighting for drawin the graph.
     gl.enable(gl.POLYGON_OFFSET_FILL);  // polygon offset is used to make grid lines show up properly
     gl.polygonOffset(1,1);
@@ -473,7 +473,7 @@ function initGL() {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program. If an error occurs while compiling or
- * linking the program, an exception of type String is thrown. The error
+ * linking the program, an exception of type Error is thrown. The error
  * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
@@ -614,11 +614,11 @@ function init() {
 and z(u,v) can use: the variables <i>u</i> and <i>v</i>; the operators +, &minus;, <code>*</code>,
 and <code>/</code>; the functions <i>sin</i>(<i>x</i>), <i>cos</i>(<i>x</i>), <i>atan</i>(<i>x</i>),
 <i>abs</i>(<i>x</i>), <i>exp</i>(<i>x</i>), <i>log</i>(<i>x</i>), and <i>pow</i>(<i>x,y</i>); and
-the constant <i>pi</i>. Note that there is no exponential operator, but <i>pow</i>(<i>x,y</i>)
-does exponentiation. Angles are measured in radians. The <i>scale</i> determines the range of
+the constant <i>pi</i>. Note that the operator ** can probably be used to do exponentiation,
+but that pow(x,y) can do the same thing. Angles are measured in radians. The <i>scale</i> determines the range of
 coordinates that are in view. Coordinates in the range &minus;<i>scale</i> to <i>scale</i>
 should be visible. If axes are drawn, they extend from &minus;<i>scale</i> to scale along
-each coordinate axis. The y-axis (green) points upward, the z-axis (blue) points out of the screen,
+each coordinate axis. In the default view, the y-axis (green) points upward, the z-axis (blue) points out of the screen,
 and the x-axis (red) points to the right.</p>
 </div>
 

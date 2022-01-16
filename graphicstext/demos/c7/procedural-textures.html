@@ -594,14 +594,14 @@ For the 3D texture, the effect is the same as carving the object out of a solid
 block that is colored with a checkerboard pattern. The difference is not apparent
 for the cube, but it is clear for the sphere and other curved surfaces.</p>
 <p>The next two textures use Perlin noise (named after Ken Perlin, who invented it
-in 1983). A Perlin noise function produces values in the range 0 to 1 that have
+in 1983). A Perlin noise function produces values in the range &minus;1 to 1 that have
 fluctuations at a variety of frequencies. For the Perlin textures, the color of
 a pixel is based on a Perlin noise function. For a mottled blue/white texture, for
 example, the color components could be (n,n,1), where n is the value of the noise
 function. (In fact, the Perlin textures in the demo use 0.75+0.25*n instead of
 n, to reduce the contrast.)  Perlin noise functions of two and three variables were copied from
 <a href="https://github.com/ashima/webgl-noise" target="_NEW">https://github.com/ashima/webgl-noise</a>;
-they are distributed under the "MIT" open-source license. The are used in the fragment shader.</p>
+they are distributed under the "MIT" open-source license. They are used in the fragment shader.</p>
 <p>The last five textures are 3D, although similar 2D textures would be possible.</p>
 <p>The next two textures ("Sine Function" and "Marble (Soft)") are identical except that
 noise is added in the second. The idea is to start with a periodic function that has

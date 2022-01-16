@@ -366,18 +366,18 @@ function init() {
 <div id="help-content" style="display:none">
 <h3>About this demo...</h3>
 <p>The demo shows a scene that is illuminated by four light sources, as well
-as by a dim global ambiant light. There is a "viewpoint" light, which is a
+as by a dim global ambient light. There is a "viewpoint" light, which is a
 white light shining into the scene from the direction of the viewer.
 There are three colored positional lights, with a small sphere at the
 position of each light. The checkboxes allow you to turn the
 lights off and on. You can control whether the base is displayed.
-You can turn an an animation that makes the colored lights fly
+You can turn on an animation that makes the colored lights fly
 in circles around the teapot. And you can rotate the scene as a whole
 using your mouse.</p>
 <p>Some things to do:  Turn off all of the lights except one, and note
 the effect of that light on the teapot. (Maybe turn off the base so it
 doesn't distract you.) For the colored lights, be sure to use animation
-so that you can see how the colors visible on the teapot change. Try it
+so that you can see how the colors on the teapot change. Try it
 with only two colored lights turned on, and see how their colors combine.
 Note that when one a colored light is turned on, it adds some of its
 color to the ambient light; to see the effect look at the bottom
@@ -385,6 +385,8 @@ of the teapot, with just one light turned on.
 Note that when the only light is one colored light, part of the base is black;
 this is because, for example, a part of a surface that contains no red will
 not reflect any red light.</p>
+<p>You might also note that the teapot does not cast shadoes on the base. OpenGL
+does not support shadows, except with a lot of extra work.</p>
 <p>The base has a material that changes colors around the edge of the cylinder.
 This is meant as a demonstration of using different material colors at different
 vertices of the same primitive. It also uses <i>GL_COLOR_MATERIAL</i> so that

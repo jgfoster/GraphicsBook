@@ -174,7 +174,8 @@ function loadCubemapTexture() {
             }
             catch (e) {
                 document.getElementById("headline").innerHTML =
-                   "Can't access texture. Note that some browsers can't use  a texture from a local file.";
+                   "Can't access texture. Note that some browsers" +
+                   " can't use  a texture from a local file.";
                 return;
             }
             imageCt++;

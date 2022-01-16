@@ -12,12 +12,14 @@
 <script src="OrbitControls.js"></script>
 <script>
 
-/*  This page shows a refracting object inside a skybox. An environment
- *  map is used on the object and theskybox. The texture mapping for the cubemap
- *  texture is set to THREE.CubeRefractionMapping. The refractionRatio
+/*  This page shows a refraction object inside a skybox. An environment
+ *  map is used on the object to make it refract the skybox. No lighting
+ *  is used since object uses MeshBasicMaterial.  The refractionRatio
  *  property of the object material is set to 0.6. An option for "cloudy"
  *  glass is added, which is implemented by setting the reflectivity property
- *  of the object material to 0.7. Other than that, this example is a
+ *  of the object material to 0.7, and added an option for using higher refractive
+ *  index (0.9 instead of 0.6). And the mapping property of the skyboxTexture
+ *  is set to THREE.CubeRefractionMapping.  Other than that, this example is a
  *  copy of reflection-demo.html.
  */
 
@@ -107,7 +109,7 @@ function createSkybox(textureNumber) {
 
 /**
  *  Creates the material to use on the models. This is a MeshBasicMaterial with
- *  the skybox as an environment map. The base color, which is blended with the
+ *  the skybox texture as an environment map. The base color, which is blended with the
  *  environment map, is taken from the current color selection.
  */
 function makeRefractionMaterial() {
@@ -152,7 +154,7 @@ function installModel(modelNum) {
  */
 function installJSONModel(modelNum) {
     /*
-     * The callback function that is called by the JSONLoader when it
+     * The callback function that is called by the loader when it
      * has finished loading the object. This function creates a three.js
      * function to hold the object. It translates the object so that
      * its center is in the origin. It wraps the object in another object
@@ -256,21 +258,24 @@ function setObjectColor(colorNum) {
  */
 function doCloudyCheckbox() {
     cloudy = document.getElementById("cloudyCheck").checked;
-    if (model) {
-        if (model.material) { // it's a basic geometry model
-            model.material = makeRefractionMaterial();
-            model.material.needsUpdate = true;
-        }
-        else { // it's a JSON model and the actual model object is model.children[0]
-            model.children[0].material = makeRefractionMaterial();
-            model.children[0].needsUpdate = true;
-        }
-    }
+    refractiveObject.material = makeRefractionMaterial();
     render();
 }
 
 /**
- *  Called when user clicks the button. Resets model rotation to zero and controls to default view.
+ * Called when the user changes the setting of the "High Refractive Index" checkbox. Changes
+ * the material to match. A higher refractive index makes the object bend the light
+ * less, making it less visible (unless it's cloudy).
+ */
+
+function doHighRICheckbox() {
+    highRefractiveIndex = document.getElementById("highRefracCheck").checked;
+    refractiveObject.material = makeRefractionMaterial();
+    render();
+}
+
+/**
+ *  Called when user clicks the Reset button. Resets model rotation and controls to default view.
  */
 function resetRotation() {
     rotateX = rotateY = 0;
@@ -280,7 +285,7 @@ function resetRotation() {
 }
 
 /**
- *  An event listener for the keydown event. It is installed by the init() function.
+ *  An event listener for the keydown event. 
  *  The arrow keys are used to rotate the model about its own axis.
  */
 function doKey(evt) {

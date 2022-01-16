@@ -124,11 +124,11 @@ var buffer_texture;        // A buffer to hold the coordinates for a_coords_loc_
 var u_color_texture;       // Location of the color uniform in prog_texture.
 var u_translation_texture; // Location of the translation uniform in proh_texture
 
-var DISK_COUNT = 30;  // The scene in the texture shows moving disks. This is the number of disks.
-var DISK_DIAMETER = 0.6;  // This is the size of the disks.
-var diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
-var diskColors;  // An array giving the colors of the disks.
-var diskVelocities;  // For animating the disk positions.
+const DISK_COUNT = 30;  // The scene in the texture shows moving disks. This is the number of disks.
+const DISK_DIAMETER = 0.6;  // This is the size of the disks.
+let diskCenters;  // An array giving the positions of the disks, used as values of the u_translation uniform.
+let diskColors;  // An array giving the colors of the disks.
+let diskVelocities;  // For animating the disk positions.
 
 var rotator;  // A TrackballRotator object that lets the user rotate the view by mouse.
 

@@ -71,7 +71,7 @@ h2 {
 <p><a href="glsim.js"><i>glsim.js</i></a> is an open-source JavaScript library, written by
 <a href="http://math.hws.edu/eck/index.html">David Eck</a>,
 that implements a subset of OpenGL&nbsp;1.1
-by translating OpenGL function calls into WebGL. Note in particular
+by translating OpenGL function calls into WebGL&nbsp;1.0. Note in particular
 that it requires WebGL support. The subset of OpenGL includes the part of the
 API that is discussed in Chapters 3 and 4 of the on-line computer graphics
 textbook at <a href="http://math.hws.edu/graphicsbook">http://math.hws.edu/graphicsbook</a>
@@ -114,27 +114,30 @@ or the DOM object corresponding to a &lt;canvas&gt; element (generally obtained
 using <i>document.getElementById</i>).</p>
 
 <p>The function call <i>glsimUse</i>(<i>canvas</i>) sets the canvas to be the current
-OpenGL context. All OpenGL functions apply to the current context and will throw an
+(simulated!) OpenGL context. All OpenGL functions apply to the current context and will throw an
 exception if no such context has been established. It is possible to have multiple
 canvasses, each with its own OpenGL context. <i>glsimUse</i>() can be used to switch
 among contexts. If a context has already been created for a canvas when
 <i>glsimUse</i>(<i>canvas</i>) is called, then it simply uses the existing context
-for the canvas. Any state from previous uses of the context is retained.</p>
+for the canvas. Any state from previous uses of the context is retained.
+That is, <i>glsimUse</i>() can be used to switch among several exiting OpenGL contexts
+at any time.</p>
 
 <p>An OpenGL context is represented by an object of type <i>GLSim</i>. You can
 also create the context directly, by calling the <i>GLSim</i> constructor; <i>glsimUse</i>
 is simply a convenience for creating and managing the contexts.</p>
 
-<p>The function <i>glsimUse</i> can take a second paramter, to control options for
+<p>The function <i>glsimUse</i> can take a second parameter, to control options for
 the WebGL drawing context that is actually used on the canvas. If the second
 parameter is omitted, then default options for glsim will produce a color buffer with
 <b>no</b> alpha component (RGB colors rather than RGBA). This is generally desirable,
 since alpha transparency in the color buffer allows the background of the canvas
-on the web page to show through the canvas. To get an RGBA color buffer, you can
+on the web page to show through the canvas (but it is not the same default as in the
+GLSim constructor). To get an RGBA color buffer, you can
 pass <i>null</i> as the second parameter to <i>glsimUse</i> when creating a new drawing context.
 Furthermore the default options allow WebGL to discard the WebGL color buffer between
-drawing operations. Note that this is not correct behavior for OpenG, but the correct
-OpenGL behavio ris inefficient in WebGL and is not needed as long as all drawing is
+drawing operations. Note that this is not correct behavior for OpenGL, but the correct
+OpenGL behavior is inefficient in WebGL and is not needed as long as all drawing is
 done in a function that completely redraws the image (as is the case for all of my examples).
 To preserve the color buffer between drawing operations, you can pass 
 <i style="white-space: pre">{ preserveDrawingBuffer: true }</i> as the second parameter
@@ -226,7 +229,7 @@ my old desktop -- leading to hard-to-diagnose errors.)</p>
 be one of the following constants:  GL_VERTEX_POINTER, GL_COLOR_POINTER, GL_NORMAL_POINTER.</p>
 
 <p><code>glPushAttrib(mask)</code> and <code>glPopAttrib()</code> &mdash;  The <i>mask</i>
-can contain only the following constants, ORed together:  GL_CURRENT_BIT, GL_ENABLE_BIT,
+can contain only the following constants, OR'ed together:  GL_CURRENT_BIT, GL_ENABLE_BIT,
 GL_LIGHTING_BIT, GL_VIEWPORT_BIT. And of course, only values that are used by glsim are
 saved and restored.</p>
 
@@ -272,7 +275,7 @@ a typed array as parameter.</p>
 <p><code>glVertex*</code> &mdash; The suffixes 2i, 3i, 2f, 3f, 2d, 3d,
 2iv, 3iv, 2fv, 3fv, 2dv, and 3dv are supported, but no real distinction is made among
 the various numeric types. The v versions can take an ordinary JavaScript array or
-a typed array as parameter. Note that the 4-coordinate versions of glVertex* ar
+a typed array as parameter. Note that the 4-coordinate versions of glVertex* are
 <b>not</b> available.</p>
 
 <p><code>glNormal*</code> &mdash; The suffixes 3f, 3d, 3fv, and 3dv are supported, but
@@ -319,7 +322,7 @@ a boolean. (Can also use glLightModelf.)</p>
 <p><code>glTexImage2D(target,level,internalFormat,width,height,border,format,type,image)</code> &mdash;
 The target must be <i>GL_TEXTURE_2D</i>. The level must be a non-negative integer. The internalFormat
 and format must be <i>GL_RGBA</i>. The type must be <i>GL_UNSIGNED_INT</i>. The image
-must be an <i>Image</i> object (or an <i>HTMLImageObject</i>). The width, height, and border
+must be an <i>Image</i> object (or an <i>HTMLImageElement</i>). The width, height, and border
 are ignored. (Consider using <i>glsimTexImage(image)</i>, which is described earlier on this page, instead.)</p>
 
 <p><code>glCopyTexImage2D(target,level,internalFormat,x,y,width,height,border)</code> &mdash;
@@ -340,7 +343,7 @@ and the second must be an array. The generated texture ID's are stored in the ar
 <p><code>glCreateTexture()</code> &mdash; This is not a standard OpenGL function (though it is in WebGL).
 It generates one textureID, as by a call to glGenTextures, and it returns that texture ID.</p>
 
-<p><code>glBindTexture(texureID)</code> &mdash; The textureID must be an ID returned by
+<p><code>glBindTexture(texureID)</code> &mdash; The textureID must be an integer ID returned by
 glGenTextures or glCreateTexture. Initially, a default texture object is bound. 
 If <i>glBindTexture</i> is called with no parameter (or any value that evaluates to false as
 a boolean), then the default initial texture object is rebound.</p>
@@ -372,7 +375,7 @@ is a function from the GLU library rather than an OpenGL function.</p>
 
 <p><code>glVertexPointer(coordsPerVertex,dataType,stride,vertexArray)</code> &mdash;
 coordsPerVertex can be 2 or 3 (4 is not supported). The dataType must be GL_INT,
-GL_FLOAT, or GL_DOUBLE, but the actual value is ignored. The string <b>must</b>
+GL_FLOAT, or GL_DOUBLE, but the actual value is ignored. The stride <b>must</b>
 be zero. The vertexArray can be a JavaScript array of numbers or a typed array.
 </p>
 
@@ -394,7 +397,7 @@ is inefficient, since it has to be converted to <i>GL_TRIANGLES</i>, and that re
 rebuilding the vertex arrays.</p>
 
 <p><code>glDrawElements(primitive,vertexCount,indexType,indexArray)</code> &mdash;
-The pimitive can be any of the ten primitive types, with the same comment about
+The primitive can be any of the ten primitive types, with the same comment about
 GL_QUADS as for <i>glDrawArrays</i>. The indexType can be
 GL_UNSIGNED_INT, GL_UNSIGNED_BYTE, or GL_UNSIGNED_SHORT, but the values are always
 converted to 16-bit integers. The indexArray can be a JavaScript array of integers
@@ -480,7 +483,7 @@ after creating the context with <i>glsimUse</i>.)  When the user drags the mouse
 canvas, the listener responds by modifying the camera's viewpoint in a way that simulates
 rotating the scene about the point (0,0,0). Note that only rotation about the origin
 is supported. The parameter is a function that will be called each time the view is
-modified. Presumably, it will call a function that redraws the entire scene and that includes
+modified. Presumably, it will be a function that redraws the entire scene and that includes
 a call to <i>camera.apply</i>().</p>
 
 

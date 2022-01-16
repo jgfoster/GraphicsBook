@@ -341,7 +341,7 @@ function createDynamicCubemap() {
  * is called six times by createDyanmicCubeMap() to draw the six faces of the cubemap texture. (Note that
  * we don't want the central object in the environment map -- especially since the camera is inside that
  * object, and the camera would only see the inside of the object!)  This function assumes that the
- * modelview and projection matrices already exist; the values leaveing the method are the same as
+ * modelview and projection matrices already exist; the values leaving the method are the same as
  * the values coming in. The modelview matrix should be set to the viewing transform. Note that different
  * projection and modelview transformations are used for the main image and for the cubemap texture.
  */
@@ -565,7 +565,7 @@ function doKey(evt) {
 
 /* Creates a program for use in the WebGL context gl, and returns the
  * identifier for that program. If an error occurs while compiling or
- * linking the program, an exception of type String is thrown. The error
+ * linking the program, an exception of type Error is thrown. The error
  * string contains the compilation or linking error. If no error occurs,
  * the program identifier is the return value of the function.
  *    The second and third parameters are the id attributes for <script>
@@ -615,7 +615,6 @@ function createProgram(gl, vertexShaderID, fragmentShaderID) {
     }
     return prog;
 }
-
 
 
 /* Initialize the WebGL context. Called by init().
