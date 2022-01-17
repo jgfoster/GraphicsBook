@@ -20,7 +20,7 @@ the <word>lighting</word> of the scene and the <word>material</word>
 properties that have been assigned to the vertex, as discussed
 in the <localref href="gl1light.1">previous section</localref>.
 Now it's time to learn about the OpenGL commands that are used
-to configure lighting and to assign materials to objects.</p1>
+to configure lighting and to assign materials to objects.</p>
 
 <p>It is common for lighting to be turned on for <word>rendering</word> 
 some parts of a scene, but turned off for other parts. We will say that 

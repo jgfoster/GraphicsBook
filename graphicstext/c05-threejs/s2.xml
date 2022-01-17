@@ -161,7 +161,7 @@ of a group is an index into that array.</p>
 material would ordinarily be used.</np>
 
 
-<pre>var pyramidGeom = new THREE.Geometry();
+<pre>var pyramidGeom = new THREE.Geometry();</pre>
 
 <p>A <classname>THREE.BoxGeometry</classname> comes with groups that
 make it possible to assign a different material to each face.

@@ -18,7 +18,7 @@ interpolating between the values for the key frames. Exactly
 how the interpolation is done is determined by a set of "F-curves," which you can
 edit to completely control the interpolation (and extrapolation beyond the key frames).</p>
 
-<p>There is Timeline frame at the bottom of the default Blender window that contains
+<p>There is Timeline area at the bottom of the default Blender window that contains
 some information about animations and lets you control them:</p>
 
 <img src="blender-timeline.png" width="736" height="81" tex="blender-timeline.eps" texscale="0.5"/>
@@ -51,8 +51,8 @@ by clicking in the timeline or entering the value in the current frame input.
 Select the object and hit the "I"&nbsp;key to insert a key value for that
 object in the current frame. (The mouse cursor must be in the 3D View for this to work.)
 A popup menu will allow you to select the property or properties for which you want to insert key values.
-Note that "LocRot" means to insert values for both Location and Rotation,
-and "LocRotScale" means to insert values for all three properties.</p>
+For example, to store values for both the current location and the current rotation of the
+object, select "Location Rotation" from the menu.</p>
 
 <p>After inserting one key frame, change the current frame number,
 move or rotate or scale the object to the values that you want for the new keyframe,
@@ -68,8 +68,7 @@ to animate the color of the object, set the frame number, point the mouse at the
 Material Properties, and hit the I&nbsp;key. Change the current frame number and repeat, and so on.
 You can also insert a key frame by right-clicking a property in the Properties Editor and selecting
 "Insert Keyframe" from the popup; if a key frame already exists, the popup has an entry
-for deleting it. Try animating the alpha value of a translucent object. You can make it fade 
-away!</p>
+for deleting it.</p>
 
 <break/>
 
@@ -89,7 +88,7 @@ corner of the area.</p>
 <p>The Graph Editor shows F-curves
 for the object that is selected in the 3D View.
 Here is the Graph editor showing some F-curves for an animated object
-that has key frame values for the location, rotation, and scale properties:
+that has key frame values for the location and rotation:
 </p>
 
 <img src="blender-graph-editor.png" width="566" height="339" tex="blender-graph-editor.eps" texscale="0.7"/>
@@ -183,7 +182,7 @@ tracking object points towards the object that is being tracked.
 (Tracking is only one kind of "constraint."
 You can use the Constraint controls in the properties editor panel
 to set and clear various constraints in addition to tracking. "Stretch To" is
-interesting.)</p>
+interesting, and we will look at "Follow Path" later in this section.)</p>
 
 <p>Tracking works especially well for cameras and spotlights. You can make
 them track moving objects, so that the camera or light is always pointed
@@ -293,83 +292,6 @@ same thing with a camera.</p>
 
 
 
-<subsection title="Particle Systems" id="blender.3.5">
-
-<p>A particle system is a bunch of free-floating vertices that move under the
-influence of forces or other controls. Particle systems can represent
-everything from a cloud of smoke to a flock of birds. So-called
-"Hair" particle systems, in which the entire path of each particle
-is rendered at once, can be used to simulate things like hair and grass.
-Blender particle systems are very complicated, and I will only
-mention a few of the options here.</p>
-
-<p>In Blender, particles must be emitted by a mesh object. To turn a mesh 
-object into a particle-emitter, select the object, and click the Particle System 
-button&mdash;shown in the following image&mdash;at the top of
-the Properties Editor frame. You should see a "+" button in the control area, next
-to an empty rectangle. Click the "+" button and a large number 
-of new controls will appear. These are the controls that you use to configure
-the particle system. Here is a guide to some of them:</p>
-
-<img src="blender-particle-settings.png" width="615" height="710" tex="blender-particle-settings.eps" texscale="0.75"/>
-
-<p>Particles are shown in the 3D window as dots by default (this can be changed
-in the particle system settings). The calculations that are required
-to implement the particle system are computed frame-by-frame and cached. Drag
-the green line in the timeline to sweep through the frames and see how the
-particles move. To make sure that they reflect all the changes that
-you make to the settings, you might have to start back in frame number&nbsp;1.
-</p>
-
-<p>By default, the initial velocity of the particles is 1 and is in the
-direction of the normal vector at the point that emits them. They
-are subject to a gravitational force that makes them accelerate in
-the negative y-direction. There are controls to change the initial velocity
-and to turn off gravity. If you turn off initial velocity and gravity,
-the particle stays at the point where it is created&mdash;which might be
-OK if the emitter is moving.</p>
-
-<p>Particles can also be affected by forces that you add to the scene,
-using the "Force Field" sub-menu of the add menu.</p>
-
-<break/>
-
-<p>When you render a particle system, with the default render settings, 
-you should see a whitish ball of light at
-each particle. The ball of light is
-a "halo". Note that the scene doesn't have to be lit to see the halos; they
-emit color even in the absence of light.
-To change the appearance of the halo, go to the Material controls
-while the emitter object is selected. Add a material if you have not
-done so already, and change the material type from "Surface" to "Halo".
-You will see a new set of halo property controls.
-You can actually render any mesh object, not just a
-particle system, with a Halo material. You will get a halo at each vertex of
-the object. This picture shows a Mesh Circle rendered with
-a Halo material:</p>
-
-<img src="blender-halo-material.jpg" width="" height="" tex="blender-halo-material.eps" texscale="0.6"/>
-
-<p>You can turn the ball of light that represents the halo into a star by
-turning on the "Star Tips" option in the Halo Material controls. You can set the
-number of points of the stars&mdash;to 5, for example&mdash;by changing the
-number in the "Star Tips" box.
-Similarly, the "Rings" and "Lines" options add features to the
-Halo, and the "Rings" and "Lines" inputs determine how many of that feature
-are added. The color of the lines and rings can be set by clicking the
-color patch just below the corresponding checkbox.
-You might also want to change the "Size" property of the halo material.</p>
-
-<p>As an alternative to halo rendering of the particle system, you can place a copy of any given
-object at each particle. In the Particle controls, set the "Rendering" to "Object", and
-select a "Dupli Object". Set the size as well, since the default size is probably
-much too small. Adding rotation to the particle system might be a good idea if
-you are duplicating an object and want the duplicates to spin.</p>
-
-
-</subsection>
-
-
 <subsection title="Rendering an Animation" id="blender.3.6">
 
 <p>There is a command for rendering an animation in Blender's "Render" menu,
@@ -463,9 +385,7 @@ If an object is farther from the camera than the camera's
 "End" clipping value, or closer than the "Start" clipping value,
 then the object is not seen by the camera.
 If you have a problem with faraway objects disappearing,
-check the camera clipping range. Note that you can also set the
-Camera to use an orthographic rather than the default perspective
-projection.</p>
+check the camera clipping range.</p>
 
 </subsection>
 

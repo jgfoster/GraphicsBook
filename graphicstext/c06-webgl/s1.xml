@@ -151,7 +151,7 @@ gl.compileShader( vertexShader );</pre>
 and the parameter <i>vertexShaderSource</i> is the string that contains the source code for the
 shader. Errors in the source code will cause the compilation to fail silently.
 You need to check for compilation errors by calling the function
-</p>
+</np>
 
 <pre>gl.getShaderParameter( vertexShader, gl.COMPILE_STATUS )</pre>
 

@@ -57,6 +57,8 @@ to render the image:</np>
     anaglyphRenderer.render( scene, camera );
 }</pre>
 
+</subsection>
+
 <subsection title="Instanced Meshes" id="threejs.3.1">
 
 <p>The class <classname>THREE.InstancedMesh</classname> makes it possible to 
@@ -557,7 +559,7 @@ the scene with the new background. The last parameter <i>onError</i>
 is a function that will be called if the texture cannot be loaded.
 Only the first parameter is required.</np>
 
-var materials = [];
+<pre>var materials = [];
 for (var i = 0; i &lt; 6; i++) {
     var texture = new THREE.TextureLoader().load( textureURLs[i] );
     materials.push( new THREE.MeshBasicMaterial( {

@@ -371,7 +371,7 @@ I used  a Clouds texture on the grid to produce the brown terrain.
 To make the blue "water", I added a Plane in the same location as
 the grid and gave it a blue material.</p>
 
-
+</subsection>
 
 <subsection title="More on Light and Material" id="blender.2.6">
 

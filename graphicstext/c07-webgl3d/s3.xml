@@ -8,7 +8,7 @@ covered in <localref href="webgl.4"/>. In this section, we look
 at several examples and techniques for using textures.</p1>
 
 
-<subsection title="Texture Transforms with glMatrix" id="webgl3d..1">
+<subsection title="Texture Transforms with glMatrix" id="webgl3d.3.1">
 <p>In <localref href="gl1light.3.4"/>, we saw how to apply a
 <word>texture transformation</word> in OpenGL. OpenGL maintains
 a texture transform matrix that can be manipulated to apply
@@ -73,7 +73,7 @@ v_texCoords = texcoords.xy;</pre>
 
 
 
-<subsection title="Generated Texture Coordinates" id="webgl3d..2">
+<subsection title="Generated Texture Coordinates" id="webgl3d.3.2">
 
 <p>Texture coordinates are typically provided to the shader program as
 an attribute variable. However, when texture coordinates are not available,
@@ -181,7 +181,7 @@ is interesting, but probably not very useful.</p></demo>
 
 
 
-<subsection title="Procedural Textures" id="webgl3d..3">
+<subsection title="Procedural Textures" id="webgl3d.3.3">
 
 <p>Up until now, all of our textures have been image textures. With an image
 texture, a color is computed by <word>sampling</word> the image, based on a
@@ -343,7 +343,7 @@ demo are just a small sample of the possibilities.</p></demo>
 
 
 
-<subsection title="Bumpmaps" id="webgl3d..4">
+<subsection title="Bumpmaps" id="webgl3d.3.4">
 
 <p>So far, the only textures that we have encountered have affected color. Whether they were image
 textures, environment maps, or procedural textures, their effect has been to vary the color
@@ -506,7 +506,7 @@ That transformation is done in the last line of code shown above.</p>
 
 
 
-<subsection title="Environment Mapping" id="webgl3d..5">
+<subsection title="Environment Mapping" id="webgl3d.3.5">
 
 <p><localref href="threejs.3.5"/> showed how to use <word>environment mapping</word>
 in <i><word>three.js</word></i> to make it look like the surface of an object reflects an 

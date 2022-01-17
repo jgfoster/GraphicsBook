@@ -69,7 +69,7 @@ but <b>let</b> and <b>const</b> are now preferred.
 the same variable more than once; a declaration
 just says that the variable exists.)</np>
 
-<p>JavaScript also allows you to use variables without declaring them. However, doing
+<np>JavaScript also allows you to use variables without declaring them. However, doing
 so is not a good idea. You can prevent the use of undeclared variables,
 as well as certain other unsafe practices, by including the following statement
 at the beginning of your program:</np>
@@ -561,7 +561,7 @@ all the objects that are created by that function. Thus, instead
 of assigning a value to <i>this.move</i> in the constructor function, we
 can do the following outside the definition of function <i>Point2D</i>:</p>
 
-Point2D.prototype.move = function(dx,dy) {
+<pre>Point2D.prototype.move = function(dx,dy) {
     this.x = this.x + dx;
     this.y = this.y + dy;
 }</pre>
@@ -893,7 +893,7 @@ guessing game using a text input box and buttons:</np>
 
 <break/>
     
-<i>document.getElementById</i> to get the DOM object for some HTML element. If that
+<p><i>document.getElementById</i> to get the DOM object for some HTML element. If that
 script is executed before the page has finished loading, the element that it is
 trying to access might not yet
 exist. And remember that scripts are executed as the page is loading. Of course,

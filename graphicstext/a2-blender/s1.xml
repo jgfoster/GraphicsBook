@@ -96,56 +96,24 @@ the object that you want to select is hidden in the 3D&nbsp;View.</p>
 the 3D cursor. You can also set its position by shift-right-clicking with any tool.
 The 3D cursor is discussed later in this section.</p>
 
-<np>The 3D View frame also includes a Tools panel along the left edge and a narrow header panel
-along the bottom.</np>
+<p>The next four tools can also be used for selecting objects, but they
+add "manipulators" to the selected object or group of objects.
+Manipulators can be used to <word term="geometric transform">transform</word> an object.
+Here is what the manipulators for translating, rotating, and scaling an object look like
+on a cube:</p>
 
-<p>The only thing in the 3D view that will be visible in the <word term="rendering">rendered</word>
-scene is the cube. The camera represents the point of view from which the image will be made.
-The point light provides illumination for the scene. The other things in the 3D View are there
-to help you edit the scene or to help you to understand what you are seeing. The grid lies in
-the <i>xy</i>-plane. The manipulator lets you transform the object. The 3D cursor
-marks a point in 3D space that is used for several editing operations. Note the plus sign,
-which reveals another panel of controls; to hide such a panel, drag its boundary to the edge of
-the frame. Note the triangle in the upper right. If you drag the triangle, the frame is
-split into two frames. You can remove a frame by joining it with its neighbor: Right-click
-the boundary between the two frames, select "Join" from the pop-up menu, and 
-click the frame that you want to discard.</p>
+<img src="blender-manipulator-controls.png" width="480" height="169" tex="blender-manipulator-controls.eps" texscale="0.7"/>
 
-<break/>
+<np>For example, using the translation manipulator, you can drag one of the arrowheads
+to translate the object in the direction of one of the coordinate axes, or you can
+drag the white circle to translate the object in the plane of the 3D&nbsp;View.
+As with most Blender interface elements, you can hover your mouse over any part of
+a manipulator to see what it does.</np>
 
-<p>The 3D View window shows you a two-dimensional projection of a
-three-dimensional world. You need to be able to change the view,
-to look at the world from a different viewpoint. This can be done
-using the mouse or using the keys on the numeric keypad or "numpad". (The numpad,
-if you have one, is the group of keys to the right of the keyboard. If
-you don't have a numeric keypad, you can find equivalent commands in
-the "View" menu in the header panel at the bottom of the 3D View.)</p>
-
-<p><b>Important Note:</b> In Blender, key presses are sent to the frame
-that contains the mouse cursor. This does not follow standard GUI practice.
-It means that the mouse cursor must be in the 3D View for
-key presses to be sent to that frame. When pressing a key doesn't seem
-to do anything, check the position of the mouse cursor!</p>
-
-<p>To change the view with the mouse, use the middle mouse button. Drag with
-the middle mouse button to rotate the view. Hold the shift key down while
-dragging to translate the view (that is, move it up/down and left/right).
-Hold the control key down while dragging to zoom the view; move the mouse up 
-to zoom in, or down to zoom out. You can also zoom in and out with the scroll-wheel 
-feature of the mouse.</p>
-
-<p>The numpad, or equivalent commands in the "View" menu, can be also be used to modify and
-zoom the view. But more important, they can be used to select certain common viewpoints.
-The initial view in the 3D View frame is a <word>perspective projection</word> of the world
-from a point that lies off all three coordinate axes. For working on the
-world, however, it's generally better to use an <word>orthographic projection</word>.
-Use the "5" key on the numpad to switch between projection types. Use the
-numpad "1", "3", and "7" keys to select projections onto the
-<i>xz</i>, <i>yz</i>, and <i>xy</i> planes. These are probably the
-most useful views for modeling, and checking out the world. Using
-all three projections can give you a good idea of the 3D positions
-of the objects in the scene. The camera view (Numpad&nbsp;&leftquote;0") is also
-very useful for modeling. Here's a list of all the numpad commands:</p>
+<p>But if you are comfortable with keyboard shortcuts, there are other ways to 
+transform objects, without changing the tool that you are using. 
+Select the object or objects you want to transform,
+then apply the transformation as follows:</p>
 
 <ul>
 <li>Press the "G" key. (G&nbsp;stands for "grab".)  Move the mouse
@@ -194,7 +162,7 @@ be a good way to get the exact view that you want for the rendered image.</p>
 
 
 
-<subsection title="Adding and Transforming Objects" id="blender.1.2">
+<subsection title="Adding Objects to the Scene" id="blender.1.2">
 
 <p>Changing the view does not modify the contents of the world.
 To do that, you need editing operations such as adding objects to the world. This
@@ -214,10 +182,14 @@ to switch between views.</p>
 
 <p>Another way to position the 3D cursor is with the "Snap" menu,
 which you can call up by pressing SHIFT-S while the mouse cursor is in the 3D&nbsp;Vew window.
-(Remember that the cursor must be in the 3D View frame for keystrokes to be
-sent to that frame.)  You can also find the Snap menu as a submenu in the "Object" menu below the 3D View.
-This menu contains commands for positioning the cursor as well as for positioning objects.
-For example, use "Cursor To Center" to move the 3D cursor to the point (0,0,0).</p>
+(Remember that the mouse must be in the 3D&nbsp;View for keystrokes to be
+sent to that editor.)  This is one of Blender's strange circular menus that pops up
+at the position of the mouse cursor&mdash;just move the cursor towards one of the
+options to select it, and press the left mouse button.
+You can also find a more normal Snap menu as a submenu in the popup
+menu that you get by right-clicking the 3D&nbsp;View.
+The Snap menu contains commands for positioning the cursor as well as for positioning objects.
+For example, use "Cursor To World Origin" to move the 3D cursor to the point (0,0,0).</p>
 
 <p>Once you have the 3D cursor in position, use the "Add" menu
 to add an object to the world. You can pop up the Add menu at the mouse
@@ -241,7 +213,7 @@ which are the number of subdivisions around the equator of the sphere and the nu
 north pole to the south pole. This is the only chance that you will get
 to set those properties.</p>
 
-<img src="blender-add-uvsphere.png" width="161" height="179" tex="blender-add-uvsphere.eps" texscale="0.7"/>
+<img src="blender-add-uvsphere.png" width="161" height="179" tex="blender-add-uvsphere.eps" texscale="0.8"/>
 
 <np>Note that you can set the position and rotation of the newly added object
 by typing in values.
@@ -260,7 +232,7 @@ which refers to the u and v parameters used as inputs for a parametric surface.)
 <p>To <b>delete</b> the selected object or objects, just hit the "X" key or the Delete key. 
 With the "X" key, you will be asked to confirm the deletion. (Remember that the mouse cursor 
 must be in the 3D window for it to get keyboard commands. (This is the last time
-I will say this.))</p>
+I will say this!))</p>
 
 <p>As you modify the world, you can undo most operations by pressing
 Control-Z. That includes adding, deleting, and editing objects.
@@ -363,11 +335,11 @@ on what kind of object is currently selected, although some
 are always present. Here are the
 buttons that are shown when the selected object is a mesh:</p>
 
-<img src="blender-property-header.png" width="579" height="226" tex="blender-property-header.eps" texscale="0.7"/>
+<img src="blender-property-header.png" width="272" height="459" tex="blender-property-header.eps" texscale="0.9"/>
 
 <np>In this picture, the Materials button has been clicked.
 With the materials button selected, 
-the rest of the editor panel, below the header, is filled with controls
+the rest of the editor panel, to the right of the buttons, is filled with controls
 for setting the material properties of the selected object.
 Most of the controls don't appear until a material has been added
 to the object. If there is no material, you will see a "New" button
@@ -412,10 +384,8 @@ at a different point. It is an important effect for material like skin, milk, an
 jade, and you can enable it by setting the "Subsurface" control to a value greater
 than 0.0.</p>
 
-<img src="blender-material-properties.png" width="576" height="490" tex="blender-material-properties.eps" texscale="0.7"/>
-
-
 <break/>
+
 
 <p>A <word>texture</word> makes the color or some other property of an object vary from point to point.
 One type of texture copies colors from an image, effectively painting the
@@ -479,7 +449,7 @@ command in the "Defaults" submenu of the "File" menu, Blender will save the curr
 a .blend file somewhere in your home directory. After that, when you start Blender,
 it will open that file as the starting point for
 your session, instead of the usual initial scene.
-This feature allows you customize your startup environment.</p>
+This feature allows you to customize your startup environment.</p>
 
 
 </subsection>
@@ -553,36 +523,13 @@ Sometimes this is correct, but often
 you want to use the mesh as an approximation for a smooth object, such as a sphere.
 In that case you want to use <word>smooth shading</word> instead.
 To select between flat shading and smooth shading for a mesh object, select the
-object and look in the "Tools" panel to the left of the 3D&nbsp;View.
-You'll find two "Shading" buttons, marked "Flat" and "Smooth," for selecting the type of
-shading. Setting a mesh object to use smooth shading does not change the geometry of the
-object; it just uses different normal vectors (see <localref href="gl1light.1.3"/>).</p>
-
-<p><b>Layers</b>:
-Blender has "layers", where each layer can contain
-its own collection of objects. When several layers are shown in the 3D View, their objects
-are not actually layered on top of each other; all the objects from all the visible layers
-are shown intermingled in one 3D scene. The point is that 
-you can show and hide objects by turning the layers that contain them on and off.
-The main point is to allow you to work on objects in one layer
-without being confused by the objects in the other layers. Blender has exactly 20
-layers, and they are controlled by a set of 20 small buttons in the
-header panel at the bottom of the 3D View. The buttons look like this:</p>
-
-<img src="blender-layer-buttons.png" width="117" height="38" tex="blender-layer-buttons.eps" texscale="0.7"/>
-
-
-<np>A dot in a layer button means that that layer contains one or more objects. Layers
-that are selected for viewing are shown in a darker gray.
-You can click a layer button to select just that layer. You can shift-click
-to select multiple layers. You can move objects from one layer to another:  Select
-the object and hit the "M" key; a&nbsp;set of layer buttons will pop up where you can 
-select the layer to which you want to move the object. You can use hidden layers to store
-objects that you have worked on, but that you don't want to be visible at the moment.</np>
+object, right-click in the 3D&nbsp;View, and select "Shade Smooth" or "Shade flat" from the
+popup menu. Setting a mesh object to use smooth shading does not change the geometry of the
+object; it just uses different <word term="normal vector">normal vectors</word> (see <localref href="gl1light.1.3"/>).</p>
 
 
 <p><b>Naming</b>:
-In Blender, objects, textures, materials, scenes, etc., all have <i>names</i>.
+In Blender, objects, materials, scenes, etc., all have <i>names</i>.
 Blender automatically assigns generic names such as "Cube.002" when you create or
 duplicate an object. Sometimes, you need to know something's
 name. An example is the "text on curve" feature that will be discussed
@@ -603,12 +550,7 @@ there is a set of buttons for selecting the current screen. (If you are working
 in a small window, you might have to middle-mouse-drag the menu bar to see them all.)
 Here are the default screens:</p>
 
-<p><b>Scenes and Screens</b>:
-A "scene" in Blender is its own 3D world. Each scene can contain unique objects,
-but it is also possible for scenes to share objects. There is a popup menu at the top
-of the Blender window that you can use to create new scenes and to switch from one
-scene to another. To its left is a popup menu for selecting a "screen."  A screen
-is a customized layout for the Blender window. The two menus look like this:</p>
+<img src="blender-screens.png" width="617" height="32" tex="blender-screens.eps" texscale="0.7"/>
 
 <np>We have only been talking about the "Layout" screen, which is the default when
 Blender starts up. We will look at some of the other screens later, but most of
@@ -637,13 +579,8 @@ it also moves in the other one. You can then add new
 objects later that will be in only one of the scenes. You might use this, for example, if you
 want to set up a common static background world and then make several scenes that show
 different "actors" doing different things in different scenes, but with the
-same environment. With "Link Object Data", objects
-in the two scenes share the same data but not the same transform; this lets you have
-the same actors doing different things in different scenes, with the same
-environment. "Full Copy" copies both the
-transforms and data, so the scenes look the same originally, but really have no shared data
-in common.</np>
-
+same environment. "Full Copy" makes a new copy of everything in the current scene,
+so the scenes look the same originally, but really have no shared data in common.</np>
 
 
 </subsection>
