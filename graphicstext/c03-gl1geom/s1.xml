@@ -312,7 +312,7 @@ And you can use them to test your OpenGL programming environment.</p>
 <break/>
     
 <p>A common operation is to clear the drawing area by filling it with some
-background color. It is be possible to do that by drawing a
+background color. It is possible to do that by drawing a
 big colored rectangle, but OpenGL has a potentially more efficient way to do it. 
 The function</p>
 
@@ -329,7 +329,7 @@ component also equal to zero. The command to do the actual clearing is:</np>
 
 <pre>glClear( GL_COLOR_BUFFER_BIT );</pre>
 
-<np>The correct term for what I have been calling the drawing
+<np>The correct term for what we have been calling the drawing
 area is the <newword>color buffer</newword>, where "buffer" is a general term
 referring to a region in memory. OpenGL uses several buffers in addition to the
 color buffer. We will encounter the "depth buffer" in just a moment.

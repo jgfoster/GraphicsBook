@@ -85,7 +85,7 @@ haven't quite projected the 3D scene onto a 2D surface, but we can now do
 so simply by discarding the z-coordinate. (The z-coordinate, however, is still
 needed to provide the depth information that is needed for the depth test.)</p>
 
-<p>Note that clip coordinates are the coordinates will be used if you apply
+<p>Note that clip coordinates are the coordinates that will be used if you apply
 no transformation at all, that is if both the modelview and the 
 projection transforms are the <word term="identity transform">identity</word>.
 It is a left-handed coordinate system, with the positive direction of the <i>z</i>-axis
