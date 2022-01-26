@@ -12,7 +12,7 @@
 var camera;
 var smooth = true;
 
-function smoothShpere(radius, slices, stacks) {
+function smoothSphere(radius, slices, stacks) {
     var i,j;
     for (j = 0; j < stacks; j++) {
         var latitude1 = (Math.PI/stacks) * j - Math.PI/2;
@@ -141,7 +141,7 @@ function draw() {
         facetedShpere(4,slices,stacks);
     }
     else {
-        smoothShpere(4,slices,stacks);
+        smoothSphere(4,slices,stacks);
     }
     
     if (edges) {
